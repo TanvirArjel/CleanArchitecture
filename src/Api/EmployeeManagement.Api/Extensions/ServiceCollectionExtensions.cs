@@ -43,8 +43,14 @@ namespace EmployeeManagement.Api.Extensions
 
             string[] referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
             List<string> toLoadAssemblies = referencedPaths.Where(r => !loadedPaths.Contains(r, StringComparer.InvariantCultureIgnoreCase)).ToList();
-            toLoadAssemblies.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
 
+            foreach (var path in toLoadAssemblies)
+            {
+                Assembly assembly = Assembly.LoadFrom(path);
+                loadedAssemblies.Add(assembly);
+            }
+
+            // toLoadAssemblies.ForEach(path => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(path))));
             List<Type> implementations = loadedAssemblies
                 .SelectMany(assembly => assembly.GetTypes()).Where(type => typeof(T).IsAssignableFrom(type) && type.IsClass).ToList();
 
