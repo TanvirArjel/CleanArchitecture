@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AspNetCore.ServiceRegistration.Dynamic.Extensions;
+using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +25,7 @@ namespace RazorPageClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IEmployeeService, EmployeeService>();
-            services.AddScoped<IDepartmentService, DepartmentService>();
+            services.RegisterAllTypes<IScopedService>();
             services.AddHttpClient("EmployeeManagementApi", c =>
             {
                 c.BaseAddress = new Uri("https://localhost:44390/api/");

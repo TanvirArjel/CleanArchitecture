@@ -1,5 +1,5 @@
-﻿using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Common.DependencyInjection;
+﻿using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
+using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

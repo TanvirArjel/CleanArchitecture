@@ -1,6 +1,4 @@
-﻿using EmployeeManagement.Common.DependencyInjection;
-using System.Collections.Generic;
-using System.Text;
+﻿using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Domain.Interfaces

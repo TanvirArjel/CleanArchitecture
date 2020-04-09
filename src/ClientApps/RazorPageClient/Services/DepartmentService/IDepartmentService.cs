@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RazorPageClient.ViewModels.DepartmentsViewModels;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RazorPageClient.Services.DepartmentService
 {
-    public interface IDepartmentService
+    public interface IDepartmentService : IScopedService
     {
         Task<List<DepartmentDetailsViewModel>> GetDepartmentListAsync();
 

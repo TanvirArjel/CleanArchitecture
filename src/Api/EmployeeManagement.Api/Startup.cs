@@ -1,7 +1,7 @@
+using AspNetCore.ServiceRegistration.Dynamic.Extensions;
+using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
 using AutoMapper;
-using EmployeeManagement.Api.Extensions;
 using EmployeeManagement.Api.Utilities.Mixed;
-using EmployeeManagement.Common.DependencyInjection;
 using EmployeeManagement.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
