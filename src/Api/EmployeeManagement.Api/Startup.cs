@@ -31,7 +31,7 @@ namespace EmployeeManagement.Api
             });
 
             services.AddAutoMapper(typeof(Startup));
-            services.RegisterAllTypes<IScopedService>();
+            services.AddServicesOfType<IScopedService>();
             services.AddControllers(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));

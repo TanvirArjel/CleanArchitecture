@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RazorPageClient.Services.DepartmentService;
-using RazorPageClient.Services.EmployeeService;
 using RazorPageClient.Utilities.Mixed;
 
 namespace RazorPageClient
@@ -25,7 +23,7 @@ namespace RazorPageClient
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterAllTypes<IScopedService>();
+            services.AddServicesOfType<IScopedService>();
             services.AddHttpClient("EmployeeManagementApi", c =>
             {
                 c.BaseAddress = new Uri("https://localhost:44390/api/");
