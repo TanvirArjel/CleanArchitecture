@@ -1,4 +1,5 @@
-﻿using RazorPageClient.ViewModels.EmployeeViewModels;
+﻿using RazorPageClient.Services;
+using RazorPageClient.ViewModels.EmployeeViewModels;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace RazorPageClient.Services.EmployeeService
+namespace RazorPageClient.ServiceImplementions
 {
     public class EmployeeService : IEmployeeService
     {
@@ -56,7 +57,7 @@ namespace RazorPageClient.Services.EmployeeService
 
         public async Task CreateEmployeeAsync(CreateEmployeeViewModel createEmployeeViewModel)
         {
-            string jsonStringBody = JsonSerializer.Serialize<CreateEmployeeViewModel>(createEmployeeViewModel);
+            string jsonStringBody = JsonSerializer.Serialize(createEmployeeViewModel);
             using StringContent content = new StringContent(jsonStringBody, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpClient.PostAsync("employee/create-employee", content);
 
@@ -68,7 +69,7 @@ namespace RazorPageClient.Services.EmployeeService
 
         public async Task UpdateEmplyeeAsync(UpdateEmployeeViewModel updateEmployeeViewModel)
         {
-            string jsonStringBody = JsonSerializer.Serialize<UpdateEmployeeViewModel>(updateEmployeeViewModel);
+            string jsonStringBody = JsonSerializer.Serialize(updateEmployeeViewModel);
             using StringContent content = new StringContent(jsonStringBody, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpClient.PutAsync("employee/update-employee", content);
 

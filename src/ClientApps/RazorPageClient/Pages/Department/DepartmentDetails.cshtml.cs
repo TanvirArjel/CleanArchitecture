@@ -4,7 +4,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using RazorPageClient.Services.DepartmentService;
+using RazorPageClient.Services;
 using RazorPageClient.ViewModels.DepartmentsViewModels;
 using System.Threading.Tasks;
 

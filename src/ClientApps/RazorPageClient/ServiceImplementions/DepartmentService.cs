@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using RazorPageClient.Services;
 using RazorPageClient.ViewModels.DepartmentsViewModels;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace RazorPageClient.Services.DepartmentService
+namespace RazorPageClient.ServiceImplementions
 {
     public class DepartmentService : IDepartmentService
     {
@@ -32,7 +33,7 @@ namespace RazorPageClient.Services.DepartmentService
             {
                 string repsonseString = await response.Content.ReadAsStringAsync();
 
-                var departments = JsonSerializer.Deserialize<List<DepartmentDetailsViewModel>>(repsonseString, JsonSerializerOptions);
+                List<DepartmentDetailsViewModel> departments = JsonSerializer.Deserialize<List<DepartmentDetailsViewModel>>(repsonseString, JsonSerializerOptions);
                 return departments;
             }
 
@@ -47,7 +48,7 @@ namespace RazorPageClient.Services.DepartmentService
             {
                 string repsonseString = await response.Content.ReadAsStringAsync();
 
-                var departments = JsonSerializer.Deserialize<List<SelectListItem>>(repsonseString, new JsonSerializerOptions()
+                List<SelectListItem> departments = JsonSerializer.Deserialize<List<SelectListItem>>(repsonseString, new JsonSerializerOptions()
                 {
                     PropertyNameCaseInsensitive = true
                 });
@@ -60,7 +61,7 @@ namespace RazorPageClient.Services.DepartmentService
 
         public async Task CreateDepartmentAsync(CreateDepartmentViewModel createDepartmentViewModel)
         {
-            var jsonStringBody = JsonSerializer.Serialize<CreateDepartmentViewModel>(createDepartmentViewModel);
+            string jsonStringBody = JsonSerializer.Serialize(createDepartmentViewModel);
             using StringContent stringContent = new StringContent(jsonStringBody, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpClient.PostAsync("department/create-department", stringContent);
             if (!response.IsSuccessStatusCode)
@@ -84,7 +85,7 @@ namespace RazorPageClient.Services.DepartmentService
 
         public async Task UpdateDepartmentAsync(UpdateDepartmentViewModel updateDepartmentViewModel)
         {
-            string jsonString = JsonSerializer.Serialize<UpdateDepartmentViewModel>(updateDepartmentViewModel);
+            string jsonString = JsonSerializer.Serialize(updateDepartmentViewModel);
             using StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpClient.PutAsync("department/update-department", stringContent);
             if (!response.IsSuccessStatusCode)

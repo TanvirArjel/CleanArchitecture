@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Application.Dtos.DepartmentDtos;
+using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Application.Services.DepartmentService
+namespace EmployeeManagement.Application.ServiceImplementations
 {
     public class DeparmentService : IDepartmentService
     {

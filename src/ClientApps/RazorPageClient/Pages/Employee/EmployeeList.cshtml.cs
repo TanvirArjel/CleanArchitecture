@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using RazorPageClient.Services.EmployeeService;
+using RazorPageClient.Services;
 using RazorPageClient.ViewModels.EmployeeViewModels;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EmployeeManagement.Api.ApiModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Application.Services.EmployeeService;
+using EmployeeManagement.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

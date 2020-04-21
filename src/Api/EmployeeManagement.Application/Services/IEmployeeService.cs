@@ -3,7 +3,7 @@ using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Application.Services.EmployeeService
+namespace EmployeeManagement.Application.Services
 {
     public interface IEmployeeService : IScopedService
     {

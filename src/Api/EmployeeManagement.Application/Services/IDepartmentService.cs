@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EmployeeManagement.Application.Services.DepartmentService
+namespace EmployeeManagement.Application.Services
 {
     public interface IDepartmentService : IScopedService
     {

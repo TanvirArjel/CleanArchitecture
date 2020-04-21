@@ -1,12 +1,10 @@
 ﻿using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RazorPageClient.ViewModels.DepartmentsViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace RazorPageClient.Services.DepartmentService
+namespace RazorPageClient.Services
 {
     public interface IDepartmentService : IScopedService
     {
