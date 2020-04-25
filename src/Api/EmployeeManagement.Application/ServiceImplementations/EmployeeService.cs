@@ -1,10 +1,9 @@
 ﻿using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TanvirArjel.EFCore.GenericRepository.Services;
 
@@ -21,40 +20,44 @@ namespace EmployeeManagement.Application.ServiceImplementations
 
         public async Task<List<EmployeeDetailsDto>> GetEmployeeListAsync()
         {
-            List<EmployeeDetailsDto> employeeDetailsDtos = await _unitOfWork.Repository<Employee>().Entities
-                .Select(e => new EmployeeDetailsDto
-                {
-                    EmployeeId = e.EmployeeId,
-                    EmployeeName = e.EmployeeName,
-                    DepartmentId = e.DepartmentId,
-                    DepartmentName = e.Department.DepartmentName,
-                    DateOfBirth = e.DateOfBirth,
-                    Email = e.Email,
-                    PhoneNumber = e.PhoneNumber,
-                    IsActive = e.IsActive,
-                    CreatedAtUtc = e.CreatedAtUtc,
-                    LastModifiedAtUtc = e.LastModifiedAtUtc
-                }).ToListAsync();
+            Expression<Func<Employee, EmployeeDetailsDto>> selectExpression = e => new EmployeeDetailsDto
+            {
+                EmployeeId = e.EmployeeId,
+                EmployeeName = e.EmployeeName,
+                DepartmentId = e.DepartmentId,
+                DepartmentName = e.Department.DepartmentName,
+                DateOfBirth = e.DateOfBirth,
+                Email = e.Email,
+                PhoneNumber = e.PhoneNumber,
+                IsActive = e.IsActive,
+                CreatedAtUtc = e.CreatedAtUtc,
+                LastModifiedAtUtc = e.LastModifiedAtUtc
+            };
+
+            List<EmployeeDetailsDto> employeeDetailsDtos = await _unitOfWork.Repository<Employee>()
+                .GetProjectedEntityListAsync(selectExpression);
 
             return employeeDetailsDtos;
         }
 
         public async Task<EmployeeDetailsDto> GetEmployeeDetailsAsync(int employeeId)
         {
-            EmployeeDetailsDto employeeDetailsDto = await _unitOfWork.Repository<Employee>().Entities
-                .Where(e => e.EmployeeId == employeeId).Select(e => new EmployeeDetailsDto
-                {
-                    EmployeeId = e.EmployeeId,
-                    EmployeeName = e.EmployeeName,
-                    DepartmentId = e.DepartmentId,
-                    DepartmentName = e.Department.DepartmentName,
-                    DateOfBirth = e.DateOfBirth,
-                    Email = e.Email,
-                    PhoneNumber = e.PhoneNumber,
-                    IsActive = e.IsActive,
-                    CreatedAtUtc = e.CreatedAtUtc,
-                    LastModifiedAtUtc = e.LastModifiedAtUtc
-                }).FirstOrDefaultAsync();
+            Expression<Func<Employee, EmployeeDetailsDto>> selectExpression = e => new EmployeeDetailsDto
+            {
+                EmployeeId = e.EmployeeId,
+                EmployeeName = e.EmployeeName,
+                DepartmentId = e.DepartmentId,
+                DepartmentName = e.Department.DepartmentName,
+                DateOfBirth = e.DateOfBirth,
+                Email = e.Email,
+                PhoneNumber = e.PhoneNumber,
+                IsActive = e.IsActive,
+                CreatedAtUtc = e.CreatedAtUtc,
+                LastModifiedAtUtc = e.LastModifiedAtUtc
+            };
+
+            EmployeeDetailsDto employeeDetailsDto = await _unitOfWork.Repository<Employee>()
+                .GetProjectedEntityByIdAsync(employeeId, selectExpression);
 
             return employeeDetailsDto;
         }
