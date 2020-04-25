@@ -1,12 +1,12 @@
 ﻿using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
-using EmployeeManagement.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TanvirArjel.EFCore.GenericRepository.Services;
 
 namespace EmployeeManagement.Application.ServiceImplementations
 {

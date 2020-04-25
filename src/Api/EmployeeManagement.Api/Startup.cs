@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Api
 {
@@ -29,6 +30,8 @@ namespace EmployeeManagement.Api
             {
                 options.UseSqlServer(Configuration.GetConnectionString("EmployeeDbConnection"));
             });
+
+            services.AddGenericRepository<EmployeeManagementDbContext>();
 
             services.AddAutoMapper(typeof(Startup));
             services.AddServicesOfType<IScopedService>();

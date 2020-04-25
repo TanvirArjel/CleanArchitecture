@@ -1,13 +1,13 @@
 ﻿using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
-using EmployeeManagement.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TanvirArjel.EFCore.GenericRepository.Services;
 
 namespace EmployeeManagement.Application.ServiceImplementations
 {
@@ -22,15 +22,16 @@ namespace EmployeeManagement.Application.ServiceImplementations
 
         public async Task<List<DepartmentDetailsDto>> GetDepartmentListAsync()
         {
-            List<DepartmentDetailsDto> departmentList = await _unitOfWork.Repository<Department>().Entities.Select(d => new DepartmentDetailsDto
-            {
-                DepartmentId = d.DepartmentId,
-                DepartmentName = d.DepartmentName,
-                Description = d.Description,
-                IsActive = d.IsActive,
-                CreatedAtUtc = d.CreatedAtUtc,
-                LastModifiedAtUtc = d.LastModifiedAtUtc
-            }).ToListAsync();
+            List<DepartmentDetailsDto> departmentList = await _unitOfWork.Repository<Department>().Entities
+                .Select(d => new DepartmentDetailsDto
+                {
+                    DepartmentId = d.DepartmentId,
+                    DepartmentName = d.DepartmentName,
+                    Description = d.Description,
+                    IsActive = d.IsActive,
+                    CreatedAtUtc = d.CreatedAtUtc,
+                    LastModifiedAtUtc = d.LastModifiedAtUtc
+                }).ToListAsync();
 
             return departmentList;
         }
