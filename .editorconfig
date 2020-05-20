@@ -44,3 +44,9 @@ dotnet_diagnostic.CA1303.severity = none
 
 # CA1812: An internal class that is apparently never instantiated
 dotnet_diagnostic.CA1812.severity = none
+
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = none
+
+# SA1601: Partial elements should be documented
+dotnet_diagnostic.SA1601.severity = none

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using TanvirArjel.EFCore.GenericRepository.Services;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.ServiceImplementations
 {
