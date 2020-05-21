@@ -1,0 +1,86 @@
+﻿@page "/employee/employee-list"
+
+<div class="border p-2 border-bottom-0">
+    <h1 class="d-inline-block mb-0">Employee List</h1>
+    <a href="employee/create-employee" class="btn btn-success float-right">Create New</a>
+</div>
+
+@{
+    if (ErrorMessage == null)
+    {
+        if (Employees == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            Employee Name
+                        </th>
+                        <th>
+                            DepartmentName
+                        </th>
+                        <th>
+                            DateOfBirth
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            PhoneNumber
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Employees.Any())
+                        {
+                            foreach (var item in Employees)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.EmployeeName
+                                    </td>
+                                    <td>
+                                        @item.DepartmentName
+                                    </td>
+                                    <td>
+                                        @item.DateOfBirth
+                                    </td>
+                                    <td>
+                                        @item.Email
+                                    </td>
+                                    <td>
+                                        @item.PhoneNumber
+                                    </td>
+                                    <td>
+                                        <a class="badge badge-primary" asp-page="./UpdateEmployee" asp-route-employeeId="@item.EmployeeId">Edit</a>
+                                        <a class="badge badge-info" asp-page="./EmployeeDetails" asp-route-employeeId="@item.EmployeeId">Details</a>
+                                        <a class="badge badge-danger" asp-page="./DeleteEmployee" asp-route-employeeId="@item.EmployeeId">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="text-center" colspan="5">No employee found in the database.</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+
+    }
+    else
+    {
+        <div class="alert alert-danger rounded-0">
+            @ErrorMessage
+        </div>
+    }
+}
