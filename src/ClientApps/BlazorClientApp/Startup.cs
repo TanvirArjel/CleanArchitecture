@@ -1,7 +1,6 @@
 using System;
 using AspNetCore.ServiceRegistration.Dynamic.Extensions;
 using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
-using BlazorClientApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +24,6 @@ namespace BlazorClientApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddServicesOfType<IScopedService>();
             services.AddHttpClient("EmployeeManagementApi", c =>
             {
