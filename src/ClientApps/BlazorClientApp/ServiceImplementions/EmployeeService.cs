@@ -2,6 +2,7 @@
 using BlazorClientApp.ViewModels.EmployeeViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -13,7 +14,7 @@ namespace BlazorClientApp.ServiceImplementions
     {
         private readonly HttpClient _httpClient;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here")]
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here")]
         public EmployeeService(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("EmployeeManagementApi");

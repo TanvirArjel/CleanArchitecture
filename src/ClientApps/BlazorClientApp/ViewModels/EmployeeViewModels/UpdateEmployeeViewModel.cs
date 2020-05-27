@@ -17,7 +17,7 @@ namespace BlazorClientApp.ViewModels.EmployeeViewModels
 
         [Required(ErrorMessage = "Please select your deparment.")]
         [DisplayName("Department")]
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayName("Date Of Birth")]

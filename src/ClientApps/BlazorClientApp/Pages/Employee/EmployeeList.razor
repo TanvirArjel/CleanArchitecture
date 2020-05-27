@@ -1,8 +1,12 @@
 ﻿@page "/employee/employee-list"
 
-<div class="border p-2 border-bottom-0">
-    <h1 class="d-inline-block mb-0">Employee List</h1>
-    <a href="employee/create-employee" class="btn btn-success float-right">Create New</a>
+<div class="border p-2 d-flex justify-content-between border-bottom-0">
+    <h3 class="d-inline-block mb-0">
+        <strong><i class="fas fa-list-ul"></i> Employee List</strong>
+    </h3>
+    <a href="employee/create-employee" class="btn btn-success">
+        <i class="fas fa-user-plus"></i> Create New
+    </a>
 </div>
 
 @{
@@ -58,9 +62,9 @@
                                         @item.PhoneNumber
                                     </td>
                                     <td>
-                                        <a class="badge badge-primary" asp-page="./UpdateEmployee" asp-route-employeeId="@item.EmployeeId">Edit</a>
-                                        <a class="badge badge-info" asp-page="./EmployeeDetails" asp-route-employeeId="@item.EmployeeId">Details</a>
-                                        <a class="badge badge-danger" asp-page="./DeleteEmployee" asp-route-employeeId="@item.EmployeeId">Delete</a>
+                                        <a class="badge badge-primary" href="employee/update-employee/@(item.EmployeeId)">Edit</a>
+                                        <a class="badge badge-info" href="employee/employee-details/@(item.EmployeeId)">Details</a>
+                                        <a class="badge badge-danger" href="employee/delete-employee/@(item.EmployeeId)">Delete</a>
                                     </td>
                                 </tr>
                             }

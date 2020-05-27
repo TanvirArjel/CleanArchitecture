@@ -1,0 +1,83 @@
+﻿@page "/employee/update-employee/{EmployeeId:int}"
+
+<div class="card">
+    <div class="card-header">
+        <h3>
+            <strong><i class="fas fa-edit"></i> Update Employee</strong>
+        </h3>
+    </div>
+    <div class="card-body">
+        @{
+            if (ErrorMessage == null)
+            {
+                if (UpdateEmployeeModel != null)
+                {
+                    <EditForm Model="@UpdateEmployeeModel" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary Model="@UpdateEmployeeModel" />
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Employee Name</label>
+                            <div class="col-sm-10">
+                                <InputText class="form-control" @bind-Value="UpdateEmployeeModel.EmployeeName" />
+                                <ValidationMessage For="@(() => UpdateEmployeeModel.EmployeeName)" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Department</label>
+                            <div class="col-sm-10">
+                                <CustomInputSelect class="custom-select" @bind-Value="UpdateEmployeeModel.DepartmentId">
+                                    <option value="">Select Department</option>
+                                    @foreach (var item in DepartmentSelectList)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                </CustomInputSelect>
+                                <ValidationMessage For="@(() => UpdateEmployeeModel.DepartmentId)" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Date Of Birth</label>
+                            <div class="col-sm-10">
+                                <InputDate class="form-control" @bind-Value="UpdateEmployeeModel.DateOfBirth" />
+                                <ValidationMessage For="@(() => UpdateEmployeeModel.DateOfBirth)" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <InputText class="form-control" @bind-Value="UpdateEmployeeModel.Email" />
+                                <ValidationMessage For="@(() => UpdateEmployeeModel.Email)" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">PhoneNumber</label>
+                            <div class="col-sm-10">
+                                <InputText class="form-control" @bind-Value="UpdateEmployeeModel.PhoneNumber" />
+                                <ValidationMessage For="@(() => UpdateEmployeeModel.PhoneNumber)" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col offset-sm-2">
+                                <button type="submit" class="btn btn-success"><i class="far fa-save"></i> Submit</button>
+                                <a href="employee/employee-list" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to List</a>
+                            </div>
+
+                        </div>
+
+                    </EditForm>
+                }
+                else
+                {
+                    <em>Please wait! Data is loading.</em>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger mb-0">
+                    @ErrorMessage
+                </div>
+            }
+        }
+
+    </div>
+</div>

@@ -1,0 +1,108 @@
+﻿@page "/employee/employee-details/{EmployeeId:int}"
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="mb-0">
+            <i class="fas fa-user-tie"></i> <strong>Employee Details</strong>
+        </h3>
+    </div>
+    <div class="card-body">
+        @{
+            if (EmployeeDetailsModel != null)
+            {
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Employee Name</label>
+                    <div class="col-sm-10">
+                        <div class="form-control">
+                            @EmployeeDetailsModel.EmployeeName
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Department Name</label>
+                    <div class="col-sm-10">
+                        <div class="form-control">
+                            @EmployeeDetailsModel.DepartmentName
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Date Of Birth</label>
+                    <div class="col-sm-10">
+                        <div class="form-control">
+                            @EmployeeDetailsModel.DateOfBirth
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <div class="form-control">
+                            @EmployeeDetailsModel.Email
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">PhoneNumber</label>
+                    <div class="col-sm-10">
+                        <div class="form-control">
+                            @EmployeeDetailsModel.PhoneNumber
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">IsActive</label>
+                    <div class="col-sm-10">
+                        <div class="form-control">
+                            @EmployeeDetailsModel.IsActive
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">CreatedAtUtc</label>
+                    <div class="col-sm-10">
+                        <div class="form-control">
+                            @EmployeeDetailsModel.CreatedAtUtc
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">LastModifiedAtUtc</label>
+                    <div class="col-sm-10">
+                        <div class="form-control">
+                            @{
+                                if (EmployeeDetailsModel.LastModifiedAtUtc != null)
+                                {
+                                    <span>@EmployeeDetailsModel.LastModifiedAtUtc</span>
+                                }
+                                else
+                                {
+                                    <span>Not modified yet.</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-success">
+                    <em>Please wait! Data is loading.</em>
+                </div>
+            }
+        }
+
+    </div>
+    <div class="card-footer">
+        @{
+            if (EmployeeDetailsModel != null)
+            {
+                <a href="employee/update-employee/@(EmployeeDetailsModel.EmployeeId)" class="btn btn-secondary"><i class="fas fa-edit"></i>
+        Edit</a>
+            }
+        }
+
+        <a href="employee/employee-list" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to List</a>
+    </div>
+</div>

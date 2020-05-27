@@ -21,6 +21,7 @@ namespace BlazorClientApp.ViewModels.EmployeeViewModels
         [DisplayName("Date Of Birth")]
         public DateTime? DateOfBirth { get; set; }
 
+        [EmailAddress]
         [Required]
         [DisplayName("Email")]
         [MinLength(8, ErrorMessage = "{0} should be at least {1} characters long.")]
