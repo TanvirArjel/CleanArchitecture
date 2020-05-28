@@ -1,79 +1,75 @@
-﻿@page "/employee/employee-list"
+﻿@page "/department/department-list"
+
 
 @{
     if (ErrorMessage == null)
     {
-
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th colspan="6">
+                        <th class="border-bottom-0" colspan="6">
                             <h3 class="d-inline-block mb-0">
-                                <strong><i class="fas fa-list-ul"></i> Employee List</strong>
+                                <strong><i class="fas fa-list-ul"></i> Department List</strong>
                             </h3>
-                            <a href="employee/create-employee" class="btn btn-success float-right">
-                                <i class="fas fa-user-plus"></i> Create New
+                            <a href="department/create-department" class="btn btn-success float-right">
+                                <i class="fas fa-plus"></i> Create New
                             </a>
                         </th>
                     </tr>
-                </thead>
-                <thead>
                     <tr>
-                        <th>
-                            Employee Name
+                        <th style="min-width:200px;">
+                            Department Name
                         </th>
                         <th>
-                            DepartmentName
+                            Description
                         </th>
-                        <th>
-                            DateOfBirth
+                        <th style="min-width:100px;">
+                            Is Active
                         </th>
-                        <th>
-                            Email
+                        <th style="min-width:120px;">
+                            Created At
                         </th>
-                        <th>
-                            PhoneNumber
+                        <th style="min-width:120px;">
+                            Updated At
                         </th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @{
-                        if (Employees == null)
+                        if (Departments == null)
                         {
-                            <tr>
-                                <td colspan="6">
-                                    <em>Loading...</em>
-                                </td>
+                            <tr class="text-center">
+                                <td colspan="5"><em>Loading...</em></td>
                             </tr>
                         }
                         else
                         {
-                            if (Employees.Any())
+                            if (Departments.Any())
                             {
-                                foreach (var item in Employees)
+                                foreach (var item in Departments)
                                 {
                                     <tr>
-                                        <td>
-                                            @item.EmployeeName
-                                        </td>
                                         <td>
                                             @item.DepartmentName
                                         </td>
                                         <td>
-                                            @item.DateOfBirth
+                                            @item.Description
                                         </td>
                                         <td>
-                                            @item.Email
+                                            @item.IsActive
                                         </td>
                                         <td>
-                                            @item.PhoneNumber
+                                            @item.CreatedAtUtc
                                         </td>
                                         <td>
-                                            <a class="badge badge-primary" href="employee/update-employee/@(item.EmployeeId)">Edit</a>
-                                            <a class="badge badge-info" href="employee/employee-details/@(item.EmployeeId)">Details</a>
-                                            <a class="badge badge-danger" href="employee/delete-employee/@(item.EmployeeId)">Delete</a>
+                                            @item.LastModifiedAtUtc
+                                        </td>
+                                        <td>
+                                            <a class="badge badge-primary" href="department/update-department/@(item.DepartmentId)">Edit</a>
+                                            <a class="badge badge-info" href="department/department-details/@(item.DepartmentId)">Details</a>
+                                            <a class="badge badge-danger" href="department/delete-department/@(item.DepartmentId)">Delete</a>
                                         </td>
                                     </tr>
                                 }
@@ -81,7 +77,7 @@
                             else
                             {
                                 <tr>
-                                    <td class="text-center" colspan="5">No employee found in the database.</td>
+                                    <td class="text-center" colspan="5">No department found in the database.</td>
                                 </tr>
                             }
                         }
@@ -90,8 +86,6 @@
                 </tbody>
             </table>
         </div>
-
-
 
     }
     else

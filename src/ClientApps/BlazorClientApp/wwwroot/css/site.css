@@ -185,3 +185,7 @@ app {
         display: block;
     }
 }
+
+table.table-bordered th {
+    border-bottom: none !important;
+}

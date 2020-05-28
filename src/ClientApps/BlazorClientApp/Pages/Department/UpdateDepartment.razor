@@ -1,0 +1,58 @@
+﻿@page "/department/update-department/{DepartmentId:int}"
+
+<div class="card">
+    <div class="card-header">
+        <h3>
+            <strong><i class="fas fa-edit"></i> Update Department</strong>
+        </h3>
+    </div>
+    <div class="card-body">
+        @{
+            if (ErrorMessage == null)
+            {
+                if (UpdateDepartmentModel != null)
+                {
+                    <EditForm Model="@UpdateDepartmentModel" OnValidSubmit="HandleValidSubmit">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary Model="@UpdateDepartmentModel" />
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Department Name</label>
+                            <div class="col-sm-10">
+                                <InputText class="form-control" @bind-Value="UpdateDepartmentModel.DepartmentName" />
+                                <ValidationMessage For="@(() => UpdateDepartmentModel.DepartmentName)" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-10">
+                                <InputText class="form-control" @bind-Value="UpdateDepartmentModel.Description" />
+                                <ValidationMessage For="@(() => UpdateDepartmentModel.Description)" />
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col offset-sm-2">
+                                <button type="submit" class="btn btn-success"><i class="far fa-save"></i> Submit</button>
+                                <a href="department/department-list" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to List</a>
+                            </div>
+
+                        </div>
+
+                    </EditForm>
+                }
+                else
+                {
+                    <em>Please wait! Data is loading.</em>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger mb-0">
+                    @ErrorMessage
+                </div>
+            }
+        }
+
+    </div>
+</div>
