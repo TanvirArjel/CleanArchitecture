@@ -18,8 +18,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EmployeeManagement.Common\EmployeeManagement.Common.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -2,36 +2,32 @@ using AspNetCore.ServiceRegistration.Dynamic.Extensions;
 using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
 using AutoMapper;
 using EmployeeManagement.Api.Utilities.Mixed;
-using EmployeeManagement.Infrastructure.Data;
+using EmployeeManagement.Infrastructure.Data.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             Configuration = configuration;
+            WebHostEnvironment = webHostEnvironment;
         }
 
         public IConfiguration Configuration { get; }
 
+        public IWebHostEnvironment WebHostEnvironment { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<EmployeeManagementDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("EmployeeDbConnection"));
-            });
-
-            services.AddGenericRepository<EmployeeManagementDbContext>();
+            services.AddEmployeeManagementDbContext(Configuration, WebHostEnvironment);
 
             services.AddAutoMapper(typeof(Startup));
             services.AddServicesOfType<IScopedService>();

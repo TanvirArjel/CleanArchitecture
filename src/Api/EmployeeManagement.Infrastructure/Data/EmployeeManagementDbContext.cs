@@ -35,7 +35,7 @@ namespace EmployeeManagement.Infrastructure.Data
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeConfiguration).Assembly);
-            modelBuilder.ApplyBaseEntityConfiguration(); // This should be called after calling the devied entity configurations
+            modelBuilder.ApplyBaseEntityConfiguration(); // This should be called after calling the derived entity configurations
         }
     }
 }
