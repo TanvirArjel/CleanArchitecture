@@ -2,11 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorPageClient.Services;
 using RazorPageClient.ViewModels.DepartmentsViewModels;
-using System.Threading.Tasks;
 
 namespace RazorPageClient.Pages.Department
 {

@@ -1,8 +1,8 @@
-﻿using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AspNetCore.ServiceRegistration.Dynamic;
 using BlazorClientApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BlazorClientApp.Services
 {

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RazorPageClient.Services;
 using RazorPageClient.ViewModels.EmployeeViewModels;
-using System;
-using System.Threading.Tasks;
 
 namespace RazorPageClient.Pages.Employee
 {

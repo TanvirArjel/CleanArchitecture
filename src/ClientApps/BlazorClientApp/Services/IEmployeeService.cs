@@ -1,7 +1,7 @@
-﻿using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
-using BlazorClientApp.ViewModels.EmployeeViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AspNetCore.ServiceRegistration.Dynamic;
+using BlazorClientApp.ViewModels.EmployeeViewModels;
 
 namespace BlazorClientApp.Services
 {

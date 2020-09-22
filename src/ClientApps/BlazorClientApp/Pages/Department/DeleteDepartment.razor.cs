@@ -1,7 +1,7 @@
-﻿using BlazorClientApp.Services;
+﻿using System.Threading.Tasks;
+using BlazorClientApp.Services;
 using BlazorClientApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace BlazorClientApp.Pages.Department
 {

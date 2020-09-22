@@ -1,16 +1,17 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using EmployeeManagement.Api.ApiModels.DepartmentModels;
 using EmployeeManagement.Api.AutoMapper;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace EmployeeManagement.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/departments")]
     [ApiController]
     public class DepartmentController : ControllerBase
     {
@@ -31,6 +32,13 @@ namespace EmployeeManagement.Api.Controllers
             return departmentList;
         }
 
+        [HttpGet("select-list")]
+        public async Task<SelectList> GetDepartmentSelectList(int? selectedDepartment)
+        {
+            SelectList selectList = await _departmentService.GetDepartmentSelectListAsync(selectedDepartment);
+            return selectList;
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentModel createDepartmentModel)
         {
@@ -39,22 +47,24 @@ namespace EmployeeManagement.Api.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<SelectList> GetDepartmentSelectList(int? selectedDepartment)
-        {
-            SelectList selectList = await _departmentService.GetDepartmentSelectListAsync(selectedDepartment);
-            return selectList;
-        }
-
         [HttpGet("{departmentId}")]
-        public async Task<DepartmentDetailsModel> GetDepartment(int departmentId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> GetDepartment(int departmentId)
         {
             DepartmentDetailsDto departmentDetailsDto = await _departmentService.GetDepartmentAsync(departmentId);
+
+            if (departmentDetailsDto == null)
+            {
+                return NotFound();
+            }
+
             DepartmentDetailsModel departmentDetailsModel = _mapper.Map<DepartmentDetailsModel>(departmentDetailsDto);
-            return departmentDetailsModel;
+            return Ok(departmentDetailsModel);
         }
 
-        [HttpPut]
+        [HttpPut("{departmentId}")]
         public async Task<IActionResult> UpdateDepartment([FromBody] UpdateDepartmentModel updateDepartmentModel)
         {
             UpdateDepartmentDto updateDepartmentDto = _mapper.Map<UpdateDepartmentDto>(updateDepartmentModel);

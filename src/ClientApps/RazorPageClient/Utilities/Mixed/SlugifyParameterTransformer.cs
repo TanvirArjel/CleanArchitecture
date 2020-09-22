@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Routing;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Routing;
 
 namespace RazorPageClient.Utilities.Mixed
 {

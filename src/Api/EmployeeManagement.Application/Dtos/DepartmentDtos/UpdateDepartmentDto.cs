@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EmployeeManagement.Application.Dtos.DepartmentDtos
+﻿namespace EmployeeManagement.Application.Dtos.DepartmentDtos
 {
     public class UpdateDepartmentDto
     {

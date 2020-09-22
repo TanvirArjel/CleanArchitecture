@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using RazorPageClient.Services;
-using RazorPageClient.ViewModels.DepartmentsViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using RazorPageClient.Services;
+using RazorPageClient.ViewModels.DepartmentsViewModels;
 
 namespace RazorPageClient.Pages.Department
 {

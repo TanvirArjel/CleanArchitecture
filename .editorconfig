@@ -21,9 +21,6 @@ dotnet_diagnostic.SA1413.severity = none
 # SA1200: Using directives should be placed correctly
 dotnet_diagnostic.SA1200.severity = none
 
-# SA1208: System using directives should be placed before other using directives
-dotnet_diagnostic.SA1208.severity = none
-
 # CA1031: Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = none
 

@@ -1,7 +1,7 @@
-﻿using EmployeeManagement.Domain.Entities;
+﻿using System;
+using EmployeeManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
 
 namespace EmployeeManagement.Infrastructure.Data.EntityConfigurations
 {

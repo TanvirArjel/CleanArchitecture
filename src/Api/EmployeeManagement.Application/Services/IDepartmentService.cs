@@ -1,8 +1,8 @@
-﻿using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AspNetCore.ServiceRegistration.Dynamic;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace EmployeeManagement.Application.Services
 {

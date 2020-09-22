@@ -1,9 +1,9 @@
-﻿using EmployeeManagement.Infrastructure.Data.EntityConfigurations;
-using EmployeeManagement.Infrastructure.Data.Extensions;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using EmployeeManagement.Infrastructure.Data.EntityConfigurations;
+using EmployeeManagement.Infrastructure.Data.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Infrastructure.Data
 {

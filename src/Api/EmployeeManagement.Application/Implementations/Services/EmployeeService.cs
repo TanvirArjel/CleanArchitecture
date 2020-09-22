@@ -1,13 +1,13 @@
-﻿using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Application.Services;
-using EmployeeManagement.Domain.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using EmployeeManagement.Application.Dtos.EmployeeDtos;
+using EmployeeManagement.Application.Services;
+using EmployeeManagement.Domain.Entities;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace EmployeeManagement.Application.ServiceImplementations
+namespace EmployeeManagement.Application.Implementations.Services
 {
     public class EmployeeService : IEmployeeService
     {

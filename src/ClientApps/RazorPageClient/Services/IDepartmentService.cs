@@ -1,8 +1,8 @@
-﻿using AspNetCore.ServiceRegistration.Dynamic.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AspNetCore.ServiceRegistration.Dynamic;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RazorPageClient.ViewModels.DepartmentsViewModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RazorPageClient.Services
 {

@@ -1,9 +1,9 @@
-﻿using BlazorClientApp.Services;
-using BlazorClientApp.ViewModels.EmployeeViewModels;
-using Microsoft.AspNetCore.Components;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlazorClientApp.Services;
+using BlazorClientApp.ViewModels.EmployeeViewModels;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorClientApp.Pages.Employee
 {

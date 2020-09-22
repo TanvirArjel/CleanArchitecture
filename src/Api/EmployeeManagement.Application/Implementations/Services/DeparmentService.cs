@@ -1,15 +1,15 @@
-﻿using EmployeeManagement.Application.Dtos.DepartmentDtos;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace EmployeeManagement.Application.ServiceImplementations
+namespace EmployeeManagement.Application.Implementations.Services
 {
     public class DeparmentService : IDepartmentService
     {

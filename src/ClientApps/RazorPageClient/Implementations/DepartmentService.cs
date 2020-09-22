@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using RazorPageClient.Services;
-using RazorPageClient.ViewModels.DepartmentsViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using RazorPageClient.Services;
+using RazorPageClient.ViewModels.DepartmentsViewModels;
 
-namespace RazorPageClient.ServiceImplementions
+namespace RazorPageClient.Implementations
 {
     public class DepartmentService : IDepartmentService
     {
@@ -27,7 +27,7 @@ namespace RazorPageClient.ServiceImplementions
 
         public async Task<List<DepartmentDetailsViewModel>> GetDepartmentListAsync()
         {
-            using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "department/get-department-list");
+            using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "departments");
             HttpResponseMessage response = await _httpClient.SendAsync(httpRequestMessage);
             if (response.IsSuccessStatusCode)
             {
@@ -42,7 +42,7 @@ namespace RazorPageClient.ServiceImplementions
 
         public async Task<SelectList> GetDepartmentSelectListAsync(int? selectedDepartment)
         {
-            using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, $"department/get-department-select-list?selectedDepartment={selectedDepartment}");
+            using HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, $"departments/select-list?selectedDepartment={selectedDepartment}");
             HttpResponseMessage response = await _httpClient.SendAsync(httpRequestMessage);
             if (response.IsSuccessStatusCode)
             {
@@ -63,7 +63,7 @@ namespace RazorPageClient.ServiceImplementions
         {
             string jsonStringBody = JsonSerializer.Serialize(createDepartmentViewModel);
             using StringContent stringContent = new StringContent(jsonStringBody, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PostAsync("department/create-department", stringContent);
+            HttpResponseMessage response = await _httpClient.PostAsync("departments", stringContent);
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException($"{response.ReasonPhrase}: The status code is: {(int)response.StatusCode}");
@@ -72,7 +72,7 @@ namespace RazorPageClient.ServiceImplementions
 
         public async Task<DepartmentDetailsViewModel> GetDepartmentAsync(int departmentId)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync($"department/get-department/{departmentId}");
+            HttpResponseMessage response = await _httpClient.GetAsync($"departments/{departmentId}");
             if (response.IsSuccessStatusCode)
             {
                 string jsonString = await response.Content.ReadAsStringAsync();
@@ -85,9 +85,14 @@ namespace RazorPageClient.ServiceImplementions
 
         public async Task UpdateDepartmentAsync(UpdateDepartmentViewModel updateDepartmentViewModel)
         {
+            if (updateDepartmentViewModel == null)
+            {
+                throw new ArgumentNullException(nameof(updateDepartmentViewModel));
+            }
+
             string jsonString = JsonSerializer.Serialize(updateDepartmentViewModel);
             using StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PutAsync("department/update-department", stringContent);
+            HttpResponseMessage response = await _httpClient.PutAsync($"department/{updateDepartmentViewModel.DepartmentId}", stringContent);
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException($"{response.ReasonPhrase}: The status code is: {(int)response.StatusCode}");
@@ -96,7 +101,7 @@ namespace RazorPageClient.ServiceImplementions
 
         public async Task DeleteDepartmentAsync(int departmentId)
         {
-            HttpResponseMessage response = await _httpClient.DeleteAsync($"department/delete-department/{departmentId}");
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"departments/{departmentId}");
 
             if (!response.IsSuccessStatusCode)
             {

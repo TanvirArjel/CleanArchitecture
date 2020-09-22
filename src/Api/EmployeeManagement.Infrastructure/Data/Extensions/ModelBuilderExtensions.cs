@@ -1,9 +1,9 @@
-﻿using EmployeeManagement.Domain.Entities;
-using EmployeeManagement.Infrastructure.Data.EntityConfigurations;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Infrastructure.Data.EntityConfigurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Infrastructure.Data.Extensions
 {

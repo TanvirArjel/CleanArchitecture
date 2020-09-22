@@ -1,15 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using EmployeeManagement.Api.ApiModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace EmployeeManagement.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [Produces("application/json")]
+    [Route("api/employees")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
@@ -22,7 +21,7 @@ namespace EmployeeManagement.Api.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Employee
+        // GET: api/employees
         [HttpGet]
         public async Task<List<EmployeeDetailsModel>> GetEmployeeList()
         {
@@ -31,7 +30,7 @@ namespace EmployeeManagement.Api.Controllers
             return employeeList;
         }
 
-        // GET: api/Employee/5
+        // GET: api/employees/5
         [HttpGet("{employeeId}")]
         public async Task<IActionResult> GetEmployeeDetails(int employeeId)
         {
@@ -40,7 +39,7 @@ namespace EmployeeManagement.Api.Controllers
             return Ok(employeeDetailsModel);
         }
 
-        // POST: api/Employee
+        // POST: api/employees
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeModel createEmployeeModel)
         {
@@ -49,8 +48,8 @@ namespace EmployeeManagement.Api.Controllers
             return Ok();
         }
 
-        // PUT: api/Employee/5
-        [HttpPut]
+        // PUT: api/employees/5
+        [HttpPut("{employeeId}")]
         public async Task<IActionResult> UpdateEmployee([FromBody] UpdateEmployeeModel updateEmployeeModel)
         {
             UpdateEmployeeDto updateEmployeeDto = _mapper.Map<UpdateEmployeeDto>(updateEmployeeModel);
@@ -58,7 +57,7 @@ namespace EmployeeManagement.Api.Controllers
             return Ok();
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/employees/5
         [HttpDelete("{employeeId}")]
         public async Task<IActionResult> DeleteEmployee(int employeeId)
         {
