@@ -40,14 +40,16 @@ namespace EmployeeManagement.Api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentModel createDepartmentModel)
         {
             CreateDepartmentDto createDepartmentDto = _mapper.Map<CreateDepartmentDto>(createDepartmentModel);
-            await _departmentService.CreateDepartmentAsync(createDepartmentDto);
-            return Ok();
+            int departmentId = await _departmentService.CreateDepartmentAsync(createDepartmentDto);
+            return CreatedAtAction(nameof(GetDepartment), new { departmentId }, createDepartmentModel);
         }
 
-        [HttpGet("{departmentId}")]
+        [HttpGet("{departmentId:min(1)}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
@@ -65,11 +67,28 @@ namespace EmployeeManagement.Api.Controllers
         }
 
         [HttpPut("{departmentId}")]
-        public async Task<IActionResult> UpdateDepartment([FromBody] UpdateDepartmentModel updateDepartmentModel)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> UpdateDepartment(int departmentId, UpdateDepartmentModel updateDepartmentModel)
         {
+            if (departmentId != updateDepartmentModel.DepartmentId)
+            {
+                return BadRequest();
+            }
+
+            bool isExists = await _departmentService.DepartmentExistsAsync(departmentId);
+
+            if (!isExists)
+            {
+                return NotFound();
+            }
+
             UpdateDepartmentDto updateDepartmentDto = _mapper.Map<UpdateDepartmentDto>(updateDepartmentModel);
             await _departmentService.UpdateDepartmentAsync(updateDepartmentDto);
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{departmentId}")]

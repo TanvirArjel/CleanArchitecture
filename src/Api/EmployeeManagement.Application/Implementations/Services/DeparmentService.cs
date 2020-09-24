@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
+using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -36,7 +37,7 @@ namespace EmployeeManagement.Application.Implementations.Services
             return departmentList;
         }
 
-        public async Task CreateDepartmentAsync(CreateDepartmentDto createDepartmentDto)
+        public async Task<int> CreateDepartmentAsync(CreateDepartmentDto createDepartmentDto)
         {
             if (createDepartmentDto == null)
             {
@@ -51,6 +52,8 @@ namespace EmployeeManagement.Application.Implementations.Services
 
             await _unitOfWork.Repository<Department>().InsertEntityAsync(departmentToBeCreated);
             await _unitOfWork.SaveChangesAsync();
+
+            return 1;
         }
 
         public async Task<SelectList> GetDepartmentSelectListAsync(int? selectedDepartmentId)
@@ -87,14 +90,17 @@ namespace EmployeeManagement.Application.Implementations.Services
             }
 
             Department departmentToBeUpdated = await _unitOfWork.Repository<Department>().GetEntityByIdAsync(updateDepartmentDto.DepartmentId);
-            if (departmentToBeUpdated != null)
+
+            if (departmentToBeUpdated == null)
             {
-                departmentToBeUpdated.DepartmentName = updateDepartmentDto.DepartmentName;
-                departmentToBeUpdated.Description = updateDepartmentDto.Description;
-                departmentToBeUpdated.IsActive = updateDepartmentDto.IsActive;
-                _unitOfWork.Repository<Department>().UpdateEntity(departmentToBeUpdated);
-                await _unitOfWork.SaveChangesAsync();
+                throw new EntityNotFoundException(typeof(Department), updateDepartmentDto.DepartmentId);
             }
+
+            departmentToBeUpdated.DepartmentName = updateDepartmentDto.DepartmentName;
+            departmentToBeUpdated.Description = updateDepartmentDto.Description;
+            departmentToBeUpdated.IsActive = updateDepartmentDto.IsActive;
+            _unitOfWork.Repository<Department>().UpdateEntity(departmentToBeUpdated);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteDepartment(int employeeId)
@@ -105,6 +111,12 @@ namespace EmployeeManagement.Application.Implementations.Services
                 _unitOfWork.Repository<Department>().DeleteEntity(departmentToBeDeleted);
                 await _unitOfWork.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> DepartmentExistsAsync(int departmentId)
+        {
+            bool isExists = await _unitOfWork.Repository<Department>().IsEntityExistsAsync(d => d.DepartmentId == departmentId);
+            return isExists;
         }
     }
 }

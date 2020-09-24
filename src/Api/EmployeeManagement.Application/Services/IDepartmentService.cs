@@ -10,7 +10,7 @@ namespace EmployeeManagement.Application.Services
     {
         Task<List<DepartmentDetailsDto>> GetDepartmentListAsync();
 
-        Task CreateDepartmentAsync(CreateDepartmentDto createDepartmentDto);
+        Task<int> CreateDepartmentAsync(CreateDepartmentDto createDepartmentDto);
 
         Task<SelectList> GetDepartmentSelectListAsync(int? selectedDepartmentId);
 
@@ -19,5 +19,7 @@ namespace EmployeeManagement.Application.Services
         Task UpdateDepartmentAsync(UpdateDepartmentDto updateDepartmentDto);
 
         Task DeleteDepartment(int employeeId);
+
+        Task<bool> DepartmentExistsAsync(int departmentId);
     }
 }
