@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
+using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
-using TanvirArjel.EFCore.GenericRepository;
+using EmployeeManagement.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Application.Implementations.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeService(IUnitOfWork unitOfWork)
+        public EmployeeService(IEmployeeRepository employeeRepository)
         {
-            _unitOfWork = unitOfWork;
+            _employeeRepository = employeeRepository;
         }
 
         public async Task<List<EmployeeDetailsDto>> GetEmployeeListAsync()
@@ -34,8 +37,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                 LastModifiedAtUtc = e.LastModifiedAtUtc
             };
 
-            List<EmployeeDetailsDto> employeeDetailsDtos = await _unitOfWork.Repository<Employee>()
-                .GetProjectedEntityListAsync(selectExpression);
+            List<EmployeeDetailsDto> employeeDetailsDtos = await _employeeRepository.Employees.Select(selectExpression).ToListAsync();
 
             return employeeDetailsDtos;
         }
@@ -56,8 +58,8 @@ namespace EmployeeManagement.Application.Implementations.Services
                 LastModifiedAtUtc = e.LastModifiedAtUtc
             };
 
-            EmployeeDetailsDto employeeDetailsDto = await _unitOfWork.Repository<Employee>()
-                .GetProjectedEntityByIdAsync(employeeId, selectExpression);
+            EmployeeDetailsDto employeeDetailsDto = await _employeeRepository.Employees.Where(e => e.EmployeeId == employeeId)
+                .Select(selectExpression).FirstOrDefaultAsync();
 
             return employeeDetailsDto;
         }
@@ -77,8 +79,8 @@ namespace EmployeeManagement.Application.Implementations.Services
                 Email = createEmployeeDto.Email,
                 PhoneNumber = createEmployeeDto.PhoneNumber
             };
-            await _unitOfWork.Repository<Employee>().InsertEntityAsync(employeeToBeCreated);
-            await _unitOfWork.SaveChangesAsync();
+
+            await _employeeRepository.InsertAsync(employeeToBeCreated);
         }
 
         public async Task UpdateEmplyeeAsync(UpdateEmployeeDto updateEmployeeDto)
@@ -90,7 +92,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                     throw new ArgumentNullException(nameof(updateEmployeeDto));
                 }
 
-                Employee employeeeToBeUpdated = await _unitOfWork.Repository<Employee>().GetEntityByIdAsync(updateEmployeeDto.EmployeeId);
+                Employee employeeeToBeUpdated = await _employeeRepository.GetByIdAsync(updateEmployeeDto.EmployeeId);
                 if (employeeeToBeUpdated != null)
                 {
                     employeeeToBeUpdated.EmployeeName = updateEmployeeDto.EmployeeName;
@@ -99,8 +101,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                     employeeeToBeUpdated.Email = updateEmployeeDto.Email;
                     employeeeToBeUpdated.PhoneNumber = updateEmployeeDto.PhoneNumber;
 
-                    _unitOfWork.Repository<Employee>().UpdateEntity(employeeeToBeUpdated);
-                    await _unitOfWork.SaveChangesAsync();
+                    await _employeeRepository.UpdateAsync(employeeeToBeUpdated);
                 }
             }
             catch (Exception)
@@ -111,12 +112,14 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task DeleteEmployee(int employeeId)
         {
-            Employee employeeeToBeDeleted = await _unitOfWork.Repository<Employee>().GetEntityByIdAsync(employeeId);
-            if (employeeeToBeDeleted != null)
+            Employee employeeeToBeDeleted = await _employeeRepository.GetByIdAsync(employeeId);
+
+            if (employeeeToBeDeleted == null)
             {
-                _unitOfWork.Repository<Employee>().DeleteEntity(employeeeToBeDeleted);
-                await _unitOfWork.SaveChangesAsync();
+                throw new EntityNotFoundException(typeof(Employee), employeeId);
             }
+
+            await _employeeRepository.DeleteAsync(employeeeToBeDeleted);
         }
     }
 }
