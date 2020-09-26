@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AspNetCore.ServiceRegistration.Dynamic;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
+using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 
 namespace EmployeeManagement.Application.Services
 {

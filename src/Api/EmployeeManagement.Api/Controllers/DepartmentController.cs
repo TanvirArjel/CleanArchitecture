@@ -5,6 +5,7 @@ using EmployeeManagement.Api.ApiModels.DepartmentModels;
 using EmployeeManagement.Api.AutoMapper;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Services;
+using EmployeeManagement.Domain.Dtos.DepartmentDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AspNetCore.ServiceRegistration.Dynamic;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
+using EmployeeManagement.Domain.Dtos.DepartmentDtos;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EmployeeManagement.Application.Services

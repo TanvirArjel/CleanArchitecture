@@ -4,6 +4,7 @@ using AutoMapper;
 using EmployeeManagement.Api.ApiModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Services;
+using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManagement.Api.Controllers

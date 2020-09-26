@@ -19,6 +19,17 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
 
         public IQueryable<T> Entities => _dbContext.Set<T>();
 
+        public async Task<T> GetByIdAsync(object id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            T entity = await _dbContext.Set<T>().FindAsync(id);
+            return entity;
+        }
+
         public async Task<object[]> InsertAsync(T entity)
         {
             if (entity == null)

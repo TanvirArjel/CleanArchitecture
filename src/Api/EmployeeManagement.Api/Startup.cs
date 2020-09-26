@@ -29,6 +29,8 @@ namespace EmployeeManagement.Api
         {
             services.AddEmployeeManagementDbContext(Configuration, WebHostEnvironment);
 
+            services.AddDistributedMemoryCache();
+
             services.AddAutoMapper(typeof(Startup));
             services.AddServicesOfType<IScopedService>();
             services.AddControllers(options =>

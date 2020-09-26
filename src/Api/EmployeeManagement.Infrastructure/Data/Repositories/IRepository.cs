@@ -10,6 +10,8 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
     {
         IQueryable<T> Entities { get; }
 
+        Task<T> GetByIdAsync(object id);
+
         Task<object[]> InsertAsync(T entity);
 
         Task InsertAsync(IEnumerable<T> entities);
