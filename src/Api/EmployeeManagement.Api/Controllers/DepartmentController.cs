@@ -67,11 +67,10 @@ namespace EmployeeManagement.Api.Controllers
             return Ok(departmentDetailsModel);
         }
 
-        [HttpPut("{departmentId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPut("{departmentId:min(1)}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
         public async Task<IActionResult> UpdateDepartment(int departmentId, UpdateDepartmentModel updateDepartmentModel)
         {
@@ -80,9 +79,9 @@ namespace EmployeeManagement.Api.Controllers
                 return BadRequest();
             }
 
-            bool isExists = await _departmentService.DepartmentExistsAsync(departmentId);
+            bool isExistent = await _departmentService.DepartmentExistsAsync(departmentId);
 
-            if (!isExists)
+            if (!isExistent)
             {
                 return NotFound();
             }
@@ -92,11 +91,21 @@ namespace EmployeeManagement.Api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{departmentId}")]
+        [HttpDelete("{departmentId:min(1)}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> DeleteDepartment(int departmentId)
         {
+            bool isExistent = await _departmentService.DepartmentExistsAsync(departmentId);
+
+            if (isExistent == false)
+            {
+                return NotFound("The department you are trying to delete does not exist.");
+            }
+
             await _departmentService.DeleteDepartment(departmentId);
-            return Ok();
+            return NoContent();
         }
     }
 }

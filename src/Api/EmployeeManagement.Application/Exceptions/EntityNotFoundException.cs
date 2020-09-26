@@ -41,10 +41,10 @@ namespace EmployeeManagement.Application.Exceptions
         {
             if (key == null)
             {
-                return $"Entity \'{entityType.Name}\' is not found.";
+                return $"Entity \'{entityType.Name}\' was not found.";
             }
 
-            return $"Entity \'{entityType.Name}\' with the id/key value \'{key}\' is not found.";
+            return $"Entity \'{entityType.Name}\' with the id/key value \'{key}\' was not found.";
         }
     }
 }

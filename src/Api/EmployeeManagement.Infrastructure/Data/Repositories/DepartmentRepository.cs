@@ -20,7 +20,7 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
 
         public IQueryable<Department> Departments => _repository.Entities;
 
-        public async Task<Department> GetByIdAsync(long departmentId)
+        public async Task<Department> GetByIdAsync(int departmentId)
         {
             return await _repository.GetByIdAsync(departmentId);
         }

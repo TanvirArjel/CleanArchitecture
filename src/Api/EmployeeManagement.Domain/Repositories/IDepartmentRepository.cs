@@ -9,7 +9,7 @@ namespace EmployeeManagement.Domain.Repositories
     {
         IQueryable<Department> Departments { get; }
 
-        Task<Department> GetByIdAsync(long departmentId);
+        Task<Department> GetByIdAsync(int departmentId);
 
         Task<int> InsertAsync(Department department);
 
