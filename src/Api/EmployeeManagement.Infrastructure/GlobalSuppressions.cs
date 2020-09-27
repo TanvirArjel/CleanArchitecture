@@ -5,5 +5,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here", Scope = "namespaceanddescendants", Target = "EmployeeManagement.Infrastructure.Migrations")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here", Scope = "namespaceanddescendants", Target = "EmployeeManagement.Infrastructure.Data.Migrations")]
 [assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here", Scope = "namespaceanddescendants", Target = "EmployeeManagement.Infrastructure.Data.EntityConfigurations")]

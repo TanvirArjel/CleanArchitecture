@@ -92,7 +92,7 @@ namespace RazorPageClient.Implementations
 
             string jsonString = JsonSerializer.Serialize(updateDepartmentViewModel);
             using StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PutAsync($"department/{updateDepartmentViewModel.DepartmentId}", stringContent);
+            HttpResponseMessage response = await _httpClient.PutAsync($"departments/{updateDepartmentViewModel.DepartmentId}", stringContent);
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException($"{response.ReasonPhrase}: The status code is: {(int)response.StatusCode}");

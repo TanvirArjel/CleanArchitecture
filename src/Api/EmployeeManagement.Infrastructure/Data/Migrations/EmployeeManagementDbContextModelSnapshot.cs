@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace EmployeeManagement.Infrastructure.Migrations
+namespace EmployeeManagement.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(EmployeeManagementDbContext))]
     partial class EmployeeManagementDbContextModelSnapshot : ModelSnapshot
@@ -15,7 +15,7 @@ namespace EmployeeManagement.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -33,8 +33,8 @@ namespace EmployeeManagement.Infrastructure.Migrations
 
                     b.Property<string>("DepartmentName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -48,6 +48,9 @@ namespace EmployeeManagement.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("DepartmentId");
+
+                    b.HasIndex("DepartmentName")
+                        .IsUnique();
 
                     b.ToTable("Departments");
                 });

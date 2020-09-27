@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using RazorPageClient.Services;
+using RazorPageClient.Utils;
 using RazorPageClient.ViewModels.EmployeeViewModels;
 
 namespace RazorPageClient.Implementations
@@ -30,8 +31,8 @@ namespace RazorPageClient.Implementations
             if (response.IsSuccessStatusCode)
             {
                 string responseString = await response.Content.ReadAsStringAsync();
-                List<EmployeeDetailsViewModel> employees = JsonSerializer.Deserialize<List<EmployeeDetailsViewModel>>(responseString, JsonSerializerOptions);
-                return employees;
+                PaginatedList<EmployeeDetailsViewModel> paginatedList = JsonSerializer.Deserialize<PaginatedList<EmployeeDetailsViewModel>>(responseString, JsonSerializerOptions);
+                return paginatedList.Items;
             }
 
             throw new ApplicationException($"{response.ReasonPhrase}: The status code is: {(int)response.StatusCode}");
@@ -76,7 +77,7 @@ namespace RazorPageClient.Implementations
 
             string jsonStringBody = JsonSerializer.Serialize(updateEmployeeViewModel);
             using StringContent content = new StringContent(jsonStringBody, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PutAsync($"employee/{updateEmployeeViewModel.DepartmentId}", content);
+            HttpResponseMessage response = await _httpClient.PutAsync($"employees/{updateEmployeeViewModel.DepartmentId}", content);
 
             if (!response.IsSuccessStatusCode)
             {
