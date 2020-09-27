@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using EmployeeManagement.Api.ApiModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Services;
+using EmployeeManagement.Domain.Dtos;
 using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,10 +24,12 @@ namespace EmployeeManagement.Api.Controllers
 
         // GET: api/employees
         [HttpGet]
-        public async Task<List<EmployeeDetailsModel>> GetEmployeeList()
+        public async Task<PaginatedList<EmployeeDetailsModel>> GetEmployeeList(int pageNumber, int pageSize)
         {
-            List<EmployeeDetailsDto> employeeDetailsDtoList = await _employeeService.GetEmployeeListAsync();
-            List<EmployeeDetailsModel> employeeList = _mapper.Map<List<EmployeeDetailsModel>>(employeeDetailsDtoList);
+            pageNumber = pageNumber == 0 ? 1 : pageNumber;
+            pageSize = pageSize == 0 ? 10 : pageSize;
+            PaginatedList<EmployeeDetailsDto> employeeDetailsDtoList = await _employeeService.GetEmployeeListAsync(pageNumber, pageSize);
+            PaginatedList<EmployeeDetailsModel> employeeList = _mapper.Map<PaginatedList<EmployeeDetailsModel>>(employeeDetailsDtoList);
             return employeeList;
         }
 

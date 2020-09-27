@@ -25,4 +25,8 @@
     <ProjectReference Include="..\EmployeeManagement.Domain\EmployeeManagement.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

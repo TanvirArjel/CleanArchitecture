@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EmployeeManagement.Api.ApiModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
+using EmployeeManagement.Domain.Dtos;
 using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 
 namespace EmployeeManagement.Api.AutoMapper
@@ -12,6 +13,8 @@ namespace EmployeeManagement.Api.AutoMapper
             CreateMap<CreateEmployeeModel, CreateEmployeeDto>();
             CreateMap<UpdateEmployeeModel, UpdateEmployeeDto>();
             CreateMap<EmployeeDetailsDto, EmployeeDetailsModel>();
+
+            CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>));
         }
     }
 }

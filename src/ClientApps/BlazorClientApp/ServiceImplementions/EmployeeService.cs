@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorClientApp.Services;
+using BlazorClientApp.Utils;
 using BlazorClientApp.ViewModels.EmployeeViewModels;
 
 namespace BlazorClientApp.ServiceImplementions
@@ -31,8 +32,8 @@ namespace BlazorClientApp.ServiceImplementions
             if (response.IsSuccessStatusCode)
             {
                 string responseString = await response.Content.ReadAsStringAsync();
-                List<EmployeeDetailsViewModel> employees = JsonSerializer.Deserialize<List<EmployeeDetailsViewModel>>(responseString, JsonSerializerOptions);
-                return employees;
+                PaginatedList<EmployeeDetailsViewModel> paginatedList = JsonSerializer.Deserialize<PaginatedList<EmployeeDetailsViewModel>>(responseString, JsonSerializerOptions);
+                return paginatedList.Items;
             }
 
             throw new ApplicationException($"{response.ReasonPhrase}: The status code is: {(int)response.StatusCode}");
