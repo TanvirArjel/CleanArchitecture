@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EmployeeManagement.Infrastructure.Migrations
+namespace EmployeeManagement.Infrastructure.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -13,7 +13,7 @@ namespace EmployeeManagement.Infrastructure.Migrations
                 {
                     DepartmentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DepartmentName = table.Column<string>(maxLength: 100, nullable: false),
+                    DepartmentName = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(maxLength: 200, nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     CreatedAtUtc = table.Column<DateTime>(nullable: false, defaultValueSql: "getutcdate()"),
@@ -49,6 +49,12 @@ namespace EmployeeManagement.Infrastructure.Migrations
                         principalColumn: "DepartmentId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Departments_DepartmentName",
+                table: "Departments",
+                column: "DepartmentName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DepartmentId",
