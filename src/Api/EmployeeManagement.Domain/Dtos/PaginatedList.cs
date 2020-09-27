@@ -15,7 +15,7 @@ namespace EmployeeManagement.Domain.Dtos
             PageIndex = pageIndex;
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
             TotalItems = count;
-            PageItemsStartsAt = count > 0 ? (pageIndex - 1) * pageSize + 1 : 0;
+            PageItemsStartsAt = count > 0 ? ((pageIndex - 1) * pageSize) + 1 : 0;
 
             PageItemsEndsAt = 0;
             if (count > 0)

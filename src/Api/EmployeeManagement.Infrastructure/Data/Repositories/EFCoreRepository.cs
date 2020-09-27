@@ -48,6 +48,11 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
 
         public async Task InsertAsync(IEnumerable<T> entities)
         {
+            if (entities == null)
+            {
+                throw new ArgumentNullException(nameof(entities));
+            }
+
             if (entities?.Any() == true)
             {
                 await _dbContext.Set<T>().AddRangeAsync(entities);
@@ -57,15 +62,32 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
 
         public async Task UpdateAsync(T entity)
         {
-            if (entity != null)
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            EntityEntry<T> trackedEntity = _dbContext.ChangeTracker.Entries<T>().FirstOrDefault(x => x.Entity == entity);
+
+            if (trackedEntity != null)
+            {
+                _dbContext.Entry(entity).CurrentValues.SetValues(entity);
+            }
+            else
             {
                 _dbContext.Set<T>().Update(entity);
-                await _dbContext.SaveChangesAsync();
             }
+
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(IEnumerable<T> entities)
         {
+            if (entities == null)
+            {
+                throw new ArgumentNullException(nameof(entities));
+            }
+
             if (entities?.Any() == true)
             {
                 _dbContext.Set<T>().UpdateRange(entities);
@@ -75,15 +97,22 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
 
         public async Task DeleteAsync(T entity)
         {
-            if (entity != null)
+            if (entity == null)
             {
-                _dbContext.Set<T>().Remove(entity);
-                await _dbContext.SaveChangesAsync();
+                throw new ArgumentNullException(nameof(entity));
             }
+
+            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(IEnumerable<T> entities)
         {
+            if (entities == null)
+            {
+                throw new ArgumentNullException(nameof(entities));
+            }
+
             if (entities?.Any() == true)
             {
                 _dbContext.Set<T>().RemoveRange(entities);
@@ -93,6 +122,11 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
 
         public async Task<int> ExecuteSqlCommandAsync(string sql, params object[] parameters)
         {
+            if (sql == null)
+            {
+                throw new ArgumentNullException(nameof(sql));
+            }
+
             return await _dbContext.Database.ExecuteSqlRawAsync(sql, parameters);
         }
     }

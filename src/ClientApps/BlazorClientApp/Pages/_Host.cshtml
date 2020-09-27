@@ -33,5 +33,14 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script src="~/library/jquery/jquery.min.js"></script>
+    <script src="~/library/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
 </body>
 </html>
