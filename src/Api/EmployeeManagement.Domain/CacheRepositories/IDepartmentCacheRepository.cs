@@ -8,12 +8,12 @@ namespace EmployeeManagement.Domain.CacheRepositories
 {
     public interface IDepartmentCacheRepository : IScopedService
     {
-        Task<Department> GetByIdAsync(int departmentId);
-
-        Task<DepartmentDetailsDto> GetDetailsByIdAsync(int departmentId);
-
         Task<List<DepartmentDetailsDto>> GetListAsync();
 
         Task<List<DepartmentSelectListDto>> GetSelectListAsync();
+
+        Task<Department> GetByIdAsync(int departmentId);
+
+        Task<DepartmentDetailsDto> GetDetailsByIdAsync(int departmentId);
     }
 }

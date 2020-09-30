@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using EmployeeManagement.Domain.Dtos.DepartmentDtos;
 using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Repositories;
 using EmployeeManagement.Infrastructure.Data.CacheKeys;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace EmployeeManagement.Infrastructure.Data.Repositories
@@ -20,9 +23,51 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
 
         public IQueryable<Department> Departments => _repository.Entities;
 
+        public async Task<List<DepartmentDetailsDto>> GetListAsync()
+        {
+            List<DepartmentDetailsDto> departmentList = await _repository.Entities.Select(d => new DepartmentDetailsDto
+            {
+                DepartmentId = d.DepartmentId,
+                DepartmentName = d.DepartmentName,
+                Description = d.Description,
+                IsActive = d.IsActive,
+                CreatedAtUtc = d.CreatedAtUtc,
+                LastModifiedAtUtc = d.LastModifiedAtUtc
+            }).ToListAsync();
+
+            return departmentList;
+        }
+
+        public async Task<List<DepartmentSelectListDto>> GetSelectListAsync()
+        {
+            List<DepartmentSelectListDto> selectList = await _repository.Entities.Select(d => new DepartmentSelectListDto
+            {
+                DepartmentId = d.DepartmentId,
+                DepartmentName = d.DepartmentName,
+            }).ToListAsync();
+
+            return selectList;
+        }
+
         public async Task<Department> GetByIdAsync(int departmentId)
         {
             return await _repository.GetByIdAsync(departmentId);
+        }
+
+        public async Task<DepartmentDetailsDto> GetDetailsByIdAsync(int departmentId)
+        {
+            DepartmentDetailsDto departmentDetails = await _repository.Entities.Where(d => d.DepartmentId == departmentId)
+                .Select(d => new DepartmentDetailsDto
+                {
+                    DepartmentId = d.DepartmentId,
+                    DepartmentName = d.DepartmentName,
+                    Description = d.Description,
+                    IsActive = d.IsActive,
+                    CreatedAtUtc = d.CreatedAtUtc,
+                    LastModifiedAtUtc = d.LastModifiedAtUtc
+                }).FirstOrDefaultAsync();
+
+            return departmentDetails;
         }
 
         public async Task<int> InsertAsync(Department department)

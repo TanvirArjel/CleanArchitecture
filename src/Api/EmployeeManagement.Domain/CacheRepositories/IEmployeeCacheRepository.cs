@@ -9,6 +9,6 @@ namespace EmployeeManagement.Domain.CacheRepositories
     {
         Task<Employee> GetByIdAsync(long employeeId);
 
-        Task<EmployeeDetailsDto> GetDetailsAsync(long employeeId);
+        Task<EmployeeDetailsDto> GetDetailsByIdAsync(long employeeId);
     }
 }

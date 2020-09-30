@@ -1,65 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Domain.CacheRepositories;
 using EmployeeManagement.Domain.Dtos.DepartmentDtos;
 using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Repositories;
 using EmployeeManagement.Infrastructure.Data.CacheKeys;
 using EmployeeManagement.Infrastructure.Data.Extensions;
-using EmployeeManagement.Infrastructure.Data.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 {
     internal class DepartmentCacheRepository : IDepartmentCacheRepository
     {
-        private readonly IRepository<Department> _repository;
         private readonly IDistributedCache _distributedCache;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public DepartmentCacheRepository(IRepository<Department> repository, IDistributedCache distributedCache)
+        public DepartmentCacheRepository(IDistributedCache distributedCache, IDepartmentRepository departmentRepository)
         {
-            _repository = repository;
             _distributedCache = distributedCache;
-        }
-
-        public async Task<Department> GetByIdAsync(int departmentId)
-        {
-            string cacheKey = DepartmentCacheKeys.GetKey(departmentId);
-            Department department = await _distributedCache.GetAsync<Department>(cacheKey);
-
-            if (department == null)
-            {
-                department = await _repository.Entities.AsNoTracking().FirstOrDefaultAsync(e => e.DepartmentId == departmentId);
-
-                await _distributedCache.SetAsync<Department>(cacheKey, department);
-            }
-
-            return department;
-        }
-
-        public async Task<DepartmentDetailsDto> GetDetailsByIdAsync(int departmentId)
-        {
-            string cacheKey = DepartmentCacheKeys.GetDetailsKey(departmentId);
-            DepartmentDetailsDto department = await _distributedCache.GetAsync<DepartmentDetailsDto>(cacheKey);
-
-            if (department == null)
-            {
-                department = await _repository.Entities.Where(d => d.DepartmentId == departmentId)
-                .Select(d => new DepartmentDetailsDto
-                {
-                    DepartmentId = d.DepartmentId,
-                    DepartmentName = d.DepartmentName,
-                    Description = d.Description,
-                    IsActive = d.IsActive,
-                    CreatedAtUtc = d.CreatedAtUtc,
-                    LastModifiedAtUtc = d.LastModifiedAtUtc
-                }).FirstOrDefaultAsync();
-
-                await _distributedCache.SetAsync<DepartmentDetailsDto>(cacheKey, department);
-            }
-
-            return department;
+            _departmentRepository = departmentRepository;
         }
 
         public async Task<List<DepartmentDetailsDto>> GetListAsync()
@@ -69,15 +28,7 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 
             if (departmentList == null)
             {
-                departmentList = await _repository.Entities.Select(d => new DepartmentDetailsDto
-                {
-                    DepartmentId = d.DepartmentId,
-                    DepartmentName = d.DepartmentName,
-                    Description = d.Description,
-                    IsActive = d.IsActive,
-                    CreatedAtUtc = d.CreatedAtUtc,
-                    LastModifiedAtUtc = d.LastModifiedAtUtc
-                }).ToListAsync();
+                departmentList = await _departmentRepository.GetListAsync();
 
                 await _distributedCache.SetAsync<List<DepartmentDetailsDto>>(cacheKey, departmentList);
             }
@@ -92,16 +43,42 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 
             if (departmentSelectList == null)
             {
-                departmentSelectList = await _repository.Entities.Select(d => new DepartmentSelectListDto
-                {
-                    DepartmentId = d.DepartmentId,
-                    DepartmentName = d.DepartmentName,
-                }).ToListAsync();
+                departmentSelectList = await _departmentRepository.GetSelectListAsync();
 
                 await _distributedCache.SetAsync<List<DepartmentSelectListDto>>(cacheKey, departmentSelectList);
             }
 
             return departmentSelectList;
+        }
+
+        public async Task<Department> GetByIdAsync(int departmentId)
+        {
+            string cacheKey = DepartmentCacheKeys.GetKey(departmentId);
+            Department department = await _distributedCache.GetAsync<Department>(cacheKey);
+
+            if (department == null)
+            {
+                department = await _departmentRepository.GetByIdAsync(departmentId);
+
+                await _distributedCache.SetAsync<Department>(cacheKey, department);
+            }
+
+            return department;
+        }
+
+        public async Task<DepartmentDetailsDto> GetDetailsByIdAsync(int departmentId)
+        {
+            string cacheKey = DepartmentCacheKeys.GetDetailsKey(departmentId);
+            DepartmentDetailsDto department = await _distributedCache.GetAsync<DepartmentDetailsDto>(cacheKey);
+
+            if (department == null)
+            {
+                department = await _departmentRepository.GetDetailsByIdAsync(departmentId);
+
+                await _distributedCache.SetAsync<DepartmentDetailsDto>(cacheKey, department);
+            }
+
+            return department;
         }
     }
 }

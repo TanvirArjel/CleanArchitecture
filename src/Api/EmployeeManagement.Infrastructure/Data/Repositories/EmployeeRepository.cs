@@ -49,6 +49,26 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
             return await Employees.Where(c => c.EmployeeId == employeeId).FirstOrDefaultAsync();
         }
 
+        public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(long employeeId)
+        {
+            EmployeeDetailsDto employeeDetailsDto = await _repository.Entities.Where(e => e.EmployeeId == employeeId)
+                    .Select(e => new EmployeeDetailsDto
+                    {
+                        EmployeeId = e.EmployeeId,
+                        EmployeeName = e.EmployeeName,
+                        DepartmentId = e.DepartmentId,
+                        DepartmentName = e.Department.DepartmentName,
+                        DateOfBirth = e.DateOfBirth,
+                        Email = e.Email,
+                        PhoneNumber = e.PhoneNumber,
+                        IsActive = e.IsActive,
+                        CreatedAtUtc = e.CreatedAtUtc,
+                        LastModifiedAtUtc = e.LastModifiedAtUtc
+                    }).FirstOrDefaultAsync();
+
+            return employeeDetailsDto;
+        }
+
         public async Task InsertAsync(Employee employee)
         {
             await _repository.InsertAsync(employee);

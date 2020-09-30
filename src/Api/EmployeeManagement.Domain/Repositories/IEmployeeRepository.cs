@@ -15,6 +15,8 @@ namespace EmployeeManagement.Domain.Repositories
 
         Task<Employee> GetByIdAsync(long employeeId);
 
+        Task<EmployeeDetailsDto> GetDetailsByIdAsync(long employeeId);
+
         Task InsertAsync(Employee employee);
 
         Task UpdateAsync(Employee employee);

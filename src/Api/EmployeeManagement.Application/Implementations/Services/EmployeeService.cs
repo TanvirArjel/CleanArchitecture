@@ -31,7 +31,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task<EmployeeDetailsDto> GetEmployeeDetailsAsync(int employeeId)
         {
-            EmployeeDetailsDto employeeDetailsDto = await _employeeCacheRepository.GetDetailsAsync(employeeId);
+            EmployeeDetailsDto employeeDetailsDto = await _employeeCacheRepository.GetDetailsByIdAsync(employeeId);
 
             return employeeDetailsDto;
         }
