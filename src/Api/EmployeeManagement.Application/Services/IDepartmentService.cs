@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AspNetCore.ServiceRegistration.Dynamic;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Domain.Dtos.DepartmentDtos;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Application.Services
 {

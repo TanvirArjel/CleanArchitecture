@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using AspNetCore.ServiceRegistration.Dynamic;
 using EmployeeManagement.Domain.Dtos;
 using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Entities;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Repositories
 {

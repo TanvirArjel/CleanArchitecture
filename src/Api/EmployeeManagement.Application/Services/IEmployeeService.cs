@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using AspNetCore.ServiceRegistration.Dynamic;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Dtos;
 using EmployeeManagement.Domain.Dtos.EmployeeDtos;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Application.Services
 {

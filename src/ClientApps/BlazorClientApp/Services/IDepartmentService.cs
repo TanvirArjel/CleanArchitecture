@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AspNetCore.ServiceRegistration.Dynamic;
 using BlazorClientApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace BlazorClientApp.Services
 {

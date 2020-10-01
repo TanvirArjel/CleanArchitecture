@@ -1,5 +1,4 @@
 using System;
-using AspNetCore.ServiceRegistration.Dynamic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RazorPageClient.Utilities.Mixed;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace RazorPageClient
 {

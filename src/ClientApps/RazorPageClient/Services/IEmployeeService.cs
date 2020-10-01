@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AspNetCore.ServiceRegistration.Dynamic;
 using RazorPageClient.ViewModels.EmployeeViewModels;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace RazorPageClient.Services
 {

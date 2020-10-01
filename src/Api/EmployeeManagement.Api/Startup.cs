@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using AspNetCore.ServiceRegistration.Dynamic;
 using AutoMapper;
 using EmployeeManagement.Api.Utilities.Mixed;
 using EmployeeManagement.Infrastructure.Data.Extensions;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Api
 {

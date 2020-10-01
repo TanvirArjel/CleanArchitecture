@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using AspNetCore.ServiceRegistration.Dynamic;
 using Microsoft.EntityFrameworkCore.Storage;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain
 {

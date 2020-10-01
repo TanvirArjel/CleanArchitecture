@@ -1,10 +1,10 @@
 using System;
-using AspNetCore.ServiceRegistration.Dynamic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace BlazorClientApp
 {
