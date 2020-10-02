@@ -5,9 +5,9 @@ using EmployeeManagement.Domain.Dtos.DepartmentDtos;
 using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Repositories;
 using EmployeeManagement.Infrastructure.Data.CacheKeys;
-using EmployeeManagement.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using TanvirArjel.Extensions.Microsoft.Caching;
 
 namespace EmployeeManagement.Infrastructure.Data.Repositories
 {
@@ -123,13 +123,14 @@ namespace EmployeeManagement.Infrastructure.Data.Repositories
                 CreatedAtUtc = department.CreatedAtUtc,
                 LastModifiedAtUtc = department.LastModifiedAtUtc
             };
+
             await _distributedCache.SetAsync(departmentDetailsCacheKey, departmentDetailsDto);
 
             string departmentListKey = DepartmentCacheKeys.ListKey;
-            await _distributedCache.UpdateInListAsync(departmentListKey, department, d => d.DepartmentId == department.DepartmentId);
+            await _distributedCache.UpdateInListAsync<Department>(departmentListKey, d => d.DepartmentId == department.DepartmentId, department);
 
             string departmenSelecttListKey = DepartmentCacheKeys.SelectListKey;
-            await _distributedCache.UpdateInListAsync(departmenSelecttListKey, department, d => d.DepartmentId == department.DepartmentId);
+            await _distributedCache.UpdateInListAsync(departmenSelecttListKey, d => d.DepartmentId == department.DepartmentId, department);
         }
 
         public async Task DeleteAsync(Department department)

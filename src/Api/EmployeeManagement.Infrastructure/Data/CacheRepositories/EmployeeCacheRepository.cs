@@ -4,8 +4,8 @@ using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Repositories;
 using EmployeeManagement.Infrastructure.Data.CacheKeys;
-using EmployeeManagement.Infrastructure.Data.Extensions;
 using Microsoft.Extensions.Caching.Distributed;
+using TanvirArjel.Extensions.Microsoft.Caching;
 
 namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 {
