@@ -1,0 +1,58 @@
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using RazorPageApp.Services;
+using RazorPageApp.ViewModels.DepartmentsViewModels;
+
+namespace RazorPageApp.Pages.Department
+{
+    public class DeleteDepartmentModel : PageModel
+    {
+        private readonly IDepartmentService _departmentService;
+
+        public DeleteDepartmentModel(IDepartmentService departmentService)
+        {
+            _departmentService = departmentService;
+        }
+
+        public DepartmentDetailsViewModel DepartmentDetailsViewModel { get; private set; }
+
+        public string ErrorMessage { get; private set; }
+
+        public async Task<IActionResult> OnGetAsync(int departmentId)
+        {
+            await SetDepartmentViewModelValueAsync(departmentId);
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int departmentId)
+        {
+            try
+            {
+                await _departmentService.DeleteDepartmentAsync(departmentId);
+                return RedirectToPage("./DepartmentList");
+            }
+            catch (Exception)
+            {
+                ErrorMessage = "There is some problem with service. Please try again. If the problem persists please contact with the system administrator.";
+            }
+
+            await SetDepartmentViewModelValueAsync(departmentId);
+            return Page();
+        }
+
+        private async Task<IActionResult> SetDepartmentViewModelValueAsync(int departmentId)
+        {
+            DepartmentDetailsViewModel departmentDetailsViewModel = await _departmentService.GetDepartmentAsync(departmentId);
+            if (departmentDetailsViewModel == null)
+            {
+                return NotFound();
+            }
+
+            DepartmentDetailsViewModel = departmentDetailsViewModel;
+
+            return new NoContentResult();
+        }
+    }
+}

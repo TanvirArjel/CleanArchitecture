@@ -1,0 +1,83 @@
+﻿@page 
+@model RazorPageApp.Pages.Department.DepartmentListModel
+@{
+    ViewData["Title"] = "DepartmentList";
+}
+
+<div class="border p-2 border-bottom-0">
+    <h1 class="d-inline-block mb-0">Department List</h1>
+    <a asp-page="./CreateDepartment" class="btn btn-success float-right">Create New</a>
+</div>
+
+@{
+    if (Model.ErrorMessage == null)
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DepartmentList[0].DepartmentName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DepartmentList[0].Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DepartmentList[0].IsActive)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DepartmentList[0].CreatedAtUtc)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DepartmentList[0].LastModifiedAtUtc)
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.DepartmentList.Any())
+                    {
+                        foreach (var item in Model.DepartmentList)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DepartmentName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedAtUtc)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastModifiedAtUtc)
+                                </td>
+                                <td>
+                                    <a class="badge badge-primary" asp-page="./UpdateDepartment" asp-route-departmentId="@item.DepartmentId">Edit</a>
+                                    <a class="badge badge-info" asp-page="./DepartmentDetails" asp-route-departmentId="@item.DepartmentId">Details</a>
+                                    <a class="badge badge-danger" asp-page="./DeleteDepartment" asp-route-departmentId="@item.DepartmentId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="text-center" colspan="5">No department found in the database.</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-danger rounded-0">
+            @Model.ErrorMessage
+        </div>
+    }
+}
+

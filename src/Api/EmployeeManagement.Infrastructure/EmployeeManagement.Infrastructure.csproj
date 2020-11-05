@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -15,22 +15,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-rc.2.20475.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0-rc.2.20475.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0-rc.2.20475.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.8" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0-rc.2.20475.5" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.261">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.2" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.5" />
     <PackageReference Include="TanvirArjel.Extensions.Microsoft.Caching" Version="1.0.0" />
   </ItemGroup>
 

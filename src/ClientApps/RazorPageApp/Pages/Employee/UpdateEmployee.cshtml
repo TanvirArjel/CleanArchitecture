@@ -1,0 +1,57 @@
+﻿@page "{employeeId:min(1)}"
+@model RazorPageApp.Pages.Employee.UpdateEmployeeModel
+@{
+    ViewData["Title"] = "Update Employee";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="mb-0">
+            Update Employee
+        </h2>
+    </div>
+    <form method="post">
+        <div class="card-body">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UpdateEmployeeViewModel.EmployeeId"/>
+            <div class="form-group">
+                <label asp-for="UpdateEmployeeViewModel.EmployeeName" class="control-label"></label>
+                <input asp-for="UpdateEmployeeViewModel.EmployeeName" class="form-control" />
+                <span asp-validation-for="UpdateEmployeeViewModel.EmployeeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateEmployeeViewModel.DepartmentId" class="control-label"></label>
+                <select asp-for="UpdateEmployeeViewModel.DepartmentId" asp-items="Model.DepartmentSelectList" class="form-control">
+                    <option value="">Select Department</option>
+                </select>
+                <span asp-validation-for="UpdateEmployeeViewModel.DepartmentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateEmployeeViewModel.DateOfBirth" class="control-label"></label>
+                <input asp-for="UpdateEmployeeViewModel.DateOfBirth" class="form-control" />
+                <span asp-validation-for="UpdateEmployeeViewModel.DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateEmployeeViewModel.Email" class="control-label"></label>
+                <input asp-for="UpdateEmployeeViewModel.Email" class="form-control" />
+                <span asp-validation-for="UpdateEmployeeViewModel.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateEmployeeViewModel.PhoneNumber" class="control-label"></label>
+                <input asp-for="UpdateEmployeeViewModel.PhoneNumber" class="form-control" />
+                <span asp-validation-for="UpdateEmployeeViewModel.PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success">Update</button>
+            <a class="btn btn-primary" asp-page="./EmployeeList">Back to List</a>
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
