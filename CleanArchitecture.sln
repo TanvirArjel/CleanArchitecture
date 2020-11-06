@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "src\ClientApps
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorPageApp", "src\ClientApps\RazorPageApp\RazorPageApp.csproj", "{7F81E96F-CA64-49BF-852F-E2A51107CFCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularApp", "src\ClientApps\AngularApp\AngularApp.csproj", "{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{7F81E96F-CA64-49BF-852F-E2A51107CFCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F81E96F-CA64-49BF-852F-E2A51107CFCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F81E96F-CA64-49BF-852F-E2A51107CFCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{B17C2711-2FF2-4485-A33D-2A2CF75308D4} = {98EABEDD-28DB-4E2B-8167-03CE601C73BF}
 		{060A2353-CA18-459F-B2FB-749986C39863} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
 		{7F81E96F-CA64-49BF-852F-E2A51107CFCB} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
+		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C622411-9649-4977-93A0-2C624539C0EE}
