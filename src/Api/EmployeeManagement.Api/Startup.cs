@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Api
@@ -61,13 +62,16 @@ namespace EmployeeManagement.Api
                 endpoints.MapControllers();
             });
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            ////// Enable middleware to serve generated Swagger as a JSON endpoint.
+            ////app.UseOpenApi();
+            ////app.UseSwaggerUi3();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
+            app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
+                c.DocExpansion(DocExpansion.None);
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Clean Architecture API");
             });
         }
