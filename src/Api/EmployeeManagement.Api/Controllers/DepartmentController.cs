@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using EmployeeManagement.Api.ApiModels.DepartmentModels;
 using EmployeeManagement.Api.AutoMapper;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
+using EmployeeManagement.Application.Infrastrucures;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Dtos.DepartmentDtos;
 using Microsoft.AspNetCore.Http;
@@ -17,78 +18,129 @@ namespace EmployeeManagement.Api.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
-        private readonly IMapper _mapper;
+        private readonly IExceptionLogger _exceptionLogger;
 
-        public DepartmentController(IDepartmentService departmentService, IMapper mapper)
+        public DepartmentController(IDepartmentService departmentService, IExceptionLogger exceptionLogger)
         {
             _departmentService = departmentService;
-            _mapper = mapper;
+            _exceptionLogger = exceptionLogger;
         }
 
         [HttpGet]
-        public async Task<List<DepartmentDetailsModel>> GetDepartmentList()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<List<DepartmentDetailsDto>>> GetDepartmentList()
         {
-            List<DepartmentDetailsDto> departmentDetailsDtos = await _departmentService.GetDepartmentListAsync();
-            List<DepartmentDetailsModel> departmentList = _mapper.Map<List<DepartmentDetailsModel>>(departmentDetailsDtos);
-            return departmentList;
+            try
+            {
+                List<DepartmentDetailsDto> departmentDetailsDtos = await _departmentService.GetDepartmentListAsync();
+                return departmentDetailsDtos;
+            }
+            catch (Exception exception)
+            {
+                await _exceptionLogger.LogAsync(exception);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpGet("select-list")]
-        public async Task<SelectList> GetDepartmentSelectList(int? selectedDepartment)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<SelectList>> GetDepartmentSelectList(int? selectedDepartment)
         {
-            SelectList selectList = await _departmentService.GetDepartmentSelectListAsync(selectedDepartment);
-            return selectList;
+            try
+            {
+                SelectList selectList = await _departmentService.GetDepartmentSelectListAsync(selectedDepartment);
+                return selectList;
+            }
+            catch (Exception exception)
+            {
+                await _exceptionLogger.LogAsync(exception);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> CreateDepartment([FromBody] CreateDepartmentModel createDepartmentModel)
+        public async Task<ActionResult> CreateDepartment([FromBody] CreateDepartmentModel model)
         {
-            CreateDepartmentDto createDepartmentDto = _mapper.Map<CreateDepartmentDto>(createDepartmentModel);
-            int departmentId = await _departmentService.CreateDepartmentAsync(createDepartmentDto);
-            return CreatedAtAction(nameof(GetDepartment), new { departmentId }, createDepartmentModel);
+            try
+            {
+                CreateDepartmentDto createDepartmentDto = new CreateDepartmentDto
+                {
+                    DepartmentName = model.DepartmentName,
+                    Description = model.Description
+                };
+
+                int departmentId = await _departmentService.CreateDepartmentAsync(createDepartmentDto);
+                return CreatedAtAction(nameof(GetDepartment), new { departmentId }, model);
+            }
+            catch (Exception exception)
+            {
+                await _exceptionLogger.LogAsync(exception);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpGet("{departmentId:min(1)}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> GetDepartment(int departmentId)
+        public async Task<ActionResult<DepartmentDetailsDto>> GetDepartment(int departmentId)
         {
-            DepartmentDetailsDto departmentDetailsDto = await _departmentService.GetDepartmentAsync(departmentId);
-
-            if (departmentDetailsDto == null)
+            try
             {
-                return NotFound();
+                DepartmentDetailsDto departmentDetailsDto = await _departmentService.GetDepartmentAsync(departmentId);
+                return departmentDetailsDto;
             }
-
-            DepartmentDetailsModel departmentDetailsModel = _mapper.Map<DepartmentDetailsModel>(departmentDetailsDto);
-            return Ok(departmentDetailsModel);
+            catch (Exception exception)
+            {
+                await _exceptionLogger.LogAsync(exception);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPut("{departmentId:min(1)}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> UpdateDepartment(int departmentId, UpdateDepartmentModel updateDepartmentModel)
+        public async Task<ActionResult> UpdateDepartment(int departmentId, UpdateDepartmentModel model)
         {
-            if (departmentId != updateDepartmentModel.DepartmentId)
+            try
             {
-                return BadRequest();
+                if (departmentId != model.DepartmentId)
+                {
+                    ModelState.AddModelError(nameof(model.DepartmentId), "The DepartmentId does not match with route value.");
+                    return BadRequest(ModelState);
+                }
+
+                bool isExistent = await _departmentService.DepartmentExistsAsync(departmentId);
+
+                if (!isExistent)
+                {
+                    ModelState.AddModelError(nameof(model.DepartmentId), "The Department does not exist.");
+                    return BadRequest(ModelState);
+                }
+
+                UpdateDepartmentDto updateDepartmentDto = new UpdateDepartmentDto()
+                {
+                    DepartmentId = model.DepartmentId,
+                    DepartmentName = model.DepartmentName,
+                    Description = model.Description
+                };
+
+                await _departmentService.UpdateDepartmentAsync(updateDepartmentDto);
+                return Ok();
             }
-
-            bool isExistent = await _departmentService.DepartmentExistsAsync(departmentId);
-
-            if (!isExistent)
+            catch (Exception exception)
             {
-                return NotFound();
+                await _exceptionLogger.LogAsync(exception);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
-
-            UpdateDepartmentDto updateDepartmentDto = _mapper.Map<UpdateDepartmentDto>(updateDepartmentModel);
-            await _departmentService.UpdateDepartmentAsync(updateDepartmentDto);
-            return NoContent();
         }
 
         [HttpDelete("{departmentId:min(1)}")]
@@ -97,15 +149,24 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> DeleteDepartment(int departmentId)
         {
-            bool isExistent = await _departmentService.DepartmentExistsAsync(departmentId);
-
-            if (isExistent == false)
+            try
             {
-                return NotFound("The department you are trying to delete does not exist.");
-            }
+                bool isExistent = await _departmentService.DepartmentExistsAsync(departmentId);
 
-            await _departmentService.DeleteDepartment(departmentId);
-            return NoContent();
+                if (isExistent == false)
+                {
+                    ModelState.AddModelError(nameof(departmentId), "The DepartmentId does not exist.");
+                    return BadRequest(ModelState);
+                }
+
+                await _departmentService.DeleteDepartment(departmentId);
+                return NoContent();
+            }
+            catch (Exception exception)
+            {
+                await _exceptionLogger.LogAsync(exception);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

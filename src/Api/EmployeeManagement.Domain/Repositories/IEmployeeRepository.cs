@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using EmployeeManagement.Domain.Dtos;
 using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Entities;
+using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Repositories
 {
-    public interface IEmployeeRepository : IScopedService
+    [ScopedService]
+    public interface IEmployeeRepository
     {
         IQueryable<Employee> Employees { get; }
 

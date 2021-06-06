@@ -15,11 +15,11 @@ namespace EmployeeManagement.Infrastructure.Data.EntityConfigurations
             }
 
             builder.ToTable("Departments");
-            builder.HasKey(d => d.DepartmentId);
-            builder.Property(d => d.DepartmentName).HasMaxLength(50).IsRequired();
+            builder.HasKey(d => d.Id);
+            builder.Property(d => d.Name).HasMaxLength(50).IsRequired();
             builder.Property(d => d.Description).HasMaxLength(200).IsRequired();
 
-            builder.HasIndex(d => d.DepartmentName).IsUnique();
+            builder.HasIndex(d => d.Name).IsUnique();
         }
     }
 }

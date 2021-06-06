@@ -4,10 +4,10 @@ using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.CacheRepositories;
-using EmployeeManagement.Domain.Dtos;
 using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Domain.Repositories;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services
 {
@@ -45,7 +45,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
             Employee employeeToBeCreated = new Employee()
             {
-                EmployeeName = createEmployeeDto.EmployeeName,
+                Name = createEmployeeDto.EmployeeName,
                 DepartmentId = createEmployeeDto.DepartmentId,
                 DateOfBirth = createEmployeeDto.DateOfBirth,
                 Email = createEmployeeDto.Email,
@@ -71,7 +71,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                     throw new EntityNotFoundException(typeof(Employee), updateEmployeeDto.EmployeeId);
                 }
 
-                employeeeToBeUpdated.EmployeeName = updateEmployeeDto.EmployeeName;
+                employeeeToBeUpdated.Name = updateEmployeeDto.EmployeeName;
                 employeeeToBeUpdated.DepartmentId = updateEmployeeDto.DepartmentId;
                 employeeeToBeUpdated.DateOfBirth = updateEmployeeDto.DateOfBirth;
                 employeeeToBeUpdated.Email = updateEmployeeDto.Email;

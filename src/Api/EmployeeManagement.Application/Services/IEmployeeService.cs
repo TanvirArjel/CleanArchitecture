@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Domain.Dtos;
 using EmployeeManagement.Domain.Dtos.EmployeeDtos;
+using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Application.Services

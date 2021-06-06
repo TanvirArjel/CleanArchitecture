@@ -39,7 +39,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
             Department departmentToBeCreated = new Department()
             {
-                DepartmentName = createDepartmentDto.DepartmentName,
+                Name = createDepartmentDto.DepartmentName,
                 Description = createDepartmentDto.Description
             };
 
@@ -75,7 +75,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                 throw new EntityNotFoundException(typeof(Department), updateDepartmentDto.DepartmentId);
             }
 
-            departmentToBeUpdated.DepartmentName = updateDepartmentDto.DepartmentName;
+            departmentToBeUpdated.Name = updateDepartmentDto.DepartmentName;
             departmentToBeUpdated.Description = updateDepartmentDto.Description;
             departmentToBeUpdated.IsActive = updateDepartmentDto.IsActive;
             await _departmentRepository.UpdateAsync(departmentToBeUpdated);
@@ -95,7 +95,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task<bool> DepartmentExistsAsync(int departmentId)
         {
-            bool isExists = await _departmentRepository.Departments.AnyAsync(d => d.DepartmentId == departmentId);
+            bool isExists = await _departmentRepository.Departments.AnyAsync(d => d.Id == departmentId);
             return isExists;
         }
     }

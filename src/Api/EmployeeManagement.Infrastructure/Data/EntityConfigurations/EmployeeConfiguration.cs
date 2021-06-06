@@ -9,8 +9,9 @@ namespace EmployeeManagement.Infrastructure.Data.EntityConfigurations
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.ToTable("Employees");
-            builder.HasKey(emp => emp.EmployeeId);
-            builder.Property(emp => emp.EmployeeName).HasMaxLength(50).IsRequired();
+            builder.HasKey(emp => emp.Id);
+
+            builder.Property(emp => emp.Name).HasMaxLength(50).IsRequired();
             builder.HasOne(emp => emp.Department).WithMany().HasForeignKey(emp => emp.DepartmentId).IsRequired();
             builder.Property(emp => emp.DateOfBirth).HasColumnType("date");
             builder.Property(emp => emp.Email).HasMaxLength(50).IsRequired();

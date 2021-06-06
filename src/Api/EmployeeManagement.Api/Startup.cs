@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using AutoMapper;
 using EmployeeManagement.Api.Utilities.Mixed;
 using EmployeeManagement.Infrastructure.Data.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -31,9 +30,7 @@ namespace EmployeeManagement.Api
             services.AddEmployeeManagementDbContext(Configuration, WebHostEnvironment);
 
             services.AddDistributedMemoryCache();
-
-            services.AddAutoMapper(typeof(Startup));
-            services.AddServicesOfType<IScopedService>();
+            services.AddServicesOfAllTypes();
             services.AddControllers(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));

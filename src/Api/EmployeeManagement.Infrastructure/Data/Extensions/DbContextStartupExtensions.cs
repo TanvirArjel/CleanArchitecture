@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Infrastructure.Data.Extensions
 {
@@ -48,6 +49,8 @@ namespace EmployeeManagement.Infrastructure.Data.Extensions
                     builder.MigrationsHistoryTable("__EFCoreMigrationsHistory", schema: "_Migration");
                 });
             });
+
+            services.AddGenericRepository<EmployeeManagementDbContext>();
         }
 
         public static void ApplyValueGenerationOnUpdate(this ChangeTracker changeTracker)

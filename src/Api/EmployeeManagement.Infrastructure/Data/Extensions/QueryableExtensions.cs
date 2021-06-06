@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EmployeeManagement.Domain.Dtos;
 using Microsoft.EntityFrameworkCore;
+using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Infrastructure.Data.Extensions
 {
