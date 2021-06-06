@@ -23,7 +23,7 @@ namespace BlazorApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddServicesOfType<IScopedService>();
+            services.AddServicesOfAllTypes();
             services.AddHttpClient("EmployeeManagementApi", c =>
             {
                 c.BaseAddress = new Uri("https://localhost:44390/api/");

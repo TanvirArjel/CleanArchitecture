@@ -11,13 +11,13 @@ namespace BlazorApp.Pages.Employee
         public int EmployeeId { get; set; }
 
         [Inject]
-        private IEmployeeService EmployeeService { get; set; }
+        private EmployeeService EmployeeService { get; set; }
 
         private EmployeeDetailsViewModel EmployeeDetailsModel { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            EmployeeDetailsModel = await EmployeeService.GetEmployeeDetailsAsync(EmployeeId);
+            EmployeeDetailsModel = await EmployeeService.GetDetailsByIdAsync(EmployeeId);
         }
     }
 }

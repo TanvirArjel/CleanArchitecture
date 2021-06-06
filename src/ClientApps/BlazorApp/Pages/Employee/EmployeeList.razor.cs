@@ -10,7 +10,7 @@ namespace BlazorApp.Pages.Employee
     public partial class EmployeeList
     {
         [Inject]
-        private IEmployeeService EmployeeService { get; set; }
+        private EmployeeService EmployeeService { get; set; }
 
         private List<EmployeeDetailsViewModel> Employees { get; set; }
 
@@ -20,7 +20,7 @@ namespace BlazorApp.Pages.Employee
         {
             try
             {
-                Employees = await EmployeeService.GetEmployeeListAsync();
+                Employees = await EmployeeService.GetListAsync();
             }
             catch (Exception)
             {

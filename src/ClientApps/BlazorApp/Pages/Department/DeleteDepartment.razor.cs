@@ -11,7 +11,7 @@ namespace BlazorApp.Pages.Department
         public int DepartmentId { get; set; }
 
         [Inject]
-        private IDepartmentService DepartmentService { get; set; }
+        private DepartmentService DepartmentService { get; set; }
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
@@ -22,12 +22,12 @@ namespace BlazorApp.Pages.Department
 
         protected override async Task OnInitializedAsync()
         {
-            DepartmentDetailsModel = await DepartmentService.GetDepartmentAsync(DepartmentId);
+            DepartmentDetailsModel = await DepartmentService.GetByIdAsync(DepartmentId);
         }
 
         private async Task HandleValidSubmit()
         {
-            await DepartmentService.DeleteDepartmentAsync(DepartmentId);
+            await DepartmentService.DeleteAsync(DepartmentId);
             NavigationManager.NavigateTo("employee/employee-list");
         }
     }

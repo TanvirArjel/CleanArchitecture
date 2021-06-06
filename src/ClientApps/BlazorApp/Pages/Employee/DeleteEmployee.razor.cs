@@ -11,7 +11,7 @@ namespace BlazorApp.Pages.Employee
         public int EmployeeId { get; set; }
 
         [Inject]
-        private IEmployeeService EmployeeService { get; set; }
+        private EmployeeService EmployeeService { get; set; }
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
@@ -20,12 +20,12 @@ namespace BlazorApp.Pages.Employee
 
         protected override async Task OnInitializedAsync()
         {
-            EmployeeDetailsModel = await EmployeeService.GetEmployeeDetailsAsync(EmployeeId);
+            EmployeeDetailsModel = await EmployeeService.GetDetailsByIdAsync(EmployeeId);
         }
 
         private async Task HandleValidSubmit()
         {
-            await EmployeeService.DeleteEmployee(EmployeeId);
+            await EmployeeService.DeleteAsync(EmployeeId);
             NavigationManager.NavigateTo("employee/employee-list");
         }
     }

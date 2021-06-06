@@ -5,7 +5,8 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.CacheRepositories
 {
-    public interface IEmployeeCacheRepository : IScopedService
+    [ScopedService]
+    public interface IEmployeeCacheRepository
     {
         Task<Employee> GetByIdAsync(long employeeId);
 

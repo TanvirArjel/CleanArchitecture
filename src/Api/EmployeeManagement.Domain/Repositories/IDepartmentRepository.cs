@@ -7,7 +7,8 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Repositories
 {
-    public interface IDepartmentRepository : IScopedService
+    [ScopedService]
+    public interface IDepartmentRepository
     {
         IQueryable<Department> Departments { get; }
 

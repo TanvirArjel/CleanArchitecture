@@ -8,7 +8,7 @@ namespace BlazorApp.Pages.Department
     public partial class CreateDepartment
     {
         [Inject]
-        private IDepartmentService DepartmentService { get; set; }
+        private DepartmentService DepartmentService { get; set; }
 
         private CreateDepartmentViewModel CreateDepartmentModel { get; set; } = new CreateDepartmentViewModel();
 
@@ -17,7 +17,7 @@ namespace BlazorApp.Pages.Department
 
         public async Task HandleValidSubmit()
         {
-            await DepartmentService.CreateDepartmentAsync(CreateDepartmentModel);
+            await DepartmentService.CreateAsync(CreateDepartmentModel);
             NavigationManager.NavigateTo("department/department-list");
         }
     }

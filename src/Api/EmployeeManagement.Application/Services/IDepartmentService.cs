@@ -7,7 +7,8 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Application.Services
 {
-    public interface IDepartmentService : IScopedService
+    [ScopedService]
+    public interface IDepartmentService
     {
         Task<List<DepartmentDetailsDto>> GetDepartmentListAsync();
 
@@ -19,7 +20,7 @@ namespace EmployeeManagement.Application.Services
 
         Task UpdateDepartmentAsync(UpdateDepartmentDto updateDepartmentDto);
 
-        Task DeleteDepartment(int employeeId);
+        Task DeleteDepartment(int departmentId);
 
         Task<bool> DepartmentExistsAsync(int departmentId);
     }

@@ -11,13 +11,13 @@ namespace BlazorApp.Pages.Department
         public int DepartmentId { get; set; }
 
         [Inject]
-        private IDepartmentService DepartmentService { get; set; }
+        private DepartmentService DepartmentService { get; set; }
 
         private DepartmentDetailsViewModel DepartmentDetailsModel { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            DepartmentDetailsModel = await DepartmentService.GetDepartmentAsync(DepartmentId);
+            DepartmentDetailsModel = await DepartmentService.GetByIdAsync(DepartmentId);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace BlazorApp.Pages.Department
     public partial class DepartmentList
     {
         [Inject]
-        private IDepartmentService DepartmentService { get; set; }
+        private DepartmentService DepartmentService { get; set; }
 
         private List<DepartmentDetailsViewModel> Departments { get; set; }
 
@@ -20,7 +20,7 @@ namespace BlazorApp.Pages.Department
         {
             try
             {
-                Departments = await DepartmentService.GetDepartmentListAsync();
+                Departments = await DepartmentService.GetListAsync();
             }
             catch (Exception)
             {

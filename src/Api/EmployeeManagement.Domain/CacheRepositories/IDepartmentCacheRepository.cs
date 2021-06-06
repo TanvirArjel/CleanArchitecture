@@ -6,7 +6,8 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.CacheRepositories
 {
-    public interface IDepartmentCacheRepository : IScopedService
+    [ScopedService]
+    public interface IDepartmentCacheRepository
     {
         Task<List<DepartmentDetailsDto>> GetListAsync();
 

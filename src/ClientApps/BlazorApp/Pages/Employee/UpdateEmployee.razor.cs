@@ -12,10 +12,10 @@ namespace BlazorApp.Pages.Employee
         public int EmployeeId { get; set; }
 
         [Inject]
-        private IEmployeeService EmployeeService { get; set; }
+        private EmployeeService EmployeeService { get; set; }
 
         [Inject]
-        private IDepartmentService DepartmentService { get; set; }
+        private DepartmentService DepartmentService { get; set; }
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
@@ -28,7 +28,7 @@ namespace BlazorApp.Pages.Employee
 
         protected override async Task OnInitializedAsync()
         {
-            EmployeeDetailsViewModel employeeDetailsViewModel = await EmployeeService.GetEmployeeDetailsAsync(EmployeeId);
+            EmployeeDetailsViewModel employeeDetailsViewModel = await EmployeeService.GetDetailsByIdAsync(EmployeeId);
 
             if (employeeDetailsViewModel == null)
             {
@@ -45,12 +45,12 @@ namespace BlazorApp.Pages.Employee
                 PhoneNumber = employeeDetailsViewModel.PhoneNumber
             };
 
-            DepartmentSelectList = await DepartmentService.GetDepartmentSelectListAsync(employeeDetailsViewModel.DepartmentId);
+            DepartmentSelectList = await DepartmentService.GetSelectListAsync(employeeDetailsViewModel.DepartmentId);
         }
 
         private async Task HandleValidSubmit()
         {
-            await EmployeeService.UpdateEmplyeeAsync(UpdateEmployeeModel);
+            await EmployeeService.UpdateAsync(UpdateEmployeeModel);
             NavigationManager.NavigateTo("employee/employee-list");
         }
     }

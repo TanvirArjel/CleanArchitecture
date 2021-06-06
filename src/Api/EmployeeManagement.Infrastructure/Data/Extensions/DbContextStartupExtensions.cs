@@ -74,7 +74,7 @@ namespace EmployeeManagement.Infrastructure.Data.Extensions
                         bool isMenuallySet = entityEntry.Property(p => p.LastModifiedAtUtc).IsModified;
                         if (isMenuallySet)
                         {
-                            throw new ApplicationException("You can't set the value for LastModifiedAtUtc property. The value of this property will be set by system.");
+                            throw new InvalidOperationException("You can't set the value for LastModifiedAtUtc property. The value of this property will be set by system.");
                         }
 
                         entityEntry.Property(p => p.LastModifiedAtUtc).CurrentValue = DateTime.UtcNow;

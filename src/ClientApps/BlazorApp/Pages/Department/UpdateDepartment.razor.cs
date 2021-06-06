@@ -11,7 +11,7 @@ namespace BlazorApp.Pages.Department
         public int DepartmentId { get; set; }
 
         [Inject]
-        private IDepartmentService DepartmentService { get; set; }
+        private DepartmentService DepartmentService { get; set; }
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
@@ -22,7 +22,7 @@ namespace BlazorApp.Pages.Department
 
         protected override async Task OnInitializedAsync()
         {
-            DepartmentDetailsViewModel departmentDetailsViewModel = await DepartmentService.GetDepartmentAsync(DepartmentId);
+            DepartmentDetailsViewModel departmentDetailsViewModel = await DepartmentService.GetByIdAsync(DepartmentId);
 
             if (departmentDetailsViewModel == null)
             {
@@ -39,7 +39,7 @@ namespace BlazorApp.Pages.Department
 
         private async Task HandleValidSubmit()
         {
-            await DepartmentService.UpdateDepartmentAsync(UpdateDepartmentModel);
+            await DepartmentService.UpdateAsync(UpdateDepartmentModel);
             NavigationManager.NavigateTo("department/department-list");
         }
     }

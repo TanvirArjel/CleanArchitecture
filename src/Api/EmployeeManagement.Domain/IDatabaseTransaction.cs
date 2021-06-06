@@ -4,7 +4,8 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain
 {
-    public interface IDatabaseTransaction : IScopedService
+    [ScopedService]
+    public interface IDatabaseTransaction
     {
         Task<IDbContextTransaction> BeginTransactionAsync();
     }

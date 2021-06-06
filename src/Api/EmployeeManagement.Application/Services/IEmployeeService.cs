@@ -6,7 +6,8 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Application.Services
 {
-    public interface IEmployeeService : IScopedService
+    [ScopedService]
+    public interface IEmployeeService
     {
         Task<PaginatedList<EmployeeDetailsDto>> GetEmployeeListAsync(int pageNumber, int pageSize);
 
