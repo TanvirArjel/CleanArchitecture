@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BlazorApp.Services;
 using BlazorApp.ViewModels.EmployeeViewModels;
 using Microsoft.AspNetCore.Components;
@@ -22,7 +23,7 @@ namespace BlazorApp.Pages.Employee
 
         private UpdateEmployeeViewModel UpdateEmployeeModel { get; set; }
 
-        private SelectList DepartmentSelectList { get; set; }
+        private List<SelectListItem> DepartmentSelectList { get; set; }
 
         private string ErrorMessage { get; set; }
 

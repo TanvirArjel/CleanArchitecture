@@ -11,7 +11,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services
 {
-    public class DeparmentService : IDepartmentService
+    internal class DeparmentService : IDepartmentService
     {
         private readonly IDepartmentCacheRepository _departmentCacheRepository;
         private readonly IRepository _repository;

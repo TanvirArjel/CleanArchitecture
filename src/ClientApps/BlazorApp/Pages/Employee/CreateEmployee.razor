@@ -12,41 +12,41 @@
         <EditForm Model="@CreateEmployeeViewModel" OnValidSubmit="HandleValidSubmit">
             <DataAnnotationsValidator />
             <ValidationSummary Model="@CreateEmployeeViewModel" />
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label">Employee Name</label>
                 <div class="col-sm-10">
                     <InputText class="form-control" @bind-Value="CreateEmployeeViewModel.EmployeeName" />
                     <ValidationMessage For="@(() => CreateEmployeeViewModel.EmployeeName)" />
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label">Department</label>
                 <div class="col-sm-10">
-                    <CustomInputSelect class="custom-select" @bind-Value="CreateEmployeeViewModel.DepartmentId">
+                    <InputSelect class="form-select" @bind-Value="CreateEmployeeViewModel.DepartmentId">
                         <option value="">Select Department</option>
                         @foreach (var item in DepartmentSelectList)
                         {
                             <option value="@item.Value">@item.Text</option>
                         }
-                    </CustomInputSelect>
+                    </InputSelect>
                     <ValidationMessage For="@(() => CreateEmployeeViewModel.DepartmentId)" />
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label">Date Of Birth</label>
                 <div class="col-sm-10">
                     <InputDate class="form-control" @bind-Value="CreateEmployeeViewModel.DateOfBirth" />
                     <ValidationMessage For="@(() => CreateEmployeeViewModel.DateOfBirth)" />
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
                     <InputText class="form-control" @bind-Value="CreateEmployeeViewModel.Email" />
                     <ValidationMessage For="@(() => CreateEmployeeViewModel.Email)" />
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="mb-3 row">
                 <label class="col-sm-2 col-form-label">PhoneNumber</label>
                 <div class="col-sm-10">
                     <InputText class="form-control" @bind-Value="CreateEmployeeViewModel.PhoneNumber" />

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorApp.Services;
 using BlazorApp.ViewModels.EmployeeViewModels;
@@ -20,11 +20,11 @@ namespace BlazorApp.Pages.Employee
 
         private CreateEmployeeViewModel CreateEmployeeViewModel { get; set; } = new CreateEmployeeViewModel();
 
-        private SelectList DepartmentSelectList { get; set; } = new SelectList(Enumerable.Empty<SelectListItem>());
+        private List<SelectListItem> DepartmentSelectList { get; set; } = new List<SelectListItem>();
 
         protected override async Task OnInitializedAsync()
         {
-            SelectList items = await DepartmentService.GetSelectListAsync();
+            List<SelectListItem> items = await DepartmentService.GetSelectListAsync();
             DepartmentSelectList = items;
         }
 

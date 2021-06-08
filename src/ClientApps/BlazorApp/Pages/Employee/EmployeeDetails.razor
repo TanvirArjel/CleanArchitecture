@@ -10,7 +10,7 @@
         @{
             if (EmployeeDetailsModel != null)
             {
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Employee Name</label>
                     <div class="col-sm-10">
                         <div class="form-control">
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Department Name</label>
                     <div class="col-sm-10">
                         <div class="form-control">
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Date Of Birth</label>
                     <div class="col-sm-10">
                         <div class="form-control">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
                         <div class="form-control">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">PhoneNumber</label>
                     <div class="col-sm-10">
                         <div class="form-control">
@@ -51,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">IsActive</label>
                     <div class="col-sm-10">
                         <div class="form-control">
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">CreatedAtUtc</label>
                     <div class="col-sm-10">
                         <div class="form-control">
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">LastModifiedAtUtc</label>
                     <div class="col-sm-10">
                         <div class="form-control">
@@ -98,8 +98,9 @@
         @{
             if (EmployeeDetailsModel != null)
             {
-                <a href="employee/update-employee/@(EmployeeDetailsModel.EmployeeId)" class="btn btn-secondary"><i class="fas fa-edit"></i>
-        Edit</a>
+                <a href="employee/update-employee/@(EmployeeDetailsModel.EmployeeId)" class="btn btn-secondary me-1">
+                  <i class="fas fa-edit"></i> Edit
+              </a>
             }
         }
 

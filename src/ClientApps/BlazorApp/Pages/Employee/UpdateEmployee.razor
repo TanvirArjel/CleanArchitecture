@@ -15,41 +15,41 @@
                     <EditForm Model="@UpdateEmployeeModel" OnValidSubmit="HandleValidSubmit">
                         <DataAnnotationsValidator />
                         <ValidationSummary Model="@UpdateEmployeeModel" />
-                        <div class="form-group row">
+                        <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label">Employee Name</label>
                             <div class="col-sm-10">
                                 <InputText class="form-control" @bind-Value="UpdateEmployeeModel.EmployeeName" />
                                 <ValidationMessage For="@(() => UpdateEmployeeModel.EmployeeName)" />
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label">Department</label>
                             <div class="col-sm-10">
-                                <CustomInputSelect class="custom-select" @bind-Value="UpdateEmployeeModel.DepartmentId">
+                                <InputSelect class="form-select" @bind-Value="UpdateEmployeeModel.DepartmentId">
                                     <option value="">Select Department</option>
                                     @foreach (var item in DepartmentSelectList)
                                     {
                                         <option value="@item.Value">@item.Text</option>
                                     }
-                                </CustomInputSelect>
+                                </InputSelect>
                                 <ValidationMessage For="@(() => UpdateEmployeeModel.DepartmentId)" />
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label">Date Of Birth</label>
                             <div class="col-sm-10">
                                 <InputDate class="form-control" @bind-Value="UpdateEmployeeModel.DateOfBirth" />
                                 <ValidationMessage For="@(() => UpdateEmployeeModel.DateOfBirth)" />
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label">Email</label>
                             <div class="col-sm-10">
                                 <InputText class="form-control" @bind-Value="UpdateEmployeeModel.Email" />
                                 <ValidationMessage For="@(() => UpdateEmployeeModel.Email)" />
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label">PhoneNumber</label>
                             <div class="col-sm-10">
                                 <InputText class="form-control" @bind-Value="UpdateEmployeeModel.PhoneNumber" />

@@ -10,7 +10,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services
 {
-    public class EmployeeService : IEmployeeService
+    internal class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeCacheRepository _employeeCacheRepository;
         private readonly IRepository _repository;

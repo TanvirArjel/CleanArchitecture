@@ -27,10 +27,10 @@ namespace BlazorApp.Services
             return departments;
         }
 
-        public async Task<SelectList> GetSelectListAsync(int? selectedDepartment = null)
+        public async Task<List<SelectListItem>> GetSelectListAsync(int? selectedDepartment = null)
         {
             List<SelectListItem> departments = await _httpClient.GetFromJsonAsync<List<SelectListItem>>($"departments/select-list?selectedDepartment={selectedDepartment}");
-            return new SelectList(departments);
+            return departments;
         }
 
         public async Task<HttpResponseMessage> CreateAsync(CreateDepartmentViewModel createDepartmentViewModel)
