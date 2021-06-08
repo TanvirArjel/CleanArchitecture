@@ -1,30 +1,49 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Application.Services;
-using EmployeeManagement.Domain.CacheRepositories;
-using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Entities;
-using EmployeeManagement.Domain.Repositories;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeRepository _employeeRepository;
         private readonly IEmployeeCacheRepository _employeeCacheRepository;
+        private readonly IRepository _repository;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IEmployeeCacheRepository employeeCacheRepository)
+        public EmployeeService(IEmployeeCacheRepository employeeCacheRepository, IRepository repository)
         {
-            _employeeRepository = employeeRepository;
             _employeeCacheRepository = employeeCacheRepository;
+            _repository = repository;
         }
 
         public async Task<PaginatedList<EmployeeDetailsDto>> GetEmployeeListAsync(int pageNumber, int pageSize)
         {
-            PaginatedList<EmployeeDetailsDto> employeeDetailsDtos = await _employeeRepository.GetListAsync(pageNumber, pageSize);
+            Expression<Func<Employee, EmployeeDetailsDto>> selectExpression = e => new EmployeeDetailsDto
+            {
+                EmployeeId = e.Id,
+                EmployeeName = e.Name,
+                DepartmentId = e.DepartmentId,
+                DepartmentName = e.Department.Name,
+                DateOfBirth = e.DateOfBirth,
+                Email = e.Email,
+                PhoneNumber = e.PhoneNumber,
+                IsActive = e.IsActive,
+                CreatedAtUtc = e.CreatedAtUtc,
+                LastModifiedAtUtc = e.LastModifiedAtUtc
+            };
+
+            PaginationSpecification<Employee> paginationSpecification = new PaginationSpecification<Employee>
+            {
+                PageIndex = pageNumber,
+                PageSize = pageSize
+            };
+
+            PaginatedList<EmployeeDetailsDto> employeeDetailsDtos = await _repository.GetPaginatedListAsync(paginationSpecification, selectExpression);
 
             return employeeDetailsDtos;
         }
@@ -52,7 +71,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                 PhoneNumber = createEmployeeDto.PhoneNumber
             };
 
-            await _employeeRepository.InsertAsync(employeeToBeCreated);
+            await _repository.InsertAsync(employeeToBeCreated);
         }
 
         public async Task UpdateEmplyeeAsync(UpdateEmployeeDto updateEmployeeDto)
@@ -64,7 +83,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                     throw new ArgumentNullException(nameof(updateEmployeeDto));
                 }
 
-                Employee employeeeToBeUpdated = await _employeeRepository.GetByIdAsync(updateEmployeeDto.EmployeeId);
+                Employee employeeeToBeUpdated = await _repository.GetByIdAsync<Employee>(updateEmployeeDto.EmployeeId);
 
                 if (employeeeToBeUpdated == null)
                 {
@@ -77,7 +96,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                 employeeeToBeUpdated.Email = updateEmployeeDto.Email;
                 employeeeToBeUpdated.PhoneNumber = updateEmployeeDto.PhoneNumber;
 
-                await _employeeRepository.UpdateAsync(employeeeToBeUpdated);
+                await _repository.UpdateAsync(employeeeToBeUpdated);
             }
             catch (Exception)
             {
@@ -87,14 +106,14 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task DeleteEmployee(int employeeId)
         {
-            Employee employeeeToBeDeleted = await _employeeRepository.GetByIdAsync(employeeId);
+            Employee employeeeToBeDeleted = await _repository.GetByIdAsync<Employee>(employeeId);
 
             if (employeeeToBeDeleted == null)
             {
                 throw new EntityNotFoundException(typeof(Employee), employeeId);
             }
 
-            await _employeeRepository.DeleteAsync(employeeeToBeDeleted);
+            await _repository.DeleteAsync(employeeeToBeDeleted);
         }
     }
 }

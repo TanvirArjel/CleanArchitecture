@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
-using EmployeeManagement.Domain.CacheRepositories;
-using EmployeeManagement.Domain.Dtos.EmployeeDtos;
+﻿using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using EmployeeManagement.Application.CacheRepositories;
+using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Entities;
-using EmployeeManagement.Domain.Repositories;
 using EmployeeManagement.Infrastructure.Data.CacheKeys;
 using Microsoft.Extensions.Caching.Distributed;
+using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.Caching;
 
 namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
@@ -12,12 +14,12 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
     internal class EmployeeCacheRepository : IEmployeeCacheRepository
     {
         private readonly IDistributedCache _distributedCache;
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IRepository _repository;
 
-        public EmployeeCacheRepository(IDistributedCache distributedCache, IEmployeeRepository employeeRepository)
+        public EmployeeCacheRepository(IDistributedCache distributedCache, IRepository repository)
         {
             _distributedCache = distributedCache;
-            _employeeRepository = employeeRepository;
+            _repository = repository;
         }
 
         public async Task<Employee> GetByIdAsync(long employeeId)
@@ -27,7 +29,7 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 
             if (employee == null)
             {
-                employee = await _employeeRepository.GetByIdAsync(employeeId);
+                employee = await _repository.GetByIdAsync<Employee>(employeeId);
 
                 await _distributedCache.SetAsync<Employee>(cacheKey, employee);
             }
@@ -42,7 +44,21 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 
             if (employeeDetails == null)
             {
-                employeeDetails = await _employeeRepository.GetDetailsByIdAsync(employeeId);
+                Expression<Func<Employee, EmployeeDetailsDto>> selectExp = e => new EmployeeDetailsDto
+                {
+                    EmployeeId = e.Id,
+                    EmployeeName = e.Name,
+                    DepartmentId = e.DepartmentId,
+                    DepartmentName = e.Department.Name,
+                    DateOfBirth = e.DateOfBirth,
+                    Email = e.Email,
+                    PhoneNumber = e.PhoneNumber,
+                    IsActive = e.IsActive,
+                    CreatedAtUtc = e.CreatedAtUtc,
+                    LastModifiedAtUtc = e.LastModifiedAtUtc
+                };
+
+                employeeDetails = await _repository.GetByIdAsync(employeeId, selectExp);
 
                 await _distributedCache.SetAsync<EmployeeDetailsDto>(cacheKey, employeeDetails);
             }

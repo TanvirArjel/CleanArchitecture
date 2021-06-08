@@ -4,7 +4,6 @@ using EmployeeManagement.Api.ApiModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Infrastrucures;
 using EmployeeManagement.Application.Services;
-using EmployeeManagement.Domain.Dtos.EmployeeDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TanvirArjel.EFCore.GenericRepository;

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EmployeeManagement.Domain.Dtos.DepartmentDtos;
+using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Domain.Entities;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Domain.CacheRepositories
+namespace EmployeeManagement.Application.CacheRepositories
 {
     [ScopedService]
     public interface IDepartmentCacheRepository
@@ -16,5 +16,11 @@ namespace EmployeeManagement.Domain.CacheRepositories
         Task<Department> GetByIdAsync(int departmentId);
 
         Task<DepartmentDetailsDto> GetDetailsByIdAsync(int departmentId);
+
+        Task<int> InsertAsync(Department department);
+
+        Task UpdateAsync(Department department);
+
+        Task DeleteAsync(Department department);
     }
 }

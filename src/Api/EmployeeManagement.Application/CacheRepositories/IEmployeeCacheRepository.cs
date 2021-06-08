@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using EmployeeManagement.Domain.Dtos.EmployeeDtos;
+using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Entities;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Domain.CacheRepositories
+namespace EmployeeManagement.Application.CacheRepositories
 {
     [ScopedService]
     public interface IEmployeeCacheRepository

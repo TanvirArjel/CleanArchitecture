@@ -1,4 +1,4 @@
-﻿namespace EmployeeManagement.Domain.Dtos.DepartmentDtos
+﻿namespace EmployeeManagement.Application.Dtos.DepartmentDtos
 {
     public class DepartmentSelectListDto
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EmployeeManagement.Domain.Dtos.EmployeeDtos
+namespace EmployeeManagement.Application.Dtos.EmployeeDtos
 {
     public class EmployeeDetailsDto
     {
