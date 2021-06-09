@@ -8,14 +8,14 @@ namespace EmployeeManagement.Application.Services
     [ScopedService]
     public interface IEmployeeService
     {
-        Task<PaginatedList<EmployeeDetailsDto>> GetEmployeeListAsync(int pageNumber, int pageSize);
+        Task<PaginatedList<EmployeeDetailsDto>> GetListAsync(int pageNumber, int pageSize);
 
-        Task<EmployeeDetailsDto> GetEmployeeDetailsAsync(int employeeId);
+        Task<EmployeeDetailsDto> GetDetailsByIdAsync(int employeeId);
 
-        Task CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto);
+        Task CreateAsync(CreateEmployeeDto createEmployeeDto);
 
-        Task UpdateEmplyeeAsync(UpdateEmployeeDto updateEmployeeDto);
+        Task UpdateAsync(UpdateEmployeeDto updateEmployeeDto);
 
-        Task DeleteEmployee(int employeeId);
+        Task DeleteAsync(int employeeId);
     }
 }

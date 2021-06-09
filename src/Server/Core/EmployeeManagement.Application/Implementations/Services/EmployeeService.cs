@@ -21,7 +21,7 @@ namespace EmployeeManagement.Application.Implementations.Services
             _repository = repository;
         }
 
-        public async Task<PaginatedList<EmployeeDetailsDto>> GetEmployeeListAsync(int pageNumber, int pageSize)
+        public async Task<PaginatedList<EmployeeDetailsDto>> GetListAsync(int pageNumber, int pageSize)
         {
             Expression<Func<Employee, EmployeeDetailsDto>> selectExpression = e => new EmployeeDetailsDto
             {
@@ -48,14 +48,14 @@ namespace EmployeeManagement.Application.Implementations.Services
             return employeeDetailsDtos;
         }
 
-        public async Task<EmployeeDetailsDto> GetEmployeeDetailsAsync(int employeeId)
+        public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(int employeeId)
         {
             EmployeeDetailsDto employeeDetailsDto = await _employeeCacheRepository.GetDetailsByIdAsync(employeeId);
 
             return employeeDetailsDto;
         }
 
-        public async Task CreateEmployeeAsync(CreateEmployeeDto createEmployeeDto)
+        public async Task CreateAsync(CreateEmployeeDto createEmployeeDto)
         {
             if (createEmployeeDto == null)
             {
@@ -74,7 +74,7 @@ namespace EmployeeManagement.Application.Implementations.Services
             await _repository.InsertAsync(employeeToBeCreated);
         }
 
-        public async Task UpdateEmplyeeAsync(UpdateEmployeeDto updateEmployeeDto)
+        public async Task UpdateAsync(UpdateEmployeeDto updateEmployeeDto)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace EmployeeManagement.Application.Implementations.Services
             }
         }
 
-        public async Task DeleteEmployee(int employeeId)
+        public async Task DeleteAsync(int employeeId)
         {
             Employee employeeeToBeDeleted = await _repository.GetByIdAsync<Employee>(employeeId);
 

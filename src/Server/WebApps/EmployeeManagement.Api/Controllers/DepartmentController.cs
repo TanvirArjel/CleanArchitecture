@@ -33,7 +33,7 @@ namespace EmployeeManagement.Api.Controllers
         {
             try
             {
-                List<DepartmentDetailsDto> departmentDetailsDtos = await _departmentService.GetDepartmentListAsync();
+                List<DepartmentDetailsDto> departmentDetailsDtos = await _departmentService.GetListAsync();
                 return departmentDetailsDtos;
             }
             catch (Exception exception)
@@ -51,7 +51,7 @@ namespace EmployeeManagement.Api.Controllers
         {
             try
             {
-                SelectList selectList = await _departmentService.GetDepartmentSelectListAsync(selectedDepartment);
+                SelectList selectList = await _departmentService.GetSelectListAsync(selectedDepartment);
                 return selectList;
             }
             catch (Exception exception)
@@ -74,7 +74,7 @@ namespace EmployeeManagement.Api.Controllers
                     Description = model.Description
                 };
 
-                int departmentId = await _departmentService.CreateDepartmentAsync(createDepartmentDto);
+                int departmentId = await _departmentService.CreateAsync(createDepartmentDto);
                 return CreatedAtAction(nameof(GetDepartment), new { departmentId }, model);
             }
             catch (Exception exception)
@@ -92,7 +92,7 @@ namespace EmployeeManagement.Api.Controllers
         {
             try
             {
-                DepartmentDetailsDto departmentDetailsDto = await _departmentService.GetDepartmentAsync(departmentId);
+                DepartmentDetailsDto departmentDetailsDto = await _departmentService.GetByIdAsync(departmentId);
                 return departmentDetailsDto;
             }
             catch (Exception exception)
@@ -117,7 +117,7 @@ namespace EmployeeManagement.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                bool isExistent = await _departmentService.DepartmentExistsAsync(departmentId);
+                bool isExistent = await _departmentService.ExistsAsync(departmentId);
 
                 if (!isExistent)
                 {
@@ -132,7 +132,7 @@ namespace EmployeeManagement.Api.Controllers
                     Description = model.Description
                 };
 
-                await _departmentService.UpdateDepartmentAsync(updateDepartmentDto);
+                await _departmentService.UpdateAsync(updateDepartmentDto);
                 return Ok();
             }
             catch (Exception exception)
@@ -150,7 +150,7 @@ namespace EmployeeManagement.Api.Controllers
         {
             try
             {
-                bool isExistent = await _departmentService.DepartmentExistsAsync(departmentId);
+                bool isExistent = await _departmentService.ExistsAsync(departmentId);
 
                 if (isExistent == false)
                 {
@@ -158,7 +158,7 @@ namespace EmployeeManagement.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _departmentService.DeleteDepartment(departmentId);
+                await _departmentService.DeleteAsync(departmentId);
                 return NoContent();
             }
             catch (Exception exception)

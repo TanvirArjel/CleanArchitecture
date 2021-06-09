@@ -50,7 +50,7 @@ namespace EmployeeManagement.Api.Controllers
 
                 pageNumber = pageNumber == 0 ? 1 : pageNumber;
                 pageSize = pageSize == 0 ? 10 : pageSize;
-                PaginatedList<EmployeeDetailsDto> employeeList = await _employeeService.GetEmployeeListAsync(pageNumber, pageSize);
+                PaginatedList<EmployeeDetailsDto> employeeList = await _employeeService.GetListAsync(pageNumber, pageSize);
                 return employeeList;
             }
             catch (Exception exception)
@@ -69,7 +69,7 @@ namespace EmployeeManagement.Api.Controllers
         {
             try
             {
-                EmployeeDetailsDto employeeDetailsDto = await _employeeService.GetEmployeeDetailsAsync(employeeId);
+                EmployeeDetailsDto employeeDetailsDto = await _employeeService.GetDetailsByIdAsync(employeeId);
                 return employeeDetailsDto;
             }
             catch (Exception exception)
@@ -89,7 +89,7 @@ namespace EmployeeManagement.Api.Controllers
         {
             try
             {
-                bool isExistent = await _departmentService.DepartmentExistsAsync(model.DepartmentId);
+                bool isExistent = await _departmentService.ExistsAsync(model.DepartmentId);
 
                 if (!isExistent)
                 {
@@ -106,7 +106,7 @@ namespace EmployeeManagement.Api.Controllers
                     PhoneNumber = model.PhoneNumber
                 };
 
-                await _employeeService.CreateEmployeeAsync(createEmployeeDto);
+                await _employeeService.CreateAsync(createEmployeeDto);
                 return CreatedAtAction(nameof(GetDetailsById), new { employeeId = 1 }, createEmployeeDto);
             }
             catch (Exception exception)
@@ -132,7 +132,7 @@ namespace EmployeeManagement.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                bool isExistent = await _departmentService.DepartmentExistsAsync(model.DepartmentId);
+                bool isExistent = await _departmentService.ExistsAsync(model.DepartmentId);
 
                 if (!isExistent)
                 {
@@ -150,7 +150,7 @@ namespace EmployeeManagement.Api.Controllers
                     PhoneNumber = model.PhoneNumber
                 };
 
-                await _employeeService.UpdateEmplyeeAsync(updateEmployeeDto);
+                await _employeeService.UpdateAsync(updateEmployeeDto);
                 return Ok();
             }
             catch (Exception exception)
@@ -170,7 +170,7 @@ namespace EmployeeManagement.Api.Controllers
         {
             try
             {
-                EmployeeDetailsDto employee = await _employeeService.GetEmployeeDetailsAsync(employeeId);
+                EmployeeDetailsDto employee = await _employeeService.GetDetailsByIdAsync(employeeId);
 
                 if (employee == null)
                 {
@@ -178,7 +178,7 @@ namespace EmployeeManagement.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _employeeService.DeleteEmployee(employeeId);
+                await _employeeService.DeleteAsync(employeeId);
                 return Ok();
             }
             catch (Exception exception)

@@ -9,18 +9,18 @@ namespace EmployeeManagement.Application.Services
     [ScopedService]
     public interface IDepartmentService
     {
-        Task<List<DepartmentDetailsDto>> GetDepartmentListAsync();
+        Task<List<DepartmentDetailsDto>> GetListAsync();
 
-        Task<int> CreateDepartmentAsync(CreateDepartmentDto createDepartmentDto);
+        Task<int> CreateAsync(CreateDepartmentDto createDepartmentDto);
 
-        Task<SelectList> GetDepartmentSelectListAsync(int? selectedDepartmentId);
+        Task<SelectList> GetSelectListAsync(int? selectedDepartmentId);
 
-        Task<DepartmentDetailsDto> GetDepartmentAsync(int departmentId);
+        Task<DepartmentDetailsDto> GetByIdAsync(int departmentId);
 
-        Task UpdateDepartmentAsync(UpdateDepartmentDto updateDepartmentDto);
+        Task UpdateAsync(UpdateDepartmentDto updateDepartmentDto);
 
-        Task DeleteDepartment(int departmentId);
+        Task DeleteAsync(int departmentId);
 
-        Task<bool> DepartmentExistsAsync(int departmentId);
+        Task<bool> ExistsAsync(int departmentId);
     }
 }
