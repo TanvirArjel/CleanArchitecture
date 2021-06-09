@@ -27,12 +27,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\EmployeeManagement.Application\EmployeeManagement.Application.csproj" />
-		<ProjectReference Include="..\EmployeeManagement.Infrastructure\EmployeeManagement.Infrastructure.csproj" />
+		<None Include="..\..\..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\..\..\.editorconfig" Link=".editorconfig" />
+	  <ProjectReference Include="..\..\Core\EmployeeManagement.Application\EmployeeManagement.Application.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\EmployeeManagement.Infrastructure\EmployeeManagement.Infrastructure.csproj" />
 	</ItemGroup>
 
 

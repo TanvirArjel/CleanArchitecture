@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorApp.Services;
 using BlazorApp.ViewModels.EmployeeViewModels;
-using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Employee
 {
     public partial class EmployeeList
     {
-        [Inject]
-        private EmployeeService EmployeeService { get; set; }
+        private readonly EmployeeService _employeeService;
+
+        public EmployeeList(EmployeeService employeeService)
+        {
+            _employeeService = employeeService;
+        }
 
         private List<EmployeeDetailsViewModel> Employees { get; set; }
 
@@ -20,7 +23,7 @@ namespace BlazorApp.Pages.Employee
         {
             try
             {
-                Employees = await EmployeeService.GetListAsync();
+                Employees = await _employeeService.GetListAsync();
             }
             catch (Exception)
             {

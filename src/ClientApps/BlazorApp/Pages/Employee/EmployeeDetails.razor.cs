@@ -7,17 +7,16 @@ namespace BlazorApp.Pages.Employee
 {
     public partial class EmployeeDetails
     {
+        private readonly EmployeeService _employeeService;
+
         [Parameter]
         public int EmployeeId { get; set; }
-
-        [Inject]
-        private EmployeeService EmployeeService { get; set; }
 
         private EmployeeDetailsViewModel EmployeeDetailsModel { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            EmployeeDetailsModel = await EmployeeService.GetDetailsByIdAsync(EmployeeId);
+            EmployeeDetailsModel = await _employeeService.GetDetailsByIdAsync(EmployeeId);
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TanvirArjel.Blazor.DependencyInjection;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace BlazorApp
@@ -30,6 +31,8 @@ namespace BlazorApp
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
                 c.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
             });
+
+            services.AddComponents();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

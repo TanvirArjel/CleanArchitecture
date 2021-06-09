@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorApp.Services;
 using BlazorApp.ViewModels.DepartmentsViewModels;
-using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Department
 {
     public partial class DepartmentList
     {
-        [Inject]
-        private DepartmentService DepartmentService { get; set; }
+        private readonly DepartmentService _departmentService;
+
+        public DepartmentList(DepartmentService departmentService)
+        {
+            _departmentService = departmentService;
+        }
 
         private List<DepartmentDetailsViewModel> Departments { get; set; }
 
@@ -20,7 +23,7 @@ namespace BlazorApp.Pages.Department
         {
             try
             {
-                Departments = await DepartmentService.GetListAsync();
+                Departments = await _departmentService.GetListAsync();
             }
             catch (Exception)
             {

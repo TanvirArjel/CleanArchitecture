@@ -9,14 +9,16 @@ namespace BlazorApp.Pages.Employee
 {
     public partial class CreateEmployee
     {
-        [Inject]
-        private EmployeeService EmployeeService { get; set; }
+        private readonly EmployeeService _employeeService;
+        private readonly DepartmentService _departmentService;
+        private readonly NavigationManager _navigationManager;
 
-        [Inject]
-        private DepartmentService DepartmentService { get; set; }
-
-        [Inject]
-        private NavigationManager NavigationManager { get; set; }
+        public CreateEmployee(EmployeeService employeeService, DepartmentService departmentService, NavigationManager navigationManager)
+        {
+            _employeeService = employeeService;
+            _departmentService = departmentService;
+            _navigationManager = navigationManager;
+        }
 
         private CreateEmployeeViewModel CreateEmployeeViewModel { get; set; } = new CreateEmployeeViewModel();
 
@@ -24,14 +26,14 @@ namespace BlazorApp.Pages.Employee
 
         protected override async Task OnInitializedAsync()
         {
-            List<SelectListItem> items = await DepartmentService.GetSelectListAsync();
+            List<SelectListItem> items = await _departmentService.GetSelectListAsync();
             DepartmentSelectList = items;
         }
 
         private async Task HandleValidSubmit()
         {
-            await EmployeeService.CreateAsync(CreateEmployeeViewModel);
-            NavigationManager.NavigateTo("employee/employee-list");
+            await _employeeService.CreateAsync(CreateEmployeeViewModel);
+            _navigationManager.NavigateTo("employee/employee-list");
         }
     }
 }

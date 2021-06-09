@@ -7,17 +7,21 @@ namespace BlazorApp.Pages.Department
 {
     public partial class DepartmentDetails
     {
+        private readonly DepartmentService _departmentService;
+
+        public DepartmentDetails(DepartmentService departmentService)
+        {
+            _departmentService = departmentService;
+        }
+
         [Parameter]
         public int DepartmentId { get; set; }
-
-        [Inject]
-        private DepartmentService DepartmentService { get; set; }
 
         private DepartmentDetailsViewModel DepartmentDetailsModel { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            DepartmentDetailsModel = await DepartmentService.GetByIdAsync(DepartmentId);
+            DepartmentDetailsModel = await _departmentService.GetByIdAsync(DepartmentId);
         }
     }
 }

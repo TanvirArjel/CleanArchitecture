@@ -7,18 +7,21 @@ namespace BlazorApp.Pages.Department
 {
     public partial class CreateDepartment
     {
-        [Inject]
-        private DepartmentService DepartmentService { get; set; }
+        private readonly DepartmentService _departmentService;
+        private readonly NavigationManager _navigationManager;
+
+        public CreateDepartment(DepartmentService departmentService, NavigationManager navigationManager)
+        {
+            _departmentService = departmentService;
+            _navigationManager = navigationManager;
+        }
 
         private CreateDepartmentViewModel CreateDepartmentModel { get; set; } = new CreateDepartmentViewModel();
 
-        [Inject]
-        private NavigationManager NavigationManager { get; set; }
-
         public async Task HandleValidSubmit()
         {
-            await DepartmentService.CreateAsync(CreateDepartmentModel);
-            NavigationManager.NavigateTo("department/department-list");
+            await _departmentService.CreateAsync(CreateDepartmentModel);
+            _navigationManager.NavigateTo("department/department-list");
         }
     }
 }

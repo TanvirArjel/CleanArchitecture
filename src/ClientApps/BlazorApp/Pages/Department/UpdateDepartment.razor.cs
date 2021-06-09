@@ -7,14 +7,17 @@ namespace BlazorApp.Pages.Department
 {
     public partial class UpdateDepartment
     {
+        private readonly DepartmentService _departmentService;
+        private readonly NavigationManager _navigationManager;
+
+        public UpdateDepartment(DepartmentService departmentService, NavigationManager navigationManager)
+        {
+            _departmentService = departmentService;
+            _navigationManager = navigationManager;
+        }
+
         [Parameter]
         public int DepartmentId { get; set; }
-
-        [Inject]
-        private DepartmentService DepartmentService { get; set; }
-
-        [Inject]
-        private NavigationManager NavigationManager { get; set; }
 
         private UpdateDepartmentViewModel UpdateDepartmentModel { get; set; }
 
@@ -22,7 +25,7 @@ namespace BlazorApp.Pages.Department
 
         protected override async Task OnInitializedAsync()
         {
-            DepartmentDetailsViewModel departmentDetailsViewModel = await DepartmentService.GetByIdAsync(DepartmentId);
+            DepartmentDetailsViewModel departmentDetailsViewModel = await _departmentService.GetByIdAsync(DepartmentId);
 
             if (departmentDetailsViewModel == null)
             {
@@ -39,8 +42,8 @@ namespace BlazorApp.Pages.Department
 
         private async Task HandleValidSubmit()
         {
-            await DepartmentService.UpdateAsync(UpdateDepartmentModel);
-            NavigationManager.NavigateTo("department/department-list");
+            await _departmentService.UpdateAsync(UpdateDepartmentModel);
+            _navigationManager.NavigateTo("department/department-list");
         }
     }
 }

@@ -34,8 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\EmployeeManagement.Application\EmployeeManagement.Application.csproj" />
-		<ProjectReference Include="..\EmployeeManagement.Domain\EmployeeManagement.Domain.csproj" />
+	  <ProjectReference Include="..\..\Core\EmployeeManagement.Application\EmployeeManagement.Application.csproj" />
 	</ItemGroup>
 
 </Project>
