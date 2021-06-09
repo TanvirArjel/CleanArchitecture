@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using EmployeeManagement.Api.Utilities.Mixed;
 using EmployeeManagement.Infrastructure.Data.Extensions;
+using EmployeeManagement.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -28,9 +29,10 @@ namespace EmployeeManagement.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEmployeeManagementDbContext(Configuration, WebHostEnvironment);
+            services.AddInfrasturctureConifugrations();
 
             services.AddDistributedMemoryCache();
-            services.AddServicesOfAllTypes();
+            services.AddServicesOfAllTypes("EmployeeManagement");
             services.AddControllers(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));

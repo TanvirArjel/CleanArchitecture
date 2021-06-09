@@ -8,8 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Data\Migrations\20200927150915_EmailLengthChanged.cs" />
-		<Compile Remove="Data\Migrations\20200927150915_EmailLengthChanged.Designer.cs" />
+		<Compile Remove="Migrations\20200927150915_EmailLengthChanged.cs" />
+		<Compile Remove="Migrations\20200927150915_EmailLengthChanged.Designer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

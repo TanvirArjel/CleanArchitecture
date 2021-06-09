@@ -5,7 +5,7 @@ using BlazorApp.ViewModels.EmployeeViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BlazorApp.Pages.Employee
+namespace BlazorApp.Components.Pages.Employee
 {
     public partial class CreateEmployee
     {

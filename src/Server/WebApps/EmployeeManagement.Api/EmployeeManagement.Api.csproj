@@ -32,7 +32,8 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Core\EmployeeManagement.Application\EmployeeManagement.Application.csproj" />
-	  <ProjectReference Include="..\..\Infrastructure\EmployeeManagement.Infrastructure\EmployeeManagement.Infrastructure.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\EmployeeManagement.Infrastructure.Data\EmployeeManagement.Infrastructure.Data.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\EmployeeManagement.Infrastructure.Services\EmployeeManagement.Infrastructure.Services.csproj" />
 	</ItemGroup>
 
 

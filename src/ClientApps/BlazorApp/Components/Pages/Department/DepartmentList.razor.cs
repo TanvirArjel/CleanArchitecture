@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using BlazorApp.Services;
 using BlazorApp.ViewModels.DepartmentsViewModels;
 
-namespace BlazorApp.Pages.Department
+namespace BlazorApp.Components.Pages.Department
 {
     public partial class DepartmentList
     {

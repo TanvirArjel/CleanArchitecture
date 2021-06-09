@@ -3,17 +3,15 @@ using BlazorApp.Services;
 using BlazorApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Pages.Department
+namespace BlazorApp.Components.Pages.Department
 {
-    public partial class DeleteDepartment
+    public partial class DepartmentDetails
     {
         private readonly DepartmentService _departmentService;
-        private readonly NavigationManager _navigationManager;
 
-        public DeleteDepartment(DepartmentService departmentService, NavigationManager navigationManager)
+        public DepartmentDetails(DepartmentService departmentService)
         {
             _departmentService = departmentService;
-            _navigationManager = navigationManager;
         }
 
         [Parameter]
@@ -21,17 +19,9 @@ namespace BlazorApp.Pages.Department
 
         private DepartmentDetailsViewModel DepartmentDetailsModel { get; set; }
 
-        private string ErrorMessage { get; set; }
-
         protected override async Task OnInitializedAsync()
         {
             DepartmentDetailsModel = await _departmentService.GetByIdAsync(DepartmentId);
-        }
-
-        private async Task HandleValidSubmit()
-        {
-            await _departmentService.DeleteAsync(DepartmentId);
-            _navigationManager.NavigateTo("employee/employee-list");
         }
     }
 }

@@ -3,7 +3,7 @@ using BlazorApp.Services;
 using BlazorApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Pages.Department
+namespace BlazorApp.Components.Pages.Department
 {
     public partial class CreateDepartment
     {

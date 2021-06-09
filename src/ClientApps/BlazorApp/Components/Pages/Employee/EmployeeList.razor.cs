@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using BlazorApp.Services;
 using BlazorApp.ViewModels.EmployeeViewModels;
 
-namespace BlazorApp.Pages.Employee
+namespace BlazorApp.Components.Pages.Employee
 {
     public partial class EmployeeList
     {
@@ -25,8 +25,9 @@ namespace BlazorApp.Pages.Employee
             {
                 Employees = await _employeeService.GetListAsync();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Console.WriteLine(exception);
                 ErrorMessage = "There is some error.";
             }
         }

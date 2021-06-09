@@ -3,7 +3,7 @@ using BlazorApp.Services;
 using BlazorApp.ViewModels.EmployeeViewModels;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Pages.Employee
+namespace BlazorApp.Components.Pages.Employee
 {
     public partial class DeleteEmployee
     {
