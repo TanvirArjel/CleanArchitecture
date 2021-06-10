@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using BlazorApp.Helpers;
 using BlazorApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
@@ -29,16 +30,14 @@ namespace BlazorApp.Services
 
         public async Task<List<SelectListItem>> GetSelectListAsync(int? selectedDepartment = null)
         {
-            List<SelectListItem> departments = await _httpClient.GetFromJsonAsync<List<SelectListItem>>($"v1/departments/select-list?selectedDepartment={selectedDepartment}");
+            List<SelectListItem> departments = await _httpClient
+                .GetFromJsonAsync<List<SelectListItem>>($"v1/departments/select-list?selectedDepartment={selectedDepartment}");
             return departments;
         }
 
         public async Task<HttpResponseMessage> CreateAsync(CreateDepartmentViewModel createDepartmentViewModel)
         {
-            if (createDepartmentViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(createDepartmentViewModel));
-            }
+            Requires.IsNotNull(createDepartmentViewModel, nameof(createDepartmentViewModel));
 
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync("v1/departments", createDepartmentViewModel);
             return response;
@@ -46,6 +45,8 @@ namespace BlazorApp.Services
 
         public async Task<DepartmentDetailsViewModel> GetByIdAsync(int departmentId)
         {
+            Requires.IsPositiveInt(departmentId, nameof(departmentId));
+
             DepartmentDetailsViewModel response = await _httpClient.GetFromJsonAsync<DepartmentDetailsViewModel>($"v1/departments/{departmentId}");
             return response;
         }
@@ -57,12 +58,15 @@ namespace BlazorApp.Services
                 throw new ArgumentNullException(nameof(updateDepartmentViewModel));
             }
 
-            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"v1/departments/{updateDepartmentViewModel.DepartmentId}", updateDepartmentViewModel);
+            HttpResponseMessage response = await _httpClient
+                .PutAsJsonAsync($"v1/departments/{updateDepartmentViewModel.DepartmentId}", updateDepartmentViewModel);
             return response;
         }
 
         public async Task<HttpResponseMessage> DeleteAsync(int departmentId)
         {
+            Requires.IsPositiveInt(departmentId, nameof(departmentId));
+
             HttpResponseMessage response = await _httpClient.DeleteAsync($"v1/departments/{departmentId}");
 
             return response;

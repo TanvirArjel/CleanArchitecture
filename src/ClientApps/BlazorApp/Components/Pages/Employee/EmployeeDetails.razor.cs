@@ -9,6 +9,11 @@ namespace BlazorApp.Components.Pages.Employee
     {
         private readonly EmployeeService _employeeService;
 
+        public EmployeeDetails(EmployeeService employeeService)
+        {
+            _employeeService = employeeService;
+        }
+
         [Parameter]
         public int EmployeeId { get; set; }
 
