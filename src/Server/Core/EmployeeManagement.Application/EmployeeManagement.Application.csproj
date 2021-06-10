@@ -20,6 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Common\TanvirArjel.ArgumentChecker\TanvirArjel.ArgumentChecker.csproj" />
 	  <ProjectReference Include="..\EmployeeManagement.Domain\EmployeeManagement.Domain.csproj" />
 	</ItemGroup>
 

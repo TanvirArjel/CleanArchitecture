@@ -78,7 +78,7 @@ namespace EmployeeManagement.Api
             {
                 options.DocExpansion(DocExpansion.None);
 
-                // build a swagger endpoint for each discovered API version  
+                // build a swagger endpoint for each discovered API version.
                 foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
                 {
                     options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());

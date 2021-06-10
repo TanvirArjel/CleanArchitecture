@@ -6,6 +6,7 @@ using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
+using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services
@@ -23,6 +24,9 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task<PaginatedList<EmployeeDetailsDto>> GetListAsync(int pageNumber, int pageSize)
         {
+            pageNumber.ThrowIfOutOfRange(1, 50, nameof(pageNumber));
+            pageNumber.ThrowIfOutOfRange(1, 50, nameof(pageSize));
+
             Expression<Func<Employee, EmployeeDetailsDto>> selectExpression = e => new EmployeeDetailsDto
             {
                 EmployeeId = e.Id,
@@ -50,6 +54,8 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(int employeeId)
         {
+            employeeId.ThrowIfNotPositive(nameof(employeeId));
+
             EmployeeDetailsDto employeeDetailsDto = await _employeeCacheRepository.GetDetailsByIdAsync(employeeId);
 
             return employeeDetailsDto;
@@ -57,10 +63,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task CreateAsync(CreateEmployeeDto createEmployeeDto)
         {
-            if (createEmployeeDto == null)
-            {
-                throw new ArgumentNullException(nameof(createEmployeeDto));
-            }
+            createEmployeeDto.ThrowIfNull(nameof(createEmployeeDto));
 
             Employee employeeToBeCreated = new Employee()
             {
@@ -78,10 +81,7 @@ namespace EmployeeManagement.Application.Implementations.Services
         {
             try
             {
-                if (updateEmployeeDto == null)
-                {
-                    throw new ArgumentNullException(nameof(updateEmployeeDto));
-                }
+                updateEmployeeDto.ThrowIfNull(nameof(updateEmployeeDto));
 
                 Employee employeeeToBeUpdated = await _repository.GetByIdAsync<Employee>(updateEmployeeDto.EmployeeId);
 
@@ -106,6 +106,8 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task DeleteAsync(int employeeId)
         {
+            employeeId.ThrowIfNotPositive(nameof(employeeId));
+
             Employee employeeeToBeDeleted = await _repository.GetByIdAsync<Employee>(employeeId);
 
             if (employeeeToBeDeleted == null)

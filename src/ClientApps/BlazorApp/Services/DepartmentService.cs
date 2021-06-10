@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorApp.Helpers;
 using BlazorApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace BlazorApp.Services
@@ -37,7 +36,7 @@ namespace BlazorApp.Services
 
         public async Task<HttpResponseMessage> CreateAsync(CreateDepartmentViewModel createDepartmentViewModel)
         {
-            Requires.IsNotNull(createDepartmentViewModel, nameof(createDepartmentViewModel));
+            createDepartmentViewModel.ThrowIfNull(nameof(createDepartmentViewModel));
 
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync("v1/departments", createDepartmentViewModel);
             return response;
@@ -45,7 +44,7 @@ namespace BlazorApp.Services
 
         public async Task<DepartmentDetailsViewModel> GetByIdAsync(int departmentId)
         {
-            Requires.IsPositiveInt(departmentId, nameof(departmentId));
+            departmentId.ThrowIfNotPositive(nameof(departmentId));
 
             DepartmentDetailsViewModel response = await _httpClient.GetFromJsonAsync<DepartmentDetailsViewModel>($"v1/departments/{departmentId}");
             return response;
@@ -53,10 +52,7 @@ namespace BlazorApp.Services
 
         public async Task<HttpResponseMessage> UpdateAsync(UpdateDepartmentViewModel updateDepartmentViewModel)
         {
-            if (updateDepartmentViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(updateDepartmentViewModel));
-            }
+            updateDepartmentViewModel.ThrowIfNull(nameof(updateDepartmentViewModel));
 
             HttpResponseMessage response = await _httpClient
                 .PutAsJsonAsync($"v1/departments/{updateDepartmentViewModel.DepartmentId}", updateDepartmentViewModel);
@@ -65,7 +61,7 @@ namespace BlazorApp.Services
 
         public async Task<HttpResponseMessage> DeleteAsync(int departmentId)
         {
-            Requires.IsPositiveInt(departmentId, nameof(departmentId));
+            departmentId.ThrowIfNotPositive(nameof(departmentId));
 
             HttpResponseMessage response = await _httpClient.DeleteAsync($"v1/departments/{departmentId}");
 
