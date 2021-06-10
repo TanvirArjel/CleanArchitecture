@@ -12,7 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Ardalis.GuardClauses" Version="3.2.0" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="1.4.0" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.261">
 			<PrivateAssets>all</PrivateAssets>
@@ -21,7 +20,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Common\TanvirArjel.ArgumentChecker\TanvirArjel.ArgumentChecker.csproj" />
 	  <ProjectReference Include="..\EmployeeManagement.Domain\EmployeeManagement.Domain.csproj" />
 	</ItemGroup>
 

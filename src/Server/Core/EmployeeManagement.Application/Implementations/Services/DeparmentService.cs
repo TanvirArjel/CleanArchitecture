@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Exceptions;
+using EmployeeManagement.Application.Extensions;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services

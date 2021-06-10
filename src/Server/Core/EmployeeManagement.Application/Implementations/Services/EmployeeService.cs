@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Exceptions;
+using EmployeeManagement.Application.Extensions;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
-using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services

@@ -3,9 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using BlazorApp.Extensions;
 using BlazorApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace BlazorApp.Services

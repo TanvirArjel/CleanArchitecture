@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 
-namespace TanvirArjel.ArgumentChecker
+namespace EmployeeManagement.Application.Extensions
 {
     public static class ArgumentExtensions
     {
-        public static T ThrowIfNull<T>([NotNull][ValidatedNotNull] this T value, string paramName, string message = null)
+        public static T ThrowIfNull<T>(this T value, string paramName, string message = null)
             where T : class
         {
             if (value is null)
