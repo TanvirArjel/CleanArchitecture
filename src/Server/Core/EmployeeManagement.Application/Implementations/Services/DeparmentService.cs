@@ -32,6 +32,8 @@ namespace EmployeeManagement.Application.Implementations.Services
         {
             createDepartmentDto.ThrowIfNull(nameof(createDepartmentDto));
 
+            ////Guard.Against.Null(createDepartmentDto, nameof(createDepartmentDto));
+
             Department departmentToBeCreated = new Department()
             {
                 Name = createDepartmentDto.DepartmentName,

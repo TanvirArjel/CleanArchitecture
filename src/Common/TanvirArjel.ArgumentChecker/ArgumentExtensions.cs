@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 
 namespace TanvirArjel.ArgumentChecker
 {
     public static class ArgumentExtensions
     {
-        public static T ThrowIfNull<T>(this T value, string paramName, string message = null)
+        public static T ThrowIfNull<T>([NotNull][ValidatedNotNull] this T value, string paramName, string message = null)
             where T : class
         {
             if (value is null)
@@ -20,7 +23,7 @@ namespace TanvirArjel.ArgumentChecker
             return value;
         }
 
-        public static T? ThrowIfNull<T>(this T? value, string paramName, string message = null)
+        public static T ThrowIfNull<T>(this T? value, string paramName, string message = null)
             where T : struct
         {
             if (value is null)
@@ -33,7 +36,7 @@ namespace TanvirArjel.ArgumentChecker
                 throw new ArgumentNullException(paramName, message);
             }
 
-            return value;
+            return value.Value;
         }
 
         public static long ThrowIfNotPositive(this long value, string paramName, string message = null)
@@ -122,17 +125,49 @@ namespace TanvirArjel.ArgumentChecker
                     throw new ArgumentException("The value of paramter is empty", paramName);
                 }
 
-                throw new ArgumentNullException(paramName, message);
+                throw new ArgumentException(message, paramName);
             }
 
             return value;
         }
 
-        public static Guid? ThrowIfNullOrEmpty(this Guid? value, string paramName, string message = null)
+        public static Guid ThrowIfNullOrEmpty(this Guid? value, string paramName, string message = null)
         {
             value.ThrowIfNull(paramName, message);
             ((Guid)value).ThrowIfEmpty(paramName, message);
-            return value;
+            return value.Value;
+        }
+
+        public static IEnumerable<T> ThrowIfNull<T>(this IEnumerable<T> collection, string paramName, string message = null)
+        {
+            if (collection == null)
+            {
+                if (string.IsNullOrWhiteSpace(message))
+                {
+                    throw new ArgumentNullException(paramName);
+                }
+
+                throw new ArgumentNullException(paramName, message);
+            }
+
+            return collection;
+        }
+
+        public static IEnumerable<T> ThrowIfNullOrEmpty<T>(this IEnumerable<T> collection, string paramName, string message = null)
+        {
+            collection.ThrowIfNull(paramName, message);
+
+            if (!collection.Any())
+            {
+                if (string.IsNullOrWhiteSpace(message))
+                {
+                    throw new ArgumentException("The collection is empty.", paramName);
+                }
+
+                throw new ArgumentException(message, paramName);
+            }
+
+            return collection;
         }
     }
 }
