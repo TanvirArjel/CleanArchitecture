@@ -23,13 +23,14 @@ namespace BlazorApp.Services
 
         public async Task<List<EmployeeDetailsViewModel>> GetListAsync()
         {
-            PaginatedList<EmployeeDetailsViewModel> paginatedList = await _httpClient.GetFromJsonAsync<PaginatedList<EmployeeDetailsViewModel>>("employees");
+            PaginatedList<EmployeeDetailsViewModel> paginatedList = await _httpClient
+                .GetFromJsonAsync<PaginatedList<EmployeeDetailsViewModel>>("v1/employees");
             return paginatedList.Items;
         }
 
         public async Task<EmployeeDetailsViewModel> GetDetailsByIdAsync(int employeeId)
         {
-            EmployeeDetailsViewModel employee = await _httpClient.GetFromJsonAsync<EmployeeDetailsViewModel>($"employees/{employeeId}");
+            EmployeeDetailsViewModel employee = await _httpClient.GetFromJsonAsync<EmployeeDetailsViewModel>($"v1/employees/{employeeId}");
             return employee;
         }
 
@@ -40,7 +41,7 @@ namespace BlazorApp.Services
                 throw new ArgumentNullException(nameof(createEmployeeViewModel));
             }
 
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("employees", createEmployeeViewModel);
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("v1/employees", createEmployeeViewModel);
             return response;
         }
 
@@ -51,14 +52,15 @@ namespace BlazorApp.Services
                 throw new ArgumentNullException(nameof(updateEmployeeViewModel));
             }
 
-            HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"employees/{updateEmployeeViewModel.EmployeeId}", updateEmployeeViewModel);
+            HttpResponseMessage response = await _httpClient
+                .PutAsJsonAsync($"v1/employees/{updateEmployeeViewModel.EmployeeId}", updateEmployeeViewModel);
 
             return response;
         }
 
         public async Task<HttpResponseMessage> DeleteAsync(int employeeId)
         {
-            HttpResponseMessage response = await _httpClient.DeleteAsync($"employees/{employeeId}");
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"v1/employees/{employeeId}");
             return response;
         }
     }

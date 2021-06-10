@@ -10,7 +10,8 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Api.Controllers
 {
-    [Route("api/employees")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/employees")]
     [ApiController]
     public class EmployeeController : ControllerBase
     {

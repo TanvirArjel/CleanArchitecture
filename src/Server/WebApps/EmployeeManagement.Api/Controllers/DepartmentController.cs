@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EmployeeManagement.Api.Controllers
 {
-    [Route("api/departments")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/departments")]
     [ApiController]
     public class DepartmentController : ControllerBase
     {
