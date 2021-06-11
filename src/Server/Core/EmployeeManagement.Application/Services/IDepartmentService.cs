@@ -22,5 +22,7 @@ namespace EmployeeManagement.Application.Services
         Task DeleteAsync(int departmentId);
 
         Task<bool> ExistsAsync(int departmentId);
+
+        Task<bool> ExistsByNameAsync(string departmentName);
     }
 }

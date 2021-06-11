@@ -32,8 +32,6 @@ namespace EmployeeManagement.Application.Implementations.Services
         {
             createDepartmentDto.ThrowIfNull(nameof(createDepartmentDto));
 
-            ////Guard.Against.Null(createDepartmentDto, nameof(createDepartmentDto));
-
             Department departmentToBeCreated = new Department()
             {
                 Name = createDepartmentDto.DepartmentName,
@@ -96,6 +94,14 @@ namespace EmployeeManagement.Application.Implementations.Services
             departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
 
             bool isExists = await _repository.ExistsAsync<Department>(d => d.Id == departmentId);
+            return isExists;
+        }
+
+        public async Task<bool> ExistsByNameAsync(string departmentName)
+        {
+            departmentName.ThrowIfNullOrEmpty(nameof(departmentName));
+
+            bool isExists = await _repository.ExistsAsync<Department>(d => d.Name == departmentName);
             return isExists;
         }
     }

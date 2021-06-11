@@ -14,6 +14,7 @@ namespace EmployeeManagement.Api.ApiModels.EmployeeModels
         public string EmployeeName { get; set; }
 
         [Required]
+        [Range(1, int.MaxValue)]
         public int DepartmentId { get; set; }
 
         [Required]

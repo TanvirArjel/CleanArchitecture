@@ -6,6 +6,7 @@ using EmployeeManagement.Application.Infrastrucures;
 using EmployeeManagement.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Api.Controllers
@@ -35,18 +36,19 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
+        [SwaggerOperation(Summary = "Get the employee paginated list by page number and page size.")]
         public async Task<ActionResult<PaginatedList<EmployeeDetailsDto>>> GetEmployeeList(int pageNumber, int pageSize)
         {
             try
             {
                 if (pageNumber < 0)
                 {
-                    return BadRequest("The pageNumber must be greather than 0.");
+                    return BadRequest($"The {nameof(pageNumber)} must be greater than 0.");
                 }
 
                 if (pageSize < 0)
                 {
-                    return BadRequest("The pageSize must be greather than 0.");
+                    return BadRequest($"The {nameof(pageSize)} must be in between 1 and 50.");
                 }
 
                 pageNumber = pageNumber == 0 ? 1 : pageNumber;
@@ -66,10 +68,16 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
+        [SwaggerOperation(Summary = "Get details of an employee by employee id.")]
         public async Task<ActionResult<EmployeeDetailsDto>> GetDetailsById(int employeeId)
         {
             try
             {
+                if (employeeId <= 0)
+                {
+                    return BadRequest($"The value of {nameof(employeeId)} msut be greater than 0.");
+                }
+
                 EmployeeDetailsDto employeeDetailsDto = await _employeeService.GetDetailsByIdAsync(employeeId);
                 return employeeDetailsDto;
             }
@@ -86,6 +94,7 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
+        [SwaggerOperation(Summary = "Create a new employee by posting the required data.")]
         public async Task<ActionResult> CreateEmployee([FromBody] CreateEmployeeModel model)
         {
             try
@@ -123,6 +132,7 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
+        [SwaggerOperation(Summary = "Update an existing employee by employee id and posting the updated data.")]
         public async Task<ActionResult> UpdateEmployee(int employeeId, [FromBody] UpdateEmployeeModel model)
         {
             try
@@ -167,10 +177,17 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
+        [SwaggerOperation(Summary = "Delete an existing employee by employee id.")]
         public async Task<ActionResult> DeleteEmployee(int employeeId)
         {
             try
             {
+                if (employeeId <= 0)
+                {
+                    ModelState.AddModelError(nameof(employeeId), $"The value of {nameof(employeeId)} msut be greater than 0.");
+                    return BadRequest(ModelState);
+                }
+
                 EmployeeDetailsDto employee = await _employeeService.GetDetailsByIdAsync(employeeId);
 
                 if (employee == null)
