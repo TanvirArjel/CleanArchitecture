@@ -31,7 +31,7 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
         private async Task HandleValidSubmit()
         {
             await _departmentService.DeleteAsync(DepartmentId);
-            _navigationManager.NavigateTo("employee/employee-list");
+            _navigationManager.NavigateTo("department/department-list");
         }
     }
 }

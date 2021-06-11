@@ -15,7 +15,7 @@
                     <label class="col-sm-2 col-form-label">Department Name</label>
                     <div class="col-sm-10">
                         <div class="form-control">
-                            @DepartmentDetailsModel.DepartmentName
+                            @DepartmentDetailsModel.Name
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
         @{
             if (DepartmentDetailsModel != null)
             {
-                <a href="department/update-department/@(DepartmentDetailsModel.DepartmentId)" class="btn btn-secondary me-1">
+                <a href="department/update-department/@(DepartmentDetailsModel.Id)" class="btn btn-secondary me-1">
                     <i class="fas fa-edit"></i>
                     Edit
                 </a>

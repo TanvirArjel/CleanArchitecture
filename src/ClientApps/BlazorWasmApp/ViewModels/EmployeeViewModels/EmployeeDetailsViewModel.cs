@@ -6,10 +6,10 @@ namespace BlazorWasmApp.ViewModels.EmployeeViewModels
 {
     public class EmployeeDetailsViewModel
     {
-        public int EmployeeId { get; set; }
+        public int Id { get; set; }
 
         [DisplayName("Employee Name")]
-        public string EmployeeName { get; set; }
+        public string Name { get; set; }
 
         public int DepartmentId { get; set; }
 

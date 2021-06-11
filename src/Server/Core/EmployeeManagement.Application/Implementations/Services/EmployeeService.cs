@@ -29,8 +29,8 @@ namespace EmployeeManagement.Application.Implementations.Services
 
             Expression<Func<Employee, EmployeeDetailsDto>> selectExpression = e => new EmployeeDetailsDto
             {
-                EmployeeId = e.Id,
-                EmployeeName = e.Name,
+                Id = e.Id,
+                Name = e.Name,
                 DepartmentId = e.DepartmentId,
                 DepartmentName = e.Department.Name,
                 DateOfBirth = e.DateOfBirth,

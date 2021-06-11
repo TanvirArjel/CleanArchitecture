@@ -46,8 +46,8 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
             {
                 Expression<Func<Employee, EmployeeDetailsDto>> selectExp = e => new EmployeeDetailsDto
                 {
-                    EmployeeId = e.Id,
-                    EmployeeName = e.Name,
+                    Id = e.Id,
+                    Name = e.Name,
                     DepartmentId = e.DepartmentId,
                     DepartmentName = e.Department.Name,
                     DateOfBirth = e.DateOfBirth,

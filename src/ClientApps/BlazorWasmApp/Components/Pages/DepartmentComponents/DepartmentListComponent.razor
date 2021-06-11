@@ -54,7 +54,7 @@
                                 {
                                     <tr>
                                         <td>
-                                            @item.DepartmentName
+                                            @item.Name
                                         </td>
                                         <td>
                                             @item.Description
@@ -69,9 +69,9 @@
                                             @item.LastModifiedAtUtc
                                         </td>
                                         <td>
-                                            <a class="btn btn-sm btn-warning" href="department/update-department/@(item.DepartmentId)">Edit</a>
-                                            <a class="btn btn-sm btn-info" href="department/department-details/@(item.DepartmentId)">Details</a>
-                                            <a class="btn btn-sm btn-danger" href="department/delete-department/@(item.DepartmentId)">Delete</a>
+                                            <a class="btn btn-sm btn-warning" href="department/update-department/@(item.Id)">Edit</a>
+                                            <a class="btn btn-sm btn-info" href="department/department-details/@(item.Id)">Details</a>
+                                            <a class="btn btn-sm btn-danger" href="department/delete-department/@(item.Id)">Delete</a>
                                         </td>
                                     </tr>
                                 }

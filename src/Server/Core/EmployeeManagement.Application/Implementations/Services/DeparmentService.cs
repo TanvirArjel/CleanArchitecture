@@ -46,7 +46,7 @@ namespace EmployeeManagement.Application.Implementations.Services
         public async Task<SelectList> GetSelectListAsync(int? selectedDepartmentId)
         {
             List<DepartmentSelectListDto> departments = await _departmentCacheRepository.GetSelectListAsync();
-            return new SelectList(departments, "DepartmentId", "DepartmentName", selectedDepartmentId);
+            return new SelectList(departments, "Id", "Name", selectedDepartmentId);
         }
 
         public async Task<DepartmentDetailsDto> GetByIdAsync(int departmentId)

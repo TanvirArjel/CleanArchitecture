@@ -32,8 +32,8 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
             {
                 Expression<Func<Department, DepartmentDetailsDto>> selectExp = d => new DepartmentDetailsDto
                 {
-                    DepartmentId = d.Id,
-                    DepartmentName = d.Name,
+                    Id = d.Id,
+                    Name = d.Name,
                     Description = d.Description,
                     IsActive = d.IsActive,
                     CreatedAtUtc = d.CreatedAtUtc,
@@ -57,8 +57,8 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
             {
                 Expression<Func<Department, DepartmentSelectListDto>> selectExp = d => new DepartmentSelectListDto
                 {
-                    DepartmentId = d.Id,
-                    DepartmentName = d.Name,
+                    Id = d.Id,
+                    Name = d.Name,
                 };
 
                 departmentSelectList = await _repository.GetListAsync(selectExp);
@@ -93,8 +93,8 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
             {
                 Expression<Func<Department, DepartmentDetailsDto>> selectExp = d => new DepartmentDetailsDto
                 {
-                    DepartmentId = d.Id,
-                    DepartmentName = d.Name,
+                    Id = d.Id,
+                    Name = d.Name,
                     Description = d.Description,
                     IsActive = d.IsActive,
                     CreatedAtUtc = d.CreatedAtUtc,
@@ -124,8 +124,8 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 
             DepartmentDetailsDto departmentDetailsDto = new DepartmentDetailsDto()
             {
-                DepartmentId = department.Id,
-                DepartmentName = department.Name,
+                Id = department.Id,
+                Name = department.Name,
                 Description = department.Description,
                 IsActive = department.IsActive,
                 CreatedAtUtc = department.CreatedAtUtc,
@@ -154,8 +154,8 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 
             DepartmentDetailsDto departmentDetailsDto = new DepartmentDetailsDto()
             {
-                DepartmentId = department.Id,
-                DepartmentName = department.Name,
+                Id = department.Id,
+                Name = department.Name,
                 Description = department.Description,
                 IsActive = department.IsActive,
                 CreatedAtUtc = department.CreatedAtUtc,
