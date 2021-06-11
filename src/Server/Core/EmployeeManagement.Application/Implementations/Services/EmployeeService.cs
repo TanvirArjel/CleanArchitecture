@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Exceptions;
-using EmployeeManagement.Application.Extensions;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
+using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services
@@ -54,7 +54,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(int employeeId)
         {
-            employeeId.ThrowIfNotPositive(nameof(employeeId));
+            employeeId.ThrowIfZeroOrNegative(nameof(employeeId));
 
             EmployeeDetailsDto employeeDetailsDto = await _employeeCacheRepository.GetDetailsByIdAsync(employeeId);
 
@@ -106,7 +106,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task DeleteAsync(int employeeId)
         {
-            employeeId.ThrowIfNotPositive(nameof(employeeId));
+            employeeId.ThrowIfZeroOrNegative(nameof(employeeId));
 
             Employee employeeeToBeDeleted = await _repository.GetByIdAsync<Employee>(employeeId);
 

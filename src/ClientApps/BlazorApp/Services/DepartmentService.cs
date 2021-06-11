@@ -3,9 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorApp.Extensions;
 using BlazorApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace BlazorApp.Services
@@ -44,7 +44,7 @@ namespace BlazorApp.Services
 
         public async Task<DepartmentDetailsViewModel> GetByIdAsync(int departmentId)
         {
-            departmentId.ThrowIfNotPositive(nameof(departmentId));
+            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
 
             DepartmentDetailsViewModel response = await _httpClient.GetFromJsonAsync<DepartmentDetailsViewModel>($"v1/departments/{departmentId}");
             return response;
@@ -61,7 +61,7 @@ namespace BlazorApp.Services
 
         public async Task<HttpResponseMessage> DeleteAsync(int departmentId)
         {
-            departmentId.ThrowIfNotPositive(nameof(departmentId));
+            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
 
             HttpResponseMessage response = await _httpClient.DeleteAsync($"v1/departments/{departmentId}");
 

@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Exceptions;
-using EmployeeManagement.Application.Extensions;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Implementations.Services
@@ -47,14 +47,13 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task<SelectList> GetSelectListAsync(int? selectedDepartmentId)
         {
-            selectedDepartmentId.ThrowIfNull(nameof(selectedDepartmentId));
             List<DepartmentSelectListDto> departments = await _departmentCacheRepository.GetSelectListAsync();
             return new SelectList(departments, "DepartmentId", "DepartmentName", selectedDepartmentId);
         }
 
         public async Task<DepartmentDetailsDto> GetByIdAsync(int departmentId)
         {
-            departmentId.ThrowIfNotPositive(nameof(departmentId));
+            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
 
             DepartmentDetailsDto departmentDetailsDto = await _departmentCacheRepository.GetDetailsByIdAsync(departmentId);
 
@@ -80,7 +79,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task DeleteAsync(int departmentId)
         {
-            departmentId.ThrowIfNotPositive(nameof(departmentId));
+            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
 
             Department departmentToBeDeleted = await _repository.GetByIdAsync<Department>(departmentId);
 
@@ -94,7 +93,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task<bool> ExistsAsync(int departmentId)
         {
-            departmentId.ThrowIfNotPositive(nameof(departmentId));
+            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
 
             bool isExists = await _repository.ExistsAsync<Department>(d => d.Id == departmentId);
             return isExists;
