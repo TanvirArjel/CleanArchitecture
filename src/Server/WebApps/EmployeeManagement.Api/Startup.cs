@@ -17,6 +17,8 @@ namespace EmployeeManagement.Api
 {
     public class Startup
     {
+        private readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             Configuration = configuration;
@@ -30,6 +32,18 @@ namespace EmployeeManagement.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: myAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44364")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
+
             services.AddEmployeeManagementDbContext(Configuration, WebHostEnvironment);
             services.AddInfrasturctureConifugrations();
 
@@ -45,7 +59,7 @@ namespace EmployeeManagement.Api
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Not appplicable here")]
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -59,6 +73,8 @@ namespace EmployeeManagement.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(myAllowSpecificOrigins);
 
             app.UseAuthorization();
 
