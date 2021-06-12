@@ -39,5 +39,17 @@ namespace EmployeeManagement.Infrastructure.Services
 
             await Task.CompletedTask;
         }
+
+        public async Task LogAsync(Exception exception, string requestPath, string requestBody)
+        {
+            if (exception == null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+
+            _logger.LogCritical(exception, "RequestPath: {0} and RequestBody: {1}", requestPath, requestBody);
+
+            await Task.CompletedTask;
+        }
     }
 }

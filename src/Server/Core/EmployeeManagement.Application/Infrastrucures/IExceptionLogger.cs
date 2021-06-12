@@ -10,5 +10,7 @@ namespace EmployeeManagement.Application.Infrastrucures
         Task LogAsync(Exception exception);
 
         Task LogAsync(Exception exception, object paramters);
+
+        Task LogAsync(Exception exception, string requestPath, string requestBody);
     }
 }

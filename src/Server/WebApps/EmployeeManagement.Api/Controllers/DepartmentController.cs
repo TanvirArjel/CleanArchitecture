@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeeManagement.Api.ApiModels.DepartmentModels;
 using EmployeeManagement.Api.AutoMapper;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
-using EmployeeManagement.Application.Infrastrucures;
 using EmployeeManagement.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +17,10 @@ namespace EmployeeManagement.Api.Controllers
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
-        private readonly IExceptionLogger _exceptionLogger;
 
-        public DepartmentController(IDepartmentService departmentService, IExceptionLogger exceptionLogger)
+        public DepartmentController(IDepartmentService departmentService)
         {
             _departmentService = departmentService;
-            _exceptionLogger = exceptionLogger;
         }
 
         [HttpGet]
@@ -34,16 +30,8 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Get the list of all departments.")]
         public async Task<ActionResult<List<DepartmentDetailsDto>>> GetDepartmentList()
         {
-            try
-            {
-                List<DepartmentDetailsDto> departmentDetailsDtos = await _departmentService.GetListAsync();
-                return departmentDetailsDtos;
-            }
-            catch (Exception exception)
-            {
-                await _exceptionLogger.LogAsync(exception);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            List<DepartmentDetailsDto> departmentDetailsDtos = await _departmentService.GetListAsync();
+            return departmentDetailsDtos;
         }
 
         [HttpGet("select-list")]
@@ -54,21 +42,13 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Get the department select list.")]
         public async Task<ActionResult<SelectList>> GetDepartmentSelectList(int? selectedDepartment)
         {
-            try
+            if (selectedDepartment <= 0)
             {
-                if (selectedDepartment <= 0)
-                {
-                    return BadRequest($"The value of {nameof(selectedDepartment)} msut be greater than 0.");
-                }
+                return BadRequest($"The value of {nameof(selectedDepartment)} msut be greater than 0.");
+            }
 
-                SelectList selectList = await _departmentService.GetSelectListAsync(selectedDepartment);
-                return selectList;
-            }
-            catch (Exception exception)
-            {
-                await _exceptionLogger.LogAsync(exception);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            SelectList selectList = await _departmentService.GetSelectListAsync(selectedDepartment);
+            return selectList;
         }
 
         [HttpPost]
@@ -78,30 +58,22 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Create a new department by posting the required data.")]
         public async Task<ActionResult> CreateDepartment([FromBody] CreateDepartmentModel model)
         {
-            try
+            bool isNameAlreadyExistent = await _departmentService.ExistsByNameAsync(model.DepartmentName);
+
+            if (isNameAlreadyExistent)
             {
-                bool isNameAlreadyExistent = await _departmentService.ExistsByNameAsync(model.DepartmentName);
-
-                if (isNameAlreadyExistent)
-                {
-                    ModelState.AddModelError(nameof(model.DepartmentName), "The Name already exists.");
-                    return BadRequest(ModelState);
-                }
-
-                CreateDepartmentDto createDepartmentDto = new CreateDepartmentDto
-                {
-                    DepartmentName = model.DepartmentName,
-                    Description = model.Description
-                };
-
-                int departmentId = await _departmentService.CreateAsync(createDepartmentDto);
-                return CreatedAtAction(nameof(GetDepartment), new { departmentId }, model);
+                ModelState.AddModelError(nameof(model.DepartmentName), "The Name already exists.");
+                return BadRequest(ModelState);
             }
-            catch (Exception exception)
+
+            CreateDepartmentDto createDepartmentDto = new CreateDepartmentDto
             {
-                await _exceptionLogger.LogAsync(exception);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+                DepartmentName = model.DepartmentName,
+                Description = model.Description
+            };
+
+            int departmentId = await _departmentService.CreateAsync(createDepartmentDto);
+            return CreatedAtAction(nameof(GetDepartment), new { departmentId }, model);
         }
 
         [HttpGet("{departmentId}")]
@@ -111,21 +83,13 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Get the details of a department by department id.")]
         public async Task<ActionResult<DepartmentDetailsDto>> GetDepartment(int departmentId)
         {
-            try
+            if (departmentId <= 0)
             {
-                if (departmentId <= 0)
-                {
-                    return BadRequest($"The value of {nameof(departmentId)} msut be greater than 0.");
-                }
+                return BadRequest($"The value of {nameof(departmentId)} msut be greater than 0.");
+            }
 
-                DepartmentDetailsDto departmentDetailsDto = await _departmentService.GetByIdAsync(departmentId);
-                return departmentDetailsDto;
-            }
-            catch (Exception exception)
-            {
-                await _exceptionLogger.LogAsync(exception);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            DepartmentDetailsDto departmentDetailsDto = await _departmentService.GetByIdAsync(departmentId);
+            return departmentDetailsDto;
         }
 
         [HttpPut("{departmentId}")]
@@ -136,37 +100,29 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Update an existing employee by employee id and posting updated data.")]
         public async Task<ActionResult> UpdateDepartment(int departmentId, UpdateDepartmentModel model)
         {
-            try
+            if (departmentId != model.DepartmentId)
             {
-                if (departmentId != model.DepartmentId)
-                {
-                    ModelState.AddModelError(nameof(model.DepartmentId), "The DepartmentId does not match with route value.");
-                    return BadRequest(ModelState);
-                }
-
-                bool isExistent = await _departmentService.ExistsAsync(departmentId);
-
-                if (!isExistent)
-                {
-                    ModelState.AddModelError(nameof(model.DepartmentId), "The Department does not exist.");
-                    return BadRequest(ModelState);
-                }
-
-                UpdateDepartmentDto updateDepartmentDto = new UpdateDepartmentDto()
-                {
-                    DepartmentId = model.DepartmentId,
-                    DepartmentName = model.DepartmentName,
-                    Description = model.Description
-                };
-
-                await _departmentService.UpdateAsync(updateDepartmentDto);
-                return Ok();
+                ModelState.AddModelError(nameof(model.DepartmentId), "The DepartmentId does not match with route value.");
+                return BadRequest(ModelState);
             }
-            catch (Exception exception)
+
+            bool isExistent = await _departmentService.ExistsAsync(departmentId);
+
+            if (!isExistent)
             {
-                await _exceptionLogger.LogAsync(exception);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                ModelState.AddModelError(nameof(model.DepartmentId), "The Department does not exist.");
+                return BadRequest(ModelState);
             }
+
+            UpdateDepartmentDto updateDepartmentDto = new UpdateDepartmentDto()
+            {
+                DepartmentId = model.DepartmentId,
+                DepartmentName = model.DepartmentName,
+                Description = model.Description
+            };
+
+            await _departmentService.UpdateAsync(updateDepartmentDto);
+            return Ok();
         }
 
         [HttpDelete("{departmentId}")]
@@ -176,30 +132,22 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Delete an existing department by department id.")]
         public async Task<IActionResult> DeleteDepartment(int departmentId)
         {
-            try
+            if (departmentId <= 0)
             {
-                if (departmentId <= 0)
-                {
-                    ModelState.AddModelError(string.Empty, $"The value of {nameof(departmentId)} msut be greater than 0.");
-                    return BadRequest(ModelState);
-                }
-
-                bool isExistent = await _departmentService.ExistsAsync(departmentId);
-
-                if (isExistent == false)
-                {
-                    ModelState.AddModelError(nameof(departmentId), "The Department does not exist.");
-                    return BadRequest(ModelState);
-                }
-
-                await _departmentService.DeleteAsync(departmentId);
-                return NoContent();
+                ModelState.AddModelError(string.Empty, $"The value of {nameof(departmentId)} msut be greater than 0.");
+                return BadRequest(ModelState);
             }
-            catch (Exception exception)
+
+            bool isExistent = await _departmentService.ExistsAsync(departmentId);
+
+            if (isExistent == false)
             {
-                await _exceptionLogger.LogAsync(exception);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                ModelState.AddModelError(nameof(departmentId), "The Department does not exist.");
+                return BadRequest(ModelState);
             }
+
+            await _departmentService.DeleteAsync(departmentId);
+            return NoContent();
         }
     }
 }
