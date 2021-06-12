@@ -1,6 +1,6 @@
-﻿@page "/department/department-list"
+﻿@page "/departments"
 
-
+<CreateDepartmentModalComponent @ref=CreateModal></CreateDepartmentModalComponent>
 @{
     if (ErrorMessage == null)
     {
@@ -12,9 +12,9 @@
                             <h3 class="mb-0">
                                 <strong><i class="fas fa-list-ul"></i> Department List</strong>
 
-                                <a href="department/create-department" class="btn btn-success float-end">
-                                <i class="fas fa-plus"></i> Create New
-                            </a>
+                                <button @onclick=ShowCreateModal class="btn btn-success float-end">
+                                   <i class="fas fa-plus"></i> Create New
+                                 </button>
                             </h3>
                             
                         </th>
@@ -35,7 +35,9 @@
                         <th style="min-width:120px;">
                             Updated At
                         </th>
-                        <th>Action</th>
+                         <th style="min-width:200px;">
+                            Action
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

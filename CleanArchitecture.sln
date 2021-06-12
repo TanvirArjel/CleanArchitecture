@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Infrastructure.Data", "src\Server\Infrastructure\EmployeeManagement.Infrastructure.Data\EmployeeManagement.Infrastructure.Data.csproj", "{2AB880F3-C940-4321-9193-1601BE8CDF80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWasmApp", "src\ClientApps\BlazorWasmApp\BlazorWasmApp.csproj", "{D98DEF73-6D92-4A59-9BB3-4034F4161561}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWasmApp", "src\ClientApps\BlazorWasmApp\BlazorWasmApp.csproj", "{D98DEF73-6D92-4A59-9BB3-4034F4161561}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

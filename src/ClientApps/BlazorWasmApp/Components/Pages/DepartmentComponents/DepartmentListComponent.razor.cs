@@ -19,6 +19,8 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
 
         private string ErrorMessage { get; set; }
 
+        private CreateDepartmentModalComponent CreateModal { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             try
@@ -29,6 +31,11 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
             {
                 ErrorMessage = "There is some problem with the service. Please try again. If the problem persists please contact with system administrator.";
             }
+        }
+
+        private void ShowCreateModal()
+        {
+            CreateModal.Show();
         }
     }
 }

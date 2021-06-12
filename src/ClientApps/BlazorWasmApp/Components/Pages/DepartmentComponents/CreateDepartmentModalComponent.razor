@@ -1,0 +1,46 @@
+﻿<!-- Modal -->
+<div class="modal fade  @ModalClass" id="staticBackdrop"
+           data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header justify-content-center">
+				<h3 class="modal-title my-2" id="staticBackdropLabel">
+				    Create Department
+			    </h3>
+			</div>
+			<EditForm EditContext="FormEditContext" OnValidSubmit="HandleValidSubmit">
+			<div class="modal-body">
+				
+					<DataAnnotationsValidator />
+					<CustomValidator @ref="CustomValidator" />
+					<ValidationSummary Model="@CreateDepartmentModel" />
+
+					<div class="form-floating mb-3">
+					  <InputText class="form-control" @bind-Value="CreateDepartmentModel.DepartmentName" placeholder="Enter department name" />
+					  <label>Name</label>
+					  <ValidationMessage For="@(() => CreateDepartmentModel.DepartmentName)" />
+					</div>
+
+					<div class="form-floating">
+						<InputText class="form-control" @bind-Value="CreateDepartmentModel.Description" placeholder="Description"/>
+						<label>Description</label>
+					     <ValidationMessage For="@(() => CreateDepartmentModel.Description)" />
+					</div>
+			</div>
+			<div class="modal-footer row g-2">
+				<div class="col">
+					<button @onclick="Close" type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
+				  </div>
+				  <div class="col">
+					<button type="submit" class="btn btn-success w-100"><i class="fas fa-check"></i> Submit</button>
+				  </div>
+			</div>
+			</EditForm>
+		</div>
+	</div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
