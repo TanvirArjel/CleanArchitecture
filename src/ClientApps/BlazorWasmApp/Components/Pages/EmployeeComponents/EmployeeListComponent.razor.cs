@@ -17,6 +17,8 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
 
         private List<EmployeeDetailsViewModel> Employees { get; set; }
 
+        private CreateEmployeeModalComponent CreateModal { get; set; }
+
         private string ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -30,6 +32,17 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
                 Console.WriteLine(exception);
                 ErrorMessage = "There is some error.";
             }
+        }
+
+        private async Task OpenCreateModalAsync()
+        {
+            await CreateModal.OpenAsync();
+        }
+
+        private async void CreatedEmployeeEventHandler()
+        {
+            Employees = await _employeeService.GetListAsync();
+            StateHasChanged();
         }
     }
 }
