@@ -5,6 +5,7 @@ using BlazorWasmApp.Common;
 using BlazorWasmApp.Extensions;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.DepartmentsViewModels;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace BlazorWasmApp.Components.Pages.DepartmentComponents
@@ -29,6 +30,9 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
         private EditContext FormEditContext { get; set; }
 
         private CreateDepartmentViewModel CreateDepartmentModel { get; set; } = new CreateDepartmentViewModel();
+
+        [Parameter]
+        public EventCallback DepartmentCreated { get; set; }
 
         protected override void OnInitialized()
         {
@@ -61,6 +65,7 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     Close();
+                    await DepartmentCreated.InvokeAsync();
                     return;
                 }
 

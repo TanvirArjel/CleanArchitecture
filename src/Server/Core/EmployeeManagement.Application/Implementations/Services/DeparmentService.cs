@@ -101,8 +101,17 @@ namespace EmployeeManagement.Application.Implementations.Services
         {
             departmentName.ThrowIfNullOrEmpty(nameof(departmentName));
 
-            bool isExists = await _repository.ExistsAsync<Department>(d => d.Name == departmentName);
-            return isExists;
+            bool isExistent = await _repository.ExistsAsync<Department>(d => d.Name == departmentName);
+            return isExistent;
+        }
+
+        public async Task<bool> IsUniqueAsync(int departmentId, string departmentName)
+        {
+            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+            departmentName.ThrowIfNullOrEmpty(nameof(departmentName));
+
+            bool isExistent = await _repository.ExistsAsync<Department>(d => d.Id != departmentId && d.Name == departmentName);
+            return !isExistent;
         }
     }
 }

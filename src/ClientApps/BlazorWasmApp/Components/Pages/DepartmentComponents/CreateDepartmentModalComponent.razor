@@ -2,8 +2,8 @@
 <div class="modal fade  @ModalClass" id="staticBackdrop"
            data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-header justify-content-center">
+		<div class="modal-content border-success">
+			<div class="modal-header bg-success text-white justify-content-center">
 				<h3 class="modal-title my-2" id="staticBackdropLabel">
 				    Create Department
 			    </h3>
@@ -27,7 +27,7 @@
 					     <ValidationMessage For="@(() => CreateDepartmentModel.Description)" />
 					</div>
 			</div>
-			<div class="modal-footer row g-2">
+			<div class="modal-footer border-success">
 				<div class="col">
 					<button @onclick="Close" type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
 				  </div>

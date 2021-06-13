@@ -114,6 +114,14 @@ namespace EmployeeManagement.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            bool isUnique = await _departmentService.IsUniqueAsync(departmentId, model.DepartmentName);
+
+            if (isUnique == false)
+            {
+                ModelState.AddModelError(nameof(model.DepartmentName), "The Name already exists.");
+                return BadRequest(ModelState);
+            }
+
             UpdateDepartmentDto updateDepartmentDto = new UpdateDepartmentDto()
             {
                 DepartmentId = model.DepartmentId,

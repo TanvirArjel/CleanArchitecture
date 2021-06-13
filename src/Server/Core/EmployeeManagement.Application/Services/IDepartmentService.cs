@@ -24,5 +24,7 @@ namespace EmployeeManagement.Application.Services
         Task<bool> ExistsAsync(int departmentId);
 
         Task<bool> ExistsByNameAsync(string departmentName);
+
+        Task<bool> IsUniqueAsync(int departmentId, string departmentName);
     }
 }

@@ -1,0 +1,67 @@
+﻿<!-- Modal -->
+<div class="modal fade @ModalClass" id="staticBackdrop"
+        data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-warning">
+      <div class="modal-header bg-warning justify-content-center">
+        <h3 class="modal-title my-3" id="staticBackdropLabel">
+              Update Department
+        </h3>
+      </div>
+        @{
+            if (ErrorMessage == null)
+            {
+                if (UpdateDepartmentModel != null)
+                {
+                    <EditForm EditContext="FormEditContext" OnValidSubmit="HandleValidSubmit">
+                        <div class="modal-body">
+                            <DataAnnotationsValidator />
+                            <CustomValidator @ref="CustomValidator" />
+                            <ValidationSummary Model="@UpdateDepartmentModel" />
+                            <div class="form-floating mb-3">
+                                <InputText class="form-control" @bind-Value="UpdateDepartmentModel.DepartmentName" placeholder="Name"/>
+                                <label>Department Name</label>
+                                <ValidationMessage For="@(() => UpdateDepartmentModel.DepartmentName)" />
+                            </div>
+                        
+                            <div class="form-floating">
+                                <InputText class="form-control" @bind-Value="UpdateDepartmentModel.Description" placeholder="Description"/>
+                                <label>Description</label>
+                                <ValidationMessage For="@(() => UpdateDepartmentModel.Description)" />
+                            </div>
+                        
+                        </div>
+
+                        <div class="modal-footer border-warning">
+				            <div class="col">
+					            <button @onclick="Close" type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
+				              </div>
+				              <div class="col">
+					            <button type="submit" class="btn btn-success w-100"><i class="fas fa-check"></i> Submit</button>
+				              </div>
+			            </div>
+
+                    </EditForm>
+                }
+                else
+                {
+                    <em>Please wait! Data is loading.</em>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger mb-0">
+                    @ErrorMessage
+                </div>
+            }
+        }
+    </div>
+  </div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
