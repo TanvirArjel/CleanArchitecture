@@ -25,21 +25,32 @@
                                 <ValidationMessage For="@(() => UpdateDepartmentModel.DepartmentName)" />
                             </div>
                         
-                            <div class="form-floating">
+                            <div class="form-floating mb-3">
                                 <InputText class="form-control" @bind-Value="UpdateDepartmentModel.Description" placeholder="Description"/>
                                 <label>Description</label>
                                 <ValidationMessage For="@(() => UpdateDepartmentModel.Description)" />
                             </div>
-                        
+                            <div class="form-control p-2">
+                                <div class="row">
+                                    <div class="col-4 col-form-label">
+                                    Status
+                                </div>
+                                <div class="col-4">
+                                    <InputCheckbox  @bind-Value="UpdateDepartmentModel.IsActive" class="btn-check" id="btn-check-outlined" autocomplete="off"/>
+                                <label class="btn @(UpdateDepartmentModel.IsActive ? "btn-outline-success" : "btn-outline-danger")" for="btn-check-outlined">
+                                    @(UpdateDepartmentModel.IsActive ? "Active" : "Not Active")
+                                </label>
+                                </div>
+                                </div>
+                                
+                                
+                            </div>
+                            
                         </div>
 
                         <div class="modal-footer border-warning">
-				            <div class="col">
-					            <button @onclick="Close" type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
-				              </div>
-				              <div class="col">
-					            <button type="submit" class="btn btn-success w-100"><i class="fas fa-check"></i> Submit</button>
-				              </div>
+				            <button @onclick="Close" type="button" class="col btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				            <button type="submit" class="col btn btn-success"><i class="fas fa-check"></i> Submit</button>
 			            </div>
 
                     </EditForm>

@@ -18,5 +18,7 @@ namespace BlazorWasmApp.ViewModels.DepartmentsViewModels
         [MinLength(20, ErrorMessage = "{0} should be at least {1} characters long.")]
         [MaxLength(200, ErrorMessage = "{0} should not be more than {1} characters.")]
         public string Description { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

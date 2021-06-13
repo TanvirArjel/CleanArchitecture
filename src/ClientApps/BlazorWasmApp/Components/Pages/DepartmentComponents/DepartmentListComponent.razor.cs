@@ -26,6 +26,10 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
 
         private UpdateDepartmentModalComponent UpdateModal { get; set; }
 
+        private DepartmentDetailsModalComponent DetailsModal { get; set; }
+
+        private DeleteDepartmentModalComponent DeleteModal { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             try
@@ -59,6 +63,16 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
         private async Task ShowUpdateModal(int departmentId)
         {
             await UpdateModal.ShowAsync(departmentId);
+        }
+
+        private async Task ShowDetailsModalAsync(int departmentId)
+        {
+            await DetailsModal.ShowAsync(departmentId);
+        }
+
+        private async Task ShowDeleteModalAsync(int departmentId)
+        {
+            await DeleteModal.ShowAsync(departmentId);
         }
     }
 }

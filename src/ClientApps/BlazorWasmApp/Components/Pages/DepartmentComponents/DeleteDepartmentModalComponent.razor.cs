@@ -6,16 +6,16 @@ using BlazorWasmApp.Extensions;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
+using TanvirArjel.ArgumentChecker;
 
 namespace BlazorWasmApp.Components.Pages.DepartmentComponents
 {
-    public partial class CreateDepartmentModalComponent
+    public partial class DeleteDepartmentModalComponent
     {
         private readonly DepartmentService _departmentService;
         private readonly ExceptionLogger _exceptionLogger;
 
-        public CreateDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
+        public DeleteDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
         {
             _departmentService = departmentService;
             _exceptionLogger = exceptionLogger;
@@ -25,23 +25,21 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
 
         private bool ShowBackdrop { get; set; }
 
+        private DepartmentDetailsViewModel DepartmentDetailsModel { get; set; }
+
         private CustomValidator CustomValidator { get; set; }
 
-        private EditContext FormEditContext { get; set; }
-
-        private CreateDepartmentViewModel CreateDepartmentModel { get; set; } = new CreateDepartmentViewModel();
-
         [Parameter]
-        public EventCallback DepartmentCreated { get; set; }
+        public EventCallback DepartmentDeleted { get; set; }
 
         protected override void OnInitialized()
         {
-            FormEditContext = new EditContext(CreateDepartmentModel);
+            DepartmentDetailsModel = new DepartmentDetailsViewModel();
         }
 
-        public void Show()
+        public async Task ShowAsync(int departmentId)
         {
-            FormEditContext = new EditContext(CreateDepartmentModel);
+            DepartmentDetailsModel = await _departmentService.GetByIdAsync(departmentId);
 
             ModalClass = "show d-block";
             ShowBackdrop = true;
@@ -50,22 +48,23 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
 
         private void Close()
         {
-            CreateDepartmentModel = new CreateDepartmentViewModel();
             ModalClass = string.Empty;
             ShowBackdrop = false;
             StateHasChanged();
         }
 
-        public async Task HandleValidSubmit()
+        private async Task HandleValidSubmit(int departmentId)
         {
             try
             {
-                HttpResponseMessage httpResponseMessage = await _departmentService.CreateAsync(CreateDepartmentModel);
+                departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+
+                HttpResponseMessage httpResponseMessage = await _departmentService.DeleteAsync(departmentId);
 
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     Close();
-                    await DepartmentCreated.InvokeAsync();
+                    await DepartmentDeleted.InvokeAsync();
                     return;
                 }
 
@@ -77,6 +76,7 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
                 CustomValidator.AddErrorAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
+
         }
     }
 }

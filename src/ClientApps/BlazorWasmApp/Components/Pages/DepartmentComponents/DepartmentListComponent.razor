@@ -2,6 +2,9 @@
 
 <CreateDepartmentModalComponent @ref="CreateModal" DepartmentCreated="ItemChangedEventHandler"/>
 <UpdateDepartmentModalComponent @ref="UpdateModal" DepartmentUpdated="ItemChangedEventHandler"/>
+<DepartmentDetailsModalComponent @ref="DetailsModal"/>
+<DeleteDepartmentModalComponent @ref="DeleteModal" DepartmentDeleted="ItemChangedEventHandler"/>
+
 @{
     if (ErrorMessage == null)
     {
@@ -73,8 +76,8 @@
                                         </td>
                                         <td>
                                             <a class="btn btn-sm btn-warning" @onclick="() => ShowUpdateModal(item.Id)">Edit</a>
-                                            <a class="btn btn-sm btn-info" href="department/department-details/@(item.Id)">Details</a>
-                                            <a class="btn btn-sm btn-danger" href="department/delete-department/@(item.Id)">Delete</a>
+                                            <a class="btn btn-sm btn-info" @onclick="() => ShowDetailsModalAsync(item.Id)">Details</a>
+                                            <a class="btn btn-sm btn-danger" @onclick="() => ShowDeleteModalAsync(item.Id)">Delete</a>
                                         </td>
                                     </tr>
                                 }

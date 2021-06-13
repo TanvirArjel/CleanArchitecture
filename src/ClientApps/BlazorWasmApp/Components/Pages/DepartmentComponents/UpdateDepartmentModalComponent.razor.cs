@@ -90,7 +90,7 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
             catch (Exception exception)
             {
                 await _exceptionLogger.LogAsync(exception);
-                CustomValidator.AddErrorAndDisplay(string.Empty, AppErrorMessage.ServerErrorMessage);
+                CustomValidator.AddErrorAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
             }
         }
     }

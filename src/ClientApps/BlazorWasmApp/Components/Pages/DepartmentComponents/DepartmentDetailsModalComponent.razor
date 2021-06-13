@@ -1,27 +1,28 @@
-﻿@page "/department/department-details/{DepartmentId:int}"
+﻿<!-- Modal -->
+<div class="modal fade @ModalClass" id="staticBackdrop"
+    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
-<div class="card">
-    <div class="card-header">
-        <h3 class="mb-0">
-            <i class="fas fa-users"></i> <strong>Department Details</strong>
-        </h3>
-    </div>
-    <div class="card-body">
-        @{
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-info">
+      <div class="modal-header bg-info justify-content-center">
+        <h3 class="modal-title my-3" id="staticBackdropLabel">Department Details</h3>
+      </div>
+      <div class="modal-body">
+         @{
             if (DepartmentDetailsModel != null)
             {
                 
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Department Name</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-4 col-form-label">Name</label>
+                    <div class="col-sm-8">
                         <div class="form-control">
                             @DepartmentDetailsModel.Name
                         </div>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Date Of Birth</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-4 col-form-label">Date Of Birth</label>
+                    <div class="col-sm-8">
                         <div class="form-control">
                             @DepartmentDetailsModel.Description
                         </div>
@@ -29,29 +30,29 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">IsActive</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-4 col-form-label">Is Active</label>
+                    <div class="col-sm-8">
                         <div class="form-control">
                             @DepartmentDetailsModel.IsActive
                         </div>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">CreatedAtUtc</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-4 col-form-label">Created At</label>
+                    <div class="col-sm-8">
                         <div class="form-control">
-                            @DepartmentDetailsModel.CreatedAtUtc
+                            @DepartmentDetailsModel.CreatedAtUtc (UTC)
                         </div>
                     </div>
                 </div>
-                <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">LastModifiedAtUtc</label>
-                    <div class="col-sm-10">
+                <div class="row">
+                    <label class="col-sm-4 col-form-label">Last Modified At</label>
+                    <div class="col-sm-8">
                         <div class="form-control">
                             @{
                                 if (DepartmentDetailsModel.LastModifiedAtUtc != null)
                                 {
-                                    <span>@DepartmentDetailsModel.LastModifiedAtUtc</span>
+                                    <span>@DepartmentDetailsModel.LastModifiedAtUtc (UTC)</span>
                                 }
                                 else
                                 {
@@ -70,18 +71,16 @@
             }
         }
 
+      </div>
+      <div class="modal-footer border-info">
+        <button @onclick="Close" type="button" class="btn btn-secondary w-50" data-bs-dismiss="modal">Close</button>
+      </div>
     </div>
-    <div class="card-footer">
-        @{
-            if (DepartmentDetailsModel != null)
-            {
-                <a href="department/update-department/@(DepartmentDetailsModel.Id)" class="btn btn-secondary me-1">
-                    <i class="fas fa-edit"></i>
-                    Edit
-                </a>
-            }
-        }
-
-        <a href="departments" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to List</a>
-    </div>
+  </div>
 </div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
