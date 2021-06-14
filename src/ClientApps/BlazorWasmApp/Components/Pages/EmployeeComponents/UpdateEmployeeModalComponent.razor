@@ -1,0 +1,81 @@
+﻿<!-- Modal -->
+<div class="modal fade @ModalClass" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-warning">
+      <div class="modal-header bg-warning justify-content-center">
+        <h3 class="modal-title my-3" id="staticBackdropLabel">Update Employee</h3>
+      </div>
+         @{
+            if (ErrorMessage == null)
+            {
+                if (UpdateEmployeeModel != null)
+                {
+                    <EditForm Model="@UpdateEmployeeModel" OnValidSubmit="HandleValidSubmit">
+                        <div class="modal-body">
+                        <DataAnnotationsValidator />
+                        <CustomValidator @ref="CustomValidator" />
+                        <ValidationSummary Model="@UpdateEmployeeModel" />
+                        <div class="mb-3 form-floating">
+                            <InputText class="form-control" @bind-Value="UpdateEmployeeModel.EmployeeName" placeholder="EmployeeName" />
+                            <label>Employee Name</label>
+                            <ValidationMessage For="@(() => UpdateEmployeeModel.EmployeeName)" />
+                        </div>
+                        <div class="mb-3 form-floating">
+                            <InputSelect class="form-select" @bind-Value="UpdateEmployeeModel.DepartmentId" placeholder="DepartmentId">
+                                <option value="">Select Department</option>
+                                @foreach (var item in DepartmentSelectList)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </InputSelect>
+                            <label>Department</label>
+                            <ValidationMessage For="@(() => UpdateEmployeeModel.DepartmentId)" />
+                        </div>
+                        <div class="mb-3 form-floating">
+                            <InputDate class="form-control" @bind-Value="UpdateEmployeeModel.DateOfBirth" placeholder="DateOfBirth"/>
+                             <label>Date Of Birth</label>
+                             <ValidationMessage For="@(() => UpdateEmployeeModel.DateOfBirth)" />
+                        </div>
+                        <div class="mb-3 form-floating">
+                           <InputText class="form-control" @bind-Value="UpdateEmployeeModel.Email" placeholder="Email"/>
+                            <label>Email</label>
+                            <ValidationMessage For="@(() => UpdateEmployeeModel.Email)" />
+                        </div>
+                        <div class="form-floating">
+                            <InputText class="form-control" @bind-Value="UpdateEmployeeModel.PhoneNumber" placeholder="PhoneNumber"/>
+                            <label>PhoneNumber</label>
+                            <ValidationMessage For="@(() => UpdateEmployeeModel.PhoneNumber)" />
+                        </div>
+                        
+                        </div>
+                        <div class="modal-footer border-warning">
+				            <button @onclick="Close" type="button" class="col btn btn-secondary" data-bs-dismiss="modal">
+                             <i class="fas fa-times"></i> Close
+                            </button>
+				            <button type="submit" class="col btn btn-success">
+                              <i class="far fa-save"></i> Update
+                            </button>
+			            </div>
+                    </EditForm>
+                }
+                else
+                {
+                    <em>Please wait! Data is loading.</em>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger mb-0">
+                    @ErrorMessage
+                </div>
+            }
+        }
+    </div>
+  </div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+

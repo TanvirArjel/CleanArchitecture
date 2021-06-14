@@ -96,7 +96,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                 employeeeToBeUpdated.Email = updateEmployeeDto.Email;
                 employeeeToBeUpdated.PhoneNumber = updateEmployeeDto.PhoneNumber;
 
-                await _repository.UpdateAsync(employeeeToBeUpdated);
+                await _employeeCacheRepository.UpdateAsync(employeeeToBeUpdated);
             }
             catch (Exception)
             {

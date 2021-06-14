@@ -5,6 +5,7 @@ using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Domain.Entities;
 using EmployeeManagement.Infrastructure.Data.CacheKeys;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.Caching;
@@ -64,6 +65,35 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
             }
 
             return employeeDetails;
+        }
+
+        public async Task UpdateAsync(Employee employee)
+        {
+            await _repository.UpdateAsync(employee);
+
+            // Update item in cache
+            Employee updatedEmployee = await _repository.GetByIdAsync<Employee>(employee.Id, q => q.Include(emp => emp.Department));
+
+            string departmentCacheKey = EmployeeCacheKeys.GetKey(employee.Id);
+            await _distributedCache.SetAsync<Employee>(departmentCacheKey, updatedEmployee);
+
+            string departmentDetailsCacheKey = EmployeeCacheKeys.GetDetailsKey(employee.Id);
+
+            EmployeeDetailsDto departmentDetailsDto = new EmployeeDetailsDto()
+            {
+                Id = updatedEmployee.Id,
+                Name = updatedEmployee.Name,
+                DepartmentId = updatedEmployee.DepartmentId,
+                DepartmentName = updatedEmployee.Department.Name,
+                Email = updatedEmployee.Email,
+                DateOfBirth = updatedEmployee.DateOfBirth,
+                PhoneNumber = updatedEmployee.PhoneNumber,
+                IsActive = updatedEmployee.IsActive,
+                CreatedAtUtc = updatedEmployee.CreatedAtUtc,
+                LastModifiedAtUtc = updatedEmployee.LastModifiedAtUtc
+            };
+
+            await _distributedCache.SetAsync(departmentDetailsCacheKey, departmentDetailsDto);
         }
     }
 }

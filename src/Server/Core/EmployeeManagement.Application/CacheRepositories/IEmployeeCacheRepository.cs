@@ -11,5 +11,7 @@ namespace EmployeeManagement.Application.CacheRepositories
         Task<Employee> GetByIdAsync(long employeeId);
 
         Task<EmployeeDetailsDto> GetDetailsByIdAsync(long employeeId);
+
+        Task UpdateAsync(Employee employee);
     }
 }

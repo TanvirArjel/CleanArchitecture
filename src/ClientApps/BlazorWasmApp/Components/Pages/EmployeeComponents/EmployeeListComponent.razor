@@ -1,6 +1,7 @@
 ﻿@page "/employees"
 
 <CreateEmployeeModalComponent @ref="CreateModal" EmployeeCreated="CreatedEmployeeEventHandler"/>
+<UpdateEmployeeModalComponent @ref="UpdateModal" EmployeeUpdated="EmployeeUpdatedEventHandler"/>
 
 @{
     if (ErrorMessage == null)
@@ -74,7 +75,7 @@
                                             @item.PhoneNumber
                                         </td>
                                         <td>
-                                            <a class="btn btn-sm btn-warning" href="employee/update-employee/@(item.Id)">Edit</a>
+                                            <a @onclick="() => OpenUpdateModalAsync(item.Id)" class="btn btn-sm btn-warning">Edit</a>
                                             <a class="btn btn-sm btn-info" href="employee/employee-details/@(item.Id)">Details</a>
                                             <a class="btn btn-sm btn-danger" href="employee/delete-employee/@(item.Id)">Delete</a>
                                         </td>

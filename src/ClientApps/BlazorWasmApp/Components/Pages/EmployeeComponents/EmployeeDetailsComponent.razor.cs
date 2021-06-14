@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.EmployeeViewModels;
 using Microsoft.AspNetCore.Components;
@@ -21,7 +22,15 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
 
         protected override async Task OnInitializedAsync()
         {
-            EmployeeDetailsModel = await _employeeService.GetDetailsByIdAsync(EmployeeId);
+            try
+            {
+                EmployeeDetailsModel = await _employeeService.GetDetailsByIdAsync(EmployeeId);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+
         }
     }
 }
