@@ -12,9 +12,14 @@ This repository contain the implementation of domain driven design and clear arc
 9. Simple and clean admin template for starter
 
 # Folder Structures
-## Server:
+## Server Folder:
   Will contain all the projects of the server side app.
-### Core
+### Core Folder:
   Core folder contains the projects related to the application core funcationalities like Domain Logic and Application Logic. This folder is the heart of the server app.
   
-  more to follow........
+#### EmployeeManagement.Domain Project: 
+  This is application's **Domain Layer** which will contain domain entities which will be mapped to database table, domain logic, domain repositories and value objects.
+#### EmployeeManagement.Application Project:
+  This is application's **Application Layer** which will contain application business logic, infrastructure services repositories, dtos. It will only depend on Domain project aka **Domain Layer.**
+  
+  more to follow.....
