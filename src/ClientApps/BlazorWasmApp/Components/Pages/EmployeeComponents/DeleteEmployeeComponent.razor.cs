@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.EmployeeViewModels;
 using Microsoft.AspNetCore.Components;
@@ -28,8 +29,16 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
 
         private async Task HandleValidSubmit()
         {
-            await _employeeService.DeleteAsync(EmployeeId);
-            _navigationManager.NavigateTo("employee/employee-list");
+            try
+            {
+                await _employeeService.DeleteAsync(EmployeeId);
+                _navigationManager.NavigateTo("employee/employee-list");
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+
         }
     }
 }

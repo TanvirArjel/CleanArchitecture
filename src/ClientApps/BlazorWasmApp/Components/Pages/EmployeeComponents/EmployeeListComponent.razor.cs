@@ -21,6 +21,8 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
 
         private UpdateEmployeeModalComponent UpdateModal { get; set; }
 
+        private EmployeeDetailsModalComponent DetailsModal { get; set; }
+
         private string ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -44,6 +46,11 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
         private async Task OpenUpdateModalAsync(int employeeId)
         {
             await UpdateModal.OpenAsync(employeeId);
+        }
+
+        private async Task OpenDetailsModalAsync(int employeeId)
+        {
+            await DetailsModal.OpenAsync(employeeId);
         }
 
         private async void CreatedEmployeeEventHandler()
