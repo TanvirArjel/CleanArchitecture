@@ -23,6 +23,8 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
 
         private EmployeeDetailsModalComponent DetailsModal { get; set; }
 
+        private DeleteEmployeeModalComponent DeleteModal { get; set; }
+
         private string ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -53,6 +55,11 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
             await DetailsModal.OpenAsync(employeeId);
         }
 
+        private async Task OpenDeleteModalAsync(int employeeId)
+        {
+            await DeleteModal.OpenAsync(employeeId);
+        }
+
         private async void CreatedEmployeeEventHandler()
         {
             Employees = await _employeeService.GetListAsync();
@@ -60,6 +67,12 @@ namespace BlazorWasmApp.Components.Pages.EmployeeComponents
         }
 
         private async void EmployeeUpdatedEventHandler()
+        {
+            Employees = await _employeeService.GetListAsync();
+            StateHasChanged();
+        }
+
+        private async void EmployeeDeletedEventHandler()
         {
             Employees = await _employeeService.GetListAsync();
             StateHasChanged();

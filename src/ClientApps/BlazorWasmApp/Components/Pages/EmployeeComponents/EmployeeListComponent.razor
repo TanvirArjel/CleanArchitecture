@@ -4,6 +4,7 @@
 <UpdateEmployeeModalComponent @ref="UpdateModal" EmployeeUpdated="EmployeeUpdatedEventHandler"/>
 
 <EmployeeDetailsModalComponent @ref="DetailsModal"/>
+<DeleteEmployeeModalComponent @ref="DeleteModal" EmployeeDeleted="EmployeeDeletedEventHandler"/>
 
 @{
     if (ErrorMessage == null)
@@ -79,7 +80,7 @@
                                         <td>
                                             <a @onclick="() => OpenUpdateModalAsync(item.Id)" class="btn btn-sm btn-warning">Edit</a>
                                             <a @onclick="() => OpenDetailsModalAsync(item.Id)" class="btn btn-sm btn-info">Details</a>
-                                            <a class="btn btn-sm btn-danger" href="employee/delete-employee/@(item.Id)">Delete</a>
+                                            <a @onclick="() => OpenDeleteModalAsync(item.Id)" class="btn btn-sm btn-danger" >Delete</a>
                                         </td>
                                     </tr>
                                 }

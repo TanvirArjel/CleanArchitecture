@@ -1,0 +1,117 @@
+﻿<!-- Modal -->
+<div class="modal fade @ModalClass" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white justify-content-center">
+                <h3 class="modal-title my-3" id="staticBackdropLabel">Delete Employee</h3>
+            </div>
+
+            <EditForm class="d-inline-block" Model="EmployeeDetailsModel" OnValidSubmit="HandleValidSubmit">
+                <div class="modal-body">
+
+                    @if (EmployeeDetailsModel != null)
+                    {
+                        <div class="alert alert-danger">
+                            <em>Are you sure you want to delete this employee?</em>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @EmployeeDetailsModel.Name
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Department</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @EmployeeDetailsModel.DepartmentName
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Date Of Birth</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @EmployeeDetailsModel.DateOfBirth.ToString("dd-MMM-yyyy")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Email</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @EmployeeDetailsModel.Email
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Phone Number</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @EmployeeDetailsModel.PhoneNumber
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Is Active</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @EmployeeDetailsModel.IsActive
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Created At</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @EmployeeDetailsModel.CreatedAtUtc (UTC)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Last Modified At</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @{
+                                        if (EmployeeDetailsModel.LastModifiedAtUtc != null)
+                                        {
+                                            <span>@EmployeeDetailsModel.LastModifiedAtUtc (UTC)</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Not modified yet.</span>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <em>Please wait! Data is loading.</em>
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer border-danger">
+                    <button @onclick="Close" type="button" class="col btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                    <button type="submit" class="col btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </div>
+            </EditForm>
+
+        </div>
+    </div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}

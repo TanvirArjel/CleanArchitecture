@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.IO.Compression;
 using EmployeeManagement.Api.Swagger;
 using EmployeeManagement.Api.Utilities.Mixed;
 using EmployeeManagement.Infrastructure.Data.Extensions;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -45,6 +47,21 @@ namespace EmployeeManagement.Api
                     });
             });
 
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+            });
+
+            services.Configure<GzipCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.Fastest;
+            });
+
+            services.Configure<BrotliCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.Fastest;
+            });
+
             services.AddEmployeeManagementDbContext(Configuration, WebHostEnvironment);
             services.AddInfrasturctureConifugrations();
 
@@ -77,6 +94,8 @@ namespace EmployeeManagement.Api
             {
                 app.UseExceptionHandler("/error");
             }
+
+            app.UseResponseCompression();
 
             app.UseHttpsRedirection();
 
