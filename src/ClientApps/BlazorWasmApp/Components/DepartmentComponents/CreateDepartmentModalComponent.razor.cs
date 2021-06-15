@@ -8,7 +8,7 @@ using BlazorWasmApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace BlazorWasmApp.Components.Pages.DepartmentComponents
+namespace BlazorWasmApp.Components.DepartmentComponents
 {
     public partial class CreateDepartmentModalComponent
     {

@@ -1,0 +1,88 @@
+﻿<!-- Modal -->
+<div class="modal fade @ModalClass" id="staticBackdrop"
+     data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-info">
+            <div class="modal-header bg-info justify-content-center">
+                <h3 class="modal-title my-3" id="staticBackdropLabel">Department Details</h3>
+            </div>
+            <div class="modal-body">
+                @{
+                    if (DepartmentDetailsModel != null)
+                    {
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Name</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @DepartmentDetailsModel.Name
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Date Of Birth</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @DepartmentDetailsModel.Description
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Is Active</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @DepartmentDetailsModel.IsActive
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-4 col-form-label">Created At</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @DepartmentDetailsModel.CreatedAtUtc (UTC)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-4 col-form-label">Last Modified At</label>
+                            <div class="col-sm-8">
+                                <div class="form-control">
+                                    @{
+                                        if (DepartmentDetailsModel.LastModifiedAtUtc != null)
+                                        {
+                                            <span>@DepartmentDetailsModel.LastModifiedAtUtc (UTC)</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Not modified yet.</span>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <em>Please wait! Data is loading.</em>
+                        </div>
+                    }
+                }
+
+            </div>
+            <div class="modal-footer border-info">
+                <button @onclick="Close" type="button" class="btn btn-secondary w-50" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}

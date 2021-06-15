@@ -4,20 +4,19 @@ using System.Threading.Tasks;
 using BlazorWasmApp.Common;
 using BlazorWasmApp.Extensions;
 using BlazorWasmApp.Services;
-using BlazorWasmApp.ViewModels.DepartmentsViewModels;
+using BlazorWasmApp.ViewModels.EmployeeViewModels;
 using Microsoft.AspNetCore.Components;
-using TanvirArjel.ArgumentChecker;
 
-namespace BlazorWasmApp.Components.Pages.DepartmentComponents
+namespace BlazorWasmApp.Components.EmployeeComponents
 {
-    public partial class DeleteDepartmentModalComponent
+    public partial class DeleteEmployeeModalComponent
     {
-        private readonly DepartmentService _departmentService;
+        private readonly EmployeeService _employeeService;
         private readonly ExceptionLogger _exceptionLogger;
 
-        public DeleteDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
+        public DeleteEmployeeModalComponent(EmployeeService employeeService, ExceptionLogger exceptionLogger)
         {
-            _departmentService = departmentService;
+            _employeeService = employeeService;
             _exceptionLogger = exceptionLogger;
         }
 
@@ -25,22 +24,16 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
 
         private bool ShowBackdrop { get; set; }
 
-        private DepartmentDetailsViewModel DepartmentDetailsModel { get; set; }
-
         private CustomValidator CustomValidator { get; set; }
 
+        private EmployeeDetailsViewModel EmployeeDetailsModel { get; set; } = new EmployeeDetailsViewModel();
+
         [Parameter]
-        public EventCallback DepartmentDeleted { get; set; }
+        public EventCallback EmployeeDeleted { get; set; }
 
-        protected override void OnInitialized()
+        public async Task OpenAsync(int employeeId)
         {
-            DepartmentDetailsModel = new DepartmentDetailsViewModel();
-        }
-
-        public async Task ShowAsync(int departmentId)
-        {
-            DepartmentDetailsModel = await _departmentService.GetByIdAsync(departmentId);
-
+            EmployeeDetailsModel = await _employeeService.GetDetailsByIdAsync(employeeId);
             ModalClass = "show d-block";
             ShowBackdrop = true;
             StateHasChanged();
@@ -53,18 +46,16 @@ namespace BlazorWasmApp.Components.Pages.DepartmentComponents
             StateHasChanged();
         }
 
-        private async Task HandleValidSubmit(int departmentId)
+        private async Task HandleValidSubmit()
         {
             try
             {
-                departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
-
-                HttpResponseMessage httpResponseMessage = await _departmentService.DeleteAsync(departmentId);
+                HttpResponseMessage httpResponseMessage = await _employeeService.DeleteAsync(EmployeeDetailsModel.Id);
 
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
+                    await EmployeeDeleted.InvokeAsync();
                     Close();
-                    await DepartmentDeleted.InvokeAsync();
                     return;
                 }
 

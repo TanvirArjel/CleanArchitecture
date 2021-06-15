@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -17,6 +19,26 @@ namespace BlazorWasmApp.Common
             CurrentEditContext.NotifyValidationStateChanged();
         }
 
+        public void AddErrorAndDisplay(string key, string errorMessage)
+        {
+            Dictionary<string, List<string>> errors = new Dictionary<string, List<string>>()
+            {
+                { key, new List<string> { errorMessage } }
+            };
+
+            AddErrorsAndDiplay(errors);
+        }
+
+        public void AddError(string key, string errorMessage)
+        {
+            Dictionary<string, List<string>> errors = new Dictionary<string, List<string>>()
+            {
+                { key, new List<string> { errorMessage } }
+            };
+
+            AddErrors(errors);
+        }
+
         public void AddErrorsAndDiplay(IDictionary<string, List<string>> errors)
         {
             AddErrors(errors);
@@ -25,24 +47,33 @@ namespace BlazorWasmApp.Common
 
         public void AddErrors(IDictionary<string, List<string>> errors)
         {
-            if (errors != null)
+            if (errors == null || errors.Count == 0)
             {
-                foreach (KeyValuePair<string, List<string>> err in errors)
+                return;
+            }
+
+            PropertyInfo[] propertyInfos = CurrentEditContext.Model.GetType().GetProperties();
+
+            foreach (KeyValuePair<string, List<string>> err in errors)
+            {
+                if (propertyInfos.Any())
                 {
-                    _messageStore.Add(CurrentEditContext.Field(err.Key), err.Value);
+                    bool isExistent = propertyInfos.Any(pi => pi.Name.Equals(err.Key, StringComparison.OrdinalIgnoreCase));
+
+                    if (isExistent)
+                    {
+                        _messageStore.Add(CurrentEditContext.Field(err.Key), err.Value);
+                    }
+                    else
+                    {
+                        _messageStore.Add(CurrentEditContext.Field(string.Empty), err.Value);
+                    }
+                }
+                else
+                {
+                    _messageStore.Add(CurrentEditContext.Field(string.Empty), err.Value);
                 }
             }
-        }
-
-        public void AddErrorAndDisplay(string key, string errorMessage)
-        {
-            _messageStore.Add(CurrentEditContext.Field(key), errorMessage);
-            CurrentEditContext.NotifyValidationStateChanged();
-        }
-
-        public void AddError(string key, string errorMessage)
-        {
-            _messageStore.Add(CurrentEditContext.Field(key), errorMessage);
         }
 
         public void ClearErrors()

@@ -5,7 +5,7 @@ using BlazorWasmApp.Common;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.DepartmentsViewModels;
 
-namespace BlazorWasmApp.Components.Pages.DepartmentComponents
+namespace BlazorWasmApp.Components.DepartmentComponents
 {
     public partial class DepartmentListComponent
     {

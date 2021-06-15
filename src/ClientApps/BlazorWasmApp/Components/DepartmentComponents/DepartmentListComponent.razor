@@ -1,9 +1,9 @@
 ﻿@page "/departments"
 
-<CreateDepartmentModalComponent @ref="CreateModal" DepartmentCreated="ItemChangedEventHandler"/>
-<UpdateDepartmentModalComponent @ref="UpdateModal" DepartmentUpdated="ItemChangedEventHandler"/>
-<DepartmentDetailsModalComponent @ref="DetailsModal"/>
-<DeleteDepartmentModalComponent @ref="DeleteModal" DepartmentDeleted="ItemChangedEventHandler"/>
+<CreateDepartmentModalComponent @ref="CreateModal" DepartmentCreated="ItemChangedEventHandler" />
+<UpdateDepartmentModalComponent @ref="UpdateModal" DepartmentUpdated="ItemChangedEventHandler" />
+<DepartmentDetailsModalComponent @ref="DetailsModal" />
+<DeleteDepartmentModalComponent @ref="DeleteModal" DepartmentDeleted="ItemChangedEventHandler" />
 
 @{
     if (ErrorMessage == null)
@@ -17,10 +17,9 @@
                                 <strong><i class="fas fa-list-ul"></i> Department List</strong>
 
                                 <button @onclick=ShowCreateModal class="btn btn-success float-end">
-                                   <i class="fas fa-plus"></i> Create New
-                                 </button>
+                                    <i class="fas fa-plus"></i> Create New
+                                </button>
                             </h3>
-                            
                         </th>
                     </tr>
                     <tr>
@@ -39,7 +38,7 @@
                         <th style="min-width:120px;">
                             Updated At
                         </th>
-                         <th style="min-width:200px;">
+                        <th style="min-width:200px;">
                             Action
                         </th>
                     </tr>

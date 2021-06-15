@@ -2,7 +2,7 @@
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.EmployeeViewModels;
 
-namespace BlazorWasmApp.Components.Pages.EmployeeComponents
+namespace BlazorWasmApp.Components.EmployeeComponents
 {
     public partial class EmployeeDetailsModalComponent
     {

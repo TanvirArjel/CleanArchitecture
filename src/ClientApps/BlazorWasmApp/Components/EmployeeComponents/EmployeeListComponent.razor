@@ -1,10 +1,10 @@
 ﻿@page "/employees"
 
-<CreateEmployeeModalComponent @ref="CreateModal" EmployeeCreated="CreatedEmployeeEventHandler"/>
-<UpdateEmployeeModalComponent @ref="UpdateModal" EmployeeUpdated="EmployeeUpdatedEventHandler"/>
+<CreateEmployeeModalComponent @ref="CreateModal" EmployeeCreated="CreatedEmployeeEventHandler" />
+<UpdateEmployeeModalComponent @ref="UpdateModal" EmployeeUpdated="EmployeeUpdatedEventHandler" />
 
-<EmployeeDetailsModalComponent @ref="DetailsModal"/>
-<DeleteEmployeeModalComponent @ref="DeleteModal" EmployeeDeleted="EmployeeDeletedEventHandler"/>
+<EmployeeDetailsModalComponent @ref="DetailsModal" />
+<DeleteEmployeeModalComponent @ref="DeleteModal" EmployeeDeleted="EmployeeDeletedEventHandler" />
 
 @{
     if (ErrorMessage == null)
@@ -80,7 +80,7 @@
                                         <td>
                                             <a @onclick="() => OpenUpdateModalAsync(item.Id)" class="btn btn-sm btn-warning">Edit</a>
                                             <a @onclick="() => OpenDetailsModalAsync(item.Id)" class="btn btn-sm btn-info">Details</a>
-                                            <a @onclick="() => OpenDeleteModalAsync(item.Id)" class="btn btn-sm btn-danger" >Delete</a>
+                                            <a @onclick="() => OpenDeleteModalAsync(item.Id)" class="btn btn-sm btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 }
