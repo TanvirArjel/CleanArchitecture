@@ -65,14 +65,12 @@ namespace EmployeeManagement.Application.Implementations.Services
         {
             createEmployeeDto.ThrowIfNull(nameof(createEmployeeDto));
 
-            Employee employeeToBeCreated = new Employee()
-            {
-                Name = createEmployeeDto.EmployeeName,
-                DepartmentId = createEmployeeDto.DepartmentId,
-                DateOfBirth = createEmployeeDto.DateOfBirth,
-                Email = createEmployeeDto.Email,
-                PhoneNumber = createEmployeeDto.PhoneNumber
-            };
+            Employee employeeToBeCreated = new Employee(
+                createEmployeeDto.EmployeeName,
+                createEmployeeDto.DepartmentId,
+                createEmployeeDto.DateOfBirth,
+                createEmployeeDto.Email,
+                createEmployeeDto.PhoneNumber);
 
             await _repository.InsertAsync(employeeToBeCreated);
         }
@@ -90,11 +88,11 @@ namespace EmployeeManagement.Application.Implementations.Services
                     throw new EntityNotFoundException(typeof(Employee), updateEmployeeDto.EmployeeId);
                 }
 
-                employeeeToBeUpdated.Name = updateEmployeeDto.EmployeeName;
-                employeeeToBeUpdated.DepartmentId = updateEmployeeDto.DepartmentId;
-                employeeeToBeUpdated.DateOfBirth = updateEmployeeDto.DateOfBirth;
-                employeeeToBeUpdated.Email = updateEmployeeDto.Email;
-                employeeeToBeUpdated.PhoneNumber = updateEmployeeDto.PhoneNumber;
+                employeeeToBeUpdated.SetName(updateEmployeeDto.EmployeeName);
+                employeeeToBeUpdated.SetDeparment(updateEmployeeDto.DepartmentId);
+                employeeeToBeUpdated.SetDateOfBirth(updateEmployeeDto.DateOfBirth);
+                employeeeToBeUpdated.SetEmail(updateEmployeeDto.Email);
+                employeeeToBeUpdated.SetPhoneNumber(updateEmployeeDto.PhoneNumber);
 
                 await _employeeCacheRepository.UpdateAsync(employeeeToBeUpdated);
             }

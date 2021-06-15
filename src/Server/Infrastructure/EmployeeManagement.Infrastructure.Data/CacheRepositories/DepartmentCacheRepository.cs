@@ -114,30 +114,13 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
             object[] primaryKeyValues = await _repository.InsertAsync(department);
 
             int departmentId = (int)primaryKeyValues[0];
-            department.Id = departmentId;
 
             // Add item to the cache list
-            string departmentCacheKey = DepartmentCacheKeys.GetKey(department.Id);
-            await _distributedCache.SetAsync(departmentCacheKey, department);
-
-            string departmentDetailsCacheKey = DepartmentCacheKeys.GetDetailsKey(department.Id);
-
-            DepartmentDetailsDto departmentDetailsDto = new DepartmentDetailsDto()
-            {
-                Id = department.Id,
-                Name = department.Name,
-                Description = department.Description,
-                IsActive = department.IsActive,
-                CreatedAtUtc = department.CreatedAtUtc,
-                LastModifiedAtUtc = department.LastModifiedAtUtc
-            };
-            await _distributedCache.SetAsync(departmentDetailsCacheKey, departmentDetailsDto);
-
             string departmentListKey = DepartmentCacheKeys.ListKey;
-            await _distributedCache.AddToListAsync(departmentListKey, department, d => d.Name);
+            await _distributedCache.RemoveAsync(departmentListKey);
 
             string departmentSelectListKey = DepartmentCacheKeys.SelectListKey;
-            await _distributedCache.AddToListAsync(departmentSelectListKey, department, d => d.Name);
+            await _distributedCache.RemoveAsync(departmentSelectListKey);
 
             return departmentId;
         }

@@ -32,11 +32,7 @@ namespace EmployeeManagement.Application.Implementations.Services
         {
             createDepartmentDto.ThrowIfNull(nameof(createDepartmentDto));
 
-            Department departmentToBeCreated = new Department()
-            {
-                Name = createDepartmentDto.DepartmentName,
-                Description = createDepartmentDto.Description
-            };
+            Department departmentToBeCreated = new Department(createDepartmentDto.DepartmentName, createDepartmentDto.Description);
 
             int departmentId = await _departmentCacheRepository.InsertAsync(departmentToBeCreated);
 
@@ -69,8 +65,8 @@ namespace EmployeeManagement.Application.Implementations.Services
                 throw new EntityNotFoundException(typeof(Department), updateDepartmentDto.DepartmentId);
             }
 
-            departmentToBeUpdated.Name = updateDepartmentDto.DepartmentName;
-            departmentToBeUpdated.Description = updateDepartmentDto.Description;
+            departmentToBeUpdated.SetName(updateDepartmentDto.DepartmentName);
+            departmentToBeUpdated.SetDescription(updateDepartmentDto.Description);
             departmentToBeUpdated.IsActive = updateDepartmentDto.IsActive;
             await _departmentCacheRepository.UpdateAsync(departmentToBeUpdated);
         }
