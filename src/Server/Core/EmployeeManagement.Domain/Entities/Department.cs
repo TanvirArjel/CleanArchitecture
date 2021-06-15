@@ -1,5 +1,4 @@
-﻿using System;
-using TanvirArjel.ArgumentChecker;
+﻿using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Domain.Entities
 {
@@ -11,6 +10,11 @@ namespace EmployeeManagement.Domain.Entities
             SetDescription(description);
         }
 
+        // This is needed for EF Core query mapping.
+        private Department()
+        {
+        }
+
         public int Id { get; private set; }
 
         public string Name { get; private set; }
@@ -20,11 +24,7 @@ namespace EmployeeManagement.Domain.Entities
         public void SetName(string name)
         {
             name.ThrowIfNullOrEmpty(nameof(name));
-
-            if (name.Length < 2 && name.Length > 50)
-            {
-                throw new ArgumentException("The length of the name must be in between 2 and 50 characters.");
-            }
+            name.ThrowIfOutOfLength(2, 50, nameof(name));
 
             Name = name;
         }
@@ -32,11 +32,7 @@ namespace EmployeeManagement.Domain.Entities
         public void SetDescription(string description)
         {
             description.ThrowIfNullOrEmpty(nameof(description));
-
-            if (description.Length < 20 && description.Length > 100)
-            {
-                throw new ArgumentException("The length of the description must be in between 20 and 100 characters.");
-            }
+            description.ThrowIfOutOfLength(20, 100, nameof(description));
 
             Description = description;
         }

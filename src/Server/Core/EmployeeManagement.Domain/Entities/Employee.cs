@@ -19,6 +19,11 @@ namespace EmployeeManagement.Domain.Entities
             SetPhoneNumber(phoneNumber);
         }
 
+        // This is needed for EF core query mapping.
+        private Employee()
+        {
+        }
+
         public int Id { get; private set; }
 
         public string Name { get; private set; }
@@ -37,10 +42,7 @@ namespace EmployeeManagement.Domain.Entities
         {
             name.ThrowIfNullOrEmpty(nameof(name));
 
-            if (name.Length < 2 && name.Length > 50)
-            {
-                throw new ArgumentException("The length of the name must be in between 2 and 50 characters.");
-            }
+            name.ThrowIfOutOfLength(2, 50, nameof(name));
 
             Name = name;
         }
@@ -53,6 +55,11 @@ namespace EmployeeManagement.Domain.Entities
 
         public void SetDateOfBirth(DateTime dateOfBirth)
         {
+            DateTime minDateOfBirth = DateTime.UtcNow.AddYears(-115);
+            DateTime maxDateOfBirth = DateTime.UtcNow.AddYears(-15);
+
+            // Validate the minimum age.
+            dateOfBirth.ThrowIfOutOfRange(minDateOfBirth, maxDateOfBirth, nameof(dateOfBirth), "The minimum age has to be 15 years.");
             DateOfBirth = dateOfBirth;
         }
 

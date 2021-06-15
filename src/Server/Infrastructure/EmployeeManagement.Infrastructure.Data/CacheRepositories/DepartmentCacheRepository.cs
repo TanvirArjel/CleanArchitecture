@@ -131,27 +131,17 @@ namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
 
             // Update item in cache
             string departmentCacheKey = DepartmentCacheKeys.GetKey(department.Id);
-            await _distributedCache.SetAsync<Department>(departmentCacheKey, department);
+            await _distributedCache.RemoveAsync(departmentCacheKey);
 
             string departmentDetailsCacheKey = DepartmentCacheKeys.GetDetailsKey(department.Id);
 
-            DepartmentDetailsDto departmentDetailsDto = new DepartmentDetailsDto()
-            {
-                Id = department.Id,
-                Name = department.Name,
-                Description = department.Description,
-                IsActive = department.IsActive,
-                CreatedAtUtc = department.CreatedAtUtc,
-                LastModifiedAtUtc = department.LastModifiedAtUtc
-            };
-
-            await _distributedCache.SetAsync(departmentDetailsCacheKey, departmentDetailsDto);
+            await _distributedCache.RemoveAsync(departmentDetailsCacheKey);
 
             string departmentListKey = DepartmentCacheKeys.ListKey;
-            await _distributedCache.UpdateInListAsync<Department>(departmentListKey, d => d.Id == department.Id, department);
+            await _distributedCache.RemoveAsync(departmentListKey);
 
             string departmenSelecttListKey = DepartmentCacheKeys.SelectListKey;
-            await _distributedCache.UpdateInListAsync(departmenSelecttListKey, d => d.Id == department.Id, department);
+            await _distributedCache.RemoveAsync(departmenSelecttListKey);
         }
 
         public async Task DeleteAsync(Department department)
