@@ -11,7 +11,7 @@
                         if (DepartmentDetailsModel != null)
                         {
                             <DataAnnotationsValidator />
-                            <CustomValidator @ref="CustomValidator" />
+                            <CustomValidationMessages @ref="CustomValidationMessages" />
                             <ValidationSummary Model="@DepartmentDetailsModel" />
 
                             <div class="alert alert-danger">

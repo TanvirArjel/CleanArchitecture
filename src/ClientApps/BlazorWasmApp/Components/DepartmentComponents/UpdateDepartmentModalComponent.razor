@@ -17,7 +17,7 @@
                         <EditForm EditContext="FormEditContext" OnValidSubmit="HandleValidSubmit">
                             <div class="modal-body">
                                 <DataAnnotationsValidator />
-                                <CustomValidator @ref="CustomValidator" />
+                                <CustomValidationMessages @ref="CustomValidationMessages" />
                                 <ValidationSummary Model="@UpdateDepartmentModel" />
                                 <div class="form-floating mb-3">
                                     <InputText class="form-control" @bind-Value="UpdateDepartmentModel.DepartmentName" placeholder="Name" />

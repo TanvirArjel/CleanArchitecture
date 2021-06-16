@@ -13,7 +13,7 @@
                         <EditForm Model="@UpdateEmployeeModel" OnValidSubmit="HandleValidSubmit">
                             <div class="modal-body">
                                 <DataAnnotationsValidator />
-                                <CustomValidator @ref="CustomValidator" />
+                                <CustomValidationMessages @ref="CustomValidationMessages" />
                                 <ValidationSummary Model="@UpdateEmployeeModel" />
                                 <div class="mb-3 form-floating">
                                     <InputText class="form-control" @bind-Value="UpdateEmployeeModel.EmployeeName" placeholder="EmployeeName" />

@@ -27,7 +27,7 @@ namespace BlazorWasmApp.Components.DepartmentComponents
 
         private DepartmentDetailsViewModel DepartmentDetailsModel { get; set; }
 
-        private CustomValidator CustomValidator { get; set; }
+        private CustomValidationMessages CustomValidationMessages { get; set; }
 
         [Parameter]
         public EventCallback DepartmentDeleted { get; set; }
@@ -68,12 +68,12 @@ namespace BlazorWasmApp.Components.DepartmentComponents
                     return;
                 }
 
-                await CustomValidator.AddErrorsAndDisplayAsync(httpResponseMessage);
+                await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
 
             }
             catch (Exception exception)
             {
-                CustomValidator.AddAndDisplayError(string.Empty, AppErrorMessage.ClientErrorMessage);
+                CustomValidationMessages.AddAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
 

@@ -24,7 +24,7 @@ namespace BlazorWasmApp.Components.EmployeeComponents
 
         private bool ShowBackdrop { get; set; }
 
-        private CustomValidator CustomValidator { get; set; }
+        private CustomValidationMessages CustomValidationMessages { get; set; }
 
         private EmployeeDetailsViewModel EmployeeDetailsModel { get; set; } = new EmployeeDetailsViewModel();
 
@@ -59,12 +59,12 @@ namespace BlazorWasmApp.Components.EmployeeComponents
                     return;
                 }
 
-                await CustomValidator.AddErrorsAndDisplayAsync(httpResponseMessage);
+                await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
 
             }
             catch (Exception exception)
             {
-                CustomValidator.AddAndDisplayError(string.Empty, AppErrorMessage.ClientErrorMessage);
+                CustomValidationMessages.AddAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
 

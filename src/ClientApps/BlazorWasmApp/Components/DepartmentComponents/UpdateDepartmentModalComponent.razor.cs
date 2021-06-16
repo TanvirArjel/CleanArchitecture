@@ -25,7 +25,7 @@ namespace BlazorWasmApp.Components.DepartmentComponents
 
         private bool ShowBackdrop { get; set; }
 
-        private CustomValidator CustomValidator { get; set; }
+        private CustomValidationMessages CustomValidationMessages { get; set; }
 
         private EditContext FormEditContext { get; set; }
 
@@ -85,12 +85,12 @@ namespace BlazorWasmApp.Components.DepartmentComponents
                     return;
                 }
 
-                await CustomValidator.AddErrorsAndDisplayAsync(httpResponseMessage);
+                await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
             }
             catch (Exception exception)
             {
                 await _exceptionLogger.LogAsync(exception);
-                CustomValidator.AddAndDisplayError(string.Empty, AppErrorMessage.ClientErrorMessage);
+                CustomValidationMessages.AddAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
             }
         }
     }
