@@ -2,11 +2,11 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorWasmApp.Common;
-using BlazorWasmApp.Extensions;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using TanvirArjel.Blazor.Components;
 
 namespace BlazorWasmApp.Components.DepartmentComponents
 {
@@ -90,7 +90,7 @@ namespace BlazorWasmApp.Components.DepartmentComponents
             catch (Exception exception)
             {
                 await _exceptionLogger.LogAsync(exception);
-                CustomValidator.AddErrorAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
+                CustomValidator.AddAndDisplayError(string.Empty, AppErrorMessage.ClientErrorMessage);
             }
         }
     }

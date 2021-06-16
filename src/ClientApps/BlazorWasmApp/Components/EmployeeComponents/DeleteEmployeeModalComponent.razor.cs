@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorWasmApp.Common;
-using BlazorWasmApp.Extensions;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.EmployeeViewModels;
 using Microsoft.AspNetCore.Components;
+using TanvirArjel.Blazor.Components;
 
 namespace BlazorWasmApp.Components.EmployeeComponents
 {
@@ -64,7 +64,7 @@ namespace BlazorWasmApp.Components.EmployeeComponents
             }
             catch (Exception exception)
             {
-                CustomValidator.AddErrorAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
+                CustomValidator.AddAndDisplayError(string.Empty, AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
 
