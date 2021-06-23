@@ -1,4 +1,4 @@
-﻿namespace EmployeeManagement.Infrastructure.Data.CacheKeys
+﻿namespace EmployeeManagement.Persistence.Cache.CacheKeys
 {
     public static class EmployeeCacheKeys
     {

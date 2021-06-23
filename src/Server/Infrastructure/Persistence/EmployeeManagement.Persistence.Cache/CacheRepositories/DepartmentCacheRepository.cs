@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Domain.Entities;
-using EmployeeManagement.Infrastructure.Data.CacheKeys;
+using EmployeeManagement.Persistence.Cache.CacheKeys;
 using Microsoft.Extensions.Caching.Distributed;
 using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.Caching;
 
-namespace EmployeeManagement.Infrastructure.Data.CacheRepositories
+namespace EmployeeManagement.Persistence.Cache.CacheRepositories
 {
     internal class DepartmentCacheRepository : IDepartmentCacheRepository
     {

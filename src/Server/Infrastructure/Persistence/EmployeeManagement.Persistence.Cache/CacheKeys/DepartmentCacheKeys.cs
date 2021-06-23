@@ -1,6 +1,6 @@
-﻿namespace EmployeeManagement.Infrastructure.Data.CacheKeys
+﻿namespace EmployeeManagement.Persistence.Cache.CacheKeys
 {
-    public static class DepartmentCacheKeys
+    internal static class DepartmentCacheKeys
     {
         public static string ListKey => "DepartmentList";
 

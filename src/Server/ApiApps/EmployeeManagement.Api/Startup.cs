@@ -2,8 +2,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
 using EmployeeManagement.Api.Swagger;
 using EmployeeManagement.Api.Utilities.Mixed;
-using EmployeeManagement.Infrastructure.Data.Extensions;
 using EmployeeManagement.Infrastructure.Services;
+using EmployeeManagement.Persistence.Cache;
+using EmployeeManagement.Persistence.RelationalDB.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -62,10 +63,15 @@ namespace EmployeeManagement.Api
                 options.Level = CompressionLevel.Fastest;
             });
 
-            services.AddEmployeeManagementDbContext(Configuration, WebHostEnvironment);
+            string connectionName = WebHostEnvironment.IsDevelopment() ? "EmployeeDbConnection" : "EmployeeDbConnection";
+            string connectionString = Configuration.GetConnectionString(connectionName);
+
+            services.AddRelationalDbContext(connectionString);
+
             services.AddInfrasturctureConifugrations();
 
-            services.AddDistributedMemoryCache();
+            services.AddCaching();
+
             services.AddServicesOfAllTypes("EmployeeManagement");
             services.AddControllers(options =>
             {
@@ -95,6 +101,21 @@ namespace EmployeeManagement.Api
                 app.UseExceptionHandler("/error");
             }
 
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.DocExpansion(DocExpansion.None);
+
+                // build a swagger endpoint for each discovered API version.
+                foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
+                {
+                    options.RoutePrefix = "swagger";
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                }
+            });
+
             app.UseResponseCompression();
 
             app.UseHttpsRedirection();
@@ -108,24 +129,6 @@ namespace EmployeeManagement.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            ////// Enable middleware to serve generated Swagger as a JSON endpoint.
-            ////app.UseOpenApi();
-            ////app.UseSwaggerUi3();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.DocExpansion(DocExpansion.None);
-
-                // build a swagger endpoint for each discovered API version.
-                foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
-                {
-                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                }
             });
         }
     }

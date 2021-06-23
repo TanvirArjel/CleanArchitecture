@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EmployeeManagement.Infrastructure.Data.Migrations
+namespace EmployeeManagement.Persistence.RelationalDB.Migrations
 {
     public partial class PropertyNameSimplied : Migration
     {

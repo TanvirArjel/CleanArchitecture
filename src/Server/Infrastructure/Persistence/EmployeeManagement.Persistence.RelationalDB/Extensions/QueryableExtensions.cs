@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace EmployeeManagement.Infrastructure.Data.Extensions
+namespace EmployeeManagement.Persistence.RelationalDB.Extensions
 {
-    public static class QueryableExtensions
+    internal static class QueryableExtensions
     {
         public static async Task<PaginatedList<T>> ToPaginatedListAsync<T>(this IQueryable<T> source, int pageIndex, int pageSize)
             where T : class

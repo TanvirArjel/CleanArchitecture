@@ -3,7 +3,7 @@ using EmployeeManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EmployeeManagement.Infrastructure.Data.EntityConfigurations
+namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations
 {
     public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
     {

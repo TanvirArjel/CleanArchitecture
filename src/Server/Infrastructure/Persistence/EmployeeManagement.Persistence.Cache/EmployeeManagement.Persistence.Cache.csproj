@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.1.0" />
+		<PackageReference Include="TanvirArjel.EFCore.GenericRepository" Version="5.5.0" />
+		<PackageReference Include="TanvirArjel.Extensions.Microsoft.Caching" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Core\EmployeeManagement.Application\EmployeeManagement.Application.csproj" />
+	</ItemGroup>
+
+</Project>

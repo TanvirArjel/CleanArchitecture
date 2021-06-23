@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EmployeeManagement.Infrastructure.Data.EntityConfigurations;
-using EmployeeManagement.Infrastructure.Data.Extensions;
+using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations;
+using EmployeeManagement.Persistence.RelationalDB.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmployeeManagement.Infrastructure.Data
+namespace EmployeeManagement.Persistence.RelationalDB
 {
-    public class EmployeeManagementDbContext : DbContext
+    internal class EmployeeManagementDbContext : DbContext
     {
         public EmployeeManagementDbContext(DbContextOptions<EmployeeManagementDbContext> options)
             : base(options)
