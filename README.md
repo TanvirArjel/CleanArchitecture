@@ -12,11 +12,18 @@ This repository contain the implementation of domain driven design and clear arc
 8. Microsoft SQL Server
 9. Simple and clean admin template for starter
 
-# Folder Structures
+# Folder Structures:
+![SolutionFolder](https://user-images.githubusercontent.com/14342773/123045601-ea4cb300-d41c-11eb-8caf-8b7846564f28.PNG)
+
 ## Server Folder:
-  Will contain all the projects of the server side app.
+  Will contain all the projects of the server side app and will look like as follows:
+  ![ServerFolder](https://user-images.githubusercontent.com/14342773/123045708-094b4500-d41d-11eb-9db3-d8cbfb7b9a31.PNG)
+
 ### Core Folder:
   Core folder contains the projects related to the application core funcationalities like Domain Logic and Application Logic. This folder is the heart of the server app.
+  
+  ![CoreFolder](https://user-images.githubusercontent.com/14342773/123046128-88d91400-d41d-11eb-905a-d680d264f8a1.PNG)
+
   
 #### EmployeeManagement.Domain Project: 
   This is application's **Domain Layer** which will contain domain entities which will be mapped to database table, domain logic, domain repositories and value objects.
