@@ -4,7 +4,8 @@ This repository contain the implementation of domain driven design and clear arc
 # Fetures
 1. Domain Driven Design
 2. REST API
-3. Blazor Client (Web Assembly)
+3. API Versioning
+4. Blazor Client (Web Assembly)
 5. Caching with InMemory and Redis
 6. Logging with Serilog
 7. EF Core Repository and Cache Repository
@@ -22,4 +23,8 @@ This repository contain the implementation of domain driven design and clear arc
 #### EmployeeManagement.Application Project:
   This is application's **Application Layer** which will contain application business logic, infrastructure services repositories, dtos. It will only depend on Domain project aka **Domain Layer.**
   
-  more to follow.....
+### Infrastructure folder:
+  This folder will contains all the project related to project's infrastuctures like Data access code, persistance and application's cross cutting concern's intefaces implementation like IEmailSender, ISmsSender etc.
+  
+### ApiApps folder:
+  This folder will contain all the REST API projects which is the **PresentationLayer** of the project.
