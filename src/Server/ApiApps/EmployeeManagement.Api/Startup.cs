@@ -68,7 +68,8 @@ namespace EmployeeManagement.Api
 
             services.AddRelationalDbContext(connectionString);
 
-            services.AddInfrasturctureConifugrations();
+            string sendGridApiKey = "yourSendGridKey";
+            services.AddSendGrid(sendGridApiKey);
 
             services.AddCaching();
 
