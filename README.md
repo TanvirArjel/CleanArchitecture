@@ -30,6 +30,9 @@ This repository contain the implementation of domain driven design and clear arc
 #### 📝 EmployeeManagement.Application Project:
   This is application's **Application Layer** which will contain application business logic, infrastructure services repositories, dtos. It will only depend on Domain project aka **Domain Layer.**
   
+  ![CoreApplication](https://user-images.githubusercontent.com/14342773/123301594-a2717d00-d53d-11eb-8f74-076ff92f682d.PNG)
+
+  
 ### 📂 src/Server/Infrastructure:
   This folder will contains all the project related to project's infrastuctures like Data access code, persistance and application's cross cutting concern's intefaces implementation like IEmailSender, ISmsSender etc.
   
