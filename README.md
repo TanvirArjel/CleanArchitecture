@@ -48,7 +48,10 @@ This will not depend on any other project. This is fully independent.
 
   
 ### 📂 src/Server/Infrastructure:
-  This folder will contains all the project related to project's infrastuctures like Data access code, persistance and application's cross cutting concern's intefaces implementation like IEmailSender, ISmsSender etc.
+  This folder will contains all the project related to project's infrastuctures like Data access code, persistance and application's cross cutting concerns' intefaces implementation like IEmailSender, ISmsSender etc.
+  
+  ![Infrastructure](https://user-images.githubusercontent.com/14342773/123589564-37f56100-d80b-11eb-8f94-c79ea589adf8.PNG)
+
   
 ### 📂 src/Server/ApiApps:
   This folder will contain all the REST API projects which is the **PresentationLayer** of the project.
