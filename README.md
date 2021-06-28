@@ -26,9 +26,23 @@ This repository contain the implementation of domain driven design and clear arc
 
   
 #### 📝 EmployeeManagement.Domain Project: 
-  This is application's **Domain Layer** which will contain domain entities which will be mapped to database table, domain logic, domain repositories and value objects.
+  This is application's **Domain Layer** which will contain:
+   1. Domain entities which will be mapped to database table
+   2. Domain logic,
+   3. Domain repositories
+   4. Value objects.
+
+This will not depend on any other project. This is fully independent.
+
 #### 📝 EmployeeManagement.Application Project:
-  This is application's **Application Layer** which will contain application business logic, infrastructure services repositories, dtos. It will only depend on Domain project aka **Domain Layer.**
+  This is application's **Application Layer** which will contain:
+   1. Appplication Business Logic
+   2. Infrastructure repositories' interfaces i.e Cache Repository interfaces.
+   3. Infrastructure services' interfaces i.e IEmailSender, ISmsSender, IExceptionLogger etc.
+   4. Data Transfer Objects (Dtos)
+   5. Application Custom Exception types.
+  
+  It will only depend on Domain project aka **Domain Layer.**
   
   ![CoreApplication](https://user-images.githubusercontent.com/14342773/123301594-a2717d00-d53d-11eb-8f74-076ff92f682d.PNG)
 
