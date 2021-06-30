@@ -47,8 +47,8 @@ namespace BlazorWasmApp.Components.DepartmentComponents
 
             UpdateDepartmentModel = new UpdateDepartmentViewModel()
             {
-                DepartmentId = departmentDetailsViewModel.Id,
-                DepartmentName = departmentDetailsViewModel.Name,
+                Id = departmentDetailsViewModel.Id,
+                Name = departmentDetailsViewModel.Name,
                 Description = departmentDetailsViewModel.Description,
             };
 

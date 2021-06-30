@@ -7,7 +7,7 @@ namespace EmployeeManagement.Api.ApiModels.DepartmentModels
         [Required]
         [MaxLength(20)]
         [MinLength(2)]
-        public string DepartmentName { get; set; }
+        public string Name { get; set; }
 
         [MaxLength(200)]
         [MinLength(20)]

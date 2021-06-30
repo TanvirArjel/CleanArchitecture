@@ -86,7 +86,7 @@ namespace EmployeeManagement.Api.Controllers
 
             CreateEmployeeDto createEmployeeDto = new CreateEmployeeDto()
             {
-                EmployeeName = model.EmployeeName,
+                Name = model.Name,
                 DepartmentId = model.DepartmentId,
                 DateOfBirth = model.DateOfBirth,
                 Email = model.Email,
@@ -106,9 +106,9 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Update an existing employee by employee id and posting the updated data.")]
         public async Task<ActionResult> UpdateEmployee(int employeeId, [FromBody] UpdateEmployeeModel model)
         {
-            if (employeeId != model.EmployeeId)
+            if (employeeId != model.Id)
             {
-                ModelState.AddModelError(nameof(model.EmployeeId), "The EmployeeId does not match with route value.");
+                ModelState.AddModelError(nameof(model.Id), "The EmployeeId does not match with route value.");
                 return BadRequest(ModelState);
             }
 
@@ -122,8 +122,8 @@ namespace EmployeeManagement.Api.Controllers
 
             UpdateEmployeeDto updateEmployeeDto = new UpdateEmployeeDto
             {
-                EmployeeId = model.EmployeeId,
-                EmployeeName = model.EmployeeName,
+                Id = model.Id,
+                Name = model.Name,
                 DepartmentId = model.DepartmentId,
                 DateOfBirth = model.DateOfBirth,
                 Email = model.Email,

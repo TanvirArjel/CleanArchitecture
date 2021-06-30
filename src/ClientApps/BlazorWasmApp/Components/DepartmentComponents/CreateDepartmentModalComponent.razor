@@ -16,14 +16,14 @@
                     <ValidationSummary Model="@CreateDepartmentModel" />
 
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" @bind-Value="CreateDepartmentModel.DepartmentName" placeholder="Enter department name" />
-                        <label>Name</label>
-                        <ValidationMessage For="@(() => CreateDepartmentModel.DepartmentName)" />
+                        <InputText class="form-control" @bind-Value="CreateDepartmentModel.Name" placeholder="Enter department name" />
+                        <label><i class="fas fa-building"></i> Name</label>
+                        <ValidationMessage For="@(() => CreateDepartmentModel.Name)" />
                     </div>
 
                     <div class="form-floating">
-                        <InputText class="form-control" @bind-Value="CreateDepartmentModel.Description" placeholder="Description" />
-                        <label>Description</label>
+                        <InputTextArea class="form-control" style="height: 100px" @bind-Value="CreateDepartmentModel.Description" placeholder="Description" />
+                        <label><i class="fas fa-edit"></i> Description</label>
                         <ValidationMessage For="@(() => CreateDepartmentModel.Description)" />
                     </div>
                 </div>

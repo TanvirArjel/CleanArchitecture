@@ -53,7 +53,7 @@ namespace BlazorWasmApp.Services
             }
 
             HttpResponseMessage response = await _httpClient
-                .PutAsJsonAsync($"v1/employees/{updateEmployeeViewModel.EmployeeId}", updateEmployeeViewModel);
+                .PutAsJsonAsync($"v1/employees/{updateEmployeeViewModel.Id}", updateEmployeeViewModel);
 
             return response;
         }

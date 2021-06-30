@@ -58,17 +58,17 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Create a new department by posting the required data.")]
         public async Task<ActionResult> CreateDepartment([FromBody] CreateDepartmentModel model)
         {
-            bool isNameAlreadyExistent = await _departmentService.ExistsByNameAsync(model.DepartmentName);
+            bool isNameAlreadyExistent = await _departmentService.ExistsByNameAsync(model.Name);
 
             if (isNameAlreadyExistent)
             {
-                ModelState.AddModelError(nameof(model.DepartmentName), "The Name already exists.");
+                ModelState.AddModelError(nameof(model.Name), "The Name already exists.");
                 return BadRequest(ModelState);
             }
 
             CreateDepartmentDto createDepartmentDto = new CreateDepartmentDto
             {
-                DepartmentName = model.DepartmentName,
+                Name = model.Name,
                 Description = model.Description
             };
 
@@ -100,9 +100,9 @@ namespace EmployeeManagement.Api.Controllers
         [SwaggerOperation(Summary = "Update an existing employee by employee id and posting updated data.")]
         public async Task<ActionResult> UpdateDepartment(int departmentId, UpdateDepartmentModel model)
         {
-            if (departmentId != model.DepartmentId)
+            if (departmentId != model.Id)
             {
-                ModelState.AddModelError(nameof(model.DepartmentId), "The DepartmentId does not match with route value.");
+                ModelState.AddModelError(nameof(model.Id), "The DepartmentId does not match with route value.");
                 return BadRequest(ModelState);
             }
 
@@ -110,22 +110,22 @@ namespace EmployeeManagement.Api.Controllers
 
             if (!isExistent)
             {
-                ModelState.AddModelError(nameof(model.DepartmentId), "The Department does not exist.");
+                ModelState.AddModelError(nameof(model.Id), "The Department does not exist.");
                 return BadRequest(ModelState);
             }
 
-            bool isUnique = await _departmentService.IsUniqueAsync(departmentId, model.DepartmentName);
+            bool isUnique = await _departmentService.IsUniqueAsync(departmentId, model.Name);
 
             if (isUnique == false)
             {
-                ModelState.AddModelError(nameof(model.DepartmentName), "The Name already exists.");
+                ModelState.AddModelError(nameof(model.Name), "The Name already exists.");
                 return BadRequest(ModelState);
             }
 
             UpdateDepartmentDto updateDepartmentDto = new UpdateDepartmentDto()
             {
-                DepartmentId = model.DepartmentId,
-                DepartmentName = model.DepartmentName,
+                Id = model.Id,
+                Name = model.Name,
                 Description = model.Description
             };
 

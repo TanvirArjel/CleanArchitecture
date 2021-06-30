@@ -40,17 +40,13 @@ namespace EmployeeManagement.Domain.Entities
 
         public void SetName(string name)
         {
-            name.ThrowIfNullOrEmpty(nameof(name));
-
-            name.ThrowIfOutOfLength(2, 50, nameof(name));
-
-            Name = name;
+            Name = name.ThrowIfNullOrEmpty(nameof(name))
+                       .ThrowIfOutOfLength(2, 50, nameof(name));
         }
 
         public void SetDeparment(int departmentId)
         {
-            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
-            DepartmentId = departmentId;
+            DepartmentId = departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
         }
 
         public void SetDateOfBirth(DateTime dateOfBirth)
@@ -65,14 +61,12 @@ namespace EmployeeManagement.Domain.Entities
 
         public void SetEmail(string email)
         {
-            email.ThrowIfNullOrEmpty(nameof(email));
-            Email = email;
+            Email = email.ThrowIfNullOrEmpty(nameof(email));
         }
 
         public void SetPhoneNumber(string phoneNumber)
         {
-            phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
-            PhoneNumber = phoneNumber;
+            PhoneNumber = phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
         }
     }
 }

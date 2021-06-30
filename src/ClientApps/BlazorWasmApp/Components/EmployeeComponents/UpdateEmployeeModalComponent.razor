@@ -16,9 +16,9 @@
                                 <CustomValidationMessages @ref="CustomValidationMessages" />
                                 <ValidationSummary Model="@UpdateEmployeeModel" />
                                 <div class="mb-3 form-floating">
-                                    <InputText class="form-control" @bind-Value="UpdateEmployeeModel.EmployeeName" placeholder="EmployeeName" />
-                                    <label>Employee Name</label>
-                                    <ValidationMessage For="@(() => UpdateEmployeeModel.EmployeeName)" />
+                                    <InputText class="form-control" @bind-Value="UpdateEmployeeModel.Name" placeholder="EmployeeName" />
+                                    <label><i class="fas fa-user-tie"></i> Name</label>
+                                    <ValidationMessage For="@(() => UpdateEmployeeModel.Name)" />
                                 </div>
                                 <div class="mb-3 form-floating">
                                     <InputSelect class="form-select" @bind-Value="UpdateEmployeeModel.DepartmentId" placeholder="DepartmentId">
@@ -28,22 +28,22 @@
                                             <option value="@item.Value">@item.Text</option>
                                                 }
                                     </InputSelect>
-                                    <label>Department</label>
+                                    <label><i class="fas fa-building"></i> Department</label>
                                     <ValidationMessage For="@(() => UpdateEmployeeModel.DepartmentId)" />
                                 </div>
                                 <div class="mb-3 form-floating">
                                     <InputDate class="form-control" @bind-Value="UpdateEmployeeModel.DateOfBirth" placeholder="DateOfBirth" />
-                                    <label>Date Of Birth</label>
+                                    <label><i class="fas fa-calendar-alt"></i> Date Of Birth</label>
                                     <ValidationMessage For="@(() => UpdateEmployeeModel.DateOfBirth)" />
                                 </div>
                                 <div class="mb-3 form-floating">
                                     <InputText class="form-control" @bind-Value="UpdateEmployeeModel.Email" placeholder="Email" />
-                                    <label>Email</label>
+                                    <label><i class="fas fa-envelope"></i> Email</label>
                                     <ValidationMessage For="@(() => UpdateEmployeeModel.Email)" />
                                 </div>
                                 <div class="form-floating">
                                     <InputText class="form-control" @bind-Value="UpdateEmployeeModel.PhoneNumber" placeholder="PhoneNumber" />
-                                    <label>PhoneNumber</label>
+                                    <label><i class="fas fa-phone-square"></i> PhoneNumber</label>
                                     <ValidationMessage For="@(() => UpdateEmployeeModel.PhoneNumber)" />
                                 </div>
 

@@ -55,7 +55,7 @@ namespace BlazorWasmApp.Services
             updateDepartmentViewModel.ThrowIfNull(nameof(updateDepartmentViewModel));
 
             HttpResponseMessage response = await _httpClient
-                .PutAsJsonAsync($"v1/departments/{updateDepartmentViewModel.DepartmentId}", updateDepartmentViewModel);
+                .PutAsJsonAsync($"v1/departments/{updateDepartmentViewModel.Id}", updateDepartmentViewModel);
             return response;
         }
 

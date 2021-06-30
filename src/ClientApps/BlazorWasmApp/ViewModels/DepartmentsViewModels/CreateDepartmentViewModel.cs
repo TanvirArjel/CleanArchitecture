@@ -9,7 +9,7 @@ namespace BlazorWasmApp.ViewModels.DepartmentsViewModels
         [DisplayName("Department Name")]
         [MinLength(2, ErrorMessage = "{0} should be at least {1} characters long.")]
         [MaxLength(20, ErrorMessage = "{0} should not be more than {1} characters.")]
-        public string DepartmentName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [DisplayName("Description")]

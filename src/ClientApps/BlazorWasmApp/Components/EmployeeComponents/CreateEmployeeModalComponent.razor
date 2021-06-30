@@ -12,9 +12,9 @@
                     <CustomValidationMessages @ref="CustomValidationMessages" />
                     <ValidationSummary Model="@CreateEmployeeViewModel" />
                     <div class="form-floating mb-3">
-                        <InputText class="form-control" @bind-Value="CreateEmployeeViewModel.EmployeeName" placeholder="EmployeeName" />
-                        <label>Employee Name</label>
-                        <ValidationMessage For="@(() => CreateEmployeeViewModel.EmployeeName)" />
+                        <InputText class="form-control" @bind-Value="CreateEmployeeViewModel.Name" placeholder="EmployeeName" />
+                        <label><i class="fas fa-user-tie"></i> Name</label>
+                        <ValidationMessage For="@(() => CreateEmployeeViewModel.Name)" />
                     </div>
                     <div class="form-floating mb-3">
                         <InputSelect class="form-select" @bind-Value="CreateEmployeeViewModel.DepartmentId" placeholder="Department">
@@ -24,22 +24,22 @@
                                 <option value="@item.Value">@item.Text</option>
                             }
                         </InputSelect>
-                        <label>Department</label>
+                        <label><i class="fas fa-building"></i> Department</label>
                         <ValidationMessage For="@(() => CreateEmployeeViewModel.DepartmentId)" />
                     </div>
                     <div class="form-floating mb-3">
                         <InputDate class="form-control" @bind-Value="CreateEmployeeViewModel.DateOfBirth" placeholder="DateOfBirth" />
-                        <label>Date Of Birth</label>
+                        <label><i class="fas fa-calendar-alt"></i> Date Of Birth</label>
                         <ValidationMessage For="@(() => CreateEmployeeViewModel.DateOfBirth)" />
                     </div>
                     <div class="form-floating mb-3">
                         <InputText class="form-control" @bind-Value="CreateEmployeeViewModel.Email" placeholder="Email" />
-                        <label>Email</label>
+                        <label><i class="fas fa-envelope"></i> Email</label>
                         <ValidationMessage For="@(() => CreateEmployeeViewModel.Email)" />
                     </div>
                     <div class="form-floating">
                         <InputText class="form-control" @bind-Value="CreateEmployeeViewModel.PhoneNumber" placeholder="PhoneNumber" />
-                        <label>PhoneNumber</label>
+                        <label><i class="fas fa-phone-square"></i> PhoneNumber</label>
                         <ValidationMessage For="@(() => CreateEmployeeViewModel.PhoneNumber)" />
                     </div>
 

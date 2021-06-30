@@ -5,12 +5,12 @@ namespace EmployeeManagement.Api.AutoMapper
     public class UpdateDepartmentModel
     {
         [Required]
-        public int DepartmentId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(20)]
         [MinLength(2)]
-        public string DepartmentName { get; set; }
+        public string Name { get; set; }
 
         [MaxLength(200)]
         [MinLength(20)]

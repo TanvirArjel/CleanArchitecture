@@ -66,7 +66,7 @@ namespace EmployeeManagement.Application.Implementations.Services
             createEmployeeDto.ThrowIfNull(nameof(createEmployeeDto));
 
             Employee employeeToBeCreated = new Employee(
-                createEmployeeDto.EmployeeName,
+                createEmployeeDto.Name,
                 createEmployeeDto.DepartmentId,
                 createEmployeeDto.DateOfBirth,
                 createEmployeeDto.Email,
@@ -81,14 +81,14 @@ namespace EmployeeManagement.Application.Implementations.Services
             {
                 updateEmployeeDto.ThrowIfNull(nameof(updateEmployeeDto));
 
-                Employee employeeeToBeUpdated = await _repository.GetByIdAsync<Employee>(updateEmployeeDto.EmployeeId);
+                Employee employeeeToBeUpdated = await _repository.GetByIdAsync<Employee>(updateEmployeeDto.Id);
 
                 if (employeeeToBeUpdated == null)
                 {
-                    throw new EntityNotFoundException(typeof(Employee), updateEmployeeDto.EmployeeId);
+                    throw new EntityNotFoundException(typeof(Employee), updateEmployeeDto.Id);
                 }
 
-                employeeeToBeUpdated.SetName(updateEmployeeDto.EmployeeName);
+                employeeeToBeUpdated.SetName(updateEmployeeDto.Name);
                 employeeeToBeUpdated.SetDeparment(updateEmployeeDto.DepartmentId);
                 employeeeToBeUpdated.SetDateOfBirth(updateEmployeeDto.DateOfBirth);
                 employeeeToBeUpdated.SetEmail(updateEmployeeDto.Email);

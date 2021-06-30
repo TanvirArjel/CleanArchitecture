@@ -5,13 +5,13 @@ namespace BlazorWasmApp.ViewModels.DepartmentsViewModels
 {
     public class UpdateDepartmentViewModel
     {
-        public int DepartmentId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [DisplayName("Department Name")]
         [MinLength(2, ErrorMessage = "{0} should be at least {1} characters long.")]
         [MaxLength(20, ErrorMessage = "{0} should not be more than {1} characters.")]
-        public string DepartmentName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [DisplayName("Description")]

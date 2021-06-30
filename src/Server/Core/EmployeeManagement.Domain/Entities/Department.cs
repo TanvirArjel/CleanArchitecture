@@ -10,7 +10,7 @@ namespace EmployeeManagement.Domain.Entities
             SetDescription(description);
         }
 
-        // This is needed for EF Core query mapping.
+        // This is needed for EF Core query mapping or deserialization.
         private Department()
         {
         }
@@ -23,18 +23,14 @@ namespace EmployeeManagement.Domain.Entities
 
         public void SetName(string name)
         {
-            name.ThrowIfNullOrEmpty(nameof(name));
-            name.ThrowIfOutOfLength(2, 50, nameof(name));
-
-            Name = name;
+            Name = name.ThrowIfNullOrEmpty(nameof(name))
+                       .ThrowIfOutOfLength(2, 50, nameof(name));
         }
 
         public void SetDescription(string description)
         {
-            description.ThrowIfNullOrEmpty(nameof(description));
-            description.ThrowIfOutOfLength(20, 100, nameof(description));
-
-            Description = description;
+            Description = description.ThrowIfNullOrEmpty(nameof(description))
+                                     .ThrowIfOutOfLength(20, 100, nameof(description));
         }
     }
 }

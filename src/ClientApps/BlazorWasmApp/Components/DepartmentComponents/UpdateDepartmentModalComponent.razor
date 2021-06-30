@@ -20,14 +20,14 @@
                                 <CustomValidationMessages @ref="CustomValidationMessages" />
                                 <ValidationSummary Model="@UpdateDepartmentModel" />
                                 <div class="form-floating mb-3">
-                                    <InputText class="form-control" @bind-Value="UpdateDepartmentModel.DepartmentName" placeholder="Name" />
-                                    <label>Department Name</label>
-                                    <ValidationMessage For="@(() => UpdateDepartmentModel.DepartmentName)" />
+                                    <InputText class="form-control" @bind-Value="UpdateDepartmentModel.Name" placeholder="Name" />
+                                    <label><i class="fas fa-building"></i> Name</label>
+                                    <ValidationMessage For="@(() => UpdateDepartmentModel.Name)" />
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <InputText class="form-control" @bind-Value="UpdateDepartmentModel.Description" placeholder="Description" />
-                                    <label>Description</label>
+                                    <InputTextArea class="form-control" style="height: 100px" @bind-Value="UpdateDepartmentModel.Description" placeholder="Description" />
+                                    <label><i class="fas fa-edit"></i> Description</label>
                                     <ValidationMessage For="@(() => UpdateDepartmentModel.Description)" />
                                 </div>
                                 <div class="form-control p-2">

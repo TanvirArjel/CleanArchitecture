@@ -4,7 +4,7 @@ namespace EmployeeManagement.Application.Dtos.EmployeeDtos
 {
     public class CreateEmployeeDto
     {
-        public string EmployeeName { get; set; }
+        public string Name { get; set; }
 
         public int DepartmentId { get; set; }
 

@@ -53,8 +53,8 @@ namespace BlazorWasmApp.Components.EmployeeComponents
 
             UpdateEmployeeModel = new UpdateEmployeeViewModel()
             {
-                EmployeeId = employeeDetailsViewModel.Id,
-                EmployeeName = employeeDetailsViewModel.Name,
+                Id = employeeDetailsViewModel.Id,
+                Name = employeeDetailsViewModel.Name,
                 DepartmentId = employeeDetailsViewModel.DepartmentId,
                 DateOfBirth = employeeDetailsViewModel.DateOfBirth,
                 Email = employeeDetailsViewModel.Email,

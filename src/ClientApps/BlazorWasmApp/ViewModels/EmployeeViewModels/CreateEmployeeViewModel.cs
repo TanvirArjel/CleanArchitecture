@@ -10,7 +10,7 @@ namespace BlazorWasmApp.ViewModels.EmployeeViewModels
         [DisplayName("Employee Name")]
         [MinLength(4, ErrorMessage = "{0} should be at least {1} characters long.")]
         [MaxLength(50)]
-        public string EmployeeName { get; set; }
+        public string Name { get; set; }
 
         [Required(ErrorMessage = "Please select your deparment.")]
         [DisplayName("Department")]

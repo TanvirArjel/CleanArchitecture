@@ -4,9 +4,9 @@ namespace EmployeeManagement.Application.Dtos.EmployeeDtos
 {
     public class UpdateEmployeeDto
     {
-        public int EmployeeId { get; set; }
+        public int Id { get; set; }
 
-        public string EmployeeName { get; set; }
+        public string Name { get; set; }
 
         public int DepartmentId { get; set; }
 
