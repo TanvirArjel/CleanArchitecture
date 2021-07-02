@@ -28,7 +28,7 @@ namespace BlazorWasmApp.Services
             return paginatedList.Items;
         }
 
-        public async Task<EmployeeDetailsViewModel> GetDetailsByIdAsync(int employeeId)
+        public async Task<EmployeeDetailsViewModel> GetDetailsByIdAsync(Guid employeeId)
         {
             EmployeeDetailsViewModel employee = await _httpClient.GetFromJsonAsync<EmployeeDetailsViewModel>($"v1/employees/{employeeId}");
             return employee;
@@ -58,7 +58,7 @@ namespace BlazorWasmApp.Services
             return response;
         }
 
-        public async Task<HttpResponseMessage> DeleteAsync(int employeeId)
+        public async Task<HttpResponseMessage> DeleteAsync(Guid employeeId)
         {
             HttpResponseMessage response = await _httpClient.DeleteAsync($"v1/employees/{employeeId}");
             return response;

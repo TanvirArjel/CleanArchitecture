@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using EmployeeManagement.Api.ApiModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Services;
@@ -56,11 +57,11 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Get details of an employee by employee id.")]
-        public async Task<ActionResult<EmployeeDetailsDto>> GetDetailsById(int employeeId)
+        public async Task<ActionResult<EmployeeDetailsDto>> GetDetailsById(Guid employeeId)
         {
-            if (employeeId <= 0)
+            if (employeeId == Guid.Empty)
             {
-                return BadRequest($"The value of {nameof(employeeId)} msut be greater than 0.");
+                return BadRequest($"The value of {nameof(employeeId)} can't be empty.");
             }
 
             EmployeeDetailsDto employeeDetailsDto = await _employeeService.GetDetailsByIdAsync(employeeId);
@@ -104,7 +105,7 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Update an existing employee by employee id and posting the updated data.")]
-        public async Task<ActionResult> UpdateEmployee(int employeeId, [FromBody] UpdateEmployeeModel model)
+        public async Task<ActionResult> UpdateEmployee(Guid employeeId, [FromBody] UpdateEmployeeModel model)
         {
             if (employeeId != model.Id)
             {
@@ -141,11 +142,11 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Delete an existing employee by employee id.")]
-        public async Task<ActionResult> DeleteEmployee(int employeeId)
+        public async Task<ActionResult> DeleteEmployee(Guid employeeId)
         {
-            if (employeeId <= 0)
+            if (employeeId == Guid.Empty)
             {
-                ModelState.AddModelError(nameof(employeeId), $"The value of {nameof(employeeId)} msut be greater than 0.");
+                ModelState.AddModelError(nameof(employeeId), $"The value of {nameof(employeeId)} can't be empty.");
                 return BadRequest(ModelState);
             }
 

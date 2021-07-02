@@ -45,17 +45,17 @@ namespace BlazorWasmApp.Components.EmployeeComponents
             await CreateModal.OpenAsync();
         }
 
-        private async Task OpenUpdateModalAsync(int employeeId)
+        private async Task OpenUpdateModalAsync(Guid employeeId)
         {
             await UpdateModal.OpenAsync(employeeId);
         }
 
-        private async Task OpenDetailsModalAsync(int employeeId)
+        private async Task OpenDetailsModalAsync(Guid employeeId)
         {
             await DetailsModal.OpenAsync(employeeId);
         }
 
-        private async Task OpenDeleteModalAsync(int employeeId)
+        private async Task OpenDeleteModalAsync(Guid employeeId)
         {
             await DeleteModal.OpenAsync(employeeId);
         }

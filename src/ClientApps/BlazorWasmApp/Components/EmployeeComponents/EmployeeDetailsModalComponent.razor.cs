@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.EmployeeViewModels;
 
@@ -19,7 +20,7 @@ namespace BlazorWasmApp.Components.EmployeeComponents
 
         private EmployeeDetailsViewModel EmployeeDetailsModel { get; set; }
 
-        public async Task OpenAsync(int employeeId)
+        public async Task OpenAsync(Guid employeeId)
         {
             EmployeeDetailsModel = await _employeeService.GetDetailsByIdAsync(employeeId);
             ModalClass = "show d-block";

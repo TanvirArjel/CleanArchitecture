@@ -36,7 +36,7 @@ namespace BlazorWasmApp.Components.DepartmentComponents
         [Parameter]
         public EventCallback DepartmentUpdated { get; set; }
 
-        public async Task ShowAsync(int departmentId)
+        public async Task ShowAsync(Guid departmentId)
         {
             DepartmentDetailsViewModel departmentDetailsViewModel = await _departmentService.GetByIdAsync(departmentId);
 

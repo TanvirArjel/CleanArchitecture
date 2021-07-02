@@ -17,6 +17,9 @@ namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations
 
             modelBuilder.Entity<TEntity>(builder =>
             {
+                builder.Property<int>("IdentityKey").ValueGeneratedOnAdd();
+
+                builder.HasKey(cr => cr.Id);
                 builder.Property(cr => cr.CreatedAtUtc).HasDefaultValueSql("getutcdate()");
                 builder.Property(cr => cr.CreatedAtUtc).Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Throw);
                 builder.Property(cr => cr.CreatedAtUtc).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Throw);

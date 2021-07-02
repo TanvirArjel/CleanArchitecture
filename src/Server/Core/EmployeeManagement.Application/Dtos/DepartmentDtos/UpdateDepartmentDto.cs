@@ -1,8 +1,10 @@
-﻿namespace EmployeeManagement.Application.Dtos.DepartmentDtos
+﻿using System;
+
+namespace EmployeeManagement.Application.Dtos.DepartmentDtos
 {
     public class UpdateDepartmentDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

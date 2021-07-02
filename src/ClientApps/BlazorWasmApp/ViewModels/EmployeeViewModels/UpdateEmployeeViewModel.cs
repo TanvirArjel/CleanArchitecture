@@ -7,7 +7,7 @@ namespace BlazorWasmApp.ViewModels.EmployeeViewModels
     public class UpdateEmployeeViewModel
     {
         [Required]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [DisplayName("Employee Name")]
@@ -17,7 +17,7 @@ namespace BlazorWasmApp.ViewModels.EmployeeViewModels
 
         [Required(ErrorMessage = "Please select your deparment.")]
         [DisplayName("Department")]
-        public int? DepartmentId { get; set; }
+        public Guid? DepartmentId { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayName("Date Of Birth")]

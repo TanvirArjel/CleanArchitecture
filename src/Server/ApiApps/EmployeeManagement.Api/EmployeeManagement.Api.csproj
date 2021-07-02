@@ -12,7 +12,8 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.1.4" />
-		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.1.0" />
+		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
+		<PackageReference Include="TanvirArjel.CustomValidation.AspNetCore" Version="1.2.1" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="1.4.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
 			<PrivateAssets>all</PrivateAssets>

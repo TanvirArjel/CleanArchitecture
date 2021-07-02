@@ -1,9 +1,9 @@
 ﻿@page "/departments"
 
-<CreateDepartmentModalComponent @ref="CreateModal" DepartmentCreated="ItemChangedEventHandler" />
-<UpdateDepartmentModalComponent @ref="UpdateModal" DepartmentUpdated="ItemChangedEventHandler" />
+<CreateDepartmentModalComponent @ref="CreateModal" DepartmentCreated="OnItemChanged" />
+<UpdateDepartmentModalComponent @ref="UpdateModal" DepartmentUpdated="OnItemChanged" />
 <DepartmentDetailsModalComponent @ref="DetailsModal" />
-<DeleteDepartmentModalComponent @ref="DeleteModal" DepartmentDeleted="ItemChangedEventHandler" />
+<DeleteDepartmentModalComponent @ref="DeleteModal" DepartmentDeleted="OnItemChanged" />
 
 @{
     if (ErrorMessage == null)
@@ -24,7 +24,7 @@
                     </tr>
                     <tr>
                         <th style="min-width:200px;">
-                            Department Name
+                            Name
                         </th>
                         <th>
                             Description
@@ -68,7 +68,7 @@
                                             @item.IsActive
                                         </td>
                                         <td>
-                                            @item.CreatedAtUtc
+                                            @item.CreatedAtUtc.ToString("dd-MMM-yyyy hh:mm tt")
                                         </td>
                                         <td>
                                             @item.LastModifiedAtUtc

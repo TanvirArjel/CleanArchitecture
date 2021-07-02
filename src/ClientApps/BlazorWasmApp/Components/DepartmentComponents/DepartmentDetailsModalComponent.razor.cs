@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.DepartmentsViewModels;
 
@@ -19,7 +20,7 @@ namespace BlazorWasmApp.Components.DepartmentComponents
 
         private DepartmentDetailsViewModel DepartmentDetailsModel { get; set; }
 
-        public async Task ShowAsync(int departmentId)
+        public async Task ShowAsync(Guid departmentId)
         {
             DepartmentDetailsModel = await _departmentService.GetByIdAsync(departmentId);
             ModalClass = "show d-block";

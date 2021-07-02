@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Domain.Entities;
@@ -13,11 +14,11 @@ namespace EmployeeManagement.Application.CacheRepositories
 
         Task<List<DepartmentSelectListDto>> GetSelectListAsync();
 
-        Task<Department> GetByIdAsync(int departmentId);
+        Task<Department> GetByIdAsync(Guid departmentId);
 
-        Task<DepartmentDetailsDto> GetDetailsByIdAsync(int departmentId);
+        Task<DepartmentDetailsDto> GetDetailsByIdAsync(Guid departmentId);
 
-        Task<int> InsertAsync(Department department);
+        Task<Guid> InsertAsync(Department department);
 
         Task UpdateAsync(Department department);
 

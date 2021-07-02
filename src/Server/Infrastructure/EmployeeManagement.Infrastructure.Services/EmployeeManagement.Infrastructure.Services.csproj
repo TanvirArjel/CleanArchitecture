@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="SendGrid" Version="9.24.0" />
-    <PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.1.0" />
+    <PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using TanvirArjel.CustomValidation.Attributes;
 
 namespace BlazorWasmApp.ViewModels.EmployeeViewModels
 {
@@ -14,11 +15,12 @@ namespace BlazorWasmApp.ViewModels.EmployeeViewModels
 
         [Required(ErrorMessage = "Please select your deparment.")]
         [DisplayName("Department")]
-        public int? DepartmentId { get; set; }
+        public Guid? DepartmentId { get; set; }
 
         [Required(ErrorMessage = "Please select your date of birth.")]
         [DataType(DataType.Date)]
         [DisplayName("Date Of Birth")]
+        [MinAge(15, 0, 0, ErrorMessage = "The minimum age has to be 15 years.")]
         public DateTime? DateOfBirth { get; set; }
 
         [EmailAddress]

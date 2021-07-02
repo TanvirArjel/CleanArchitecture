@@ -6,7 +6,7 @@ namespace EmployeeManagement.Api.ApiModels.EmployeeModels
     public class UpdateEmployeeModel
     {
         [Required]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -15,7 +15,7 @@ namespace EmployeeManagement.Api.ApiModels.EmployeeModels
 
         [Required]
         [Range(1, int.MaxValue)]
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         [Required]
         public DateTime DateOfBirth { get; set; }

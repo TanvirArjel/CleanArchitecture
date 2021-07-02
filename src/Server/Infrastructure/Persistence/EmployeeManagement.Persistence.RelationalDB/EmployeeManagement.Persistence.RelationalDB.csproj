@@ -8,11 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Migrations\20200927150915_EmailLengthChanged.cs" />
-		<Compile Remove="Migrations\20200927150915_EmailLengthChanged.Designer.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
@@ -28,7 +23,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.10" />
-		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.1.0" />
+		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
 		<PackageReference Include="TanvirArjel.EFCore.GenericRepository" Version="5.5.0" />
 	</ItemGroup>
 

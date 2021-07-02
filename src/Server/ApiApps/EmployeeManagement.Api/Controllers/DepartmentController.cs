@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeeManagement.Api.ApiModels.DepartmentModels;
 using EmployeeManagement.Api.AutoMapper;
@@ -40,11 +41,11 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Get the department select list.")]
-        public async Task<ActionResult<SelectList>> GetDepartmentSelectList(int? selectedDepartment)
+        public async Task<ActionResult<SelectList>> GetDepartmentSelectList(Guid? selectedDepartment)
         {
-            if (selectedDepartment <= 0)
+            if (selectedDepartment == Guid.Empty)
             {
-                return BadRequest($"The value of {nameof(selectedDepartment)} msut be greater than 0.");
+                return BadRequest($"The value of {nameof(selectedDepartment)} can't be empty.");
             }
 
             SelectList selectList = await _departmentService.GetSelectListAsync(selectedDepartment);
@@ -72,7 +73,7 @@ namespace EmployeeManagement.Api.Controllers
                 Description = model.Description
             };
 
-            int departmentId = await _departmentService.CreateAsync(createDepartmentDto);
+            Guid departmentId = await _departmentService.CreateAsync(createDepartmentDto);
             return CreatedAtAction(nameof(GetDepartment), new { departmentId }, model);
         }
 
@@ -81,11 +82,11 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Get the details of a department by department id.")]
-        public async Task<ActionResult<DepartmentDetailsDto>> GetDepartment(int departmentId)
+        public async Task<ActionResult<DepartmentDetailsDto>> GetDepartment(Guid departmentId)
         {
-            if (departmentId <= 0)
+            if (departmentId == Guid.Empty)
             {
-                return BadRequest($"The value of {nameof(departmentId)} msut be greater than 0.");
+                return BadRequest($"The value of {nameof(departmentId)} can't be empty.");
             }
 
             DepartmentDetailsDto departmentDetailsDto = await _departmentService.GetByIdAsync(departmentId);
@@ -98,7 +99,7 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Update an existing employee by employee id and posting updated data.")]
-        public async Task<ActionResult> UpdateDepartment(int departmentId, UpdateDepartmentModel model)
+        public async Task<ActionResult> UpdateDepartment(Guid departmentId, UpdateDepartmentModel model)
         {
             if (departmentId != model.Id)
             {
@@ -138,11 +139,11 @@ namespace EmployeeManagement.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Delete an existing department by department id.")]
-        public async Task<IActionResult> DeleteDepartment(int departmentId)
+        public async Task<IActionResult> DeleteDepartment(Guid departmentId)
         {
-            if (departmentId <= 0)
+            if (departmentId == Guid.Empty)
             {
-                ModelState.AddModelError(string.Empty, $"The value of {nameof(departmentId)} msut be greater than 0.");
+                ModelState.AddModelError(string.Empty, $"The value of {nameof(departmentId)} must be not empty.");
                 return BadRequest(ModelState);
             }
 

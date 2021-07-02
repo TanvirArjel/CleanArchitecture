@@ -23,7 +23,7 @@ namespace EmployeeManagement.Persistence.Cache.CacheRepositories
             _repository = repository;
         }
 
-        public async Task<Employee> GetByIdAsync(long employeeId)
+        public async Task<Employee> GetByIdAsync(Guid employeeId)
         {
             string cacheKey = EmployeeCacheKeys.GetKey(employeeId);
             Employee employee = await _distributedCache.GetAsync<Employee>(cacheKey);
@@ -38,7 +38,7 @@ namespace EmployeeManagement.Persistence.Cache.CacheRepositories
             return employee;
         }
 
-        public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(long employeeId)
+        public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(Guid employeeId)
         {
             string cacheKey = EmployeeCacheKeys.GetDetailsKey(employeeId);
             EmployeeDetailsDto employeeDetails = await _distributedCache.GetAsync<EmployeeDetailsDto>(cacheKey);

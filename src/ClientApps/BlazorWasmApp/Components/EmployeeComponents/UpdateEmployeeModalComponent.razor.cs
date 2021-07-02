@@ -42,7 +42,7 @@ namespace BlazorWasmApp.Components.EmployeeComponents
         [Parameter]
         public EventCallback EmployeeUpdated { get; set; }
 
-        public async Task OpenAsync(int employeeId)
+        public async Task OpenAsync(Guid employeeId)
         {
             EmployeeDetailsViewModel employeeDetailsViewModel = await _employeeService.GetDetailsByIdAsync(employeeId);
 

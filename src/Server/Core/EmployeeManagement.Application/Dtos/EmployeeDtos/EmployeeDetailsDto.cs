@@ -4,11 +4,11 @@ namespace EmployeeManagement.Application.Dtos.EmployeeDtos
 {
     public class EmployeeDetailsDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         public string DepartmentName { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using TanvirArjel.CustomValidation.Attributes;
 
 namespace EmployeeManagement.Api.ApiModels.EmployeeModels
 {
@@ -11,9 +12,10 @@ namespace EmployeeManagement.Api.ApiModels.EmployeeModels
         public string Name { get; set; }
 
         [Required]
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         [Required]
+        [MinAge(15, 0, 0, ErrorMessage = "The minimum age has to be 15 years.")]
         public DateTime DateOfBirth { get; set; }
 
         [Required]

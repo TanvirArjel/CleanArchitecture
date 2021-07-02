@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,20 +12,20 @@ namespace EmployeeManagement.Application.Services
     {
         Task<List<DepartmentDetailsDto>> GetListAsync();
 
-        Task<int> CreateAsync(CreateDepartmentDto createDepartmentDto);
+        Task<Guid> CreateAsync(CreateDepartmentDto createDepartmentDto);
 
-        Task<SelectList> GetSelectListAsync(int? selectedDepartmentId);
+        Task<SelectList> GetSelectListAsync(Guid? selectedDepartmentId);
 
-        Task<DepartmentDetailsDto> GetByIdAsync(int departmentId);
+        Task<DepartmentDetailsDto> GetByIdAsync(Guid departmentId);
 
         Task UpdateAsync(UpdateDepartmentDto updateDepartmentDto);
 
-        Task DeleteAsync(int departmentId);
+        Task DeleteAsync(Guid departmentId);
 
-        Task<bool> ExistsAsync(int departmentId);
+        Task<bool> ExistsAsync(Guid departmentId);
 
         Task<bool> ExistsByNameAsync(string departmentName);
 
-        Task<bool> IsUniqueAsync(int departmentId, string departmentName);
+        Task<bool> IsUniqueAsync(Guid departmentId, string departmentName);
     }
 }

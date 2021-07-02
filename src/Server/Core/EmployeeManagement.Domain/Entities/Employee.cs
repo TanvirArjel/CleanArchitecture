@@ -7,7 +7,7 @@ namespace EmployeeManagement.Domain.Entities
     {
         public Employee(
             string name,
-            int departmentId,
+            Guid departmentId,
             DateTime dateOfBirth,
             string email,
             string phoneNumber)
@@ -24,11 +24,9 @@ namespace EmployeeManagement.Domain.Entities
         {
         }
 
-        public int Id { get; private set; }
-
         public string Name { get; private set; }
 
-        public int DepartmentId { get; private set; }
+        public Guid DepartmentId { get; private set; }
 
         public DateTime DateOfBirth { get; private set; }
 
@@ -44,9 +42,9 @@ namespace EmployeeManagement.Domain.Entities
                        .ThrowIfOutOfLength(2, 50, nameof(name));
         }
 
-        public void SetDeparment(int departmentId)
+        public void SetDeparment(Guid departmentId)
         {
-            DepartmentId = departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+            DepartmentId = departmentId.ThrowIfEmpty(nameof(departmentId));
         }
 
         public void SetDateOfBirth(DateTime dateOfBirth)
@@ -61,7 +59,8 @@ namespace EmployeeManagement.Domain.Entities
 
         public void SetEmail(string email)
         {
-            Email = email.ThrowIfNullOrEmpty(nameof(email));
+            Email = email.ThrowIfNullOrEmpty(nameof(email))
+                         .ThrowIfNotValidEmail(nameof(email));
         }
 
         public void SetPhoneNumber(string phoneNumber)

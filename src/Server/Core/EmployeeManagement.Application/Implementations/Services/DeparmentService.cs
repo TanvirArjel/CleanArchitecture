@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
@@ -28,26 +29,26 @@ namespace EmployeeManagement.Application.Implementations.Services
             return departmentList;
         }
 
-        public async Task<int> CreateAsync(CreateDepartmentDto createDepartmentDto)
+        public async Task<Guid> CreateAsync(CreateDepartmentDto createDepartmentDto)
         {
             createDepartmentDto.ThrowIfNull(nameof(createDepartmentDto));
 
             Department departmentToBeCreated = new Department(createDepartmentDto.Name, createDepartmentDto.Description);
 
-            int departmentId = await _departmentCacheRepository.InsertAsync(departmentToBeCreated);
+            Guid departmentId = await _departmentCacheRepository.InsertAsync(departmentToBeCreated);
 
             return departmentId;
         }
 
-        public async Task<SelectList> GetSelectListAsync(int? selectedDepartmentId)
+        public async Task<SelectList> GetSelectListAsync(Guid? selectedDepartmentId)
         {
             List<DepartmentSelectListDto> departments = await _departmentCacheRepository.GetSelectListAsync();
             return new SelectList(departments, "Id", "Name", selectedDepartmentId);
         }
 
-        public async Task<DepartmentDetailsDto> GetByIdAsync(int departmentId)
+        public async Task<DepartmentDetailsDto> GetByIdAsync(Guid departmentId)
         {
-            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+            departmentId.ThrowIfEmpty(nameof(departmentId));
 
             DepartmentDetailsDto departmentDetailsDto = await _departmentCacheRepository.GetDetailsByIdAsync(departmentId);
 
@@ -71,9 +72,9 @@ namespace EmployeeManagement.Application.Implementations.Services
             await _departmentCacheRepository.UpdateAsync(departmentToBeUpdated);
         }
 
-        public async Task DeleteAsync(int departmentId)
+        public async Task DeleteAsync(Guid departmentId)
         {
-            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+            departmentId.ThrowIfEmpty(nameof(departmentId));
 
             Department departmentToBeDeleted = await _repository.GetByIdAsync<Department>(departmentId);
 
@@ -85,9 +86,9 @@ namespace EmployeeManagement.Application.Implementations.Services
             await _departmentCacheRepository.DeleteAsync(departmentToBeDeleted);
         }
 
-        public async Task<bool> ExistsAsync(int departmentId)
+        public async Task<bool> ExistsAsync(Guid departmentId)
         {
-            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+            departmentId.ThrowIfEmpty(nameof(departmentId));
 
             bool isExists = await _repository.ExistsAsync<Department>(d => d.Id == departmentId);
             return isExists;
@@ -101,9 +102,9 @@ namespace EmployeeManagement.Application.Implementations.Services
             return isExistent;
         }
 
-        public async Task<bool> IsUniqueAsync(int departmentId, string departmentName)
+        public async Task<bool> IsUniqueAsync(Guid departmentId, string departmentName)
         {
-            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+            departmentId.ThrowIfEmpty(nameof(departmentId));
             departmentName.ThrowIfNullOrEmpty(nameof(departmentName));
 
             bool isExistent = await _repository.ExistsAsync<Department>(d => d.Id != departmentId && d.Name == departmentName);

@@ -28,19 +28,19 @@
                 <thead>
                     <tr>
                         <th>
-                            Employee Name
+                            Name
                         </th>
                         <th>
-                            DepartmentName
+                            Department Name
                         </th>
                         <th>
-                            DateOfBirth
+                            Date Of Birth
                         </th>
                         <th>
                             Email
                         </th>
                         <th>
-                            PhoneNumber
+                            Phone Number
                         </th>
                         <th>Action</th>
                     </tr>
@@ -69,7 +69,7 @@
                                             @item.DepartmentName
                                         </td>
                                         <td>
-                                            @item.DateOfBirth
+                                            @item.DateOfBirth.ToString("dd-MMM-yyyy")
                                         </td>
                                         <td>
                                             @item.Email

@@ -6,7 +6,7 @@ namespace EmployeeManagement.Application.Dtos.EmployeeDtos
     {
         public string Name { get; set; }
 
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 

@@ -6,12 +6,12 @@ namespace BlazorWasmApp.ViewModels.EmployeeViewModels
 {
     public class EmployeeDetailsViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [DisplayName("Employee Name")]
         public string Name { get; set; }
 
-        public int DepartmentId { get; set; }
+        public Guid DepartmentId { get; set; }
 
         [DisplayName("Department Name")]
         public string DepartmentName { get; set; }

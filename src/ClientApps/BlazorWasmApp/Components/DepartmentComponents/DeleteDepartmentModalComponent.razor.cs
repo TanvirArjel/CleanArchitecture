@@ -37,7 +37,7 @@ namespace BlazorWasmApp.Components.DepartmentComponents
             DepartmentDetailsModel = new DepartmentDetailsViewModel();
         }
 
-        public async Task ShowAsync(int departmentId)
+        public async Task ShowAsync(Guid departmentId)
         {
             DepartmentDetailsModel = await _departmentService.GetByIdAsync(departmentId);
 
@@ -53,11 +53,11 @@ namespace BlazorWasmApp.Components.DepartmentComponents
             StateHasChanged();
         }
 
-        private async Task HandleValidSubmit(int departmentId)
+        private async Task HandleValidSubmit(Guid departmentId)
         {
             try
             {
-                departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+                departmentId.ThrowIfEmpty(nameof(departmentId));
 
                 HttpResponseMessage httpResponseMessage = await _departmentService.DeleteAsync(departmentId);
 

@@ -31,7 +31,7 @@ namespace BlazorWasmApp.Components.EmployeeComponents
         [Parameter]
         public EventCallback EmployeeDeleted { get; set; }
 
-        public async Task OpenAsync(int employeeId)
+        public async Task OpenAsync(Guid employeeId)
         {
             EmployeeDetailsModel = await _employeeService.GetDetailsByIdAsync(employeeId);
             ModalClass = "show d-block";

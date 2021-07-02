@@ -44,7 +44,7 @@ namespace BlazorWasmApp.Components.DepartmentComponents
         }
 
         // EventHandler which will be called whenvever ItemUpdated event is published.
-        private async void ItemChangedEventHandler()
+        private async void OnItemChanged()
         {
             await LoadDepartmentsAsync();
             StateHasChanged();
@@ -60,17 +60,17 @@ namespace BlazorWasmApp.Components.DepartmentComponents
             CreateModal.Show();
         }
 
-        private async Task ShowUpdateModal(int departmentId)
+        private async Task ShowUpdateModal(Guid departmentId)
         {
             await UpdateModal.ShowAsync(departmentId);
         }
 
-        private async Task ShowDetailsModalAsync(int departmentId)
+        private async Task ShowDetailsModalAsync(Guid departmentId)
         {
             await DetailsModal.ShowAsync(departmentId);
         }
 
-        private async Task ShowDeleteModalAsync(int departmentId)
+        private async Task ShowDeleteModalAsync(Guid departmentId)
         {
             await DeleteModal.ShowAsync(departmentId);
         }

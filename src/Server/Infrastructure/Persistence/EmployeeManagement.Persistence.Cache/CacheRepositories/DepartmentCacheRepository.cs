@@ -69,7 +69,7 @@ namespace EmployeeManagement.Persistence.Cache.CacheRepositories
             return departmentSelectList;
         }
 
-        public async Task<Department> GetByIdAsync(int departmentId)
+        public async Task<Department> GetByIdAsync(Guid departmentId)
         {
             string cacheKey = DepartmentCacheKeys.GetKey(departmentId);
             Department department = await _distributedCache.GetAsync<Department>(cacheKey);
@@ -84,7 +84,7 @@ namespace EmployeeManagement.Persistence.Cache.CacheRepositories
             return department;
         }
 
-        public async Task<DepartmentDetailsDto> GetDetailsByIdAsync(int departmentId)
+        public async Task<DepartmentDetailsDto> GetDetailsByIdAsync(Guid departmentId)
         {
             string cacheKey = DepartmentCacheKeys.GetDetailsKey(departmentId);
             DepartmentDetailsDto department = await _distributedCache.GetAsync<DepartmentDetailsDto>(cacheKey);
@@ -109,11 +109,11 @@ namespace EmployeeManagement.Persistence.Cache.CacheRepositories
             return department;
         }
 
-        public async Task<int> InsertAsync(Department department)
+        public async Task<Guid> InsertAsync(Department department)
         {
             object[] primaryKeyValues = await _repository.InsertAsync(department);
 
-            int departmentId = (int)primaryKeyValues[0];
+            Guid departmentId = (Guid)primaryKeyValues[0];
 
             // Add item to the cache list
             string departmentListKey = DepartmentCacheKeys.ListKey;

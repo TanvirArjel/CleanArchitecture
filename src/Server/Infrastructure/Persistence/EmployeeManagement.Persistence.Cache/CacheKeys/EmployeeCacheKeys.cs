@@ -1,9 +1,11 @@
-﻿namespace EmployeeManagement.Persistence.Cache.CacheKeys
+﻿using System;
+
+namespace EmployeeManagement.Persistence.Cache.CacheKeys
 {
     public static class EmployeeCacheKeys
     {
-        public static string GetKey(long employeeId) => $"Employee-{employeeId}";
+        public static string GetKey(Guid employeeId) => $"Employee-{employeeId}";
 
-        public static string GetDetailsKey(long employeeId) => $"EmployeeDetails-{employeeId}";
+        public static string GetDetailsKey(Guid employeeId) => $"EmployeeDetails-{employeeId}";
     }
 }

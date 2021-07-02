@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -27,7 +28,7 @@ namespace BlazorWasmApp.Services
             return departments;
         }
 
-        public async Task<List<SelectListItem>> GetSelectListAsync(int? selectedDepartment = null)
+        public async Task<List<SelectListItem>> GetSelectListAsync(Guid? selectedDepartment = null)
         {
             List<SelectListItem> departments = await _httpClient
                 .GetFromJsonAsync<List<SelectListItem>>($"v1/departments/select-list?selectedDepartment={selectedDepartment}");
@@ -42,9 +43,9 @@ namespace BlazorWasmApp.Services
             return response;
         }
 
-        public async Task<DepartmentDetailsViewModel> GetByIdAsync(int departmentId)
+        public async Task<DepartmentDetailsViewModel> GetByIdAsync(Guid departmentId)
         {
-            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+            departmentId.ThrowIfEmpty(nameof(departmentId));
 
             DepartmentDetailsViewModel response = await _httpClient.GetFromJsonAsync<DepartmentDetailsViewModel>($"v1/departments/{departmentId}");
             return response;
@@ -59,9 +60,9 @@ namespace BlazorWasmApp.Services
             return response;
         }
 
-        public async Task<HttpResponseMessage> DeleteAsync(int departmentId)
+        public async Task<HttpResponseMessage> DeleteAsync(Guid departmentId)
         {
-            departmentId.ThrowIfZeroOrNegative(nameof(departmentId));
+            departmentId.ThrowIfEmpty(nameof(departmentId));
 
             HttpResponseMessage response = await _httpClient.DeleteAsync($"v1/departments/{departmentId}");
 

@@ -1,4 +1,6 @@
-﻿namespace EmployeeManagement.Persistence.Cache.CacheKeys
+﻿using System;
+
+namespace EmployeeManagement.Persistence.Cache.CacheKeys
 {
     internal static class DepartmentCacheKeys
     {
@@ -6,8 +8,8 @@
 
         public static string SelectListKey => "DepartmentSelectList";
 
-        public static string GetKey(int departmentId) => $"Department-{departmentId}";
+        public static string GetKey(Guid departmentId) => $"Department-{departmentId}";
 
-        public static string GetDetailsKey(int departmentId) => $"DepartmentDetails-{departmentId}";
+        public static string GetDetailsKey(Guid departmentId) => $"DepartmentDetails-{departmentId}";
     }
 }

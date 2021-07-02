@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
@@ -10,12 +11,12 @@ namespace EmployeeManagement.Application.Services
     {
         Task<PaginatedList<EmployeeDetailsDto>> GetListAsync(int pageNumber, int pageSize);
 
-        Task<EmployeeDetailsDto> GetDetailsByIdAsync(int employeeId);
+        Task<EmployeeDetailsDto> GetDetailsByIdAsync(Guid employeeId);
 
         Task CreateAsync(CreateEmployeeDto createEmployeeDto);
 
         Task UpdateAsync(UpdateEmployeeDto updateEmployeeDto);
 
-        Task DeleteAsync(int employeeId);
+        Task DeleteAsync(Guid employeeId);
     }
 }

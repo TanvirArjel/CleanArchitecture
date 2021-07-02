@@ -1,11 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlazorWasmApp.ViewModels.DepartmentsViewModels
 {
     public class UpdateDepartmentViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [DisplayName("Department Name")]

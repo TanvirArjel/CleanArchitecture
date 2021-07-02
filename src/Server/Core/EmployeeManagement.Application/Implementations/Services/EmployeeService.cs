@@ -52,9 +52,9 @@ namespace EmployeeManagement.Application.Implementations.Services
             return employeeDetailsDtos;
         }
 
-        public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(int employeeId)
+        public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(Guid employeeId)
         {
-            employeeId.ThrowIfZeroOrNegative(nameof(employeeId));
+            employeeId.ThrowIfEmpty(nameof(employeeId));
 
             EmployeeDetailsDto employeeDetailsDto = await _employeeCacheRepository.GetDetailsByIdAsync(employeeId);
 
@@ -102,9 +102,9 @@ namespace EmployeeManagement.Application.Implementations.Services
             }
         }
 
-        public async Task DeleteAsync(int employeeId)
+        public async Task DeleteAsync(Guid employeeId)
         {
-            employeeId.ThrowIfZeroOrNegative(nameof(employeeId));
+            employeeId.ThrowIfEmpty(nameof(employeeId));
 
             Employee employeeeToBeDeleted = await _repository.GetByIdAsync<Employee>(employeeId);
 

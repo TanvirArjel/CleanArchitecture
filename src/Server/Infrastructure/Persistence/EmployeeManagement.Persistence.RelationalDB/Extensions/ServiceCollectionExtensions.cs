@@ -34,7 +34,7 @@ namespace EmployeeManagement.Persistence.RelationalDB.Extensions
                 options.UseSqlServer(connectionString, builder =>
                 {
                     ////builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
-                    builder.MigrationsAssembly("EmployeeManagement.Infrastructure");
+                    builder.MigrationsAssembly("EmployeeManagement.Persistence.RelationalDB");
                     builder.MigrationsHistoryTable("__EFCoreMigrationsHistory", schema: "_Migration");
                 });
             });
