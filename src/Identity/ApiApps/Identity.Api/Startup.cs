@@ -1,6 +1,8 @@
 using System.IO.Compression;
+using Identity.Api.Extensions;
 using Identity.Api.Swagger;
 using Identity.Api.Utils;
+using Identity.Application;
 using Identity.Infrastructure.Services;
 using Identity.Persistence.RelationalDB;
 using Microsoft.AspNetCore.Builder;
@@ -52,8 +54,10 @@ namespace EmployeeManagement.Identity
 
             services.AddIdentityDbContext(Configuration.GetConnectionString("IdentityDbConnection"));
 
-            JwtConfig jwtConfig = new JwtConfig("Test.com", "ThisIsMySecretKey");
+            JwtConfig jwtConfig = new JwtConfig("SampleIdentity.com", "SampleIdentitySecretKey", 86400);
             services.AddJwtAuthentication(jwtConfig);
+
+            services.AddJwtTokenGenerator(jwtConfig);
 
             string sendGridApiKey = "yourSendGridKey";
             services.AddSendGrid(sendGridApiKey);

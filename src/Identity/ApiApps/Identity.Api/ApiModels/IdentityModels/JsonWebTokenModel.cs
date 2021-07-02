@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Identity.Api.ApiModels.AccountModels
+namespace Identity.Api.ApiModels.IdentityModels
 {
     public class JsonWebTokenModel
     {

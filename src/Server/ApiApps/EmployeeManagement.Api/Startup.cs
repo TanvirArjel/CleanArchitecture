@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
+using EmployeeManagement.Api.Extensions;
 using EmployeeManagement.Api.Swagger;
 using EmployeeManagement.Api.Utilities.Mixed;
 using EmployeeManagement.Infrastructure.Services;
@@ -80,6 +81,8 @@ namespace EmployeeManagement.Api
             });
 
             services.AddSwaggerGeneration();
+
+            services.AddJwtAuthentication();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -125,6 +128,7 @@ namespace EmployeeManagement.Api
 
             app.UseCors(myAllowSpecificOrigins);
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

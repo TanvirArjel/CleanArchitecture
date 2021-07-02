@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Identity.Api.ApiModels.AccountModels
+namespace Identity.Api.ApiModels.IdentityModels
 {
-    public class ForgotPasswordModel
+    public class ResendEmailConfirmationCodeModel
     {
         [Required]
         [EmailAddress]

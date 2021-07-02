@@ -13,6 +13,7 @@ namespace EmployeeManagement.Api.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/employees")]
     [ApiController]
+    ////[Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;

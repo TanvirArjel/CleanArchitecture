@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Identity.Api.ApiModels.AccountModels;
+using Identity.Api.ApiModels.IdentityModels;
 using Identity.Application.Infrastrucures;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
@@ -31,6 +30,7 @@ namespace Identity.Api.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IApplicationUserService _applicationUserService;
+        private readonly ITokenGenerator _tokenGenerator;
         private readonly IConfiguration _configuration;
         private readonly IExceptionLogger _exceptionLogger;
 
@@ -39,13 +39,15 @@ namespace Identity.Api.Controllers
             SignInManager<ApplicationUser> signInManager,
             IApplicationUserService applicationUserService,
             IConfiguration configuration,
-            IExceptionLogger exceptionLogger)
+            IExceptionLogger exceptionLogger,
+            ITokenGenerator tokenGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _applicationUserService = applicationUserService;
             _configuration = configuration;
             _exceptionLogger = exceptionLogger;
+            _tokenGenerator = tokenGenerator;
         }
 
         [HttpPost]
@@ -59,7 +61,13 @@ namespace Identity.Api.Controllers
         {
             try
             {
-                ApplicationUser applicationUser = new ApplicationUser { UserName = registerModel.Email, Email = registerModel.Email };
+                ApplicationUser applicationUser = new ApplicationUser
+                {
+                    FirstName = registerModel.FirstName,
+                    LastName = registerModel.LastName,
+                    UserName = registerModel.Email,
+                    Email = registerModel.Email
+                };
                 IdentityResult identityResult = await _userManager.CreateAsync(applicationUser, registerModel.Password);
 
                 if (identityResult.Succeeded == false)
@@ -72,7 +80,7 @@ namespace Identity.Api.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _applicationUserService.SendEmailVerificationCodeAsync(applicationUser.Email);
+                //// await _applicationUserService.SendEmailVerificationCodeAsync(applicationUser.Email);
                 return Ok();
             }
             catch (Exception exception)
@@ -340,29 +348,7 @@ namespace Identity.Api.Controllers
 
         private async Task<JsonWebTokenModel> GenerateJsonWebToken(ApplicationUser applicationUser)
         {
-            DateTime utcNow = DateTime.UtcNow;
-
-            Claim[] claims = new Claim[]
-            {
-                new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email),
-                new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, applicationUser.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString(CultureInfo.InvariantCulture))
-            };
-
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key")));
-            SigningCredentials signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-
-            JwtSecurityToken jwt = new JwtSecurityToken(
-                signingCredentials: signingCredentials,
-                claims: claims,
-                notBefore: utcNow,
-                expires: utcNow.AddSeconds(_configuration.GetValue<int>("Jwt:Lifetime")),
-                audience: _configuration.GetValue<string>("Jwt:Issuer"),
-                issuer: _configuration.GetValue<string>("Jwt:Issuer"));
-
-            string accessToken = new JwtSecurityTokenHandler().WriteToken(jwt);
+            string accessToken = _tokenGenerator.GenerateToken(applicationUser);
 
             var userInfo = await _userManager.Users.Where(u => u.Email == applicationUser.Email)
                 .Select(u => new
