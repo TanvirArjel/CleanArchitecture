@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Application.Infrastrucures
+namespace Identity.Application.Infrastrucures
 {
     [SingletonService]
     public interface IExceptionLogger

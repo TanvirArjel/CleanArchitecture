@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations;
+using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DomainEntities;
 using EmployeeManagement.Persistence.RelationalDB.Extensions;
 using Microsoft.EntityFrameworkCore;
 

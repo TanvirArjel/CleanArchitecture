@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EmployeeManagement.Domain.Entities;
-using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations;
+using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DomainEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
