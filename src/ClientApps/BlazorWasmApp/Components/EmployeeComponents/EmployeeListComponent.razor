@@ -1,4 +1,5 @@
 ﻿@page "/employees"
+@attribute [Authorize]
 
 <CreateEmployeeModalComponent @ref="CreateModal" EmployeeCreated="CreatedEmployeeEventHandler" />
 <UpdateEmployeeModalComponent @ref="UpdateModal" EmployeeUpdated="EmployeeUpdatedEventHandler" />

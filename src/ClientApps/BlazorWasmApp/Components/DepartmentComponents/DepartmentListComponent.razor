@@ -1,5 +1,7 @@
 ﻿@page "/departments"
 
+@attribute [Authorize]
+
 <CreateDepartmentModalComponent @ref="CreateModal" DepartmentCreated="OnItemChanged" />
 <UpdateDepartmentModalComponent @ref="UpdateModal" DepartmentUpdated="OnItemChanged" />
 <DepartmentDetailsModalComponent @ref="DetailsModal" />
