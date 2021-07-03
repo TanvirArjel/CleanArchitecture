@@ -1,0 +1,66 @@
+﻿@page "/identity/login"
+@layout EmptyLayoutComponent
+
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                            <div class="card-body">
+                                <EditForm Model="LoginModel" OnValidSubmit="HandleValidSubmit">
+                                    <DataAnnotationsValidator />
+                                    <CustomValidationMessages @ref="ValidationMessages" />
+                                    <ValidationSummary Model="@LoginModel" />
+
+                                    <div class="form-floating mb-3">
+                                        <InputText class="form-control" @bind-Value="LoginModel.EmailOrUserName" placeholder="Email or username" />
+                                        <label for="floatingInput">
+                                            <i class="fas fa-envelope"></i> Email or username
+                                        </label>
+                                        <ValidationMessage For="@(() => LoginModel.EmailOrUserName)" />
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <InputText type="password" class="form-control" @bind-Value="LoginModel.Password" placeholder="Password" />
+                                        <label for="floatingPassword">
+                                            <i class="fas fa-key"></i> Password
+                                        </label>
+                                        <ValidationMessage For="@(() => LoginModel.Password)" />
+                                    </div>
+
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
+                                        <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                        <a class="small" href="password.html">Forgot Password?</a>
+                                        <button type="submit" class="btn btn-primary">Login</button>
+                                    </div>
+                                </EditForm>
+                            </div>
+                            <div class="card-footer text-center py-3">
+                                <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="layoutAuthentication_footer">
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>

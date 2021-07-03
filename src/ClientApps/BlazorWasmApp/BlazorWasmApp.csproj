@@ -1,23 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
-    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
-    <PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
-    <PackageReference Include="TanvirArjel.Blazor" Version="1.4.0" />
-    <PackageReference Include="TanvirArjel.CustomValidation" Version="1.2.1" />
-    <PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="1.4.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Blazored.LocalStorage" Version="4.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
+		<PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
+		<PackageReference Include="TanvirArjel.Blazor" Version="1.4.0" />
+		<PackageReference Include="TanvirArjel.CustomValidation" Version="1.2.1" />
+		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="1.4.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
+	<ItemGroup>
+		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+	</ItemGroup>
 
 </Project>

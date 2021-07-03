@@ -175,16 +175,16 @@ namespace Identity.Api.Controllers
         {
             try
             {
-                ApplicationUser applicationUser = await _userManager.FindByEmailAsync(loginModel.Email);
+                ApplicationUser applicationUser = await _userManager.FindByEmailAsync(loginModel.EmailOrUserName);
 
                 if (applicationUser == null)
                 {
-                    ModelState.AddModelError(nameof(loginModel.Email), "The email does not exist.");
+                    ModelState.AddModelError(nameof(loginModel.EmailOrUserName), "The email does not exist.");
                     return BadRequest(ModelState);
                 }
 
                 SignInResult signinResult = await _signInManager.PasswordSignInAsync(
-                         loginModel.Email,
+                         loginModel.EmailOrUserName,
                          loginModel.Password,
                          isPersistent: loginModel.RememberMe,
                          lockoutOnFailure: false);
@@ -199,7 +199,7 @@ namespace Identity.Api.Controllers
                 {
                     if (!await _userManager.IsEmailConfirmedAsync(applicationUser))
                     {
-                        ModelState.AddModelError(nameof(loginModel.Email), "The email is not confirmed yet.");
+                        ModelState.AddModelError(nameof(loginModel.EmailOrUserName), "The email is not confirmed yet.");
                         return BadRequest(ModelState);
                     }
 

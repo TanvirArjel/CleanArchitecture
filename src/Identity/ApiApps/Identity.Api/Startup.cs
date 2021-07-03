@@ -7,6 +7,7 @@ using Identity.Infrastructure.Services;
 using Identity.Persistence.RelationalDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -20,6 +21,8 @@ namespace EmployeeManagement.Identity
 {
     public class Startup
     {
+        private readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,10 +33,27 @@ namespace EmployeeManagement.Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: myAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44364")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
+            });
 
             services.AddControllersWithViews(options =>
             {
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+            }).ConfigureApiBehaviorOptions(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    return new BadRequestObjectResult(context.ModelState);
+                };
             });
 
             services.AddResponseCompression(options =>
@@ -95,6 +115,8 @@ namespace EmployeeManagement.Identity
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(myAllowSpecificOrigins);
 
             app.UseAuthorization();
 

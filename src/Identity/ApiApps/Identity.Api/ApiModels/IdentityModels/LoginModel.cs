@@ -7,7 +7,7 @@ namespace Identity.Api.ApiModels.IdentityModels
         [Required]
         [EmailAddress]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "{0} should be between {2} to {1} characters")]
-        public string Email { get; set; }
+        public string EmailOrUserName { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 6, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]

@@ -24,9 +24,12 @@ namespace Identity.Application.Implementations.Services
 
             Claim[] claims = new Claim[]
             {
+                new Claim(ClaimTypes.NameIdentifier, applicationUser.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email),
+                new Claim(ClaimTypes.Email, applicationUser.Email),
                 new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, applicationUser.UserName),
+                new Claim(ClaimTypes.Name, applicationUser.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString(CultureInfo.InvariantCulture))
             };
