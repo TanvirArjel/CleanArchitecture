@@ -1,24 +1,20 @@
 ﻿using System.Threading.Tasks;
-using Blazored.LocalStorage;
-using BlazorWasmApp.Extensions;
-using Microsoft.AspNetCore.Components;
+using BlazorWasmApp.Common;
 
 namespace BlazorWasmApp.Components.Shared
 {
     public partial class MainLayoutComponent
     {
-        private readonly ILocalStorageService _localStorageService;
-        private readonly NavigationManager _navigationManager;
+        private readonly HostAuthStateProvider _hostAuthStateProvider;
 
-        public MainLayoutComponent(ILocalStorageService localStorageService, NavigationManager navigationManager)
+        public MainLayoutComponent(HostAuthStateProvider hostAuthStateProvider)
         {
-            _localStorageService = localStorageService;
-            _navigationManager = navigationManager;
+            _hostAuthStateProvider = hostAuthStateProvider;
         }
+
         private async Task LogOutAsync()
         {
-            await _localStorageService.RemoveUserInfoAsync();
-            _navigationManager.NavigateTo("identity/login");
+            await _hostAuthStateProvider.LogOutAsync("identity/login");
         }
     }
 }

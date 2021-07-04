@@ -20,8 +20,8 @@ namespace BlazorWasmApp
 
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddScoped<HostAuthenticationStateProvider>();
-            builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<HostAuthenticationStateProvider>());
+            builder.Services.AddScoped<HostAuthStateProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<HostAuthStateProvider>());
 
             builder.Services.AddServicesOfAllTypes(Assembly.GetExecutingAssembly());
             builder.Services.AddHttpClient("EmployeeManagementApi", c =>

@@ -14,10 +14,10 @@ namespace BlazorWasmApp.Common
     [TransientService]
     public class AuthorizationDelegatingHandler : DelegatingHandler
     {
-        private readonly HostAuthenticationStateProvider _authenticationStateProvider;
+        private readonly HostAuthStateProvider _authenticationStateProvider;
         private readonly ILocalStorageService _localStorage;
 
-        public AuthorizationDelegatingHandler(ILocalStorageService localStorage, HostAuthenticationStateProvider authenticationStateProvider)
+        public AuthorizationDelegatingHandler(ILocalStorageService localStorage, HostAuthStateProvider authenticationStateProvider)
         {
             _localStorage = localStorage;
             _authenticationStateProvider = authenticationStateProvider;

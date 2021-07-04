@@ -2,12 +2,11 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Blazored.LocalStorage;
 using BlazorWasmApp.Common;
-using BlazorWasmApp.Extensions;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.IdentityModels;
-using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
 
 namespace BlazorWasmApp.Components.IdentityComponents
@@ -15,35 +14,38 @@ namespace BlazorWasmApp.Components.IdentityComponents
     public partial class LoginComponent
     {
         private readonly UserService _userService;
-        private readonly ILocalStorageService _localStorage;
-        private readonly NavigationManager _navigationManager;
+        private readonly HostAuthStateProvider _hostAuthStateProvider;
         private readonly ExceptionLogger _exceptionLogger;
 
         public LoginComponent(
             UserService userService,
-            ILocalStorageService localStorage,
-            NavigationManager navigationManager,
+            HostAuthStateProvider hostAuthStateProvider,
             ExceptionLogger exceptionLogger)
         {
             _userService = userService;
-            _localStorage = localStorage;
-            _navigationManager = navigationManager;
+            _hostAuthStateProvider = hostAuthStateProvider;
             _exceptionLogger = exceptionLogger;
         }
 
-        private LoginModel LoginModel { get; set; }
+        private EditContext FormContext { get; set; }
+
+        private LoginModel LoginModel { get; set; } = new LoginModel();
 
         private CustomValidationMessages ValidationMessages { get; set; }
 
+        private bool IsDisabled { get; set; }
+
         protected override void OnInitialized()
         {
-            LoginModel = new LoginModel();
+            FormContext = new EditContext(LoginModel);
+            FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
         }
 
         private async Task HandleValidSubmit()
         {
             try
             {
+                IsDisabled = true;
                 HttpResponseMessage httpResponse = await _userService.LoginAsync(LoginModel);
 
                 if (httpResponse.IsSuccessStatusCode)
@@ -58,14 +60,13 @@ namespace BlazorWasmApp.Components.IdentityComponents
 
                     if (loginResponse != null)
                     {
-                        await _localStorage.StoreUserInfoAsync(loginResponse);
-
-                        _navigationManager.NavigateTo("/", true);
+                        await _hostAuthStateProvider.LogInAsync(loginResponse, "/");
                     }
                 }
                 else
                 {
                     await ValidationMessages.AddAndDisplayAsync(httpResponse);
+                    IsDisabled = false;
                 }
             }
             catch (Exception exception)

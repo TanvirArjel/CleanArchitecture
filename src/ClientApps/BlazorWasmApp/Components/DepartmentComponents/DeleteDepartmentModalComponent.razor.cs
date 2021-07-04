@@ -6,6 +6,7 @@ using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
 using TanvirArjel.ArgumentChecker;
+using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
 
 namespace BlazorWasmApp.Components.DepartmentComponents

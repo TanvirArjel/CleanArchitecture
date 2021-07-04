@@ -5,6 +5,7 @@ using BlazorWasmApp.Common;
 using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.EmployeeViewModels;
 using Microsoft.AspNetCore.Components;
+using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
 
 namespace BlazorWasmApp.Components.EmployeeComponents

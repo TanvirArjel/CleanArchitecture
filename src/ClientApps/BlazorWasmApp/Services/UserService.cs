@@ -114,6 +114,18 @@ namespace BlazorWasmApp.Services
             return httpResponseMessage;
         }
 
+        public async Task<HttpResponseMessage> RegisterAsync(RegistrationModel registerModel)
+        {
+            if (registerModel == null)
+            {
+                throw new ArgumentNullException(nameof(registerModel));
+            }
+
+            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/register", registerModel);
+
+            return httpResponseMessage;
+        }
+
         public async Task<HttpResponseMessage> LoginAsync(LoginModel loginModel)
         {
             if (loginModel == null)

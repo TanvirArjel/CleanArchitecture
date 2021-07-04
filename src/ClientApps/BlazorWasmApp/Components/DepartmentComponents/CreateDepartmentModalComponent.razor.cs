@@ -6,6 +6,7 @@ using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
 
 namespace BlazorWasmApp.Components.DepartmentComponents
@@ -74,7 +75,7 @@ namespace BlazorWasmApp.Components.DepartmentComponents
             }
             catch (Exception exception)
             {
-                CustomValidationMessages.AddAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
+                CustomValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
         }

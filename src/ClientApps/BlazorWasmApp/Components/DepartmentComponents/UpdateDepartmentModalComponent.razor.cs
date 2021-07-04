@@ -6,6 +6,7 @@ using BlazorWasmApp.Services;
 using BlazorWasmApp.ViewModels.DepartmentsViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
 
 namespace BlazorWasmApp.Components.DepartmentComponents

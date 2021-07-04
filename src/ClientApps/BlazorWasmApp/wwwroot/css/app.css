@@ -27,7 +27,7 @@ a, .btn-link {
 }
 
 .validation-message {
-    color: red;
+    color: #dc3545;
 }
 
 #blazor-error-ui {
@@ -48,3 +48,7 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+ .btn-form-floating {
+     padding: 13px 1rem !important;
+ }

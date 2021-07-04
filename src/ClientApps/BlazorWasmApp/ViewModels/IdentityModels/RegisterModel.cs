@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Identity.Api.ApiModels.IdentityModels
+namespace BlazorWasmApp.ViewModels.IdentityModels
 {
     public class RegistrationModel
     {
