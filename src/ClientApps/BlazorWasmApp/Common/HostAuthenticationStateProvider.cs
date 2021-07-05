@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -34,7 +35,42 @@ namespace BlazorWasmApp.Common
 
                 JwtSecurityToken jwtToken = new JwtSecurityToken(loggedInUserInfo.AccessToken);
 
-                ClaimsIdentity identity = new ClaimsIdentity(jwtToken.Claims, "ServerAuth");
+                Console.WriteLine(jwtToken);
+
+                List<Claim> microsoftClaims = new List<Claim>();
+
+                foreach (Claim item in jwtToken.Claims)
+                {
+                    switch (item.Type)
+                    {
+                        case JwtRegisteredClaimNames.NameId:
+                            microsoftClaims.Add(new Claim(ClaimTypes.NameIdentifier, item.Value));
+                            break;
+                        case JwtRegisteredClaimNames.Name:
+                            microsoftClaims.Add(new Claim(ClaimTypes.Name, item.Value));
+                            break;
+                        case JwtRegisteredClaimNames.GivenName:
+                            microsoftClaims.Add(new Claim(ClaimTypes.GivenName, item.Value));
+                            break;
+                        case JwtRegisteredClaimNames.Sub:
+                            microsoftClaims.Add(new Claim(ClaimTypes.NameIdentifier, item.Value));
+                            break;
+                        case JwtRegisteredClaimNames.Email:
+                            microsoftClaims.Add(new Claim(ClaimTypes.Email, item.Value));
+                            break;
+                        case JwtRegisteredClaimNames.Iat:
+                            microsoftClaims.Add(new Claim(ClaimTypes.Expiration, item.Value));
+                            break;
+                        case JwtRegisteredClaimNames.Jti:
+                            microsoftClaims.Add(new Claim(ClaimTypes.Sid, item.Value));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+
+                ClaimsIdentity identity = new ClaimsIdentity(microsoftClaims, "ServerAuth");
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
 
                 AuthenticationState authenticationState = new AuthenticationState(claimsPrincipal);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -17,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Annotations;
+using TanvirArjel.ArgumentChecker;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Identity.Api.Controllers
@@ -348,15 +350,11 @@ namespace Identity.Api.Controllers
 
         private async Task<JsonWebTokenModel> GenerateJsonWebToken(ApplicationUser applicationUser)
         {
-            string accessToken = _tokenGenerator.GenerateToken(applicationUser);
+            applicationUser.ThrowIfNull(nameof(applicationUser));
 
-            var userInfo = await _userManager.Users.Where(u => u.Email == applicationUser.Email)
-                .Select(u => new
-                {
-                    u.Id,
-                    u.UserName,
-                    u.Email
-                }).FirstOrDefaultAsync();
+            IList<string> roles = await _userManager.GetRolesAsync(applicationUser).ConfigureAwait(false);
+
+            string accessToken = _tokenGenerator.GenerateToken(applicationUser, roles);
 
             RefreshToken refreshToken = await _applicationUserService.GetRefreshTokenAsync(applicationUser.Id);
 
@@ -378,8 +376,8 @@ namespace Identity.Api.Controllers
 
             JsonWebTokenModel jsonWebToken = new JsonWebTokenModel()
             {
-                UserId = userInfo.Id,
-                FullName = userInfo?.UserName,
+                UserId = applicationUser.Id,
+                FullName = applicationUser.FirstName + " " + applicationUser.LastName,
                 UserName = applicationUser.UserName,
                 Email = applicationUser.Email,
                 AccessToken = accessToken,

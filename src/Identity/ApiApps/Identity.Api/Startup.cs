@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.IO.Compression;
 using Identity.Api.Extensions;
 using Identity.Api.Swagger;
@@ -17,7 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Identity
+namespace Identity.Api
 {
     public class Startup
     {
@@ -33,6 +34,8 @@ namespace EmployeeManagement.Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             services.AddCors(options =>
             {
                 options.AddPolicy(
