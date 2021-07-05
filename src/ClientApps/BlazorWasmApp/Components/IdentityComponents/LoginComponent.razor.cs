@@ -33,7 +33,7 @@ namespace BlazorWasmApp.Components.IdentityComponents
 
         private CustomValidationMessages ValidationMessages { get; set; }
 
-        private bool IsDisabled { get; set; }
+        private bool IsSubmitDisabled { get; set; }
 
         protected override void OnInitialized()
         {
@@ -45,7 +45,7 @@ namespace BlazorWasmApp.Components.IdentityComponents
         {
             try
             {
-                IsDisabled = true;
+                IsSubmitDisabled = true;
                 HttpResponseMessage httpResponse = await _userService.LoginAsync(LoginModel);
 
                 if (httpResponse.IsSuccessStatusCode)
@@ -66,7 +66,7 @@ namespace BlazorWasmApp.Components.IdentityComponents
                 else
                 {
                     await ValidationMessages.AddAndDisplayAsync(httpResponse);
-                    IsDisabled = false;
+                    IsSubmitDisabled = false;
                 }
             }
             catch (Exception exception)

@@ -14,6 +14,8 @@ namespace BlazorWasmApp.Components.IdentityComponents
 
         private CustomValidationMessages ValidationMessages { get; set; }
 
+        private bool IsSubmitBtnDisabled { get; set; }
+
         protected override void OnInitialized()
         {
             FormContext = new EditContext(ForgotPasswordModel);

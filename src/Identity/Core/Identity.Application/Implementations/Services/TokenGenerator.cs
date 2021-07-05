@@ -11,11 +11,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Application.Implementations.Services
 {
-    internal class TokenGenerator : ITokenGenerator
+    internal class JwtTokenGenerator : IJwtTokenGenerator
     {
         private readonly JwtConfig _jwtConfig;
 
-        public TokenGenerator(JwtConfig jwtConfig)
+        public JwtTokenGenerator(JwtConfig jwtConfig)
         {
             _jwtConfig = jwtConfig;
         }

@@ -32,7 +32,7 @@ namespace Identity.Api.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IApplicationUserService _applicationUserService;
-        private readonly ITokenGenerator _tokenGenerator;
+        private readonly IJwtTokenGenerator _tokenGenerator;
         private readonly IConfiguration _configuration;
         private readonly IExceptionLogger _exceptionLogger;
 
@@ -42,7 +42,7 @@ namespace Identity.Api.Controllers
             IApplicationUserService applicationUserService,
             IConfiguration configuration,
             IExceptionLogger exceptionLogger,
-            ITokenGenerator tokenGenerator)
+            IJwtTokenGenerator tokenGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;

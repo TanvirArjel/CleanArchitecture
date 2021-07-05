@@ -5,7 +5,7 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace Identity.Application.Services
 {
     [SingletonService]
-    public interface ITokenGenerator
+    public interface IJwtTokenGenerator
     {
         string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles);
     }

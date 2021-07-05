@@ -33,6 +33,8 @@ namespace BlazorWasmApp.Components.IdentityComponents
 
         private CustomValidationMessages ValidationMessages { get; set; }
 
+        private bool IsSubmitBtnDisabled { get; set; }
+
         protected override void OnInitialized()
         {
             FormContext = new EditContext(RegistrationModel);
@@ -43,6 +45,7 @@ namespace BlazorWasmApp.Components.IdentityComponents
         {
             try
             {
+                IsSubmitBtnDisabled = true;
                 HttpResponseMessage httpResponseMessage = await _userService.RegisterAsync(RegistrationModel);
 
                 if (httpResponseMessage.IsSuccessStatusCode)
@@ -52,9 +55,11 @@ namespace BlazorWasmApp.Components.IdentityComponents
                 }
 
                 await ValidationMessages.AddAndDisplayAsync(httpResponseMessage);
+                IsSubmitBtnDisabled = false;
             }
             catch (Exception exception)
             {
+                IsSubmitBtnDisabled = false;
                 ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }

@@ -5,6 +5,7 @@ using EmployeeManagement.Api.ApiModels.DepartmentModels;
 using EmployeeManagement.Api.AutoMapper;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,6 +16,7 @@ namespace EmployeeManagement.Api.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/departments")]
     [ApiController]
+    [Authorize]
     public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;

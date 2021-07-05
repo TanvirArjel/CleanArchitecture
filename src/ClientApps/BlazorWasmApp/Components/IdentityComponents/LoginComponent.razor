@@ -42,8 +42,8 @@
                                         <a class="col btn btn-warning btn-form-floating" href="identity/forgot-password">
                                             Forgot Password?
                                         </a>
-                                        <button disabled="@IsDisabled" type="submit" class="col btn btn-success btn-form-floating">
-                                            @(IsDisabled ? "Submitting...." : "Login") <i class="fas fa-sign-in-alt"></i>
+                                        <button disabled="@IsSubmitDisabled" type="submit" class="col btn btn-success btn-form-floating">
+                                            @(IsSubmitDisabled ? "Submitting...." : "Login") <i class="fas fa-sign-in-alt"></i>
                                         </button>
                                     </div>
                                 </EditForm>

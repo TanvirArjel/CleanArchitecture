@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
@@ -15,12 +13,20 @@ namespace BlazorWasmApp.Common
     {
         private readonly ILocalStorageService _localStorage;
         private readonly NavigationManager _navigationManager;
+        private readonly JwtTokenParser _jwtTokenParser;
 
-        public HostAuthStateProvider(ILocalStorageService localStorage, NavigationManager navigationManager)
+
+        public HostAuthStateProvider(
+            ILocalStorageService localStorage,
+            NavigationManager navigationManager,
+            JwtTokenParser jwtTokenParser)
         {
             _localStorage = localStorage;
             _navigationManager = navigationManager;
+            _jwtTokenParser = jwtTokenParser;
         }
+
+        public ClaimsPrincipal User { get; private set; }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
@@ -33,54 +39,19 @@ namespace BlazorWasmApp.Common
                     return new AuthenticationState(new ClaimsPrincipal());
                 }
 
-                JwtSecurityToken jwtToken = new JwtSecurityToken(loggedInUserInfo.AccessToken);
-
-                Console.WriteLine(jwtToken);
-
-                List<Claim> microsoftClaims = new List<Claim>();
-
-                foreach (Claim item in jwtToken.Claims)
-                {
-                    switch (item.Type)
-                    {
-                        case JwtRegisteredClaimNames.NameId:
-                            microsoftClaims.Add(new Claim(ClaimTypes.NameIdentifier, item.Value));
-                            break;
-                        case JwtRegisteredClaimNames.Name:
-                            microsoftClaims.Add(new Claim(ClaimTypes.Name, item.Value));
-                            break;
-                        case JwtRegisteredClaimNames.GivenName:
-                            microsoftClaims.Add(new Claim(ClaimTypes.GivenName, item.Value));
-                            break;
-                        case JwtRegisteredClaimNames.Sub:
-                            microsoftClaims.Add(new Claim(ClaimTypes.NameIdentifier, item.Value));
-                            break;
-                        case JwtRegisteredClaimNames.Email:
-                            microsoftClaims.Add(new Claim(ClaimTypes.Email, item.Value));
-                            break;
-                        case JwtRegisteredClaimNames.Iat:
-                            microsoftClaims.Add(new Claim(ClaimTypes.Expiration, item.Value));
-                            break;
-                        case JwtRegisteredClaimNames.Jti:
-                            microsoftClaims.Add(new Claim(ClaimTypes.Sid, item.Value));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-
-                ClaimsIdentity identity = new ClaimsIdentity(microsoftClaims, "ServerAuth");
-                ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
+                ClaimsPrincipal claimsPrincipal = _jwtTokenParser.Parse(loggedInUserInfo.AccessToken);
 
                 AuthenticationState authenticationState = new AuthenticationState(claimsPrincipal);
+                User = authenticationState.User;
 
                 return authenticationState;
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                return new AuthenticationState(new ClaimsPrincipal());
+                AuthenticationState authState = new AuthenticationState(new ClaimsPrincipal());
+                User = authState.User;
+                return authState;
             }
         }
 
@@ -92,7 +63,7 @@ namespace BlazorWasmApp.Common
             }
 
             await _localStorage.SetItemAsync(LocalStorageKey.LoggedInUserInfo, loggedInUserInfo);
-            await NotifyStatusChanged();
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
             if (redirectTo != null)
             {
@@ -103,18 +74,12 @@ namespace BlazorWasmApp.Common
         public async Task LogOutAsync(string redirectTo = null)
         {
             await _localStorage.RemoveItemAsync(LocalStorageKey.LoggedInUserInfo);
-            await NotifyStatusChanged();
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
             if (redirectTo != null)
             {
                 _navigationManager.NavigateTo(redirectTo);
             }
-        }
-
-        private async Task NotifyStatusChanged()
-        {
-            AuthenticationState authenticationState = await GetAuthenticationStateAsync();
-            NotifyAuthenticationStateChanged(Task.FromResult(authenticationState));
         }
     }
 }

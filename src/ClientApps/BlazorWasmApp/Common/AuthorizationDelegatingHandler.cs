@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -14,13 +13,11 @@ namespace BlazorWasmApp.Common
     [TransientService]
     public class AuthorizationDelegatingHandler : DelegatingHandler
     {
-        private readonly HostAuthStateProvider _authenticationStateProvider;
         private readonly ILocalStorageService _localStorage;
 
-        public AuthorizationDelegatingHandler(ILocalStorageService localStorage, HostAuthStateProvider authenticationStateProvider)
+        public AuthorizationDelegatingHandler(ILocalStorageService localStorage)
         {
             _localStorage = localStorage;
-            _authenticationStateProvider = authenticationStateProvider;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -38,11 +35,6 @@ namespace BlazorWasmApp.Common
             }
 
             HttpResponseMessage httpResponseMessage = await base.SendAsync(request, cancellationToken);
-
-            if (httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                Console.WriteLine("Unahtorized response.");
-            }
 
             return httpResponseMessage;
         }

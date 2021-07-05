@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using BlazorWasmApp.Common;
 
-namespace BlazorWasmApp.Components.Shared
+namespace BlazorWasmApp.Components.SharedComponents
 {
     public partial class MainLayoutComponent
     {

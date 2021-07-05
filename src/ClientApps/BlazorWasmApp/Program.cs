@@ -1,4 +1,5 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
@@ -22,6 +23,8 @@ namespace BlazorWasmApp
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<HostAuthStateProvider>();
             builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<HostAuthStateProvider>());
+
+            builder.Services.AddScoped<JwtSecurityTokenHandler>();
 
             builder.Services.AddServicesOfAllTypes(Assembly.GetExecutingAssembly());
             builder.Services.AddHttpClient("EmployeeManagementApi", c =>

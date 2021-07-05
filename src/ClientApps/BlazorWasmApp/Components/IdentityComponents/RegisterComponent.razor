@@ -57,8 +57,8 @@
                                     </div>
                                     <div class="mt-4 mb-0">
                                         <div class="d-grid">
-                                            <button class="btn btn-success btn-block btn-form-floating" type="submit">
-                                                <i class="far fa-save"></i> Create Account
+                                            <button disabled="@IsSubmitBtnDisabled" class="btn btn-success btn-block btn-form-floating" type="submit">
+                                                <i class="far fa-save"></i> @(IsSubmitBtnDisabled ? "Submitting..." : "Create Account")
                                             </button>
                                         </div>
                                     </div>
