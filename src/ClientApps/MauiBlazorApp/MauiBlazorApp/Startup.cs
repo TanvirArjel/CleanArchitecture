@@ -2,8 +2,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using Blazored.LocalStorage;
-using ClientApps.Shared.Common;
-using ClientApps.Shared.Services;
+using MauiBlazor.Shared.Common;
+using MauiBlazor.Shared.Services;
 using MauiBlazorApp.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebView.Maui;

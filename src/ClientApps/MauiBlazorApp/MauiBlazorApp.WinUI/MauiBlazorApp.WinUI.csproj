@@ -45,7 +45,7 @@
 		<PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.0-preview" />
 		<PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0-preview" />
 		<PackageReference Include="TanvirArjel.Blazor" Version="1.4.0" />
-		<ProjectReference Include="..\..\ClientApps.Shared\ClientApps.Shared.csproj" />
+		<ProjectReference Include="..\..\MauiBlazor.Shared\MauiBlazor.Shared.csproj" />
 		<FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.19041.16" />
 		<FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.19041.16" />
 	</ItemGroup>

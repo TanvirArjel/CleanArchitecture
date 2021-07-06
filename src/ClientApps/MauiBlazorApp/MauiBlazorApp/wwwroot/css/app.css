@@ -1,5 +1,9 @@
 ﻿@import url('../lib/fontawesome/css/all.min.css');
 
+body {
+    background-color: #f9f9f9;
+}
+
 .valid.modified:not([type=checkbox]) {
     border: 1px solid #26b050;
 }
@@ -14,6 +18,13 @@
 
 .btn-form-floating {
     padding: 13px 1rem !important;
+}
+
+.box-shadow, .form-control, .btn {
+    border: none;
+    -webkit-box-shadow: 0 1px 3px 1px rgba(0,0,0,0.10);
+    -moz-box-shadow: 0 1px 3px 1px rgba(0,0,0,0.10);
+    box-shadow: 0 1px 3px 1px rgba(0,0,0,0.10);
 }
 
 #blazor-error-ui {

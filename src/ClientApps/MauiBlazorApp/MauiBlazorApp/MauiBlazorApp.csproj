@@ -50,7 +50,7 @@
 		<AndroidEnvironment Include="Android\AndroidEnvironment.txt" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\ClientApps.Shared\ClientApps.Shared.csproj" />
+	  <ProjectReference Include="..\..\MauiBlazor.Shared\MauiBlazor.Shared.csproj" />
 	</ItemGroup>
 
 </Project>
