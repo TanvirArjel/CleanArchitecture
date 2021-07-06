@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using BlazorWasmApp.Common;
+using ClientApps.Shared.Common;
 
 namespace BlazorWasmApp.Components.SharedComponents
 {

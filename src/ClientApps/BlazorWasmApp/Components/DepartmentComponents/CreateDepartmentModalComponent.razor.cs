@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorWasmApp.Common;
-using BlazorWasmApp.Services;
-using BlazorWasmApp.ViewModels.DepartmentsViewModels;
+using ClientApps.Shared.Common;
+using ClientApps.Shared.Models.DepartmentsViewModels;
+using ClientApps.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor;

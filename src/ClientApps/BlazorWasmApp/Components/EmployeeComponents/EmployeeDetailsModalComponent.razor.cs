@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorWasmApp.Services;
-using BlazorWasmApp.ViewModels.EmployeeViewModels;
+using ClientApps.Shared.Models.EmployeeViewModels;
+using ClientApps.Shared.Services;
 
 namespace BlazorWasmApp.Components.EmployeeComponents
 {

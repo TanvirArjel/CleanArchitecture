@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorWasmApp.Services;
-using BlazorWasmApp.ViewModels.DepartmentsViewModels;
+using ClientApps.Shared.Models.DepartmentsViewModels;
+using ClientApps.Shared.Services;
 
 namespace BlazorWasmApp.Components.DepartmentComponents
 {

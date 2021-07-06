@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31410.414
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.223
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{73DD776E-B397-4372-867D-EDAF28C8608F}"
 EndProject
@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AngularApp", "src\ClientApps\AngularApp\AngularApp.csproj", "{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{CB9B310C-37C2-4DAD-AEC3-1ED529190AA9}"
 EndProject
@@ -56,16 +54,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Persistence.Relati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Infrastructure.Services", "src\Identity\Infrastructure\Identity.Infrastructure.Services\Identity.Infrastructure.Services.csproj", "{AF6E9206-A226-48AD-80FF-B4B51534BA29}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorApp", "src\ClientApps\MauiBlazorApp\MauiBlazorApp\MauiBlazorApp.csproj", "{A980E99C-B889-4284-95BE-92C077B19724}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorApp.WinUI", "src\ClientApps\MauiBlazorApp\MauiBlazorApp.WinUI\MauiBlazorApp.WinUI.csproj", "{52695F25-1F01-4C2A-842B-92E290EBE774}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApps.Shared", "src\ClientApps\ClientApps.Shared\ClientApps.Shared.csproj", "{6026E80E-CB35-441E-9287-985584EFFA50}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADB9EE78-03CD-4426-90C9-0F004622CBCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ADB9EE78-03CD-4426-90C9-0F004622CBCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADB9EE78-03CD-4426-90C9-0F004622CBCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -114,6 +114,20 @@ Global
 		{AF6E9206-A226-48AD-80FF-B4B51534BA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF6E9206-A226-48AD-80FF-B4B51534BA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF6E9206-A226-48AD-80FF-B4B51534BA29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A980E99C-B889-4284-95BE-92C077B19724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A980E99C-B889-4284-95BE-92C077B19724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A980E99C-B889-4284-95BE-92C077B19724}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A980E99C-B889-4284-95BE-92C077B19724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A980E99C-B889-4284-95BE-92C077B19724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A980E99C-B889-4284-95BE-92C077B19724}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{52695F25-1F01-4C2A-842B-92E290EBE774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52695F25-1F01-4C2A-842B-92E290EBE774}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52695F25-1F01-4C2A-842B-92E290EBE774}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52695F25-1F01-4C2A-842B-92E290EBE774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6026E80E-CB35-441E-9287-985584EFFA50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6026E80E-CB35-441E-9287-985584EFFA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6026E80E-CB35-441E-9287-985584EFFA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6026E80E-CB35-441E-9287-985584EFFA50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,7 +135,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{81EB72CF-8A3B-4C39-A1C6-65893F8DEB13} = {73DD776E-B397-4372-867D-EDAF28C8608F}
 		{98EABEDD-28DB-4E2B-8167-03CE601C73BF} = {73DD776E-B397-4372-867D-EDAF28C8608F}
-		{3D97A017-7532-47B5-9A4B-2A6B601FE1DF} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
 		{CB9B310C-37C2-4DAD-AEC3-1ED529190AA9} = {98EABEDD-28DB-4E2B-8167-03CE601C73BF}
 		{7E02466D-9055-484A-AFD1-33AD5CA46437} = {98EABEDD-28DB-4E2B-8167-03CE601C73BF}
 		{E1D1A568-3BD0-429C-A717-18B329D75120} = {98EABEDD-28DB-4E2B-8167-03CE601C73BF}
@@ -142,6 +155,9 @@ Global
 		{3A653C61-F0AB-4713-BD84-B171F5E16560} = {B8033105-CC05-426C-8DE8-5461C877339F}
 		{21D2CD61-A578-4236-AF9B-4D9807935991} = {965611CF-5507-483C-A5D7-E7178BDEEEC0}
 		{AF6E9206-A226-48AD-80FF-B4B51534BA29} = {965611CF-5507-483C-A5D7-E7178BDEEEC0}
+		{A980E99C-B889-4284-95BE-92C077B19724} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
+		{52695F25-1F01-4C2A-842B-92E290EBE774} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
+		{6026E80E-CB35-441E-9287-985584EFFA50} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C622411-9649-4977-93A0-2C624539C0EE}

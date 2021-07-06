@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorWasmApp.Common;
-using BlazorWasmApp.Services;
-using BlazorWasmApp.ViewModels.DepartmentsViewModels;
+using ClientApps.Shared.Common;
+using ClientApps.Shared.Models.DepartmentsViewModels;
+using ClientApps.Shared.Services;
 
 namespace BlazorWasmApp.Components.DepartmentComponents
 {

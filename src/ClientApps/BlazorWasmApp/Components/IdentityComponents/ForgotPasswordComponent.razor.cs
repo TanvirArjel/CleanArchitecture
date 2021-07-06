@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using BlazorWasmApp.Common;
-using BlazorWasmApp.ViewModels.IdentityModels;
+using ClientApps.Shared.Common;
+using ClientApps.Shared.Models.IdentityModels;
 using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor.Components;
 
