@@ -50,7 +50,6 @@ namespace Identity.Application.Implementations.Services
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
             SigningCredentials signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
-
             JwtSecurityToken jwt = new JwtSecurityToken(
                 signingCredentials: signingCredentials,
                 claims: claims,

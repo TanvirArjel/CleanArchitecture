@@ -74,7 +74,6 @@ namespace Identity.Api
                 options.Level = CompressionLevel.Fastest;
             });
 
-
             services.AddIdentityDbContext(Configuration.GetConnectionString("IdentityDbConnection"));
 
             JwtConfig jwtConfig = new JwtConfig("SampleIdentity.com", "SampleIdentitySecretKey", 86400);

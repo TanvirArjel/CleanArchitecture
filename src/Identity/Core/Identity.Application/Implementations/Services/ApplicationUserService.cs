@@ -98,7 +98,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
             await _repository.InsertAsync(emailVerificationCode);
 
-            (string email, string verificationCode) model = (email, verificationCode);
+            (string Email, string VerificationCode) model = (email, verificationCode);
             string emailBody = await _viewRenderService.RenderViewToStringAsync("EmailTemplates/ConfirmRegistrationCodeTemplate", model);
 
             string senderEmail = "noreply@yourapp.com";
@@ -197,7 +197,7 @@ namespace EmployeeManagement.Application.Implementations.Services
 
             await _repository.InsertAsync(emailVerificationCode);
 
-            (string email, string verificationCode) model = (email, verificationCode);
+            (string Email, string VerificationCode) model = (email, verificationCode);
             string subject = "Reset Password";
             string senderEmail = "noreply@yourapp.com";
             string emailBody = await _viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);

@@ -13,7 +13,6 @@ namespace EmployeeManagement.Persistence.Indentity.EntityConfigurations
             builder.Property(au => au.FirstName).HasMaxLength(40).IsRequired();
             builder.Property(au => au.LastName).HasMaxLength(30).IsRequired();
 
-
             builder.Property(au => au.UserName).HasMaxLength(50).IsRequired();
             builder.Property(au => au.NormalizedUserName).HasMaxLength(50).IsRequired();
             builder.Property(au => au.Email).HasMaxLength(50).IsRequired();

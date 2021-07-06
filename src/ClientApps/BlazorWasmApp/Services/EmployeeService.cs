@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace BlazorWasmApp.Services
         {
             PaginatedList<EmployeeDetailsViewModel> paginatedList = await _httpClient
                 .GetFromJsonAsync<PaginatedList<EmployeeDetailsViewModel>>("v1/employees");
-            return paginatedList.Items;
+            return paginatedList.Items.ToList();
         }
 
         public async Task<EmployeeDetailsViewModel> GetDetailsByIdAsync(Guid employeeId)

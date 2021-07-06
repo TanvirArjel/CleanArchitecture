@@ -13,6 +13,6 @@ namespace BlazorWasmApp.Utils
 
         public long TotalItems { get; set; }
 
-        public List<T> Items { get; set; } = new List<T>();
+        public ICollection<T> Items { get; set; } = new List<T>();
     }
 }

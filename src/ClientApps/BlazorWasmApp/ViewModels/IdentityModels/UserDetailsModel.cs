@@ -14,6 +14,6 @@ namespace BlazorWasmApp.ViewModels.IdentityModels
 
         public bool IsActive { get; set; }
 
-        public List<RoleModel> Roles { get; set; }
+        public ICollection<RoleModel> Roles { get; set; }
     }
 }
