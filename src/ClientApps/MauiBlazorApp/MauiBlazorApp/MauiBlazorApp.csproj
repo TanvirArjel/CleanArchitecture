@@ -37,6 +37,7 @@
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.0-preview.5.*" />
 		<PackageReference Include="Microsoft.Maui" Version="6.0.100-preview.5.794" />
 		<PackageReference Include="TanvirArjel.Blazor" Version="1.4.0" />
+		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="1.4.0" />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -47,6 +48,9 @@
 	</PropertyGroup>
 	<ItemGroup Condition="$(TargetFramework.Contains('-android'))">
 		<AndroidEnvironment Include="Android\AndroidEnvironment.txt" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\ClientApps.Shared\ClientApps.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -58,7 +58,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorApp", "src\Client
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorApp.WinUI", "src\ClientApps\MauiBlazorApp\MauiBlazorApp.WinUI\MauiBlazorApp.WinUI.csproj", "{52695F25-1F01-4C2A-842B-92E290EBE774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApps.Shared", "src\ClientApps\ClientApps.Shared\ClientApps.Shared.csproj", "{6026E80E-CB35-441E-9287-985584EFFA50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApps.Shared", "src\ClientApps\ClientApps.Shared\ClientApps.Shared.csproj", "{6026E80E-CB35-441E-9287-985584EFFA50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

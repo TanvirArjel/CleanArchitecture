@@ -14,48 +14,24 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiImage
-			Include="..\MauiBlazorApp\Resources\appicon.svg"
-			Link="Resources\appicon.svg"
-			ForegroundFile="..\MauiBlazorApp\Resources\appiconfg.svg"
-			IsAppIcon="true"
-			Color="#512BD4" />
+		<MauiImage Include="..\MauiBlazorApp\Resources\appicon.svg" Link="Resources\appicon.svg" ForegroundFile="..\MauiBlazorApp\Resources\appiconfg.svg" IsAppIcon="true" Color="#512BD4" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen
-			Include="..\MauiBlazorApp\Resources\appiconfg.svg"
-			Link="Resources\appiconfg.svg"
-			Color="#512BD4" />
+		<MauiSplashScreen Include="..\MauiBlazorApp\Resources\appiconfg.svg" Link="Resources\appiconfg.svg" Color="#512BD4" />
 
 		<!-- Images -->
-		<MauiImage
-			Include="..\MauiBlazorApp\Resources\Images\*"
-			Link="Resources\Images\%(Filename)%(Extension)" />
+		<MauiImage Include="..\MauiBlazorApp\Resources\Images\*" Link="Resources\Images\%(Filename)%(Extension)" />
 
 		<!-- Custom Fonts -->
-		<MauiFont
-			Include="..\MauiBlazorApp\Resources\Fonts\*"
-			Link="Resources\Fonts\%(Filename)%(Extension)" />
+		<MauiFont Include="..\MauiBlazorApp\Resources\Fonts\*" Link="Resources\Fonts\%(Filename)%(Extension)" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile
-			Include="..\MauiBlazorApp\**\*.cs"
-			Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**;..\MauiBlazorApp\Android\**;..\MauiBlazorApp\iOS\**;..\MauiBlazorApp\MacCatalyst\**"
-			Link="%(RecursiveDir)%(Filename)%(Extension)"/>
-		<MauiXaml
-			Include="..\MauiBlazorApp\**\*.xaml"
-			Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**"
-			Link="%(RecursiveDir)%(FileName)%(Extension)" />
-		<_ThisProjectStaticWebAsset
-			Include="..\MauiBlazorApp\wwwroot\**"
-			Link="wwwroot\%(RecursiveDir)%(Filename)%(Extension)"
-			RelativePath="%(RecursiveDir)%(Filename)%(Extension)" />
-		<None Include="@(_ThisProjectStaticWebAsset)"/>
-		<RazorComponent
-			Include="..\MauiBlazorApp\**\*.razor"
-			Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**"
-			Link="%(RecursiveDir)%(Filename)%(Extension)"/>
+		<Compile Include="..\MauiBlazorApp\**\*.cs" Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**;..\MauiBlazorApp\Android\**;..\MauiBlazorApp\iOS\**;..\MauiBlazorApp\MacCatalyst\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+		<MauiXaml Include="..\MauiBlazorApp\**\*.xaml" Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**" Link="%(RecursiveDir)%(FileName)%(Extension)" />
+		<_ThisProjectStaticWebAsset Include="..\MauiBlazorApp\wwwroot\**" Link="wwwroot\%(RecursiveDir)%(Filename)%(Extension)" RelativePath="%(RecursiveDir)%(Filename)%(Extension)" />
+		<None Include="@(_ThisProjectStaticWebAsset)" />
+		<RazorComponent Include="..\MauiBlazorApp\**\*.razor" Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -68,6 +44,8 @@
 		<PackageReference Include="Microsoft.ProjectReunion" Version="0.8.0-preview" />
 		<PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.0-preview" />
 		<PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0-preview" />
+		<PackageReference Include="TanvirArjel.Blazor" Version="1.4.0" />
+		<ProjectReference Include="..\..\ClientApps.Shared\ClientApps.Shared.csproj" />
 		<FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.19041.16" />
 		<FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.19041.16" />
 	</ItemGroup>

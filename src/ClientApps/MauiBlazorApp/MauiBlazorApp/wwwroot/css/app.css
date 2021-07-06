@@ -1,4 +1,20 @@
-﻿@import url('fontawesome/css/all.min.css');
+﻿@import url('../lib/fontawesome/css/all.min.css');
+
+.valid.modified:not([type=checkbox]) {
+    border: 1px solid #26b050;
+}
+
+.invalid {
+    border: 1px solid red;
+}
+
+.validation-message {
+    color: #dc3545;
+}
+
+.btn-form-floating {
+    padding: 13px 1rem !important;
+}
 
 #blazor-error-ui {
     background: lightyellow;

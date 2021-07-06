@@ -1,0 +1,92 @@
+﻿@page "/identity/login"
+
+<h1 class="text-center mb-4">Login</h1>
+
+<EditForm EditContext="FormContext" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary Model="@LoginModel" />
+
+    <div class="form-floating mb-3">
+        <InputText class="form-control" @bind-Value="LoginModel.EmailOrUserName" placeholder="Enter your email" />
+        <label><i class="fas fa-envelope"></i> Email</label>
+        <ValidationMessage For="@(() => LoginModel.EmailOrUserName)" />
+    </div>
+
+    <div class="form-floating mb-3">
+        <InputText type="password" class="form-control" @bind-Value="LoginModel.Password" placeholder="Password" />
+        <label><i class="fas fa-key"></i> Password</label>
+        <ValidationMessage For="@(() => LoginModel.Password)" />
+    </div>
+    <div class="d-grid gap-3">
+        <button disabled="@IsSubmitDisabled" type="submit" class="col btn btn-success btn-form-floating">
+            @(IsSubmitDisabled ? "Submitting...." : "Login") <i class="fas fa-sign-in-alt"></i>
+        </button>
+        <a class="col btn btn-warning btn-form-floating" href="identity/forgot-password">
+            Forgot Password?
+        </a>
+        <a class="btn btn-primary btn-form-floating" href="identity/register">
+            Need an account? Sign up! <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+</EditForm>
+
+@code {
+
+    [Inject]
+    private UserService _userService { get; set; }
+
+    [Inject]
+    private HostAuthStateProvider _hostAuthStateProvider { get; set; }
+
+    [Inject]
+    private ExceptionLogger _exceptionLogger { get; set; }
+    private EditContext FormContext { get; set; }
+
+    private LoginModel LoginModel { get; set; } = new LoginModel();
+
+    private CustomValidationMessages ValidationMessages { get; set; }
+
+    private bool IsSubmitDisabled { get; set; }
+
+    protected override void OnInitialized()
+    {
+        FormContext = new EditContext(LoginModel);
+        FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            IsSubmitDisabled = true;
+            HttpResponseMessage httpResponse = await _userService.LoginAsync(LoginModel);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                string responseString = await httpResponse.Content.ReadAsStringAsync();
+                LoggedInUserInfo loginResponse = JsonSerializer.Deserialize<LoggedInUserInfo>(responseString, jsonSerializerOptions);
+
+                if (loginResponse != null)
+                {
+                    await _hostAuthStateProvider.LogInAsync(loginResponse, "/");
+                }
+            }
+            else
+            {
+                await ValidationMessages.AddAndDisplayAsync(httpResponse);
+                IsSubmitDisabled = false;
+            }
+        }
+        catch (Exception exception)
+        {
+            ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
+            await _exceptionLogger.LogAsync(exception);
+        }
+    }
+}

@@ -1,0 +1,105 @@
+﻿@page "/identity/register"
+
+<h1 class="text-center font-weight-light mb-4">
+    <i class="fas fa-user-edit"></i> Create Account
+</h1>
+<EditForm EditContext="FormContext" OnValidSubmit="HandleValidSubmitAsync">
+    <DataAnnotationsValidator />
+    <CustomValidationMessages @ref="ValidationMessages" />
+    <ValidationSummary Model="@RegistrationModel" />
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-floating mb-3 mb-md-0">
+                <InputText @bind-Value="RegistrationModel.FirstName" class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" />
+                <label for="inputFirstName"><i class="fas fa-user-tie"></i> First name</label>
+                <ValidationMessage For="@(() => RegistrationModel.FirstName)" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <InputText @bind-Value="RegistrationModel.LastName" class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" />
+                <label for="inputLastName"><i class="fas fa-user-tie"></i> Last name</label>
+                <ValidationMessage For="@(() => RegistrationModel.LastName)" />
+            </div>
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <InputText @bind-Value="RegistrationModel.Email" class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
+        <label for="inputEmail"><i class="fas fa-envelope"></i> Email address</label>
+        <ValidationMessage For="@(() => RegistrationModel.Email)" />
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="form-floating mb-3 mb-md-0">
+                <InputText @bind-Value="RegistrationModel.Password" class="form-control" id="inputPassword" type="password" placeholder="Create a password" />
+                <label for="inputPassword"><i class="fas fa-key"></i> Password</label>
+                <ValidationMessage For="@(() => RegistrationModel.Password)" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <InputText @bind-Value="RegistrationModel.ConfirmPassword" class="form-control" id="inputPasswordConfirm" type="password" placeholder="Confirm password" />
+                <label for="inputPasswordConfirm"> <i class="fas fa-key"></i> Confirm Password</label>
+                <ValidationMessage For="@(() => RegistrationModel.ConfirmPassword)" />
+            </div>
+        </div>
+    </div>
+    <div class="d-grid gap-3">
+        <button disabled="@IsSubmitBtnDisabled" class="btn btn-lg btn-success btn-form-floating" type="submit">
+            <i class="far fa-save"></i> @(IsSubmitBtnDisabled ? "Submitting..." : "Create Account")
+        </button>
+        <a class="btn btn-lg btn-primary btn-form-floating" href="identity/login">
+            Have an account? Go to login <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</EditForm>
+
+@code {
+    [Inject]
+    private UserService _userService { get; set; }
+
+    [Inject]
+    private NavigationManager _navigationManager { get; set; }
+
+    [Inject]
+    private ExceptionLogger _exceptionLogger { get; set; }
+
+    private EditContext FormContext { get; set; }
+
+    private RegistrationModel RegistrationModel { get; set; } = new RegistrationModel();
+
+    private CustomValidationMessages ValidationMessages { get; set; }
+
+    private bool IsSubmitBtnDisabled { get; set; }
+
+    protected override void OnInitialized()
+    {
+        FormContext = new EditContext(RegistrationModel);
+        FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
+    }
+
+    private async Task HandleValidSubmitAsync()
+    {
+        try
+        {
+            IsSubmitBtnDisabled = true;
+            HttpResponseMessage httpResponseMessage = await _userService.RegisterAsync(RegistrationModel);
+
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                _navigationManager.NavigateTo("identity/login");
+                return;
+            }
+
+            await ValidationMessages.AddAndDisplayAsync(httpResponseMessage);
+            IsSubmitBtnDisabled = false;
+        }
+        catch (Exception exception)
+        {
+            IsSubmitBtnDisabled = false;
+            ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
+            await _exceptionLogger.LogAsync(exception);
+        }
+    }
+}
+
