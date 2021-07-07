@@ -1,4 +1,4 @@
-﻿namespace MauiBlazor.Shared.Utils
+﻿namespace MauiBlazor.Shared.Models
 {
     public class SelectListItem
     {

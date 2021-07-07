@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MauiBlazor.Shared.Models.EmployeeViewModels;
+using MauiBlazor.Shared.Models.EmployeeModels;
 using MauiBlazor.Shared.Services;
 
 namespace MauiBlazor.WebUI.Components.EmployeeComponents
@@ -18,7 +18,7 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
 
         private bool ShowBackdrop { get; set; }
 
-        private EmployeeDetailsViewModel EmployeeDetailsModel { get; set; }
+        private EmployeeDetailsModel EmployeeDetailsModel { get; set; }
 
         public async Task OpenAsync(Guid employeeId)
         {

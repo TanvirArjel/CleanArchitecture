@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MauiBlazor.Shared.Utils
+namespace MauiBlazor.Shared.Models
 {
     public class PaginatedList<T>
         where T : class

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
-using MauiBlazor.Shared.Models.EmployeeViewModels;
+using MauiBlazor.Shared.Models;
+using MauiBlazor.Shared.Models.EmployeeModels;
 using MauiBlazor.Shared.Services;
-using MauiBlazor.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
@@ -34,7 +34,7 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
 
         private CustomValidationMessages CustomValidationMessages { get; set; }
 
-        private CreateEmployeeViewModel CreateEmployeeViewModel { get; set; } = new CreateEmployeeViewModel();
+        private CreateEmployeeModel CreateEmployeeViewModel { get; set; } = new CreateEmployeeModel();
 
         private List<SelectListItem> DepartmentSelectList { get; set; } = new List<SelectListItem>();
 
@@ -43,7 +43,7 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
 
         public async Task OpenAsync()
         {
-            CreateEmployeeViewModel = new CreateEmployeeViewModel();
+            CreateEmployeeViewModel = new CreateEmployeeModel();
             List<SelectListItem> items = await _departmentService.GetSelectListAsync();
             DepartmentSelectList = items;
 

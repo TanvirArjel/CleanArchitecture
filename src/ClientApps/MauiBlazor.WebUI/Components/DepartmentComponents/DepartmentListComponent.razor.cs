@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
-using MauiBlazor.Shared.Models.DepartmentsViewModels;
+using MauiBlazor.Shared.Models.DepartmentModels;
 using MauiBlazor.Shared.Services;
 
 namespace MauiBlazor.WebUI.Components.DepartmentComponents
@@ -18,7 +18,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
             _exceptionLogger = exceptionLogger;
         }
 
-        private List<DepartmentDetailsViewModel> Departments { get; set; }
+        private List<DepartmentDetailsModel> Departments { get; set; }
 
         private string ErrorMessage { get; set; }
 

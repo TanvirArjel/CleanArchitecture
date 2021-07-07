@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MauiBlazor.Shared.Models.EmployeeViewModels;
+using MauiBlazor.Shared.Models.EmployeeModels;
 using MauiBlazor.Shared.Services;
 
 namespace MauiBlazor.WebUI.Components.EmployeeComponents
@@ -15,7 +15,7 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
             _employeeService = employeeService;
         }
 
-        private List<EmployeeDetailsViewModel> Employees { get; set; }
+        private List<EmployeeDetailsModel> Employees { get; set; }
 
         private CreateEmployeeModalComponent CreateModal { get; set; }
 

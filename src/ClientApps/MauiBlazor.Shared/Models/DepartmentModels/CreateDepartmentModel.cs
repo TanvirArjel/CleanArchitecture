@@ -1,13 +1,10 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MauiBlazor.Shared.Models.DepartmentsViewModels
+namespace MauiBlazor.Shared.Models.DepartmentModels
 {
-    public class UpdateDepartmentViewModel
+    public class CreateDepartmentModel
     {
-        public Guid Id { get; set; }
-
         [Required]
         [DisplayName("Department Name")]
         [MinLength(2, ErrorMessage = "{0} should be at least {1} characters long.")]
@@ -19,7 +16,5 @@ namespace MauiBlazor.Shared.Models.DepartmentsViewModels
         [MinLength(20, ErrorMessage = "{0} should be at least {1} characters long.")]
         [MaxLength(200, ErrorMessage = "{0} should not be more than {1} characters.")]
         public string Description { get; set; }
-
-        public bool IsActive { get; set; }
     }
 }

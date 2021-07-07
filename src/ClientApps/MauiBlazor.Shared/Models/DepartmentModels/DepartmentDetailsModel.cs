@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MauiBlazor.Shared.Models.DepartmentsViewModels
+namespace MauiBlazor.Shared.Models.DepartmentModels
 {
-    public class DepartmentDetailsViewModel
+    public class DepartmentDetailsModel
     {
         public Guid Id { get; set; }
 

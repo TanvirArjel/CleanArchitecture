@@ -4,8 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using MauiBlazor.Shared.Models.DepartmentsViewModels;
-using MauiBlazor.Shared.Utils;
+using MauiBlazor.Shared.Models;
+using MauiBlazor.Shared.Models.DepartmentModels;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
@@ -22,9 +22,9 @@ namespace MauiBlazor.Shared.Services
             _httpClient = httpClientFactory.CreateClient("EmployeeManagementApi");
         }
 
-        public async Task<List<DepartmentDetailsViewModel>> GetListAsync()
+        public async Task<List<DepartmentDetailsModel>> GetListAsync()
         {
-            List<DepartmentDetailsViewModel> departments = await _httpClient.GetFromJsonAsync<List<DepartmentDetailsViewModel>>("v1/departments");
+            List<DepartmentDetailsModel> departments = await _httpClient.GetFromJsonAsync<List<DepartmentDetailsModel>>("v1/departments");
             return departments;
         }
 
@@ -35,7 +35,7 @@ namespace MauiBlazor.Shared.Services
             return departments;
         }
 
-        public async Task<HttpResponseMessage> CreateAsync(CreateDepartmentViewModel createDepartmentViewModel)
+        public async Task<HttpResponseMessage> CreateAsync(CreateDepartmentModel createDepartmentViewModel)
         {
             createDepartmentViewModel.ThrowIfNull(nameof(createDepartmentViewModel));
 
@@ -43,15 +43,15 @@ namespace MauiBlazor.Shared.Services
             return response;
         }
 
-        public async Task<DepartmentDetailsViewModel> GetByIdAsync(Guid departmentId)
+        public async Task<DepartmentDetailsModel> GetByIdAsync(Guid departmentId)
         {
             departmentId.ThrowIfEmpty(nameof(departmentId));
 
-            DepartmentDetailsViewModel response = await _httpClient.GetFromJsonAsync<DepartmentDetailsViewModel>($"v1/departments/{departmentId}");
+            DepartmentDetailsModel response = await _httpClient.GetFromJsonAsync<DepartmentDetailsModel>($"v1/departments/{departmentId}");
             return response;
         }
 
-        public async Task<HttpResponseMessage> UpdateAsync(UpdateDepartmentViewModel updateDepartmentViewModel)
+        public async Task<HttpResponseMessage> UpdateAsync(UpdateDepartmentModel updateDepartmentViewModel)
         {
             updateDepartmentViewModel.ThrowIfNull(nameof(updateDepartmentViewModel));
 

@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MauiBlazor.Shared.Models.EmployeeViewModels
+namespace MauiBlazor.Shared.Models.EmployeeModels
 {
-    public class EmployeeDetailsViewModel
+    public class EmployeeDetailsModel
     {
         public Guid Id { get; set; }
 

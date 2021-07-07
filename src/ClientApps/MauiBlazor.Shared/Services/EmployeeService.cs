@@ -5,8 +5,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using MauiBlazor.Shared.Models.EmployeeViewModels;
-using MauiBlazor.Shared.Utils;
+using MauiBlazor.Shared.Models;
+using MauiBlazor.Shared.Models.EmployeeModels;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace MauiBlazor.Shared.Services
@@ -22,20 +22,20 @@ namespace MauiBlazor.Shared.Services
             _httpClient = httpClientFactory.CreateClient("EmployeeManagementApi");
         }
 
-        public async Task<List<EmployeeDetailsViewModel>> GetListAsync()
+        public async Task<List<EmployeeDetailsModel>> GetListAsync()
         {
-            PaginatedList<EmployeeDetailsViewModel> paginatedList = await _httpClient
-                .GetFromJsonAsync<PaginatedList<EmployeeDetailsViewModel>>("v1/employees");
+            PaginatedList<EmployeeDetailsModel> paginatedList = await _httpClient
+                .GetFromJsonAsync<PaginatedList<EmployeeDetailsModel>>("v1/employees");
             return paginatedList.Items.ToList();
         }
 
-        public async Task<EmployeeDetailsViewModel> GetDetailsByIdAsync(Guid employeeId)
+        public async Task<EmployeeDetailsModel> GetDetailsByIdAsync(Guid employeeId)
         {
-            EmployeeDetailsViewModel employee = await _httpClient.GetFromJsonAsync<EmployeeDetailsViewModel>($"v1/employees/{employeeId}");
+            EmployeeDetailsModel employee = await _httpClient.GetFromJsonAsync<EmployeeDetailsModel>($"v1/employees/{employeeId}");
             return employee;
         }
 
-        public async Task<HttpResponseMessage> CreateAsync(CreateEmployeeViewModel createEmployeeViewModel)
+        public async Task<HttpResponseMessage> CreateAsync(CreateEmployeeModel createEmployeeViewModel)
         {
             if (createEmployeeViewModel == null)
             {
@@ -46,7 +46,7 @@ namespace MauiBlazor.Shared.Services
             return response;
         }
 
-        public async Task<HttpResponseMessage> UpdateAsync(UpdateEmployeeViewModel updateEmployeeViewModel)
+        public async Task<HttpResponseMessage> UpdateAsync(UpdateEmployeeModel updateEmployeeViewModel)
         {
             if (updateEmployeeViewModel == null)
             {

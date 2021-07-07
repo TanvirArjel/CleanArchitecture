@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MauiBlazor.Shared.Models.DepartmentsViewModels;
+using MauiBlazor.Shared.Models.DepartmentModels;
 using MauiBlazor.Shared.Services;
 
 namespace MauiBlazor.WebUI.Components.DepartmentComponents
@@ -18,7 +18,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
 
         private bool ShowBackdrop { get; set; }
 
-        private DepartmentDetailsViewModel DepartmentDetailsModel { get; set; }
+        private DepartmentDetailsModel DepartmentDetailsModel { get; set; }
 
         public async Task ShowAsync(Guid departmentId)
         {

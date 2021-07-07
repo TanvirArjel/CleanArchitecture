@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
-using MauiBlazor.Shared.Models.EmployeeViewModels;
+using MauiBlazor.Shared.Models.EmployeeModels;
 using MauiBlazor.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using TanvirArjel.Blazor;
@@ -27,7 +27,7 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
 
         private CustomValidationMessages CustomValidationMessages { get; set; }
 
-        private EmployeeDetailsViewModel EmployeeDetailsModel { get; set; } = new EmployeeDetailsViewModel();
+        private EmployeeDetailsModel EmployeeDetailsModel { get; set; } = new EmployeeDetailsModel();
 
         [Parameter]
         public EventCallback EmployeeDeleted { get; set; }

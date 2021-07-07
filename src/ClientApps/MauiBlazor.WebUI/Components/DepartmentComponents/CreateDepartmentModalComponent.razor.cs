@@ -2,7 +2,8 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
-using MauiBlazor.Shared.Models.DepartmentsViewModels;
+using MauiBlazor.Shared.Extensions;
+using MauiBlazor.Shared.Models.DepartmentModels;
 using MauiBlazor.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -30,7 +31,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
 
         private EditContext FormEditContext { get; set; }
 
-        private CreateDepartmentViewModel CreateDepartmentModel { get; set; } = new CreateDepartmentViewModel();
+        private CreateDepartmentModel CreateDepartmentModel { get; set; } = new CreateDepartmentModel();
 
         [Parameter]
         public EventCallback DepartmentCreated { get; set; }
@@ -38,6 +39,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
         protected override void OnInitialized()
         {
             FormEditContext = new EditContext(CreateDepartmentModel);
+            FormEditContext.AddBootstrapValidationClassProvider();
         }
 
         public void Show()
@@ -51,7 +53,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
 
         private void Close()
         {
-            CreateDepartmentModel = new CreateDepartmentViewModel();
+            CreateDepartmentModel = new CreateDepartmentModel();
             ModalClass = string.Empty;
             ShowBackdrop = false;
             StateHasChanged();

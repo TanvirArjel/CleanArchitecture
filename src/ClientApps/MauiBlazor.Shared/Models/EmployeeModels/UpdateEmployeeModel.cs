@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using TanvirArjel.CustomValidation.Attributes;
 
-namespace MauiBlazor.Shared.Models.EmployeeViewModels
+namespace MauiBlazor.Shared.Models.EmployeeModels
 {
-    public class CreateEmployeeViewModel
+    public class UpdateEmployeeModel
     {
+        [Required]
+        public Guid Id { get; set; }
+
         [Required]
         [DisplayName("Employee Name")]
         [MinLength(4, ErrorMessage = "{0} should be at least {1} characters long.")]
@@ -17,13 +19,10 @@ namespace MauiBlazor.Shared.Models.EmployeeViewModels
         [DisplayName("Department")]
         public Guid? DepartmentId { get; set; }
 
-        [Required(ErrorMessage = "Please select your date of birth.")]
         [DataType(DataType.Date)]
         [DisplayName("Date Of Birth")]
-        [MinAge(15, 0, 0, ErrorMessage = "The minimum age has to be 15 years.")]
-        public DateTime? DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
-        [EmailAddress]
         [Required]
         [DisplayName("Email")]
         [MinLength(8, ErrorMessage = "{0} should be at least {1} characters long.")]

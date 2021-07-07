@@ -2,7 +2,8 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
-using MauiBlazor.Shared.Models.DepartmentsViewModels;
+using MauiBlazor.Shared.Extensions;
+using MauiBlazor.Shared.Models.DepartmentModels;
 using MauiBlazor.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -30,7 +31,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
 
         private EditContext FormEditContext { get; set; }
 
-        private UpdateDepartmentViewModel UpdateDepartmentModel { get; set; } = new UpdateDepartmentViewModel();
+        private UpdateDepartmentModel UpdateDepartmentModel { get; set; } = new UpdateDepartmentModel();
 
         private string ErrorMessage { get; set; }
 
@@ -39,14 +40,14 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
 
         public async Task ShowAsync(Guid departmentId)
         {
-            DepartmentDetailsViewModel departmentDetailsViewModel = await _departmentService.GetByIdAsync(departmentId);
+            DepartmentDetailsModel departmentDetailsViewModel = await _departmentService.GetByIdAsync(departmentId);
 
             if (departmentDetailsViewModel == null)
             {
                 ErrorMessage = "Employee with provided id does not exists!";
             }
 
-            UpdateDepartmentModel = new UpdateDepartmentViewModel()
+            UpdateDepartmentModel = new UpdateDepartmentModel()
             {
                 Id = departmentDetailsViewModel.Id,
                 Name = departmentDetailsViewModel.Name,
@@ -54,6 +55,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
             };
 
             FormEditContext = new EditContext(UpdateDepartmentModel);
+            FormEditContext.AddBootstrapValidationClassProvider();
 
             ModalClass = "show d-block";
             ShowBackdrop = true;
@@ -62,7 +64,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
 
         private void Close()
         {
-            UpdateDepartmentModel = new UpdateDepartmentViewModel();
+            UpdateDepartmentModel = new UpdateDepartmentModel();
             ModalClass = string.Empty;
             ShowBackdrop = false;
             StateHasChanged();

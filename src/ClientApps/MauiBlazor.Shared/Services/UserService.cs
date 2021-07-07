@@ -6,8 +6,8 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
+using MauiBlazor.Shared.Models;
 using MauiBlazor.Shared.Models.IdentityModels;
-using MauiBlazor.Shared.Utils;
 using Microsoft.AspNetCore.WebUtilities;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 

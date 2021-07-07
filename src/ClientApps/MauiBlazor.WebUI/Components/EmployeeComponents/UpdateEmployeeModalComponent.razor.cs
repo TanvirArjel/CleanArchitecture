@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
-using MauiBlazor.Shared.Models.EmployeeViewModels;
+using MauiBlazor.Shared.Models;
+using MauiBlazor.Shared.Models.EmployeeModels;
 using MauiBlazor.Shared.Services;
-using MauiBlazor.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
@@ -34,7 +34,7 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
 
         private CustomValidationMessages CustomValidationMessages { get; set; }
 
-        private UpdateEmployeeViewModel UpdateEmployeeModel { get; set; }
+        private UpdateEmployeeModel UpdateEmployeeModel { get; set; }
 
         private List<SelectListItem> DepartmentSelectList { get; set; }
 
@@ -45,14 +45,14 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
 
         public async Task OpenAsync(Guid employeeId)
         {
-            EmployeeDetailsViewModel employeeDetailsViewModel = await _employeeService.GetDetailsByIdAsync(employeeId);
+            EmployeeDetailsModel employeeDetailsViewModel = await _employeeService.GetDetailsByIdAsync(employeeId);
 
             if (employeeDetailsViewModel == null)
             {
                 ErrorMessage = "Employee with provided id does not exists!";
             }
 
-            UpdateEmployeeModel = new UpdateEmployeeViewModel()
+            UpdateEmployeeModel = new UpdateEmployeeModel()
             {
                 Id = employeeDetailsViewModel.Id,
                 Name = employeeDetailsViewModel.Name,
@@ -71,7 +71,7 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
 
         private void Close()
         {
-            UpdateEmployeeModel = new UpdateEmployeeViewModel();
+            UpdateEmployeeModel = new UpdateEmployeeModel();
             ModalClass = string.Empty;
             ShowBackdrop = false;
             StateHasChanged();
