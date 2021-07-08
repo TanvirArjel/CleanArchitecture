@@ -103,38 +103,30 @@ namespace Identity.Api.Controllers
         [SwaggerOperation(Summary = "Resend email confiramtion code to the newly registered user's email.")]
         public async Task<ActionResult> ResendEmailConfirmationCode(ResendEmailConfirmationCodeModel model)
         {
-            try
+            ApplicationUser applicationUser = await _userManager.FindByEmailAsync(model.Email);
+
+            if (applicationUser == null)
             {
-                ApplicationUser applicationUser = await _userManager.FindByEmailAsync(model.Email);
-
-                if (applicationUser == null)
-                {
-                    ModelState.AddModelError(nameof(model.Email), "Provided email is not related to any account.");
-                    return BadRequest(ModelState);
-                }
-
-                if (applicationUser.EmailConfirmed)
-                {
-                    ModelState.AddModelError(nameof(model.Email), "Email is already confirmed.");
-                    return BadRequest(ModelState);
-                }
-
-                bool isExists = await _applicationUserService.HasActiveEmailConfirmationCodeAsync(model.Email);
-
-                if (isExists)
-                {
-                    ModelState.AddModelError(nameof(model.Email), "You already have an active code. Please wait! You may receive the code in your email. If not, please try again after sometimes.");
-                    return BadRequest(ModelState);
-                }
-
-                await _applicationUserService.SendEmailVerificationCodeAsync(model.Email);
-                return Ok();
+                ModelState.AddModelError(nameof(model.Email), "Provided email is not related to any account.");
+                return BadRequest(ModelState);
             }
-            catch (Exception exception)
+
+            if (applicationUser.EmailConfirmed)
             {
-                await _exceptionLogger.LogAsync(exception, model);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                ModelState.AddModelError(nameof(model.Email), "Email is already confirmed.");
+                return BadRequest(ModelState);
             }
+
+            bool isExists = await _applicationUserService.HasActiveEmailConfirmationCodeAsync(model.Email);
+
+            if (isExists)
+            {
+                ModelState.AddModelError(nameof(model.Email), "You already have an active code. Please wait! You may receive the code in your email. If not, please try again after sometimes.");
+                return BadRequest(ModelState);
+            }
+
+            await _applicationUserService.SendEmailVerificationCodeAsync(model.Email);
+            return Ok();
         }
 
         [HttpPost]
@@ -146,24 +138,16 @@ namespace Identity.Api.Controllers
         [SwaggerOperation(Summary = "Confirm the newly registered user's email by posting the required data.")]
         public async Task<ActionResult> ConfirmEmail(EmailConfirmationModel model)
         {
-            try
-            {
-                IdentityError identityError = await _applicationUserService.VerifyEmailAsync(model.Email, model.Code);
+            IdentityError identityError = await _applicationUserService.VerifyEmailAsync(model.Email, model.Code);
 
-                if (identityError != null)
-                {
-                    ModelState.AddModelError(identityError.Code, identityError.Description);
-                    return BadRequest(ModelState);
-                }
-
-                ApplicationUser applicationUser = await _userManager.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
-                return Ok();
-            }
-            catch (Exception exception)
+            if (identityError != null)
             {
-                await _exceptionLogger.LogAsync(exception, model);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                ModelState.AddModelError(identityError.Code, identityError.Description);
+                return BadRequest(ModelState);
             }
+
+            ApplicationUser applicationUser = await _userManager.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -245,46 +229,38 @@ namespace Identity.Api.Controllers
         [SwaggerOperation(Summary = "Get a new access token for user by posting user's expired access token and refresh token.")]
         public async Task<IActionResult> GetRefreshedAccessToken(TokenRefreshModel model)
         {
+            ClaimsPrincipal claimsPrincipal;
+
             try
             {
-                ClaimsPrincipal claimsPrincipal;
-
-                try
-                {
-                    claimsPrincipal = GetPrincipalFromExpiredToken(model.AccessToken);
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError(nameof(model.AccessToken), "Invalid access token.");
-                    return BadRequest(ModelState);
-                }
-
-                string userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-
-                if (userId == null)
-                {
-                    ModelState.AddModelError(nameof(model.AccessToken), "Invalid access token.");
-                    return BadRequest(ModelState);
-                }
-
-                bool isValid = await _applicationUserService.IsRefreshTokenValidAsync(Guid.Parse(userId), model.RefreshToken);
-
-                if (!isValid)
-                {
-                    ModelState.AddModelError(nameof(model.RefreshToken), "Refresh token is not valid.");
-                    return BadRequest(ModelState);
-                }
-
-                ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
-                JsonWebTokenModel jsonWebToken = await GenerateJsonWebToken(applicationUser);
-
-                return Ok(jsonWebToken);
+                claimsPrincipal = GetPrincipalFromExpiredToken(model.AccessToken);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                await _exceptionLogger.LogAsync(exception, model);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                ModelState.AddModelError(nameof(model.AccessToken), "Invalid access token.");
+                return BadRequest(ModelState);
             }
+
+            string userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                ModelState.AddModelError(nameof(model.AccessToken), "Invalid access token.");
+                return BadRequest(ModelState);
+            }
+
+            bool isValid = await _applicationUserService.IsRefreshTokenValidAsync(Guid.Parse(userId), model.RefreshToken);
+
+            if (!isValid)
+            {
+                ModelState.AddModelError(nameof(model.RefreshToken), "Refresh token is not valid.");
+                return BadRequest(ModelState);
+            }
+
+            ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
+            JsonWebTokenModel jsonWebToken = await GenerateJsonWebToken(applicationUser);
+
+            return Ok(jsonWebToken);
         }
 
         [AllowAnonymous]
@@ -295,16 +271,8 @@ namespace Identity.Api.Controllers
         [SwaggerOperation(Summary = "Send password reset code to reset user's password.")]
         public async Task<IActionResult> SendPasswordResetCode(ForgotPasswordModel forgotPasswordModel)
         {
-            try
-            {
-                await _applicationUserService.SendPasswordResetCodeAsync(forgotPasswordModel.Email);
-                return Ok();
-            }
-            catch (Exception exception)
-            {
-                await _exceptionLogger.LogAsync(exception, forgotPasswordModel);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            await _applicationUserService.SendPasswordResetCodeAsync(forgotPasswordModel.Email);
+            return Ok();
         }
 
         [AllowAnonymous]

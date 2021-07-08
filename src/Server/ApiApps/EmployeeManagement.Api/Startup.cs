@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
 using EmployeeManagement.Api.Extensions;
+using EmployeeManagement.Api.Filters;
 using EmployeeManagement.Api.Swagger;
 using EmployeeManagement.Api.Utilities.Mixed;
 using EmployeeManagement.Infrastructure.Services;
@@ -77,6 +78,7 @@ namespace EmployeeManagement.Api
             services.AddServicesOfAllTypes("EmployeeManagement");
             services.AddControllers(options =>
             {
+                options.Filters.Add(typeof(ExceptionHandlerFilter));
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
             });
 
@@ -87,23 +89,13 @@ namespace EmployeeManagement.Api
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Not appplicable here")]
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
             app.Use((context, next) =>
             {
                 context.Request.EnableBuffering();
                 return next();
             });
-
-            if (env.IsDevelopment())
-            {
-                app.UseExceptionHandler("/error");
-                ////app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/error");
-            }
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.

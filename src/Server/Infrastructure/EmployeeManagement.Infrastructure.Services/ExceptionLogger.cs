@@ -22,34 +22,48 @@ namespace EmployeeManagement.Infrastructure.Services
 
         public async Task LogAsync(Exception exception, object paramters)
         {
-            if (exception == null)
+            try
             {
-                throw new ArgumentNullException(nameof(exception));
-            }
+                if (exception == null)
+                {
+                    throw new ArgumentNullException(nameof(exception));
+                }
 
-            if (paramters != null)
-            {
-                string jsonParamters = JsonSerializer.Serialize(paramters);
-                _logger.LogCritical(exception, "Paramters: {0}", jsonParamters);
-            }
-            else
-            {
-                _logger.LogCritical(exception, exception.Message);
-            }
+                if (paramters != null)
+                {
+                    string jsonParamters = JsonSerializer.Serialize(paramters);
+                    _logger.LogCritical(exception, "Paramters: {0}", jsonParamters);
+                }
+                else
+                {
+                    _logger.LogCritical(exception, exception.Message);
+                }
 
-            await Task.CompletedTask;
+                await Task.CompletedTask;
+            }
+            catch (Exception loggerException)
+            {
+                _logger.LogCritical(loggerException, "Exception thrown in exception logger.");
+            }
         }
 
         public async Task LogAsync(Exception exception, string requestPath, string requestBody)
         {
-            if (exception == null)
+            try
             {
-                throw new ArgumentNullException(nameof(exception));
+                if (exception == null)
+                {
+                    throw new ArgumentNullException(nameof(exception));
+                }
+
+                _logger.LogCritical(exception, "RequestPath: {0} and RequestBody: {1}", requestPath, requestBody);
+
+                await Task.CompletedTask;
             }
-
-            _logger.LogCritical(exception, "RequestPath: {0} and RequestBody: {1}", requestPath, requestBody);
-
-            await Task.CompletedTask;
+            catch (Exception loggerException)
+            {
+                _logger.LogCritical(loggerException, "Exception thrown in exception logger.");
+            }
         }
     }
 }

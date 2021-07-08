@@ -1,6 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.IO.Compression;
 using Identity.Api.Extensions;
+using Identity.Api.Filters;
 using Identity.Api.Swagger;
 using Identity.Api.Utils;
 using Identity.Application;
@@ -8,6 +8,7 @@ using Identity.Infrastructure.Services;
 using Identity.Persistence.RelationalDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
@@ -34,8 +35,6 @@ namespace Identity.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
             services.AddCors(options =>
             {
                 options.AddPolicy(
@@ -50,6 +49,7 @@ namespace Identity.Api
 
             services.AddControllersWithViews(options =>
             {
+                options.Filters.Add(typeof(ExceptionHandlerFilter));
                 options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
             }).ConfigureApiBehaviorOptions(options =>
             {
@@ -92,6 +92,12 @@ namespace Identity.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
+            app.Use((context, next) =>
+            {
+                context.Request.EnableBuffering();
+                return next();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
