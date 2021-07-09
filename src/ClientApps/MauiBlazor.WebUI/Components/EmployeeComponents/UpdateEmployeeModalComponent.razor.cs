@@ -28,6 +28,9 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
             _exceptionLogger = exceptionLogger;
         }
 
+        [Parameter]
+        public EventCallback EmployeeUpdated { get; set; }
+
         private string ModalClass { get; set; } = string.Empty;
 
         private bool ShowBackdrop { get; set; }
@@ -39,9 +42,6 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
         private List<SelectListItem> DepartmentSelectList { get; set; }
 
         private string ErrorMessage { get; set; }
-
-        [Parameter]
-        public EventCallback EmployeeUpdated { get; set; }
 
         public async Task OpenAsync(Guid employeeId)
         {
@@ -97,7 +97,6 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
                 CustomValidationMessages.AddAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
-
         }
     }
 }

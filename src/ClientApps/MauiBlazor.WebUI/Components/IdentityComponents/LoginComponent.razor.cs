@@ -66,14 +66,21 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
                 else
                 {
                     await ValidationMessages.AddAndDisplayAsync(httpResponse);
-                    IsSubmitDisabled = false;
                 }
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine($"Status Code: {httpException.StatusCode}");
+                ValidationMessages.AddAndDisplay(AppErrorMessage.ServerErrorMessage);
+                await _exceptionLogger.LogAsync(httpException);
             }
             catch (Exception exception)
             {
                 ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
+
+            IsSubmitDisabled = false;
         }
     }
 }

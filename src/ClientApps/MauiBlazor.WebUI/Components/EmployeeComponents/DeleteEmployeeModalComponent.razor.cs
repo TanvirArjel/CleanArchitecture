@@ -21,6 +21,9 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
             _exceptionLogger = exceptionLogger;
         }
 
+        [Parameter]
+        public EventCallback EmployeeDeleted { get; set; }
+
         private string ModalClass { get; set; } = string.Empty;
 
         private bool ShowBackdrop { get; set; }
@@ -28,9 +31,6 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
         private CustomValidationMessages CustomValidationMessages { get; set; }
 
         private EmployeeDetailsModel EmployeeDetailsModel { get; set; } = new EmployeeDetailsModel();
-
-        [Parameter]
-        public EventCallback EmployeeDeleted { get; set; }
 
         public async Task OpenAsync(Guid employeeId)
         {
@@ -61,14 +61,12 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
                 }
 
                 await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
-
             }
             catch (Exception exception)
             {
                 CustomValidationMessages.AddAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
-
         }
     }
 }

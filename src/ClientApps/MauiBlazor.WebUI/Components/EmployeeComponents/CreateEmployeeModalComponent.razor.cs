@@ -28,6 +28,9 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
             _exceptionLogger = exceptionLogger;
         }
 
+        [Parameter]
+        public EventCallback EmployeeCreated { get; set; }
+
         private string ModalClass { get; set; } = string.Empty;
 
         private bool ShowBackdrop { get; set; }
@@ -37,9 +40,6 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
         private CreateEmployeeModel CreateEmployeeViewModel { get; set; } = new CreateEmployeeModel();
 
         private List<SelectListItem> DepartmentSelectList { get; set; } = new List<SelectListItem>();
-
-        [Parameter]
-        public EventCallback EmployeeCreated { get; set; }
 
         public async Task OpenAsync()
         {
@@ -73,7 +73,6 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
                 }
 
                 await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
-
             }
             catch (Exception exception)
             {

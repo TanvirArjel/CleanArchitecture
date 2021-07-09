@@ -23,6 +23,9 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
             _exceptionLogger = exceptionLogger;
         }
 
+        [Parameter]
+        public EventCallback DepartmentUpdated { get; set; }
+
         private string ModalClass { get; set; } = string.Empty;
 
         private bool ShowBackdrop { get; set; }
@@ -34,9 +37,6 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
         private UpdateDepartmentModel UpdateDepartmentModel { get; set; } = new UpdateDepartmentModel();
 
         private string ErrorMessage { get; set; }
-
-        [Parameter]
-        public EventCallback DepartmentUpdated { get; set; }
 
         public async Task ShowAsync(Guid departmentId)
         {
@@ -62,17 +62,17 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
             StateHasChanged();
         }
 
+        protected override void OnInitialized()
+        {
+            FormEditContext = new EditContext(UpdateDepartmentModel);
+        }
+
         private void Close()
         {
             UpdateDepartmentModel = new UpdateDepartmentModel();
             ModalClass = string.Empty;
             ShowBackdrop = false;
             StateHasChanged();
-        }
-
-        protected override void OnInitialized()
-        {
-            FormEditContext = new EditContext(UpdateDepartmentModel);
         }
 
         private async Task HandleValidSubmit()

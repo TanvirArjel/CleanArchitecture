@@ -12,6 +12,10 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.5.21301.17" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.5.21301.17" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-preview.5.21301.5" />
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
 		<PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.5.21301.5" />
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />

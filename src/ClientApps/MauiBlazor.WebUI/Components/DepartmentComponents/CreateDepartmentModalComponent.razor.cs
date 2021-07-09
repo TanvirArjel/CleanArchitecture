@@ -23,6 +23,9 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
             _exceptionLogger = exceptionLogger;
         }
 
+        [Parameter]
+        public EventCallback DepartmentCreated { get; set; }
+
         private string ModalClass { get; set; } = string.Empty;
 
         private bool ShowBackdrop { get; set; }
@@ -33,29 +36,12 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
 
         private CreateDepartmentModel CreateDepartmentModel { get; set; } = new CreateDepartmentModel();
 
-        [Parameter]
-        public EventCallback DepartmentCreated { get; set; }
-
-        protected override void OnInitialized()
-        {
-            FormEditContext = new EditContext(CreateDepartmentModel);
-            FormEditContext.AddBootstrapValidationClassProvider();
-        }
-
         public void Show()
         {
             FormEditContext = new EditContext(CreateDepartmentModel);
 
             ModalClass = "show d-block";
             ShowBackdrop = true;
-            StateHasChanged();
-        }
-
-        private void Close()
-        {
-            CreateDepartmentModel = new CreateDepartmentModel();
-            ModalClass = string.Empty;
-            ShowBackdrop = false;
             StateHasChanged();
         }
 
@@ -73,13 +59,26 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
                 }
 
                 await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
-
             }
             catch (Exception exception)
             {
                 CustomValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
+        }
+
+        protected override void OnInitialized()
+        {
+            FormEditContext = new EditContext(CreateDepartmentModel);
+            FormEditContext.AddBootstrapValidationClassProvider();
+        }
+
+        private void Close()
+        {
+            CreateDepartmentModel = new CreateDepartmentModel();
+            ModalClass = string.Empty;
+            ShowBackdrop = false;
+            StateHasChanged();
         }
     }
 }
