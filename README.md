@@ -1,6 +1,6 @@
 # 🔥 Attention!!
 
-**Currently, .NET MAUI is in preview, and setting up the environment for the .NET MAUI is quite tricky and challenging. So if you would like to ignore/skipe .NET MAUI for now then, simply remove the `MauiBlazorApp` and `MauiBlazorApp.WinUI` projects from the solution and build the solution. Now everything should work fine!**
+**Currently, .NET MAUI is in preview, and setting up the environment for the .NET MAUI is quite tricky and challenging. So if you would like to ignore/skip .NET MAUI for now then, simply remove the `MauiBlazorApp` and `MauiBlazorApp.WinUI` projects from the solution and build the solution. Now everything should work fine!**
 
 # 🏃‍♂️ How to Run the Project
   1. First run the Migrations from **`Identity.Persistence.RelationalDB`** and **`EmployeeManagement.Persistence.RelationalDB` projects** using **`Update-Database`** command from Visual Studio PMC.
