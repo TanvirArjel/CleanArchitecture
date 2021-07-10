@@ -94,6 +94,12 @@
             await ValidationMessages.AddAndDisplayAsync(httpResponseMessage);
             IsSubmitBtnDisabled = false;
         }
+        catch (HttpRequestException httpException)
+        {
+            Console.WriteLine($"Status Code: {httpException.StatusCode}");
+            ValidationMessages.AddAndDisplay(AppErrorMessage.ServerErrorMessage);
+            await _exceptionLogger.LogAsync(httpException);
+        }
         catch (Exception exception)
         {
             IsSubmitBtnDisabled = false;

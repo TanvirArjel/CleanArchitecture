@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
 using MauiBlazor.Shared.Models.DepartmentModels;
@@ -35,6 +36,11 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
             try
             {
                 await LoadDepartmentsAsync();
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine(httpException);
+                ErrorMessage = "The server maybe down or the app does not have CORS access to the requested server.";
             }
             catch (Exception exception)
             {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
+using MauiBlazor.Shared.Common;
 using MauiBlazor.Shared.Models.EmployeeModels;
 using MauiBlazor.Shared.Services;
 
@@ -9,10 +11,12 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
     public partial class EmployeeListComponent
     {
         private readonly EmployeeService _employeeService;
+        private readonly ExceptionLogger _exceptionLogger;
 
-        public EmployeeListComponent(EmployeeService employeeService)
+        public EmployeeListComponent(EmployeeService employeeService, ExceptionLogger exceptionLogger)
         {
             _employeeService = employeeService;
+            _exceptionLogger = exceptionLogger;
         }
 
         private List<EmployeeDetailsModel> Employees { get; set; }
@@ -32,6 +36,11 @@ namespace MauiBlazor.WebUI.Components.EmployeeComponents
             try
             {
                 Employees = await _employeeService.GetListAsync();
+            }
+            catch (HttpRequestException httpException)
+            {
+                Console.WriteLine(httpException);
+                ErrorMessage = "The server maybe down or the app does not have CORS access to the requested server.";
             }
             catch (Exception exception)
             {

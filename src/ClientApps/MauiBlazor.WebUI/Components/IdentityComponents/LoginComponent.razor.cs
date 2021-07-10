@@ -61,10 +61,14 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
                     if (loginResponse != null)
                     {
                         await _hostAuthStateProvider.LogInAsync(loginResponse, "/");
+                        return;
                     }
+
+                    Console.WriteLine("Called");
                 }
                 else
                 {
+                    Console.WriteLine((int)httpResponse.StatusCode);
                     await ValidationMessages.AddAndDisplayAsync(httpResponse);
                 }
             }

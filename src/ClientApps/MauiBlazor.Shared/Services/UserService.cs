@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Models;
 using MauiBlazor.Shared.Models.IdentityModels;
@@ -13,21 +11,15 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace MauiBlazor.Shared.Services
 {
-    [SingletonService]
+    [ScopedService]
     public class UserService
     {
         private readonly HttpClient _httpClient;
 
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here")]
         public UserService(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("IdentityApi");
         }
-
-        private static JsonSerializerOptions JsonSerializerOptions => new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true
-        };
 
         public async Task<PaginatedList<UserModel>> GetListAsync(int pageIndex, int pageSize, UserSearchModel searchModel)
         {
