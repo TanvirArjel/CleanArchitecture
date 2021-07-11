@@ -91,6 +91,8 @@ namespace EmployeeManagement.Api
         [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Not appplicable here")]
         public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
+            app.ApplyDatabaseMigrations();
+
             app.Use((context, next) =>
             {
                 context.Request.EnableBuffering();
