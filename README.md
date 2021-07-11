@@ -3,8 +3,8 @@
 **Currently, .NET MAUI is in preview, and setting up the environment for the .NET MAUI is quite tricky and challenging. So if you would like to ignore/skip .NET MAUI for now then, simply remove the `MauiBlazorApp` and `MauiBlazorApp.WinUI` projects from the solution and build the solution. Now everything should work fine!**
 
 # 🏃‍♂️ How to Run the Project
-  1. First run the Migrations from **`Identity.Persistence.RelationalDB`** and **`EmployeeManagement.Persistence.RelationalDB` projects** using **`Update-Database`** command from Visual Studio PMC.
-  2. Now make **`Identity.Api`, `EmployeeManagement.Api` and `MauiBlazor.WebUI`** as startup projects and then run. That'it!
+  1. First build the solution.
+  2. Now make **`Identity.Api`, `EmployeeManagement.Api` and `MauiBlazor.WebUI`** projects as startup projects and then run it. On startup necessary databases will be created in **MSSQLLocalDB**
 
 # Clean Architecture in ASP.NET Core
 This repository contain the implementation of domain driven design and clear architecture in ASP.NET Core.
