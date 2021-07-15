@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
+using MauiBlazor.Shared.Common;
 using MauiBlazor.Shared.Models;
 using MauiBlazor.Shared.Models.IdentityModels;
 using Microsoft.AspNetCore.WebUtilities;
@@ -15,10 +17,12 @@ namespace MauiBlazor.Shared.Services
     public class UserService
     {
         private readonly HttpClient _httpClient;
+        private readonly ILocalStorageService _localStorage;
 
-        public UserService(IHttpClientFactory httpClientFactory)
+        public UserService(IHttpClientFactory httpClientFactory, ILocalStorageService localStorage)
         {
             _httpClient = httpClientFactory.CreateClient("IdentityApi");
+            _localStorage = localStorage;
         }
 
         public async Task<PaginatedList<UserModel>> GetListAsync(int pageIndex, int pageSize, UserSearchModel searchModel)
@@ -124,6 +128,8 @@ namespace MauiBlazor.Shared.Services
             {
                 throw new ArgumentNullException(nameof(loginModel));
             }
+
+            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.LoggedInUserInfo);
 
             HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/login", loginModel);
 

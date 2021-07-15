@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.223
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31512.422
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{73DD776E-B397-4372-867D-EDAF28C8608F}"
 EndProject
@@ -54,11 +54,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Infrastructure.Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorApp", "src\ClientApps\MauiBlazorApp\MauiBlazorApp\MauiBlazorApp.csproj", "{A980E99C-B889-4284-95BE-92C077B19724}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorApp.WinUI", "src\ClientApps\MauiBlazorApp\MauiBlazorApp.WinUI\MauiBlazorApp.WinUI.csproj", "{52695F25-1F01-4C2A-842B-92E290EBE774}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazor.Shared", "src\ClientApps\MauiBlazor.Shared\MauiBlazor.Shared.csproj", "{093867A1-A9F2-4AD2-B321-1890A9B38976}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazor.WebUI", "src\ClientApps\MauiBlazor.WebUI\MauiBlazor.WebUI.csproj", "{A44BF98E-04F7-4599-B52F-75EE57FAAFAF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiBlazorApp.WinUI", "src\ClientApps\MauiBlazorApp\MauiBlazorApp.WinUI\MauiBlazorApp.WinUI.csproj", "{68479698-634A-48FB-9067-7DAADD020994}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,10 +116,6 @@ Global
 		{A980E99C-B889-4284-95BE-92C077B19724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A980E99C-B889-4284-95BE-92C077B19724}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A980E99C-B889-4284-95BE-92C077B19724}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{52695F25-1F01-4C2A-842B-92E290EBE774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52695F25-1F01-4C2A-842B-92E290EBE774}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52695F25-1F01-4C2A-842B-92E290EBE774}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52695F25-1F01-4C2A-842B-92E290EBE774}.Release|Any CPU.Build.0 = Release|Any CPU
 		{093867A1-A9F2-4AD2-B321-1890A9B38976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{093867A1-A9F2-4AD2-B321-1890A9B38976}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{093867A1-A9F2-4AD2-B321-1890A9B38976}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -128,6 +124,10 @@ Global
 		{A44BF98E-04F7-4599-B52F-75EE57FAAFAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A44BF98E-04F7-4599-B52F-75EE57FAAFAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A44BF98E-04F7-4599-B52F-75EE57FAAFAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68479698-634A-48FB-9067-7DAADD020994}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68479698-634A-48FB-9067-7DAADD020994}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68479698-634A-48FB-9067-7DAADD020994}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68479698-634A-48FB-9067-7DAADD020994}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,9 +155,9 @@ Global
 		{21D2CD61-A578-4236-AF9B-4D9807935991} = {965611CF-5507-483C-A5D7-E7178BDEEEC0}
 		{AF6E9206-A226-48AD-80FF-B4B51534BA29} = {965611CF-5507-483C-A5D7-E7178BDEEEC0}
 		{A980E99C-B889-4284-95BE-92C077B19724} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
-		{52695F25-1F01-4C2A-842B-92E290EBE774} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
 		{093867A1-A9F2-4AD2-B321-1890A9B38976} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
 		{A44BF98E-04F7-4599-B52F-75EE57FAAFAF} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
+		{68479698-634A-48FB-9067-7DAADD020994} = {81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C622411-9649-4977-93A0-2C624539C0EE}

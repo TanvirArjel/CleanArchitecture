@@ -4,7 +4,6 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using MauiBlazor.Shared.Extensions;
 using MauiBlazor.Shared.Models.IdentityModels;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
@@ -27,7 +26,7 @@ namespace MauiBlazor.Shared.Common
                 throw new ArgumentNullException(nameof(request));
             }
 
-            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetUserInfoAsync();
+            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.LoggedInUserInfo);
 
             if (loggedInUserInfo != null)
             {

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
+using TanvirArjel.Blazor.DependencyInjection;
 
 namespace MauiBlazorApp
 {
@@ -22,6 +23,7 @@ namespace MauiBlazorApp
                 .ConfigureServices(services =>
                 {
                     services.AddBlazorWebView();
+                    services.AddComponents();
                     services.AddSharedServices();
                 });
         }

@@ -2,8 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-windows10.0.19041</TargetFrameworks>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<OutputType>WinExe</OutputType>
 		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<RootNamespace>MauiBlazorApp</RootNamespace>
 
@@ -27,7 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\MauiBlazorApp\**\*.cs" Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**;..\MauiBlazorApp\Android\**;..\MauiBlazorApp\iOS\**;..\MauiBlazorApp\MacCatalyst\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+		<Compile Include="..\MauiBlazorApp\**\*.cs" Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**;..\MauiBlazorApp\Platforms\**" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 		<MauiXaml Include="..\MauiBlazorApp\**\*.xaml" Exclude="..\MauiBlazorApp\bin\**;..\MauiBlazorApp\obj\**" Link="%(RecursiveDir)%(FileName)%(Extension)" />
 		<_ThisProjectStaticWebAsset Include="..\MauiBlazorApp\wwwroot\**" Link="wwwroot\%(RecursiveDir)%(Filename)%(Extension)" RelativePath="%(RecursiveDir)%(Filename)%(Extension)" />
 		<None Include="@(_ThisProjectStaticWebAsset)" />
@@ -35,19 +37,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.100-preview.5.794" />
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.0-preview.5.*" />
-		<PackageReference Include="Microsoft.Maui" Version="6.0.100-preview.5.794" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.0-preview.6.*" />
+		<PackageReference Include="Microsoft.ProjectReunion" Version="0.8.0" />
+		<PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.0" />
+		<PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0" />
+		<PackageReference Include="Microsoft.ProjectReunion.InteractiveExperiences" Version="0.8.0" NoWarn="NU1701" />
+		<PackageReference Include="TanvirArjel.Blazor" Version="1.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.ProjectReunion" Version="0.8.0-preview" />
-		<PackageReference Include="Microsoft.ProjectReunion.Foundation" Version="0.8.0-preview" />
-		<PackageReference Include="Microsoft.ProjectReunion.WinUI" Version="0.8.0-preview" />
-		<PackageReference Include="TanvirArjel.Blazor" Version="1.4.0" />
-		<ProjectReference Include="..\..\MauiBlazor.Shared\MauiBlazor.Shared.csproj" />
-		<FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.19041.16" />
-		<FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.19041.16" />
+	  <ProjectReference Include="..\..\MauiBlazor.Shared\MauiBlazor.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

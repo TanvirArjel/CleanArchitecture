@@ -2,8 +2,7 @@
 
 <h1 class="text-center mb-4">Login</h1>
 
-<EditForm EditContext="FormContext" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
+<EditForm EditContext="FormContext" OnValidSubmit="HandleValidSubmitAsync">
     <CustomValidationMessages @ref="ValidationMessages" />
     <ValidationSummary Model="@LoginModel" />
 
@@ -31,70 +30,3 @@
     </div>
 
 </EditForm>
-
-@code {
-
-    [Inject]
-    private UserService _userService { get; set; }
-
-    [Inject]
-    private HostAuthStateProvider _hostAuthStateProvider { get; set; }
-
-    [Inject]
-    private ExceptionLogger _exceptionLogger { get; set; }
-    private EditContext FormContext { get; set; }
-
-    private LoginModel LoginModel { get; set; } = new LoginModel();
-
-    private CustomValidationMessages ValidationMessages { get; set; }
-
-    private bool IsSubmitDisabled { get; set; }
-
-    protected override void OnInitialized()
-    {
-        FormContext = new EditContext(LoginModel);
-        FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
-    }
-
-    private async Task HandleValidSubmit()
-    {
-        try
-        {
-            IsSubmitDisabled = true;
-            HttpResponseMessage httpResponse = await _userService.LoginAsync(LoginModel);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-
-                string responseString = await httpResponse.Content.ReadAsStringAsync();
-                LoggedInUserInfo loginResponse = JsonSerializer.Deserialize<LoggedInUserInfo>(responseString, jsonSerializerOptions);
-
-                if (loginResponse != null)
-                {
-                    await _hostAuthStateProvider.LogInAsync(loginResponse, "/");
-                }
-            }
-            else
-            {
-                await ValidationMessages.AddAndDisplayAsync(httpResponse);
-            }
-        }
-        catch (HttpRequestException httpException)
-        {
-            Console.WriteLine($"Status Code: {httpException.StatusCode}");
-            ValidationMessages.AddAndDisplay(AppErrorMessage.ServerErrorMessage);
-            await _exceptionLogger.LogAsync(httpException);
-        }
-        catch (Exception exception)
-        {
-            ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
-            await _exceptionLogger.LogAsync(exception);
-        }
-
-        IsSubmitDisabled = false;
-    }
-}
