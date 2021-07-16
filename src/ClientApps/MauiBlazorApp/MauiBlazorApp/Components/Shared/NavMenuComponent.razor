@@ -7,7 +7,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="navbar-collapse offcanvas-collapse @NavMenuCssClass" id="navbarsExampleDefault">
+        <div class="navbar-collapse offcanvas-collapse @NavMenuCssClass" id="navbarsExampleDefault" @onclick="ToggleNavMenu">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <AuthorizeView>
                     <Authorized>
@@ -47,23 +47,3 @@
         </div>
     </div>
 </nav>
-
-@code {
-
-    [Inject]
-    private HostAuthStateProvider HostAuthStateProvider {get; set;}
-
-    private bool isNavMenuOpen = false;
-
-    private string NavMenuCssClass => isNavMenuOpen ? "open" : null;
-
-    private void ToggleNavMenu()
-    {
-        isNavMenuOpen = !isNavMenuOpen;
-    }
-
-    private async Task LogOutAsync()
-    {
-        await HostAuthStateProvider.LogOutAsync("/");
-    }
-}

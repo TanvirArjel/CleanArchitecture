@@ -4,7 +4,7 @@ using MauiBlazor.Shared.Models.IdentityModels;
 using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor.Components;
 
-namespace MauiBlazorApp.Components.IdentityComponents
+namespace MauiBlazorApp.Components.Identity
 {
     public partial class ForgotPasswordComponent
     {

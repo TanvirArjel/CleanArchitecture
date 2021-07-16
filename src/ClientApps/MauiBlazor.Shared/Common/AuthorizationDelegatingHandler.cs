@@ -26,11 +26,20 @@ namespace MauiBlazor.Shared.Common
                 throw new ArgumentNullException(nameof(request));
             }
 
-            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.LoggedInUserInfo);
-
-            if (loggedInUserInfo != null)
+            try
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", loggedInUserInfo.AccessToken);
+                // LocalStorageService throws exception in when it is being used in .NET MAUI Blazor as it is registered as scoped service
+                // but it needs to be registered as Transient but no such option available right now.
+                LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.LoggedInUserInfo);
+
+                if (loggedInUserInfo != null)
+                {
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", loggedInUserInfo.AccessToken);
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("LocalStorageSerivce throws exception.");
             }
 
             HttpResponseMessage httpResponseMessage = await base.SendAsync(request, cancellationToken);

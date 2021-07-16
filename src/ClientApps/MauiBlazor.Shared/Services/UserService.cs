@@ -129,11 +129,15 @@ namespace MauiBlazor.Shared.Services
                 throw new ArgumentNullException(nameof(loginModel));
             }
 
-            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.LoggedInUserInfo);
-
             HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/login", loginModel);
 
             return httpResponseMessage;
+        }
+
+        private async Task<string> GetAccessTokenAsync()
+        {
+            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.LoggedInUserInfo);
+            return loggedInUserInfo?.AccessToken;
         }
     }
 }

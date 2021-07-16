@@ -36,16 +36,30 @@ namespace Identity.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ////services.AddCors(options =>
+            ////{
+            ////    options.AddPolicy(
+            ////        name: myAllowSpecificOrigins,
+            ////        builder =>
+            ////        {
+            ////            builder
+            ////            ////.WithOrigins("https://localhost:44364")
+            ////            .AllowAnyOrigin()
+            ////            .AllowAnyHeader()
+            ////            .AllowAnyMethod();
+            ////        });
+            ////});
+
             services.AddCors(options =>
             {
-                options.AddPolicy(
-                    name: myAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.WithOrigins("https://localhost:44364")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                    });
+                options.AddPolicy(myAllowSpecificOrigins, builder =>
+                {
+                    builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed(_ => true);
+                });
             });
 
             services.AddControllersWithViews(options =>

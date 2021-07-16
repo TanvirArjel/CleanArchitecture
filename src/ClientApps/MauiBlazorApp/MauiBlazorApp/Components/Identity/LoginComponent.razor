@@ -18,8 +18,8 @@
         <ValidationMessage For="@(() => LoginModel.Password)" />
     </div>
     <div class="d-grid gap-3">
-        <button disabled="@IsSubmitDisabled" type="submit" class="col btn btn-success btn-form-floating">
-            @(IsSubmitDisabled ? "Submitting...." : "Login") <i class="fas fa-sign-in-alt"></i>
+        <button disabled="@IsSubmitBtnDisabled" type="submit" class="col btn btn-success btn-form-floating">
+            @(IsSubmitBtnDisabled ? "Submitting...." : "Login") <i class="fas fa-sign-in-alt"></i>
         </button>
         <a class="col btn btn-warning btn-form-floating" href="identity/forgot-password">
             Forgot Password?

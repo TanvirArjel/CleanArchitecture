@@ -1,35 +1,35 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
 using MauiBlazor.Shared.Models.IdentityModels;
 using MauiBlazor.Shared.Services;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
 
-namespace MauiBlazorApp.Components.IdentityComponents
+namespace MauiBlazorApp.Components.Identity
 {
-    public partial class RegisterComponent
+    public partial class LoginComponent
     {
         private readonly UserService _userService;
-        private readonly NavigationManager _navigationManager;
+        private readonly HostAuthStateProvider _hostAuthStateProvider;
         private readonly ExceptionLogger _exceptionLogger;
 
-        public RegisterComponent(
+        public LoginComponent(
             UserService userService,
-            NavigationManager navigationManager,
+            HostAuthStateProvider hostAuthStateProvider,
             ExceptionLogger exceptionLogger)
         {
             _userService = userService;
-            _navigationManager = navigationManager;
+            _hostAuthStateProvider = hostAuthStateProvider;
             _exceptionLogger = exceptionLogger;
         }
 
         private EditContext FormContext { get; set; }
 
-        private RegistrationModel RegistrationModel { get; set; } = new RegistrationModel();
+        private LoginModel LoginModel { get; set; } = new LoginModel();
 
         private CustomValidationMessages ValidationMessages { get; set; }
 
@@ -37,7 +37,7 @@ namespace MauiBlazorApp.Components.IdentityComponents
 
         protected override void OnInitialized()
         {
-            FormContext = new EditContext(RegistrationModel);
+            FormContext = new EditContext(LoginModel);
             FormContext.EnableDataAnnotationsValidation();
             FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
         }
@@ -47,16 +47,30 @@ namespace MauiBlazorApp.Components.IdentityComponents
             try
             {
                 IsSubmitBtnDisabled = true;
-                HttpResponseMessage httpResponseMessage = await _userService.RegisterAsync(RegistrationModel);
+                HttpResponseMessage httpResponse = await _userService.LoginAsync(LoginModel);
 
-                if (httpResponseMessage.IsSuccessStatusCode)
+                if (httpResponse.IsSuccessStatusCode)
                 {
-                    _navigationManager.NavigateTo("identity/login");
-                    return;
-                }
+                    JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
 
-                await ValidationMessages.AddAndDisplayAsync(httpResponseMessage);
-                IsSubmitBtnDisabled = false;
+                    string responseString = await httpResponse.Content.ReadAsStringAsync();
+                    LoggedInUserInfo loginResponse = JsonSerializer.Deserialize<LoggedInUserInfo>(responseString, jsonSerializerOptions);
+
+                    Console.WriteLine(loginResponse);
+
+                    if (loginResponse != null)
+                    {
+                        await _hostAuthStateProvider.LogInAsync(loginResponse, "/");
+                        return;
+                    }
+                }
+                else
+                {
+                    await ValidationMessages.AddAndDisplayAsync(httpResponse);
+                }
             }
             catch (HttpRequestException httpException)
             {
@@ -66,10 +80,11 @@ namespace MauiBlazorApp.Components.IdentityComponents
             }
             catch (Exception exception)
             {
-                IsSubmitBtnDisabled = false;
                 ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
+
+            IsSubmitBtnDisabled = false;
         }
     }
 }
