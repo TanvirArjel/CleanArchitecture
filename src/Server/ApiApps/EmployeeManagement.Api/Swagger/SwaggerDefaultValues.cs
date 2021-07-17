@@ -34,6 +34,7 @@ namespace EmployeeManagement.Api.Swagger
             foreach (OpenApiParameter parameter in operation.Parameters)
             {
                 ApiParameterDescription description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
+
                 if (parameter.Description == null)
                 {
                     parameter.Description = description.ModelMetadata?.Description;

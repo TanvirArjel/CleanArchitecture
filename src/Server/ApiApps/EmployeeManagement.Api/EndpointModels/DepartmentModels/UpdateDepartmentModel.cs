@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace EmployeeManagement.Api.AutoMapper
+namespace EmployeeManagement.Api.EndpointModels.DepartmentModels
 {
     public class UpdateDepartmentModel
     {

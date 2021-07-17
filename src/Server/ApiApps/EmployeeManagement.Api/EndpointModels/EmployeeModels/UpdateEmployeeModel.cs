@@ -1,21 +1,23 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using TanvirArjel.CustomValidation.Attributes;
 
-namespace EmployeeManagement.Api.ApiModels.EmployeeModels
+namespace EmployeeManagement.Api.EndpointModels.EmployeeModels
 {
-    public class CreateEmployeeModel
+    public class UpdateEmployeeModel
     {
+        [Required]
+        public Guid Id { get; set; }
+
         [Required]
         [MaxLength(50)]
         [MinLength(4)]
         public string Name { get; set; }
 
         [Required]
+        [Range(1, int.MaxValue)]
         public Guid DepartmentId { get; set; }
 
         [Required]
-        [MinAge(15, 0, 0, ErrorMessage = "The minimum age has to be 15 years.")]
         public DateTime DateOfBirth { get; set; }
 
         [Required]

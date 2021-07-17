@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EmployeeManagement.Api.ApiModels.DepartmentModels
+namespace EmployeeManagement.Api.EndpointModels.DepartmentModels
 {
     public class CreateDepartmentModel
     {
