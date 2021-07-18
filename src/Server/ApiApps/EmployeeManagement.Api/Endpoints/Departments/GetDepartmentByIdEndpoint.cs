@@ -9,11 +9,11 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace EmployeeManagement.Api.Endpoints.Departments
 {
-    public class GetDepartmentById : DepartmentEndpoint
+    public class GetDepartmentByIdEndpoint : DepartmentEndpoint
     {
         private readonly IDepartmentService _departmentService;
 
-        public GetDepartmentById(IDepartmentService departmentService)
+        public GetDepartmentByIdEndpoint(IDepartmentService departmentService)
         {
             _departmentService = departmentService;
         }

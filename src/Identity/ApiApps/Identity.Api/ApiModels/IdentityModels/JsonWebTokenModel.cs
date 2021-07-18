@@ -2,7 +2,7 @@
 
 namespace Identity.Api.ApiModels.IdentityModels
 {
-    public class JsonWebTokenModel
+    public class LoginResponseModel
     {
         public Guid UserId { get; set; }
 

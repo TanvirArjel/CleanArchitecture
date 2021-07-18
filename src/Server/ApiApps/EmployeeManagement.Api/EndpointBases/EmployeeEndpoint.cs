@@ -8,7 +8,7 @@ namespace EmployeeManagement.Api.Controllers
     [ApiController]
     [Authorize]
     [ApiExplorerSettings(GroupName = "Employee Endpoints")]
-    public class EmployeeEndpoint : ControllerBase
+    public abstract class EmployeeEndpoint : ControllerBase
     {
     }
 }

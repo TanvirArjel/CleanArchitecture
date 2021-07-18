@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Identity.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace Identity.Application.Services
@@ -15,13 +14,11 @@ namespace Identity.Application.Services
 
         Task SendEmailVerificationCodeAsync(string email);
 
-        Task<bool> HasActiveEmailConfirmationCodeAsync(string email);
-
-        Task<IdentityError> VerifyEmailAsync(string email, string code);
+        Task VerifyEmailAsync(string email, string code);
 
         Task SendPasswordResetCodeAsync(string email);
 
-        Task<IdentityError> ResetPasswordAsync(string email, string code, string newPassword);
+        Task ResetPasswordAsync(string email, string code, string newPassword);
 
         Task<RefreshToken> GetRefreshTokenAsync(Guid userId);
 

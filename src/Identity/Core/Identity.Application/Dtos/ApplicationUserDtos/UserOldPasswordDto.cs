@@ -6,7 +6,7 @@ namespace Identity.Application.Dtos.ApplicationUserDtos
     {
         public Guid UserId { get; set; }
 
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
 
         public DateTime SetAtUtc { get; set; }
     }

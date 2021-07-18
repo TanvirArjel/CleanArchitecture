@@ -8,7 +8,7 @@ namespace EmployeeManagement.Api.EndpointBases
     [ApiController]
     [Authorize]
     [ApiExplorerSettings(GroupName = "Department Endpoints")]
-    public class DepartmentEndpoint : ControllerBase
+    public abstract class DepartmentEndpoint : ControllerBase
     {
     }
 }

@@ -143,6 +143,7 @@ namespace Identity.Api
 
             app.UseCors(myAllowSpecificOrigins);
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

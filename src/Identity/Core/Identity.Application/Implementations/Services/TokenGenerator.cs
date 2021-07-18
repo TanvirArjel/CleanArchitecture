@@ -4,24 +4,28 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
+using TanvirArjel.ArgumentChecker;
 
 namespace Identity.Application.Implementations.Services
 {
-    internal class JwtTokenGenerator : IJwtTokenGenerator
+    internal class TokenGenerator : ITokenGenerator
     {
         private readonly JwtConfig _jwtConfig;
 
-        public JwtTokenGenerator(JwtConfig jwtConfig)
+        public TokenGenerator(JwtConfig jwtConfig)
         {
             _jwtConfig = jwtConfig;
         }
 
-        public string GenerateToken(ApplicationUser applicationUser, IEnumerable<string> roles)
+        public string GenerateJwtToken(ApplicationUser applicationUser, IEnumerable<string> roles)
         {
+            applicationUser.ThrowIfNull(nameof(applicationUser));
+
             DateTime utcNow = DateTime.UtcNow;
 
             string fullName = applicationUser.FirstName + " " + applicationUser.LastName;
@@ -63,6 +67,17 @@ namespace Identity.Application.Implementations.Services
             string accessToken = jwtSecurityTokenHandler.WriteToken(jwt);
 
             return accessToken;
+        }
+
+        public string GenerateRefreshToken()
+        {
+            byte[] randomNumber = new byte[32];
+            using RNGCryptoServiceProvider generator = new RNGCryptoServiceProvider();
+            generator.GetBytes(randomNumber);
+
+            string refreshToken = Convert.ToBase64String(randomNumber);
+
+            return refreshToken;
         }
     }
 }

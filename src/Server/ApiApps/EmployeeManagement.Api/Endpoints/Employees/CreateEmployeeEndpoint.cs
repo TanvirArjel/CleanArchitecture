@@ -9,12 +9,12 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace EmployeeManagement.Api.Endpoints.Employees
 {
-    public class CreateEmployee : EmployeeEndpoint
+    public class CreateEmployeeEndpoint : EmployeeEndpoint
     {
         private readonly IEmployeeService _employeeService;
         private readonly IDepartmentService _departmentService;
 
-        public CreateEmployee(
+        public CreateEmployeeEndpoint(
             IEmployeeService employeeService,
             IDepartmentService departmentService)
         {
@@ -49,7 +49,7 @@ namespace EmployeeManagement.Api.Endpoints.Employees
             };
 
             await _employeeService.CreateAsync(createEmployeeDto);
-            return CreatedAtAction(nameof(GetEmployeeDetailsById), new { employeeId = 1 }, createEmployeeDto);
+            return CreatedAtAction(nameof(GetEmployeeDetailsByIdEndpoint), new { employeeId = 1 }, createEmployeeDto);
         }
     }
 }

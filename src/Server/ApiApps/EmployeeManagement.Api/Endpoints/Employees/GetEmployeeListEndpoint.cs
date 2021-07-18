@@ -9,11 +9,11 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Api.Endpoints.Employees
 {
-    public class GetEmployeeList : EmployeeEndpoint
+    public class GetEmployeeListEndpoint : EmployeeEndpoint
     {
         private readonly IEmployeeService _employeeService;
 
-        public GetEmployeeList(IEmployeeService employeeService)
+        public GetEmployeeListEndpoint(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
         }

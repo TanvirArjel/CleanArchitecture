@@ -46,7 +46,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                .Select(uop => new UserOldPasswordDto
                {
                    UserId = uop.UserId,
-                   Password = uop.PasswordHash,
+                   PasswordHash = uop.PasswordHash,
                    SetAtUtc = uop.SetAtUtc
                }).ToListAsync();
 
@@ -54,7 +54,7 @@ namespace EmployeeManagement.Application.Implementations.Services
             {
                 foreach (UserOldPasswordDto item in userOldPasswords)
                 {
-                    PasswordVerificationResult passwordVerificationResult = _passwordHasher.VerifyHashedPassword(applicationUser, item.Password, password);
+                    PasswordVerificationResult passwordVerificationResult = _passwordHasher.VerifyHashedPassword(applicationUser, item.PasswordHash, password);
                     if (passwordVerificationResult == PasswordVerificationResult.Success)
                     {
                         return true;
@@ -109,72 +109,39 @@ namespace EmployeeManagement.Application.Implementations.Services
             await _emailSender.SendAsync(emailObject);
         }
 
-        public async Task<bool> HasActiveEmailConfirmationCodeAsync(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                throw new ArgumentNullException(nameof(email));
-            }
-
-            bool isExists = await _repository.ExistsAsync<EmailVerificationCode>(evc => evc.SentAtUtc.AddMinutes(5) > DateTime.UtcNow);
-            return isExists;
-        }
-
-        public async Task<IdentityError> VerifyEmailAsync(string email, string code)
+        public async Task VerifyEmailAsync(string email, string code)
         {
             IDbContextTransaction dbContextTransaction = await _repository.BeginTransactionAsync();
 
             try
             {
-                IdentityError identityError = null;
-
                 EmailVerificationCode emailVerificationCode = await _repository
                 .GetAsync<EmailVerificationCode>(evc => evc.Email == email && evc.Code == code && evc.UsedAtUtc == null);
 
                 if (emailVerificationCode == null)
                 {
-                    identityError = new IdentityError()
-                    {
-                        Code = "Code",
-                        Description = "Either email or password reset code is incorrect."
-                    };
-
-                    return identityError;
+                    throw new InvalidOperationException("Either email or password reset code is incorrect.");
                 }
 
                 if (DateTime.UtcNow > emailVerificationCode.SentAtUtc.AddMinutes(5))
                 {
-                    identityError = new IdentityError()
-                    {
-                        Code = "Code",
-                        Description = "The code is expired."
-                    };
-
-                    return identityError;
+                    throw new InvalidOperationException("The code is expired.");
                 }
 
                 ApplicationUser applicationUser = await _repository.GetAsync<ApplicationUser>(au => au.Email == email);
 
                 if (applicationUser == null)
                 {
-                    identityError = new IdentityError()
-                    {
-                        Code = "Email",
-                        Description = "The provided email is not related to any account."
-                    };
-                }
-                else
-                {
-                    applicationUser.EmailConfirmed = true;
-                    await _repository.UpdateAsync(applicationUser);
-
-                    emailVerificationCode.UsedAtUtc = DateTime.UtcNow;
-                    await _repository.UpdateAsync(emailVerificationCode);
-
-                    await dbContextTransaction.CommitAsync();
+                    throw new InvalidOperationException("The provided email is not related to any account.");
                 }
 
-                return identityError;
+                applicationUser.EmailConfirmed = true;
+                await _repository.UpdateAsync(applicationUser);
+
+                emailVerificationCode.UsedAtUtc = DateTime.UtcNow;
+                await _repository.UpdateAsync(emailVerificationCode);
+
+                await dbContextTransaction.CommitAsync();
             }
             catch (Exception)
             {
@@ -185,6 +152,15 @@ namespace EmployeeManagement.Application.Implementations.Services
 
         public async Task SendPasswordResetCodeAsync(string email)
         {
+            email.ThrowIfNotValidEmail(nameof(email));
+
+            bool isExistent = await _repository.ExistsAsync<ApplicationUser>(u => u.Email == email);
+
+            if (isExistent == false)
+            {
+                throw new InvalidOperationException("The user does not exist with the provided email.");
+            }
+
             Random generator = new Random();
             string verificationCode = generator.Next(0, 1000000).ToString("D6", CultureInfo.InvariantCulture);
 
@@ -205,62 +181,42 @@ namespace EmployeeManagement.Application.Implementations.Services
             await _emailSender.SendAsync(emailObject);
         }
 
-        public async Task<IdentityError> ResetPasswordAsync(string email, string code, string newPassword)
+        public async Task ResetPasswordAsync(string email, string code, string newPassword)
         {
+            email.ThrowIfNotValidEmail(nameof(email));
+
             IDbContextTransaction dbContextTransaction = await _repository.BeginTransactionAsync();
 
             try
             {
-                IdentityError identityError = null;
-
-                PasswordResetCode emailVerificationCode = await _repository
+                PasswordResetCode passwordResetCode = await _repository
                 .GetAsync<PasswordResetCode>(evc => evc.Email == email && evc.Code == code && evc.UsedAtUtc == null);
 
-                if (emailVerificationCode == null)
+                if (passwordResetCode == null)
                 {
-                    identityError = new IdentityError()
-                    {
-                        Code = "Code",
-                        Description = "Either email or password reset code is incorrect."
-                    };
-
-                    return identityError;
+                    throw new InvalidOperationException("Either email or password reset code is incorrect.");
                 }
 
-                if (DateTime.UtcNow > emailVerificationCode.SentAtUtc.AddMinutes(5))
+                if (DateTime.UtcNow > passwordResetCode.SentAtUtc.AddMinutes(5))
                 {
-                    identityError = new IdentityError()
-                    {
-                        Code = "Code",
-                        Description = "The code is expired."
-                    };
-                }
-                else
-                {
-                    ApplicationUser applicationUser = await _repository.GetAsync<ApplicationUser>(au => au.Email == email);
-
-                    if (applicationUser == null)
-                    {
-                        identityError = new IdentityError()
-                        {
-                            Code = "Email",
-                            Description = "The provided email is not related to any account."
-                        };
-                    }
-                    else
-                    {
-                        string newHashedPassword = _passwordHasher.HashPassword(applicationUser, newPassword);
-                        applicationUser.PasswordHash = newHashedPassword;
-                        await _repository.UpdateAsync(applicationUser);
-
-                        emailVerificationCode.UsedAtUtc = DateTime.UtcNow;
-                        await _repository.UpdateAsync(emailVerificationCode);
-
-                        await dbContextTransaction.CommitAsync();
-                    }
+                    throw new InvalidOperationException("The code is expired.");
                 }
 
-                return identityError;
+                ApplicationUser applicationUser = await _repository.GetAsync<ApplicationUser>(au => au.Email == email);
+
+                if (applicationUser == null)
+                {
+                    throw new InvalidOperationException("The provided email is not related to any account.");
+                }
+
+                string newHashedPassword = _passwordHasher.HashPassword(applicationUser, newPassword);
+                applicationUser.PasswordHash = newHashedPassword;
+                await _repository.UpdateAsync(applicationUser);
+
+                passwordResetCode.UsedAtUtc = DateTime.UtcNow;
+                await _repository.UpdateAsync(passwordResetCode);
+
+                await dbContextTransaction.CommitAsync();
             }
             catch (Exception)
             {
