@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Identity.Api.ApiModels.IdentityModels;
 using Identity.Api.EndpointBases;
 using Identity.Application.Infrastrucures;
 using Identity.Application.Services;
@@ -152,5 +152,38 @@ namespace Identity.Api.Endpoints.UserEndpoints
 
             return loginResponse;
         }
+    }
+
+    public class LoginModel
+    {
+        [Required]
+        [EmailAddress]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "{0} should be between {2} to {1} characters")]
+        public string EmailOrUserName { get; set; }
+
+        [Required]
+        [StringLength(20, MinimumLength = 6, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.")]
+        public string Password { get; set; }
+
+        public bool RememberMe { get; set; }
+    }
+
+    public class LoginResponseModel
+    {
+        public Guid UserId { get; set; }
+
+        public string FullName { get; set; }
+
+        public string UserName { get; set; }
+
+        public string Email { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public DateTime AccessTokenExpireAtUtc { get; set; }
+
+        public string RefreshToken { get; set; }
+
+        public DateTime RefreshTokenExpireAtUtc { get; set; }
     }
 }

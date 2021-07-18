@@ -1,7 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using EmployeeManagement.Api.EndpointBases;
-using EmployeeManagement.Api.EndpointModels.DepartmentModels;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Services;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +22,7 @@ namespace EmployeeManagement.Api.Endpoints.Departments
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Create a new department by posting the required data.")]
         public async Task<ActionResult> Post(CreateDepartmentModel model)
@@ -43,5 +44,17 @@ namespace EmployeeManagement.Api.Endpoints.Departments
             Guid departmentId = await _departmentService.CreateAsync(createDepartmentDto);
             return CreatedAtAction("GetDepartment", new { departmentId }, model);
         }
+    }
+
+    public class CreateDepartmentModel
+    {
+        [Required]
+        [MaxLength(20, ErrorMessage = "The {0} can't be more than {1} characters.")]
+        [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters.")]
+        public string Name { get; set; }
+
+        [MaxLength(200, ErrorMessage = "The {0} can't be more than {1} characters.")]
+        [MinLength(20, ErrorMessage = "The {0} must be at least {1} characters.")]
+        public string Description { get; set; }
     }
 }

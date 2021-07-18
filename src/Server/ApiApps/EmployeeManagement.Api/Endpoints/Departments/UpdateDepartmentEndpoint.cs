@@ -1,7 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using EmployeeManagement.Api.EndpointBases;
-using EmployeeManagement.Api.EndpointModels.DepartmentModels;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Services;
 using Microsoft.AspNetCore.Http;
@@ -59,5 +59,20 @@ namespace EmployeeManagement.Api.Endpoints.Departments
             await _departmentService.UpdateAsync(updateDepartmentDto);
             return Ok();
         }
+    }
+
+    public class UpdateDepartmentModel
+    {
+        [Required]
+        public Guid Id { get; set; }
+
+        [Required]
+        [MaxLength(20, ErrorMessage = "The {0} can't be more than {1} characters.")]
+        [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters.")]
+        public string Name { get; set; }
+
+        [MaxLength(200, ErrorMessage = "The {0} can't be more than {1} characters.")]
+        [MinLength(20, ErrorMessage = "The {0} must be at least {1} characters.")]
+        public string Description { get; set; }
     }
 }

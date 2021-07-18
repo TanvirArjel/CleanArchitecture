@@ -1,11 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using EmployeeManagement.Api.Controllers;
-using EmployeeManagement.Api.EndpointModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using TanvirArjel.CustomValidation.Attributes;
 
 namespace EmployeeManagement.Api.Endpoints.Employees
 {
@@ -51,5 +53,30 @@ namespace EmployeeManagement.Api.Endpoints.Employees
             await _employeeService.CreateAsync(createEmployeeDto);
             return CreatedAtAction(nameof(GetEmployeeDetailsByIdEndpoint), new { employeeId = 1 }, createEmployeeDto);
         }
+    }
+
+    public class CreateEmployeeModel
+    {
+        [Required]
+        [MaxLength(50, ErrorMessage = "The {0} can't be more than {1} characters.")]
+        [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters.")]
+        public string Name { get; set; }
+
+        [Required]
+        public Guid DepartmentId { get; set; }
+
+        [Required]
+        [MinAge(15, 0, 0, ErrorMessage = "The minimum age has to be 15 years.")]
+        public DateTime DateOfBirth { get; set; }
+
+        [Required]
+        [MaxLength(50, ErrorMessage = "The {0} can't be more than {1} characters.")]
+        [MinLength(8, ErrorMessage = "The {0} must be at least {1} characters.")]
+        public string Email { get; set; }
+
+        [Required]
+        [MaxLength(15, ErrorMessage = "The {0} can't be more than {1} characters.")]
+        [MinLength(10, ErrorMessage = "The {0} must be at least {1} characters.")]
+        public string PhoneNumber { get; set; }
     }
 }

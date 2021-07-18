@@ -1,6 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Identity.Api.ApiModels.IdentityModels;
 using Identity.Api.EndpointBases;
 using Identity.Application.Infrastrucures;
 using Identity.Domain.Entities;
@@ -65,5 +65,31 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+    }
+
+    public class RegistrationModel
+    {
+        [Required]
+        [MaxLength(30, ErrorMessage = "The {1} can't be more than {1} characters long.")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(30, ErrorMessage = "The {1} can't be more than {1} characters long.")]
+        public string LastName { get; set; }
+
+        [Required]
+        [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]
+        [MaxLength(50, ErrorMessage = "The {1} can't be more than {1} characters long.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        public string Email { get; set; }
+
+        [Required]
+        [MinLength(6, ErrorMessage = "The {0} must be at least {1} characters long.")]
+        [MaxLength(20, ErrorMessage = "The {1} can't be more than {1} characters long.")]
+        public string Password { get; set; }
+
+        [Required]
+        [Compare(nameof(Password), ErrorMessage = "Confirm password does match with password.")]
+        public string ConfirmPassword { get; set; }
     }
 }

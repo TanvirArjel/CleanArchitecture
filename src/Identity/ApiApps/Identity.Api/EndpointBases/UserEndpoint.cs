@@ -8,7 +8,7 @@ namespace Identity.Api.EndpointBases
     [Route("api/v{version:apiVersion}/user")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "User Endpoints")]
-    public class UserEndpoint : ControllerBase
+    public abstract class UserEndpoint : ControllerBase
     {
     }
 }

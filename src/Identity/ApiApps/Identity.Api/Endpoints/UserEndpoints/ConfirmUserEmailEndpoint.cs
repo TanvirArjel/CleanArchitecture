@@ -1,7 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Identity.Api.ApiModels.IdentityModels;
 using Identity.Api.EndpointBases;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
@@ -65,5 +65,17 @@ namespace Identity.Api.Endpoints.UserEndpoints
 
             return Ok();
         }
+    }
+
+    public class EmailConfirmationModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [MinLength(6, ErrorMessage = "{0} should be {1} characters long.")]
+        [MaxLength(6, ErrorMessage = "{0} should be {1} characters long.")]
+        public string Code { get; set; }
     }
 }

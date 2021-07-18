@@ -5,4 +5,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not Applicable here.", Scope = "namespaceanddescendants", Target = "EmployeeManagement.Api.Controllers")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not Applicable here.", Scope = "namespaceanddescendants", Target = "~N:EmployeeManagement.Api.Endpoints")]
+[assembly: SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "Not Applicable here.", Scope = "namespaceanddescendants", Target = "~N:EmployeeManagement.Api.Endpoints")]

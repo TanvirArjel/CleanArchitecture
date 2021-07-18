@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
-using Identity.Api.ApiModels.IdentityModels;
 using Identity.Api.EndpointBases;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
@@ -44,5 +44,12 @@ namespace Identity.Api.Endpoints.UserEndpoints
             await _applicationUserService.SendPasswordResetCodeAsync(model.Email);
             return Ok();
         }
+    }
+
+    public class ForgotPasswordModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
     }
 }

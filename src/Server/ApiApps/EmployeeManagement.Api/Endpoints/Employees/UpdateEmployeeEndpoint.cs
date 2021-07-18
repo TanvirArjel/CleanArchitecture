@@ -1,7 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using EmployeeManagement.Api.Controllers;
-using EmployeeManagement.Api.EndpointModels.EmployeeModels;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Services;
 using Microsoft.AspNetCore.Http;
@@ -59,5 +59,33 @@ namespace EmployeeManagement.Api.Endpoints.Employees
             await _employeeService.UpdateAsync(updateEmployeeDto);
             return Ok();
         }
+    }
+
+    public class UpdateEmployeeModel
+    {
+        [Required]
+        public Guid Id { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [MinLength(4)]
+        public string Name { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue)]
+        public Guid DepartmentId { get; set; }
+
+        [Required]
+        public DateTime DateOfBirth { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [MinLength(8)]
+        public string Email { get; set; }
+
+        [Required]
+        [MaxLength(15)]
+        [MinLength(10)]
+        public string PhoneNumber { get; set; }
     }
 }

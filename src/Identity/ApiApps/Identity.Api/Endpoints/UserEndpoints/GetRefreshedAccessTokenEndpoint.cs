@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Identity.Api.ApiModels.IdentityModels;
 using Identity.Api.EndpointBases;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
@@ -143,5 +143,14 @@ namespace Identity.Api.Endpoints.UserEndpoints
 
             return jsonWebToken;
         }
+    }
+
+    public class TokenRefreshModel
+    {
+        [Required]
+        public string AccessToken { get; set; }
+
+        [Required]
+        public string RefreshToken { get; set; }
     }
 }

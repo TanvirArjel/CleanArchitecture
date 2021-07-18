@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Identity.Api.ApiModels.IdentityModels;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Identity.Api.EndpointBases;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
@@ -61,5 +61,12 @@ namespace Identity.Api.Endpoints.UserEndpoints
             await _applicationUserService.SendEmailVerificationCodeAsync(model.Email);
             return Ok();
         }
+    }
+
+    public class ResendEmailConfirmationCodeModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
     }
 }
