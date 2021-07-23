@@ -42,7 +42,7 @@ namespace EmployeeManagement.Api.Endpoints.Departments
             };
 
             Guid departmentId = await _departmentService.CreateAsync(createDepartmentDto);
-            return CreatedAtAction("GetDepartment", new { departmentId }, model);
+            return Created($"/api/v1/departments/{departmentId}", model);
         }
     }
 

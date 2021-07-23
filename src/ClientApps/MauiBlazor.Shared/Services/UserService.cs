@@ -117,7 +117,7 @@ namespace MauiBlazor.Shared.Services
                 throw new ArgumentNullException(nameof(registerModel));
             }
 
-            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/register", registerModel);
+            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/registration", registerModel);
 
             return httpResponseMessage;
         }

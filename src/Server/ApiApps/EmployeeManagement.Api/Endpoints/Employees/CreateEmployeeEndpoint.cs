@@ -51,7 +51,7 @@ namespace EmployeeManagement.Api.Endpoints.Employees
             };
 
             await _employeeService.CreateAsync(createEmployeeDto);
-            return CreatedAtAction(nameof(GetEmployeeDetailsByIdEndpoint), new { employeeId = 1 }, createEmployeeDto);
+            return StatusCode(StatusCodes.Status201Created);
         }
     }
 

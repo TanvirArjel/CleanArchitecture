@@ -20,7 +20,7 @@ namespace EmployeeManagement.Api.Endpoints.Employees
 
         // DELETE: api/employees/5
         [HttpDelete("{employeeId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
@@ -42,7 +42,7 @@ namespace EmployeeManagement.Api.Endpoints.Employees
             }
 
             await _employeeService.DeleteAsync(employeeId);
-            return Ok();
+            return NoContent();
         }
     }
 }
