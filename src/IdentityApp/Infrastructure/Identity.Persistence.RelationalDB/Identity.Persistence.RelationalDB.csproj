@@ -16,10 +16,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="TanvirArjel.EFCore.GenericRepository" Version="5.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Identity\Core\Identity.Application\Identity.Application.csproj" />
+    <ProjectReference Include="..\..\Core\Identity.Domain\Identity.Domain.csproj" />
   </ItemGroup>
 
 </Project>
