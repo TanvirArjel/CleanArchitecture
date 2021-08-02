@@ -19,6 +19,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace Identity.Api.Endpoints.UserEndpoints
 {
+    [ApiVersion("1.0")]
     public class GetRefreshedAccessTokenEndpoint : UserEndpoint
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -132,7 +133,7 @@ namespace Identity.Api.Endpoints.UserEndpoints
             LoginResponseModel jsonWebToken = new LoginResponseModel()
             {
                 UserId = applicationUser.Id,
-                FullName = applicationUser.FirstName + " " + applicationUser.LastName,
+                FullName = applicationUser.FullName,
                 UserName = applicationUser.UserName,
                 Email = applicationUser.Email,
                 AccessToken = accessToken,

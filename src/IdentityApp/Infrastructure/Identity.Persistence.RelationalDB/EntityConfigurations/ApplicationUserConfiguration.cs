@@ -8,11 +8,9 @@ namespace EmployeeManagement.Persistence.Indentity.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.Property<int>("IdentityKey").ValueGeneratedOnAdd();
+            ////builder.Property<int>("IdentityKey").ValueGeneratedOnAdd();
 
-            builder.Property(au => au.FirstName).HasMaxLength(40).IsRequired();
-            builder.Property(au => au.LastName).HasMaxLength(30).IsRequired();
-
+            builder.Property(au => au.FullName).HasMaxLength(100).IsRequired(false);
             builder.Property(au => au.UserName).HasMaxLength(50).IsRequired();
             builder.Property(au => au.NormalizedUserName).HasMaxLength(50).IsRequired();
             builder.Property(au => au.Email).HasMaxLength(50).IsRequired();

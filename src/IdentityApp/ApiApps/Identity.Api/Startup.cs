@@ -96,6 +96,8 @@ namespace Identity.Api
 
             services.AddJwtTokenGenerator(jwtConfig);
 
+            services.AddExternalLogins(Configuration);
+
             string sendGridApiKey = "yourSendGridKey";
             services.AddSendGrid(sendGridApiKey);
 
@@ -118,22 +120,22 @@ namespace Identity.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-                // specifying the Swagger JSON endpoint.
-                app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    options.DocExpansion(DocExpansion.None);
-
-                    // build a swagger endpoint for each discovered API version.
-                    foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
-                    {
-                        options.RoutePrefix = "swagger";
-                        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                    }
-                });
             }
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseApiVersioning();
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.DocExpansion(DocExpansion.None);
+
+                foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint(
+                        $"/swagger/{description.GroupName}/swagger.json", $"API {description.GroupName.ToUpperInvariant()}");
+                }
+            });
 
             app.UseResponseCompression();
 

@@ -14,6 +14,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Identity.Api.Endpoints.UserEndpoints
 {
+    [ApiVersion("1.0")]
     public class ConfirmUserEmailEndpoint : UserEndpoint
     {
         private readonly UserManager<ApplicationUser> _userManager;

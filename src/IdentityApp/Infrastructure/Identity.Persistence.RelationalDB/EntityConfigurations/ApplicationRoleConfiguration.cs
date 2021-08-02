@@ -8,7 +8,7 @@ namespace EmployeeManagement.Persistence.Indentity.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<ApplicationRole> builder)
         {
-            builder.Property<int>("IdentityKey").ValueGeneratedOnAdd();
+            ////builder.Property<int>("IdentityKey").ValueGeneratedOnAdd();
         }
     }
 }

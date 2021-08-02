@@ -5,9 +5,7 @@ namespace Identity.Domain.Entities
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string FullName { get; set; }
 
         public string DialCode { get; set; }
 

@@ -12,6 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Identity.Api.Endpoints.UserEndpoints
 {
+    [ApiVersion("1.0")]
     public class UserRegistrationEndpoint : UserEndpoint
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -30,19 +31,18 @@ namespace Identity.Api.Endpoints.UserEndpoints
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Create or register new user by posting the required data.")]
-        public async Task<ActionResult> Post(RegistrationModel registerModel)
+        public async Task<ActionResult> Post(RegistrationModel model)
         {
             try
             {
                 ApplicationUser applicationUser = new ApplicationUser
                 {
-                    FirstName = registerModel.FirstName,
-                    LastName = registerModel.LastName,
-                    UserName = registerModel.Email,
-                    Email = registerModel.Email
+                    FullName = model.FirstName + " " + model.LastName,
+                    UserName = model.Email,
+                    Email = model.Email
                 };
 
-                IdentityResult identityResult = await _userManager.CreateAsync(applicationUser, registerModel.Password);
+                IdentityResult identityResult = await _userManager.CreateAsync(applicationUser, model.Password);
 
                 if (identityResult.Succeeded == false)
                 {
@@ -59,9 +59,9 @@ namespace Identity.Api.Endpoints.UserEndpoints
             }
             catch (Exception exception)
             {
-                registerModel.Password = null;
-                registerModel.ConfirmPassword = null;
-                await _exceptionLogger.LogAsync(exception, registerModel);
+                model.Password = null;
+                model.ConfirmPassword = null;
+                await _exceptionLogger.LogAsync(exception, model);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

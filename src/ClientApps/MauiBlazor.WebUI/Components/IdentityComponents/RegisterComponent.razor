@@ -1,4 +1,4 @@
-﻿@page "/identity/register"
+﻿@page "/identity/registration"
 @layout EmptyLayoutComponent
 
 <div id="layoutAuthentication">
@@ -63,6 +63,13 @@
                                         </div>
                                     </div>
                                 </EditForm>
+                            </div>
+                            <div class="card-footer text-center py-3">
+                                <div class="d-grid">
+                                    <button style="background: #de4c33;" @onclick="SignUpWithGoogle" class="col btn btn-form-floating text-white">
+                                        <i class="fab fa-google"></i> Sign up with Google
+                                    </button>
+                                </div>
                             </div>
                             <div class="card-footer text-center py-3">
                                 <div class="d-grid">

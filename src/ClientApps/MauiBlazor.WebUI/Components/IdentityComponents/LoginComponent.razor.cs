@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
 using MauiBlazor.Shared.Models.IdentityModels;
 using MauiBlazor.Shared.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
+using TanvirArjel.Blazor.Extensions;
 
 namespace MauiBlazor.WebUI.Components.IdentityComponents
 {
@@ -16,15 +18,18 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
         private readonly UserService _userService;
         private readonly HostAuthStateProvider _hostAuthStateProvider;
         private readonly ExceptionLogger _exceptionLogger;
+        private readonly NavigationManager _navigationManager;
 
         public LoginComponent(
             UserService userService,
             HostAuthStateProvider hostAuthStateProvider,
-            ExceptionLogger exceptionLogger)
+            ExceptionLogger exceptionLogger,
+            NavigationManager navigationManager)
         {
             _userService = userService;
             _hostAuthStateProvider = hostAuthStateProvider;
             _exceptionLogger = exceptionLogger;
+            _navigationManager = navigationManager;
         }
 
         private EditContext FormContext { get; set; }
@@ -35,10 +40,25 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
 
         private bool IsSubmitDisabled { get; set; }
 
+        private string ErrorMessage { get; set; }
+
         protected override void OnInitialized()
         {
             FormContext = new EditContext(LoginModel);
             FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                string error = _navigationManager.GetQuery("error");
+
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    ValidationMessages.AddAndDisplay(string.Empty, error);
+                }
+            }
         }
 
         private async Task HandleValidSubmit()
@@ -85,6 +105,12 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
             }
 
             IsSubmitDisabled = false;
+        }
+
+        private void LoginWithGoogle()
+        {
+            string loginUrl = "https://localhost:44363/api/v1/external-login/sign-in?provider=Google";
+            _navigationManager.NavigateTo(loginUrl, true);
         }
     }
 }

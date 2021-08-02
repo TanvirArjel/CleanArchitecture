@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
+using TanvirArjel.Blazor.Extensions;
 
 namespace MauiBlazor.WebUI.Components.IdentityComponents
 {
@@ -41,6 +42,19 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
             FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
         }
 
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                string error = _navigationManager.GetQuery("error");
+
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    ValidationMessages.AddAndDisplay(string.Empty, error);
+                }
+            }
+        }
+
         private async Task HandleValidSubmitAsync()
         {
             try
@@ -63,6 +77,12 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
                 ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
+        }
+
+        private void SignUpWithGoogle()
+        {
+            string loginUrl = "https://localhost:44363/api/v1/external-login/sign-up?provider=Google";
+            _navigationManager.NavigateTo(loginUrl, true);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Identity.Application.Implementations.Services
 
             DateTime utcNow = DateTime.UtcNow;
 
-            string fullName = applicationUser.FirstName + " " + applicationUser.LastName;
+            string fullName = string.IsNullOrWhiteSpace(applicationUser.FullName) ? applicationUser.UserName : applicationUser.FullName;
 
             List<Claim> claims = new List<Claim>
             {
