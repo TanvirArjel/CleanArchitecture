@@ -77,10 +77,15 @@ namespace Identity.Api.Swagger
                     ApiVersionModel actionApiVersionModel = apiDescription.ActionDescriptor
                     .GetApiVersionModel(ApiVersionMapping.Explicit | ApiVersionMapping.Implicit);
 
-                    ApiExplorerSettingsAttribute apiExplorerSettingsAttribute = (ApiExplorerSettingsAttribute)apiDescription.ActionDescriptor
-                    .EndpointMetadata.First(x => x.GetType().Equals(typeof(ApiExplorerSettingsAttribute)));
-
                     if (actionApiVersionModel == null)
+                    {
+                        return true;
+                    }
+
+                    ApiExplorerSettingsAttribute apiExplorerSettingsAttribute = (ApiExplorerSettingsAttribute)apiDescription.ActionDescriptor
+                    .EndpointMetadata.FirstOrDefault(x => x.GetType().Equals(typeof(ApiExplorerSettingsAttribute)));
+
+                    if (apiExplorerSettingsAttribute == null)
                     {
                         return true;
                     }
