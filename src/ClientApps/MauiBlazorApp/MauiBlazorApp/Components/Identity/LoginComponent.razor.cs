@@ -57,13 +57,13 @@ namespace MauiBlazorApp.Components.Identity
                     };
 
                     string responseString = await httpResponse.Content.ReadAsStringAsync();
-                    LoggedInUserInfo loginResponse = JsonSerializer.Deserialize<LoggedInUserInfo>(responseString, jsonSerializerOptions);
+                    string jwt = JsonSerializer.Deserialize<string>(responseString, jsonSerializerOptions);
 
-                    Console.WriteLine(loginResponse);
+                    Console.WriteLine(jwt);
 
-                    if (loginResponse != null)
+                    if (jwt != null)
                     {
-                        await _hostAuthStateProvider.LogInAsync(loginResponse, "/");
+                        await _hostAuthStateProvider.LogInAsync(jwt, "/");
                         return;
                     }
                 }

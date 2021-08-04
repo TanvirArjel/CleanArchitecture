@@ -2,8 +2,6 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using MauiBlazor.Shared.Extensions;
-using MauiBlazor.Shared.Models.IdentityModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -31,14 +29,14 @@ namespace MauiBlazor.Shared.Common
         {
             try
             {
-                LoggedInUserInfo loggedInUserInfo = await _localStorage.GetUserInfoAsync();
+                string jsonWebToken = await _localStorage.GetItemAsync<string>(LocalStorageKey.Jwt);
 
-                if (loggedInUserInfo == null)
+                if (jsonWebToken == null)
                 {
                     return new AuthenticationState(new ClaimsPrincipal());
                 }
 
-                ClaimsPrincipal claimsPrincipal = _jwtTokenParser.Parse(loggedInUserInfo.AccessToken);
+                ClaimsPrincipal claimsPrincipal = _jwtTokenParser.Parse(jsonWebToken);
 
                 AuthenticationState authenticationState = new AuthenticationState(claimsPrincipal);
                 User = authenticationState.User;
@@ -54,14 +52,14 @@ namespace MauiBlazor.Shared.Common
             }
         }
 
-        public async Task LogInAsync(LoggedInUserInfo loggedInUserInfo, string redirectTo = null)
+        public async Task LogInAsync(string jsonWebToken, string redirectTo = null)
         {
-            if (loggedInUserInfo == null)
+            if (jsonWebToken == null)
             {
-                throw new ArgumentNullException(nameof(loggedInUserInfo));
+                throw new ArgumentNullException(nameof(jsonWebToken));
             }
 
-            await _localStorage.SetItemAsync(LocalStorageKey.LoggedInUserInfo, loggedInUserInfo);
+            await _localStorage.SetItemAsync(LocalStorageKey.Jwt, jsonWebToken);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
             if (redirectTo != null)
@@ -72,7 +70,7 @@ namespace MauiBlazor.Shared.Common
 
         public async Task LogOutAsync(string redirectTo = null)
         {
-            await _localStorage.RemoveItemAsync(LocalStorageKey.LoggedInUserInfo);
+            await _localStorage.RemoveItemAsync(LocalStorageKey.Jwt);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
             if (redirectTo != null)

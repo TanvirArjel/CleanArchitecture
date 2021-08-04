@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Identity.Api.EndpointBases;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Identity.Api.Endpoints.UserEndpoints
 {
     [ApiVersion("1.0")]
-    public class SendUserPasswordResetCodeEndpoint : UserEndpoint
+    public class SendUserPasswordResetCodeEndpoint : UserEndpointBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IApplicationUserService _applicationUserService;

@@ -136,7 +136,7 @@ namespace MauiBlazor.Shared.Services
 
         private async Task<string> GetAccessTokenAsync()
         {
-            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.LoggedInUserInfo);
+            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.Jwt);
             return loggedInUserInfo?.AccessToken;
         }
     }

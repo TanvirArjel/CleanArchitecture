@@ -70,21 +70,16 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
 
                 if (httpResponse.IsSuccessStatusCode)
                 {
-                    JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
-
                     string responseString = await httpResponse.Content.ReadAsStringAsync();
-                    LoggedInUserInfo loginResponse = JsonSerializer.Deserialize<LoggedInUserInfo>(responseString, jsonSerializerOptions);
+                    string jsonWebToken = JsonSerializer.Deserialize<string>(responseString);
 
-                    if (loginResponse != null)
+                    Console.WriteLine(jsonWebToken);
+
+                    if (jsonWebToken != null)
                     {
-                        await _hostAuthStateProvider.LogInAsync(loginResponse, "/");
+                        await _hostAuthStateProvider.LogInAsync(jsonWebToken, "/");
                         return;
                     }
-
-                    Console.WriteLine("Called");
                 }
                 else
                 {

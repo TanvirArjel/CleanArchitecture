@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Identity.Api.EndpointBases;
 using Identity.Application.Infrastrucures;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +16,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace Identity.Api.Endpoints.ExternalLoginEndpoints
 {
     [ApiVersion("1.0")]
-    public class ExternalLoginSignUpCallbackEndpoint : ExternalLoginEndpoint
+    public class ExternalLoginSignUpCallbackEndpoint : ExternalLoginEndpointBase
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;

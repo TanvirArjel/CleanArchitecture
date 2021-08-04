@@ -15,7 +15,7 @@ namespace MauiBlazor.Shared.Extensions
                 throw new ArgumentNullException(nameof(localStorage));
             }
 
-            LoggedInUserInfo loggedInUserInfo = await localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.LoggedInUserInfo);
+            LoggedInUserInfo loggedInUserInfo = await localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.Jwt);
 
             return loggedInUserInfo;
         }

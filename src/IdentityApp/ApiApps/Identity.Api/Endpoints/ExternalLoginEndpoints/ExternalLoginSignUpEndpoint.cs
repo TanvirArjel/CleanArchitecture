@@ -1,5 +1,4 @@
-﻿using Identity.Api.EndpointBases;
-using Identity.Domain.Entities;
+﻿using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Identity.Api.Endpoints.ExternalLoginEndpoints
 {
     [ApiVersion("1.0")]
-    public class ExternalLoginSignUpEndpoint : ExternalLoginEndpoint
+    public class ExternalLoginSignUpEndpoint : ExternalLoginEndpointBase
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
 

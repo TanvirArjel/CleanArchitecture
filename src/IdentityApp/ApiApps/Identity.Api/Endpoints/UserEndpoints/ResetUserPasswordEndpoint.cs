@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Identity.Api.EndpointBases;
 using Identity.Application.Infrastrucures;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
@@ -13,7 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Identity.Api.Endpoints.UserEndpoints
 {
     [ApiVersion("1.0")]
-    public class ResetUserPasswordEndpoint : UserEndpoint
+    public class ResetUserPasswordEndpoint : UserEndpointBase
     {
         private readonly IPasswordResetCodeService _passwordResetCodeService;
         private readonly IApplicationUserService _applicationUserService;

@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Identity.Api.EndpointBases;
+using Identity.Api.Helpers;
 using Identity.Domain.Entities;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,20 +13,23 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace Identity.Api.Endpoints.ExternalLoginEndpoints
 {
     [ApiVersion("1.0")]
-    public class ExternalLoginSignInCallbackEndpoint : ExternalLoginEndpoint
+    public class ExternalLoginSignInCallbackEndpoint : ExternalLoginEndpointBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly TokenManager _tokenManager;
         private readonly ILogger<ExternalLoginSignInCallbackEndpoint> _logger;
 
         public ExternalLoginSignInCallbackEndpoint(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<ExternalLoginSignInCallbackEndpoint> logger)
+            ILogger<ExternalLoginSignInCallbackEndpoint> logger,
+            TokenManager tokenGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _tokenManager = tokenGenerator;
         }
 
         public string ClientLoginUrl => "https://localhost:44364/identity/login";
@@ -93,9 +95,8 @@ namespace Identity.Api.Endpoints.ExternalLoginEndpoints
 
                 _logger.LogInformation(5, "User logged in with {Name} provider.", externalLoginInfo.LoginProvider);
 
-                AuthenticationToken authenticationToken = externalLoginInfo.AuthenticationTokens.FirstOrDefault();
-
-                string redirectUrl = QueryHelpers.AddQueryString(ClientLoginUrl, authenticationToken.Name, authenticationToken.Value);
+                string jwt = await _tokenManager.GetJwtTokenAsync(applicationUser);
+                string redirectUrl = QueryHelpers.AddQueryString(ClientLoginUrl, "jwt", jwt);
                 return Redirect(redirectUrl);
             }
 

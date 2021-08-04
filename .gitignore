@@ -13,6 +13,7 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+
 # Mono auto generated files
 mono_crash.*
 
@@ -345,7 +346,3 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
-
-# Ionide (cross platform F# VS Code tools) working folder
-.ionide/
-src/IdentityApp/ApiApps/Identity.Api/appsettings.json

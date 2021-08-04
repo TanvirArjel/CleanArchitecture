@@ -1,45 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Identity.Api.EndpointBases;
+using Identity.Api.Helpers;
 using Identity.Application.Infrastrucures;
-using Identity.Application.Services;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
-using TanvirArjel.ArgumentChecker;
 
 namespace Identity.Api.Endpoints.UserEndpoints
 {
     [ApiVersion("1.0")]
-    public class UserLoginEndpoint : UserEndpoint
+    public class UserLoginEndpoint : UserEndpointBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IApplicationUserService _applicationUserService;
-        private readonly ITokenGenerator _tokenGenerator;
-        private readonly IConfiguration _configuration;
+        private readonly TokenManager _tokenManager;
         private readonly IExceptionLogger _exceptionLogger;
 
         public UserLoginEndpoint(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IApplicationUserService applicationUserService,
-            IConfiguration configuration,
             IExceptionLogger exceptionLogger,
-            ITokenGenerator tokenGenerator)
+            TokenManager tokenManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _applicationUserService = applicationUserService;
-            _configuration = configuration;
             _exceptionLogger = exceptionLogger;
-            _tokenGenerator = tokenGenerator;
+            _tokenManager = tokenManager;
         }
 
         [AllowAnonymous]
@@ -49,7 +39,7 @@ namespace Identity.Api.Endpoints.UserEndpoints
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Post the required credentials to get the access token for the login.")]
-        public async Task<ActionResult<LoginResponseModel>> Post(LoginModel loginModel)
+        public async Task<ActionResult<string>> Post(LoginModel loginModel)
         {
             try
             {
@@ -69,7 +59,7 @@ namespace Identity.Api.Endpoints.UserEndpoints
 
                 if (signinResult.Succeeded)
                 {
-                    LoginResponseModel jsonWebToken = await GenerateLoginResponse(applicationUser);
+                    string jsonWebToken = await _tokenManager.GetJwtTokenAsync(applicationUser);
                     return Ok(jsonWebToken);
                 }
 
@@ -112,47 +102,6 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-
-        private async Task<LoginResponseModel> GenerateLoginResponse(ApplicationUser applicationUser)
-        {
-            applicationUser.ThrowIfNull(nameof(applicationUser));
-
-            IList<string> roles = await _userManager.GetRolesAsync(applicationUser).ConfigureAwait(false);
-
-            string accessToken = _tokenGenerator.GenerateJwtToken(applicationUser, roles);
-
-            RefreshToken refreshToken = await _applicationUserService.GetRefreshTokenAsync(applicationUser.Id);
-
-            if (refreshToken == null)
-            {
-                string token = _tokenGenerator.GenerateRefreshToken();
-                refreshToken = await _applicationUserService.StoreRefreshTokenAsync(applicationUser.Id, token);
-            }
-            else
-            {
-                if (refreshToken.ExpireAtUtc < DateTime.UtcNow)
-                {
-                    string token = _tokenGenerator.GenerateRefreshToken();
-                    refreshToken = await _applicationUserService.UpdateRefreshTokenAsync(applicationUser.Id, token);
-                }
-            }
-
-            int tokenLifeTime = _configuration.GetValue<int>("Jwt:Lifetime"); // Seconds
-
-            LoginResponseModel loginResponse = new LoginResponseModel()
-            {
-                UserId = applicationUser.Id,
-                FullName = applicationUser.FullName,
-                UserName = applicationUser.UserName,
-                Email = applicationUser.Email,
-                AccessToken = accessToken,
-                AccessTokenExpireAtUtc = DateTime.UtcNow.AddSeconds(tokenLifeTime),
-                RefreshToken = refreshToken.Token,
-                RefreshTokenExpireAtUtc = refreshToken.ExpireAtUtc,
-            };
-
-            return loginResponse;
-        }
     }
 
     public class LoginModel
@@ -167,24 +116,5 @@ namespace Identity.Api.Endpoints.UserEndpoints
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
-    }
-
-    public class LoginResponseModel
-    {
-        public Guid UserId { get; set; }
-
-        public string FullName { get; set; }
-
-        public string UserName { get; set; }
-
-        public string Email { get; set; }
-
-        public string AccessToken { get; set; }
-
-        public DateTime AccessTokenExpireAtUtc { get; set; }
-
-        public string RefreshToken { get; set; }
-
-        public DateTime RefreshTokenExpireAtUtc { get; set; }
     }
 }

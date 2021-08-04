@@ -2,6 +2,6 @@
 {
     public static class LocalStorageKey
     {
-        public const string LoggedInUserInfo = "LoggedInUserInfo";
+        public const string Jwt = "LoggedInUserInfo";
     }
 }
