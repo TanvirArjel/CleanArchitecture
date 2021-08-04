@@ -48,7 +48,7 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
             FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
         }
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
@@ -57,6 +57,15 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
                 if (!string.IsNullOrWhiteSpace(error))
                 {
                     ValidationMessages.AddAndDisplay(string.Empty, error);
+                    return;
+                }
+
+                string jwt = _navigationManager.GetQuery("jwt");
+
+                if (!string.IsNullOrWhiteSpace(jwt))
+                {
+                    await _hostAuthStateProvider.LogInAsync(jwt, "/");
+                    return;
                 }
             }
         }

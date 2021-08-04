@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Identity.Api.Helpers;
 using Identity.Application.Infrastrucures;
 using Identity.Domain.Entities;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,17 +20,20 @@ namespace Identity.Api.Endpoints.ExternalLoginEndpoints
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly TokenManager _tokenManager;
         private readonly ILogger<ExternalLoginSignUpCallbackEndpoint> _logger;
         private readonly IExceptionLogger _exceptionLogger;
 
         public ExternalLoginSignUpCallbackEndpoint(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
+            TokenManager tokenManager,
             ILogger<ExternalLoginSignUpCallbackEndpoint> logger,
             IExceptionLogger exceptionLogger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _tokenManager = tokenManager;
             _logger = logger;
             _exceptionLogger = exceptionLogger;
         }
@@ -109,9 +112,9 @@ namespace Identity.Api.Endpoints.ExternalLoginEndpoints
 
                     _logger.LogInformation(5, "User logged in with {Name} provider.", externalLoginInfo.LoginProvider);
 
-                    AuthenticationToken authenticationToken = externalLoginInfo.AuthenticationTokens.FirstOrDefault();
+                    string jwt = await _tokenManager.GetJwtTokenAsync(applicationUser);
 
-                    string redirectUrl = QueryHelpers.AddQueryString(ClientLoginUrl, authenticationToken.Name, authenticationToken.Value);
+                    string redirectUrl = QueryHelpers.AddQueryString(ClientLoginUrl, "jwt", jwt);
                     return Redirect(redirectUrl);
                 }
 
