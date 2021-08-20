@@ -6,8 +6,8 @@ using MauiBlazor.Shared.Models.DepartmentModels;
 using MauiBlazor.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using TanvirArjel.ArgumentChecker;
-using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
+using TanvirArjel.Blazor.Utilities;
 
 namespace MauiBlazor.WebUI.Components.DepartmentComponents
 {
@@ -73,7 +73,7 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
             }
             catch (Exception exception)
             {
-                CustomValidationMessages.AddAndDisplay(string.Empty, AppErrorMessage.ClientErrorMessage);
+                CustomValidationMessages.AddAndDisplay(string.Empty, ErrorMessages.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
         }

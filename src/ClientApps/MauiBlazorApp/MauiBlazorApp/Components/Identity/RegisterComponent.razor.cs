@@ -6,8 +6,8 @@ using MauiBlazor.Shared.Models.IdentityModels;
 using MauiBlazor.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
+using TanvirArjel.Blazor.Utilities;
 
 namespace MauiBlazorApp.Components.Identity
 {
@@ -61,13 +61,13 @@ namespace MauiBlazorApp.Components.Identity
             catch (HttpRequestException httpException)
             {
                 Console.WriteLine($"Status Code: {httpException.StatusCode}");
-                ValidationMessages.AddAndDisplay(AppErrorMessage.ServerErrorMessage);
+                ValidationMessages.AddAndDisplay(ErrorMessages.Http500ErrorMessage);
                 await _exceptionLogger.LogAsync(httpException);
             }
             catch (Exception exception)
             {
                 IsSubmitBtnDisabled = false;
-                ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
+                ValidationMessages.AddAndDisplay(ErrorMessages.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
         }

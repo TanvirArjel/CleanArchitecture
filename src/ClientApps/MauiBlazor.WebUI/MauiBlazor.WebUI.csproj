@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
@@ -9,17 +10,17 @@
 
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.1.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.6.21355.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.6.21355.2" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-preview.6.21352.12" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.7.21378.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.7.21378.6" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-preview.7.21377.19" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
-		<PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.6.21352.12" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.1" />
+		<PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.7.21377.19" />
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
-		<PackageReference Include="TanvirArjel.Blazor" Version="1.4.0" />
+		<PackageReference Include="TanvirArjel.Blazor" Version="1.6.0" />
 		<PackageReference Include="TanvirArjel.CustomValidation" Version="1.2.1" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="2.0.0" />
 	</ItemGroup>

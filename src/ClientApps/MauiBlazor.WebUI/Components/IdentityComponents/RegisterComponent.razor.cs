@@ -6,9 +6,9 @@ using MauiBlazor.Shared.Models.IdentityModels;
 using MauiBlazor.Shared.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using TanvirArjel.Blazor;
 using TanvirArjel.Blazor.Components;
 using TanvirArjel.Blazor.Extensions;
+using TanvirArjel.Blazor.Utilities;
 
 namespace MauiBlazor.WebUI.Components.IdentityComponents
 {
@@ -74,7 +74,7 @@ namespace MauiBlazor.WebUI.Components.IdentityComponents
             catch (Exception exception)
             {
                 IsSubmitBtnDisabled = false;
-                ValidationMessages.AddAndDisplay(AppErrorMessage.ClientErrorMessage);
+                ValidationMessages.AddAndDisplay(ErrorMessages.ClientErrorMessage);
                 await _exceptionLogger.LogAsync(exception);
             }
         }
