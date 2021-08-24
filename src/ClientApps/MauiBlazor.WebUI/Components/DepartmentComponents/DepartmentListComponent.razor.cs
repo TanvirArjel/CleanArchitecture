@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MauiBlazor.Shared.Common;
 using MauiBlazor.Shared.Models.DepartmentModels;
 using MauiBlazor.Shared.Services;
+using TanvirArjel.Blazor.Utilities;
 
 namespace MauiBlazor.WebUI.Components.DepartmentComponents
 {
@@ -39,13 +40,29 @@ namespace MauiBlazor.WebUI.Components.DepartmentComponents
             }
             catch (HttpRequestException httpException)
             {
-                Console.WriteLine(httpException);
-                ErrorMessage = "The server maybe down or the app does not have CORS access to the requested server.";
+                if ((int)httpException.StatusCode == 401)
+                {
+                    ErrorMessage = ErrorMessages.Http401ErrorMessage;
+                }
+                else if ((int)httpException.StatusCode == 403)
+                {
+                    ErrorMessage = ErrorMessages.Http403ErrorMessage;
+                }
+                else if ((int)httpException.StatusCode == 500)
+                {
+                    ErrorMessage = ErrorMessages.Http500ErrorMessage;
+                }
+                else
+                {
+                    ErrorMessage = ErrorMessages.ServerDownOrCorsErrorMessage;
+                }
+
+                await _exceptionLogger.LogAsync(httpException);
             }
             catch (Exception exception)
             {
                 await _exceptionLogger.LogAsync(exception);
-                ErrorMessage = "There is some problem with the service. Please try again. If the problem persists please contact with system administrator.";
+                ErrorMessage = ErrorMessages.ClientErrorMessage;
             }
         }
 

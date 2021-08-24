@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using EmployeeManagement.Persistence.Cache.CacheKeys;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;

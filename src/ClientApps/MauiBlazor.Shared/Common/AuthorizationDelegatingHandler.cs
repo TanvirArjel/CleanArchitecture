@@ -4,7 +4,6 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using MauiBlazor.Shared.Models.IdentityModels;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace MauiBlazor.Shared.Common
@@ -28,18 +27,18 @@ namespace MauiBlazor.Shared.Common
 
             try
             {
-                // LocalStorageService throws exception in when it is being used in .NET MAUI Blazor as it is registered as scoped service
-                // but it needs to be registered as Transient but no such option available right now.
-                LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.Jwt);
+                // LocalStorageService throws exception in when it is being used in .NET MAUI Blazor.
+                string jsonWebToken = await _localStorage.GetItemAsync<string>(LocalStorageKey.Jwt);
 
-                if (loggedInUserInfo != null)
+                if (string.IsNullOrWhiteSpace(jsonWebToken) == false)
                 {
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", loggedInUserInfo.AccessToken);
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", jsonWebToken);
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
                 Console.WriteLine("LocalStorageSerivce throws exception.");
+                Console.WriteLine(exception);
             }
 
             HttpResponseMessage httpResponseMessage = await base.SendAsync(request, cancellationToken);

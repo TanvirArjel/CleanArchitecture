@@ -1,4 +1,4 @@
-﻿using EmployeeManagement.Domain.Entities;
+﻿using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

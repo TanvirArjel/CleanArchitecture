@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Application.CacheRepositories

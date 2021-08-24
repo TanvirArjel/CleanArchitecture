@@ -5,7 +5,7 @@ using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Application.Services;
-using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
@@ -13,13 +13,18 @@ namespace EmployeeManagement.Application.Implementations.Services
 {
     internal class EmployeeService : IEmployeeService
     {
+        private readonly EmployeeDomainService _employeeDomainService;
         private readonly IEmployeeCacheRepository _employeeCacheRepository;
         private readonly IRepository _repository;
 
-        public EmployeeService(IEmployeeCacheRepository employeeCacheRepository, IRepository repository)
+        public EmployeeService(
+            IEmployeeCacheRepository employeeCacheRepository,
+            IRepository repository,
+            EmployeeDomainService employeeDomainService)
         {
             _employeeCacheRepository = employeeCacheRepository;
             _repository = repository;
+            _employeeDomainService = employeeDomainService;
         }
 
         public async Task<PaginatedList<EmployeeDetailsDto>> GetListAsync(int pageNumber, int pageSize)
@@ -47,7 +52,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                 PageSize = pageSize
             };
 
-            PaginatedList<EmployeeDetailsDto> employeeDetailsDtos = await _repository.GetPaginatedListAsync(paginationSpecification, selectExpression);
+            PaginatedList<EmployeeDetailsDto> employeeDetailsDtos = await _repository.GetListAsync(paginationSpecification, selectExpression);
 
             return employeeDetailsDtos;
         }
@@ -65,7 +70,7 @@ namespace EmployeeManagement.Application.Implementations.Services
         {
             createEmployeeDto.ThrowIfNull(nameof(createEmployeeDto));
 
-            Employee employeeToBeCreated = new Employee(
+            Employee employeeToBeCreated = await _employeeDomainService.CreateAsync(
                 createEmployeeDto.Name,
                 createEmployeeDto.DepartmentId,
                 createEmployeeDto.DateOfBirth,
@@ -89,10 +94,11 @@ namespace EmployeeManagement.Application.Implementations.Services
                 }
 
                 employeeeToBeUpdated.SetName(updateEmployeeDto.Name);
-                employeeeToBeUpdated.SetDeparment(updateEmployeeDto.DepartmentId);
                 employeeeToBeUpdated.SetDateOfBirth(updateEmployeeDto.DateOfBirth);
-                employeeeToBeUpdated.SetEmail(updateEmployeeDto.Email);
-                employeeeToBeUpdated.SetPhoneNumber(updateEmployeeDto.PhoneNumber);
+
+                await _employeeDomainService.SetDepartmentAsync(employeeeToBeUpdated, updateEmployeeDto.DepartmentId);
+                await _employeeDomainService.SetEmailAsync(employeeeToBeUpdated, updateEmployeeDto.Email);
+                await _employeeDomainService.SetPhoneNumberAsync(employeeeToBeUpdated, updateEmployeeDto.PhoneNumber);
 
                 await _employeeCacheRepository.UpdateAsync(employeeeToBeUpdated);
             }

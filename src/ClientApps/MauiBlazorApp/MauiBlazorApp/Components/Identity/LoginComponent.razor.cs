@@ -59,7 +59,7 @@ namespace MauiBlazorApp.Components.Identity
                     string responseString = await httpResponse.Content.ReadAsStringAsync();
                     string jwt = JsonSerializer.Deserialize<string>(responseString, jsonSerializerOptions);
 
-                    ////Console.WriteLine(jwt);
+                    Console.WriteLine(jwt);
 
                     if (jwt != null)
                     {

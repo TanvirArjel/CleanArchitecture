@@ -1,10 +1,11 @@
-﻿using TanvirArjel.ArgumentChecker;
+﻿using EmployeeManagement.Domain.Entities;
+using TanvirArjel.ArgumentChecker;
 
-namespace EmployeeManagement.Domain.Entities
+namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
 {
     public class Department : BaseEntity
     {
-        public Department(string name, string description)
+        internal Department(string name, string description)
         {
             SetName(name);
             SetDescription(description);
@@ -19,16 +20,16 @@ namespace EmployeeManagement.Domain.Entities
 
         public string Description { get; private set; }
 
-        public void SetName(string name)
-        {
-            Name = name.ThrowIfNullOrEmpty(nameof(name))
-                       .ThrowIfOutOfLength(2, 50, nameof(name));
-        }
-
         public void SetDescription(string description)
         {
             Description = description.ThrowIfNullOrEmpty(nameof(description))
                                      .ThrowIfOutOfLength(20, 100, nameof(description));
+        }
+
+        internal void SetName(string name)
+        {
+            Name = name.ThrowIfNullOrEmpty(nameof(name))
+                       .ThrowIfOutOfLength(2, 50, nameof(name));
         }
     }
 }

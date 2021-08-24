@@ -1,5 +1,5 @@
 ﻿using System;
-using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

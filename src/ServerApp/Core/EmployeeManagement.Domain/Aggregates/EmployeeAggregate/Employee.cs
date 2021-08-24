@@ -1,11 +1,13 @@
 ﻿using System;
+using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+using EmployeeManagement.Domain.Entities;
 using TanvirArjel.ArgumentChecker;
 
-namespace EmployeeManagement.Domain.Entities
+namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
 {
     public class Employee : BaseEntity
     {
-        public Employee(
+        internal Employee(
             string name,
             Guid departmentId,
             DateTime dateOfBirth,
@@ -42,11 +44,6 @@ namespace EmployeeManagement.Domain.Entities
                        .ThrowIfOutOfLength(2, 50, nameof(name));
         }
 
-        public void SetDeparment(Guid departmentId)
-        {
-            DepartmentId = departmentId.ThrowIfEmpty(nameof(departmentId));
-        }
-
         public void SetDateOfBirth(DateTime dateOfBirth)
         {
             DateTime minDateOfBirth = DateTime.UtcNow.AddYears(-115);
@@ -57,13 +54,18 @@ namespace EmployeeManagement.Domain.Entities
             DateOfBirth = dateOfBirth;
         }
 
-        public void SetEmail(string email)
+        internal void SetDeparment(Guid departmentId)
+        {
+            DepartmentId = departmentId.ThrowIfEmpty(nameof(departmentId));
+        }
+
+        internal void SetEmail(string email)
         {
             Email = email.ThrowIfNullOrEmpty(nameof(email))
                          .ThrowIfNotValidEmail(nameof(email));
         }
 
-        public void SetPhoneNumber(string phoneNumber)
+        internal void SetPhoneNumber(string phoneNumber)
         {
             PhoneNumber = phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
         }

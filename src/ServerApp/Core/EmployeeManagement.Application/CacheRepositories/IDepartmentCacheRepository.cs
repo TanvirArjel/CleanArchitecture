@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
-using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Application.CacheRepositories

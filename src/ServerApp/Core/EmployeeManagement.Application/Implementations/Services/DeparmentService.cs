@@ -5,7 +5,7 @@ using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
 using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Application.Services;
-using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
@@ -14,13 +14,18 @@ namespace EmployeeManagement.Application.Implementations.Services
 {
     public class DeparmentService : IDepartmentService
     {
+        private readonly DepartmentDomainService _departmentDomainService;
         private readonly IDepartmentCacheRepository _departmentCacheRepository;
         private readonly IRepository _repository;
 
-        public DeparmentService(IDepartmentCacheRepository departmentCacheRepository, IRepository repository)
+        public DeparmentService(
+            IDepartmentCacheRepository departmentCacheRepository,
+            IRepository repository,
+            DepartmentDomainService departmentDomainService)
         {
             _departmentCacheRepository = departmentCacheRepository;
             _repository = repository;
+            _departmentDomainService = departmentDomainService;
         }
 
         public async Task<List<DepartmentDetailsDto>> GetListAsync()
@@ -33,7 +38,7 @@ namespace EmployeeManagement.Application.Implementations.Services
         {
             createDepartmentDto.ThrowIfNull(nameof(createDepartmentDto));
 
-            Department departmentToBeCreated = new Department(createDepartmentDto.Name, createDepartmentDto.Description);
+            Department departmentToBeCreated = await _departmentDomainService.CreateAsync(createDepartmentDto.Name, createDepartmentDto.Description);
 
             Guid departmentId = await _departmentCacheRepository.InsertAsync(departmentToBeCreated);
 
@@ -66,7 +71,7 @@ namespace EmployeeManagement.Application.Implementations.Services
                 throw new EntityNotFoundException(typeof(Department), updateDepartmentDto.Id);
             }
 
-            departmentToBeUpdated.SetName(updateDepartmentDto.Name);
+            await _departmentDomainService.SetNameAsync(departmentToBeUpdated, updateDepartmentDto.Name);
             departmentToBeUpdated.SetDescription(updateDepartmentDto.Description);
             departmentToBeUpdated.IsActive = updateDepartmentDto.IsActive;
             await _departmentCacheRepository.UpdateAsync(departmentToBeUpdated);

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.CacheRepositories;
 using EmployeeManagement.Application.Dtos.DepartmentDtos;
-using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using EmployeeManagement.Persistence.Cache.CacheKeys;
 using Microsoft.Extensions.Caching.Distributed;
 using TanvirArjel.EFCore.GenericRepository;
