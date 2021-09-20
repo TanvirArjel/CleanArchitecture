@@ -21,7 +21,16 @@ namespace EmployeeManagement.Api
                 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(_configuration).CreateLogger();
 
                 Log.Information("Starting web host");
-                IHost host = CreateHostBuilder(args).Build();
+
+                IHostBuilder hostBuilder = Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.CaptureStartupErrors(true);
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseSerilog();
+                });
+
+                IHost host = hostBuilder.Build();
                 host.Run();
             }
             catch (Exception ex)
@@ -38,14 +47,5 @@ namespace EmployeeManagement.Api
                 Log.CloseAndFlush();
             }
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.CaptureStartupErrors(true);
-                    webBuilder.UseStartup<Startup>();
-                    webBuilder.UseSerilog();
-                });
     }
 }
