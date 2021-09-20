@@ -1,7 +1,0 @@
-{
-  "profiles": {
-    "HelloMauiBlazor.WinUI": {
-      "commandName": "MsixPackage"
-    }
-  }
-}
