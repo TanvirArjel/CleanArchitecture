@@ -2,10 +2,9 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EmployeeManagement.Application.Caching.Repositories;
-using EmployeeManagement.Application.Dtos.EmployeeDtos;
+using EmployeeManagement.Application.Queries.EmployeeQueries;
 using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using EmployeeManagement.Persistence.Cache.Keys;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.Caching;
@@ -21,21 +20,6 @@ namespace EmployeeManagement.Persistence.Cache.Repositories
         {
             _distributedCache = distributedCache;
             _repository = repository;
-        }
-
-        public async Task<Employee> GetByIdAsync(Guid employeeId)
-        {
-            string cacheKey = EmployeeCacheKeys.GetKey(employeeId);
-            Employee employee = await _distributedCache.GetAsync<Employee>(cacheKey);
-
-            if (employee == null)
-            {
-                employee = await _repository.GetByIdAsync<Employee>(employeeId);
-
-                await _distributedCache.SetAsync(cacheKey, employee);
-            }
-
-            return employee;
         }
 
         public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(Guid employeeId)
@@ -65,35 +49,6 @@ namespace EmployeeManagement.Persistence.Cache.Repositories
             }
 
             return employeeDetails;
-        }
-
-        public async Task UpdateAsync(Employee employee)
-        {
-            await _repository.UpdateAsync(employee);
-
-            // Update item in cache
-            Employee updatedEmployee = await _repository.GetByIdAsync<Employee>(employee.Id, q => q.Include(emp => emp.Department));
-
-            string departmentCacheKey = EmployeeCacheKeys.GetKey(employee.Id);
-            await _distributedCache.SetAsync(departmentCacheKey, updatedEmployee);
-
-            string departmentDetailsCacheKey = EmployeeCacheKeys.GetDetailsKey(employee.Id);
-
-            EmployeeDetailsDto departmentDetailsDto = new EmployeeDetailsDto()
-            {
-                Id = updatedEmployee.Id,
-                Name = updatedEmployee.Name,
-                DepartmentId = updatedEmployee.DepartmentId,
-                DepartmentName = updatedEmployee.Department.Name,
-                Email = updatedEmployee.Email,
-                DateOfBirth = updatedEmployee.DateOfBirth,
-                PhoneNumber = updatedEmployee.PhoneNumber,
-                IsActive = updatedEmployee.IsActive,
-                CreatedAtUtc = updatedEmployee.CreatedAtUtc,
-                LastModifiedAtUtc = updatedEmployee.LastModifiedAtUtc
-            };
-
-            await _distributedCache.SetAsync(departmentDetailsCacheKey, departmentDetailsDto);
         }
     }
 }

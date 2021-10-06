@@ -18,11 +18,8 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
 
         public async Task<Department> CreateAsync(string name, string description)
         {
-            name.ThrowIfNullOrEmpty(nameof(name))
-                       .ThrowIfOutOfLength(2, 50, nameof(name));
-
-            description.ThrowIfNullOrEmpty(nameof(description))
-                                     .ThrowIfOutOfLength(20, 100, nameof(description));
+            name.ThrowIfNullOrEmpty(nameof(name));
+            description.ThrowIfNullOrEmpty(nameof(description));
 
             bool isNameExistent = await _repository.ExistsAsync<Department>(d => d.Name == name);
 

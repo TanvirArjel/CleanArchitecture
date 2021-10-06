@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using EmployeeManagement.Api.EndpointBases;
 using EmployeeManagement.Application.Commands.DepartmentCommands;
 using EmployeeManagement.Application.Queries.DepartmentQueries;
 using MediatR;
@@ -11,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace EmployeeManagement.Api.Endpoints.Departments
 {
-    public class UpdateDepartmentEndpoint : DepartmentEndpoint
+    public class UpdateDepartmentEndpoint : DepartmentEndpointBase
     {
         private readonly IMediator _mediator;
 

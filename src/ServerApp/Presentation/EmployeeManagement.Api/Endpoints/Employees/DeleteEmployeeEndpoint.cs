@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmployeeManagement.Api.Controllers;
-using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Application.Services;
+using EmployeeManagement.Application.Commands.EmployeeCommands;
+using EmployeeManagement.Application.Queries.EmployeeQueries;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace EmployeeManagement.Api.Endpoints.Employees
 {
-    public class DeleteEmployeeEndpoint : EmployeeEndpoint
+    public class DeleteEmployeeEndpoint : EmployeeEndpointBase
     {
-        private readonly IEmployeeService _employeeService;
+        private readonly IMediator _mediator;
 
-        public DeleteEmployeeEndpoint(IEmployeeService employeeService)
+        public DeleteEmployeeEndpoint(IMediator mediator)
         {
-            _employeeService = employeeService;
+            _mediator = mediator;
         }
 
         // DELETE: api/employees/5
@@ -33,15 +33,19 @@ namespace EmployeeManagement.Api.Endpoints.Employees
                 return BadRequest(ModelState);
             }
 
-            EmployeeDetailsDto employee = await _employeeService.GetDetailsByIdAsync(employeeId);
+            IsEmployeeExistentByIdQuery existentByIdQuery = new IsEmployeeExistentByIdQuery(employeeId);
 
-            if (employee == null)
+            bool isExistent = await _mediator.Send(existentByIdQuery);
+
+            if (isExistent == false)
             {
                 ModelState.AddModelError(nameof(employeeId), "The Employee does not exist.");
                 return BadRequest(ModelState);
             }
 
-            await _employeeService.DeleteAsync(employeeId);
+            DeleteEmployeeCommand command = new DeleteEmployeeCommand(employeeId);
+
+            await _mediator.Send(command);
             return NoContent();
         }
     }

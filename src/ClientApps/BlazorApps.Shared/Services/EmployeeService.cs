@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -16,7 +15,6 @@ namespace BlazorApps.Shared.Services
     {
         private readonly HttpClient _httpClient;
 
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here")]
         public EmployeeService(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("EmployeeManagementApi");
@@ -25,7 +23,7 @@ namespace BlazorApps.Shared.Services
         public async Task<List<EmployeeDetailsModel>> GetListAsync()
         {
             PaginatedList<EmployeeDetailsModel> paginatedList = await _httpClient
-                .GetFromJsonAsync<PaginatedList<EmployeeDetailsModel>>("v1/employees");
+                .GetFromJsonAsync<PaginatedList<EmployeeDetailsModel>>("v1/employees?pageNumber=1&&pageSize=50");
             return paginatedList.Items.ToList();
         }
 

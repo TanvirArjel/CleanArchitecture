@@ -14,11 +14,13 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
             string email,
             string phoneNumber)
         {
+            Id = Guid.NewGuid();
             SetName(name);
             SetDeparment(departmentId);
             SetDateOfBirth(dateOfBirth);
             SetEmail(email);
             SetPhoneNumber(phoneNumber);
+            CreatedAtUtc = DateTime.UtcNow;
         }
 
         // This is needed for EF core query mapping.

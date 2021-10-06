@@ -149,3 +149,216 @@ System.InvalidOperationException: You can't set the value for LastModifiedAtUtc 
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
    at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 16:04:34.385 +06:00 [FTL] Host terminated unexpectedly
+System.AggregateException: Some services are not able to be constructed (Error while validating the service descriptor 'ServiceType: MediatR.IRequestHandler`2[EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery,System.Boolean] Lifetime: Transient ImplementationType: EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery+IsEmployeeExistentByIdQueryHandler': Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery+IsEmployeeExistentByIdQueryHandler'.) (Error while validating the service descriptor 'ServiceType: MediatR.IRequestHandler`2[EmployeeManagement.Application.Commands.EmployeeCommands.CreateEmployeeCommand,System.Guid] Lifetime: Transient ImplementationType: EmployeeManagement.Application.Commands.EmployeeCommands.CreateEmployeeCommand+CreateEmployeeCommandHandler': Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.CreateEmployeeCommand+CreateEmployeeCommandHandler'.) (Error while validating the service descriptor 'ServiceType: MediatR.IRequestHandler`2[EmployeeManagement.Application.Commands.EmployeeCommands.DeleteEmployeeCommand,MediatR.Unit] Lifetime: Transient ImplementationType: EmployeeManagement.Application.Commands.EmployeeCommands.DeleteEmployeeCommand+DeleteEmployeeCommandHandler': Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.DeleteEmployeeCommand+DeleteEmployeeCommandHandler'.) (Error while validating the service descriptor 'ServiceType: MediatR.IRequestHandler`2[EmployeeManagement.Application.Commands.EmployeeCommands.UpdateEmployeeCommand,MediatR.Unit] Lifetime: Transient ImplementationType: EmployeeManagement.Application.Commands.EmployeeCommands.UpdateEmployeeCommand+UpdateEmployeeCommandHandler': Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.UpdateEmployeeCommand+UpdateEmployeeCommandHandler'.)
+ ---> System.InvalidOperationException: Error while validating the service descriptor 'ServiceType: MediatR.IRequestHandler`2[EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery,System.Boolean] Lifetime: Transient ImplementationType: EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery+IsEmployeeExistentByIdQueryHandler': Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery+IsEmployeeExistentByIdQueryHandler'.
+ ---> System.InvalidOperationException: Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery+IsEmployeeExistentByIdQueryHandler'.
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateArgumentCallSites(Type implementationType, CallSiteChain callSiteChain, ParameterInfo[] parameters, Boolean throwIfCallSiteNotFound)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateConstructorCallSite(ResultCache lifetime, Type serviceType, Type implementationType, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.TryCreateExact(ServiceDescriptor descriptor, Type serviceType, CallSiteChain callSiteChain, Int32 slot)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.GetCallSite(ServiceDescriptor serviceDescriptor, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.ValidateService(ServiceDescriptor descriptor)
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.ValidateService(ServiceDescriptor descriptor)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider..ctor(ICollection`1 serviceDescriptors, ServiceProviderOptions options)
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider..ctor(ICollection`1 serviceDescriptors, ServiceProviderOptions options)
+   at Microsoft.Extensions.DependencyInjection.ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(IServiceCollection services, ServiceProviderOptions options)
+   at Microsoft.Extensions.DependencyInjection.DefaultServiceProviderFactory.CreateServiceProvider(IServiceCollection containerBuilder)
+   at Microsoft.Extensions.Hosting.Internal.ServiceFactoryAdapter`1.CreateServiceProvider(Object containerBuilder)
+   at Microsoft.Extensions.Hosting.HostBuilder.CreateServiceProvider()
+   at Microsoft.Extensions.Hosting.HostBuilder.Build()
+   at EmployeeManagement.Api.Program.Main(String[] args) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Program.cs:line 40
+ ---> (Inner Exception #1) System.InvalidOperationException: Error while validating the service descriptor 'ServiceType: MediatR.IRequestHandler`2[EmployeeManagement.Application.Commands.EmployeeCommands.CreateEmployeeCommand,System.Guid] Lifetime: Transient ImplementationType: EmployeeManagement.Application.Commands.EmployeeCommands.CreateEmployeeCommand+CreateEmployeeCommandHandler': Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.CreateEmployeeCommand+CreateEmployeeCommandHandler'.
+ ---> System.InvalidOperationException: Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.CreateEmployeeCommand+CreateEmployeeCommandHandler'.
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateArgumentCallSites(Type implementationType, CallSiteChain callSiteChain, ParameterInfo[] parameters, Boolean throwIfCallSiteNotFound)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateConstructorCallSite(ResultCache lifetime, Type serviceType, Type implementationType, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.TryCreateExact(ServiceDescriptor descriptor, Type serviceType, CallSiteChain callSiteChain, Int32 slot)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.GetCallSite(ServiceDescriptor serviceDescriptor, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.ValidateService(ServiceDescriptor descriptor)
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.ValidateService(ServiceDescriptor descriptor)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider..ctor(ICollection`1 serviceDescriptors, ServiceProviderOptions options)<---
+
+ ---> (Inner Exception #2) System.InvalidOperationException: Error while validating the service descriptor 'ServiceType: MediatR.IRequestHandler`2[EmployeeManagement.Application.Commands.EmployeeCommands.DeleteEmployeeCommand,MediatR.Unit] Lifetime: Transient ImplementationType: EmployeeManagement.Application.Commands.EmployeeCommands.DeleteEmployeeCommand+DeleteEmployeeCommandHandler': Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.DeleteEmployeeCommand+DeleteEmployeeCommandHandler'.
+ ---> System.InvalidOperationException: Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.DeleteEmployeeCommand+DeleteEmployeeCommandHandler'.
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateArgumentCallSites(Type implementationType, CallSiteChain callSiteChain, ParameterInfo[] parameters, Boolean throwIfCallSiteNotFound)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateConstructorCallSite(ResultCache lifetime, Type serviceType, Type implementationType, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.TryCreateExact(ServiceDescriptor descriptor, Type serviceType, CallSiteChain callSiteChain, Int32 slot)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.GetCallSite(ServiceDescriptor serviceDescriptor, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.ValidateService(ServiceDescriptor descriptor)
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.ValidateService(ServiceDescriptor descriptor)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider..ctor(ICollection`1 serviceDescriptors, ServiceProviderOptions options)<---
+
+ ---> (Inner Exception #3) System.InvalidOperationException: Error while validating the service descriptor 'ServiceType: MediatR.IRequestHandler`2[EmployeeManagement.Application.Commands.EmployeeCommands.UpdateEmployeeCommand,MediatR.Unit] Lifetime: Transient ImplementationType: EmployeeManagement.Application.Commands.EmployeeCommands.UpdateEmployeeCommand+UpdateEmployeeCommandHandler': Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.UpdateEmployeeCommand+UpdateEmployeeCommandHandler'.
+ ---> System.InvalidOperationException: Unable to resolve service for type 'EmployeeManagement.Domain.Aggregates.EmployeeAggregate.IEmployeeRepository' while attempting to activate 'EmployeeManagement.Application.Commands.EmployeeCommands.UpdateEmployeeCommand+UpdateEmployeeCommandHandler'.
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateArgumentCallSites(Type implementationType, CallSiteChain callSiteChain, ParameterInfo[] parameters, Boolean throwIfCallSiteNotFound)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.CreateConstructorCallSite(ResultCache lifetime, Type serviceType, Type implementationType, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.TryCreateExact(ServiceDescriptor descriptor, Type serviceType, CallSiteChain callSiteChain, Int32 slot)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteFactory.GetCallSite(ServiceDescriptor serviceDescriptor, CallSiteChain callSiteChain)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.ValidateService(ServiceDescriptor descriptor)
+   --- End of inner exception stack trace ---
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.ValidateService(ServiceDescriptor descriptor)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider..ctor(ICollection`1 serviceDescriptors, ServiceProviderOptions options)<---
+
+2021-10-06 18:28:26.244 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees and RequestBody: 
+System.ArgumentOutOfRangeException: The value cannot be zero or negative. (Parameter 'pageIndex')
+   at TanvirArjel.ArgumentChecker.ArgumentExtensions.ThrowIfZeroOrNegative[T](T value, String paramName, String message)
+   at TanvirArjel.ArgumentChecker.ArgumentExtensions.ThrowIfZeroOrNegative(Int32 value, String paramName, String message)
+   at EmployeeManagement.Application.Queries.EmployeeQueries.GetEmployeeListQuery..ctor(Int32 pageIndex, Int32 pageSize) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\GetEmployeeListQuery.cs:line 16
+   at EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get(Int32 pageNumber, Int32 pageSize) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\GetEmployeeListEndpoint.cs:line 39
+   at lambda_method11(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 18:28:41.802 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees and RequestBody: 
+System.ArgumentOutOfRangeException: The value cannot be zero or negative. (Parameter 'pageIndex')
+   at TanvirArjel.ArgumentChecker.ArgumentExtensions.ThrowIfZeroOrNegative[T](T value, String paramName, String message)
+   at TanvirArjel.ArgumentChecker.ArgumentExtensions.ThrowIfZeroOrNegative(Int32 value, String paramName, String message)
+   at EmployeeManagement.Application.Queries.EmployeeQueries.GetEmployeeListQuery..ctor(Int32 pageIndex, Int32 pageSize) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\GetEmployeeListQuery.cs:line 16
+   at EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get(Int32 pageNumber, Int32 pageSize) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\GetEmployeeListEndpoint.cs:line 39
+   at lambda_method11(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 18:28:43.818 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees and RequestBody: 
+System.ArgumentOutOfRangeException: The value cannot be zero or negative. (Parameter 'pageIndex')
+   at TanvirArjel.ArgumentChecker.ArgumentExtensions.ThrowIfZeroOrNegative[T](T value, String paramName, String message)
+   at TanvirArjel.ArgumentChecker.ArgumentExtensions.ThrowIfZeroOrNegative(Int32 value, String paramName, String message)
+   at EmployeeManagement.Application.Queries.EmployeeQueries.GetEmployeeListQuery..ctor(Int32 pageIndex, Int32 pageSize) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\GetEmployeeListQuery.cs:line 16
+   at EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get(Int32 pageNumber, Int32 pageSize) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\GetEmployeeListEndpoint.cs:line 39
+   at lambda_method11(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 18:32:08.235 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees and RequestBody: 
+System.ArgumentOutOfRangeException: The value cannot be zero or negative. (Parameter 'pageIndex')
+   at TanvirArjel.ArgumentChecker.ArgumentExtensions.ThrowIfZeroOrNegative[T](T value, String paramName, String message)
+   at TanvirArjel.ArgumentChecker.ArgumentExtensions.ThrowIfZeroOrNegative(Int32 value, String paramName, String message)
+   at EmployeeManagement.Application.Queries.EmployeeQueries.GetEmployeeListQuery..ctor(Int32 pageIndex, Int32 pageSize) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\GetEmployeeListQuery.cs:line 16
+   at EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get(Int32 pageNumber, Int32 pageSize) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\GetEmployeeListEndpoint.cs:line 39
+   at lambda_method21(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 19:02:21.400 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees/f283079f-8642-49e1-9956-6643ca0dab7e and RequestBody: 
+System.NotImplementedException: The method or operation is not implemented.
+   at EmployeeManagement.Persistence.RelationalDB.Repositories.EmployeeRepository.ExistsAsync(Expression`1 condition) in D:\GitHub\CleanArchitecture\src\ServerApp\Infrastructure\Persistence\EmployeeManagement.Persistence.RelationalDB\Repositories\EmployeeRepository.cs:line 28
+   at EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery.IsEmployeeExistentByIdQueryHandler.Handle(IsEmployeeExistentByIdQuery request, CancellationToken cancellationToken) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\IsEmployeeExistentByIdQuery.cs:line 32
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPostProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPreProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at EmployeeManagement.Api.Endpoints.Employees.DeleteEmployeeEndpoint.Delete(Guid employeeId) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\DeleteEmployeeEndpoint.cs:line 38
+   at lambda_method33(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 19:02:23.086 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees/f283079f-8642-49e1-9956-6643ca0dab7e and RequestBody: 
+System.NotImplementedException: The method or operation is not implemented.
+   at EmployeeManagement.Persistence.RelationalDB.Repositories.EmployeeRepository.ExistsAsync(Expression`1 condition) in D:\GitHub\CleanArchitecture\src\ServerApp\Infrastructure\Persistence\EmployeeManagement.Persistence.RelationalDB\Repositories\EmployeeRepository.cs:line 28
+   at EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery.IsEmployeeExistentByIdQueryHandler.Handle(IsEmployeeExistentByIdQuery request, CancellationToken cancellationToken) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\IsEmployeeExistentByIdQuery.cs:line 32
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPostProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPreProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at EmployeeManagement.Api.Endpoints.Employees.DeleteEmployeeEndpoint.Delete(Guid employeeId) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\DeleteEmployeeEndpoint.cs:line 38
+   at lambda_method33(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 19:03:14.523 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees/f283079f-8642-49e1-9956-6643ca0dab7e and RequestBody: 
+System.NotImplementedException: The method or operation is not implemented.
+   at EmployeeManagement.Persistence.RelationalDB.Repositories.EmployeeRepository.ExistsAsync(Expression`1 condition) in D:\GitHub\CleanArchitecture\src\ServerApp\Infrastructure\Persistence\EmployeeManagement.Persistence.RelationalDB\Repositories\EmployeeRepository.cs:line 28
+   at EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery.IsEmployeeExistentByIdQueryHandler.Handle(IsEmployeeExistentByIdQuery request, CancellationToken cancellationToken) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\IsEmployeeExistentByIdQuery.cs:line 32
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPostProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPreProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at EmployeeManagement.Api.Endpoints.Employees.DeleteEmployeeEndpoint.Delete(Guid employeeId) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\DeleteEmployeeEndpoint.cs:line 38
+   at lambda_method33(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 19:04:55.695 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees/f283079f-8642-49e1-9956-6643ca0dab7e and RequestBody: 
+System.NotImplementedException: The method or operation is not implemented.
+   at EmployeeManagement.Persistence.RelationalDB.Repositories.EmployeeRepository.ExistsAsync(Expression`1 condition) in D:\GitHub\CleanArchitecture\src\ServerApp\Infrastructure\Persistence\EmployeeManagement.Persistence.RelationalDB\Repositories\EmployeeRepository.cs:line 28
+   at EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery.IsEmployeeExistentByIdQueryHandler.Handle(IsEmployeeExistentByIdQuery request, CancellationToken cancellationToken) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\IsEmployeeExistentByIdQuery.cs:line 32
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPostProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPreProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at EmployeeManagement.Api.Endpoints.Employees.DeleteEmployeeEndpoint.Delete(Guid employeeId) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\DeleteEmployeeEndpoint.cs:line 38
+   at lambda_method33(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+2021-10-06 19:06:20.231 +06:00 [FTL] RequestPath: https://localhost:44390/api/v1/employees/f283079f-8642-49e1-9956-6643ca0dab7e and RequestBody: 
+System.NotImplementedException: The method or operation is not implemented.
+   at EmployeeManagement.Persistence.RelationalDB.Repositories.EmployeeRepository.ExistsAsync(Expression`1 condition) in D:\GitHub\CleanArchitecture\src\ServerApp\Infrastructure\Persistence\EmployeeManagement.Persistence.RelationalDB\Repositories\EmployeeRepository.cs:line 28
+   at EmployeeManagement.Application.Queries.EmployeeQueries.IsEmployeeExistentByIdQuery.IsEmployeeExistentByIdQueryHandler.Handle(IsEmployeeExistentByIdQuery request, CancellationToken cancellationToken) in D:\GitHub\CleanArchitecture\src\ServerApp\Core\EmployeeManagement.Application\Queries\EmployeeQueries\IsEmployeeExistentByIdQuery.cs:line 32
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestExceptionActionProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPostProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at MediatR.Pipeline.RequestPreProcessorBehavior`2.Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate`1 next)
+   at EmployeeManagement.Api.Endpoints.Employees.DeleteEmployeeEndpoint.Delete(Guid employeeId) in D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api\Endpoints\Employees\DeleteEmployeeEndpoint.cs:line 38
+   at lambda_method33(Closure , Object )
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)

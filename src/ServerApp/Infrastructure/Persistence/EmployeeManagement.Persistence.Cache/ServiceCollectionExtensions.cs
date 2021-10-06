@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using EmployeeManagement.Application.Caching.Handlers;
+using EmployeeManagement.Persistence.Cache.Handlers;
+using Microsoft.Extensions.DependencyInjection;
 using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Persistence.Cache
@@ -10,6 +12,8 @@ namespace EmployeeManagement.Persistence.Cache
             services.ThrowIfNull(nameof(services));
 
             services.AddDistributedMemoryCache();
+
+            services.AddScoped<IEmployeeCacheHandler, EmployeeCacheHandler>();
         }
     }
 }

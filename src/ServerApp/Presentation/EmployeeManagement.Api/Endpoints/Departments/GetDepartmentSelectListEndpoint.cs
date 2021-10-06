@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EmployeeManagement.Api.EndpointBases;
 using EmployeeManagement.Application.Queries.DepartmentQueries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace EmployeeManagement.Api.Endpoints.Departments
 {
-    public class GetDepartmentSelectListEndpoint : DepartmentEndpoint
+    public class GetDepartmentSelectListEndpoint : DepartmentEndpointBase
     {
         private readonly IMediator _mediator;
 

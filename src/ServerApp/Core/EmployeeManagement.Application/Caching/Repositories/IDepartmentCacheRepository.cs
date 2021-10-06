@@ -15,11 +15,5 @@ namespace EmployeeManagement.Application.Caching.Repositories
         Task<Department> GetByIdAsync(Guid departmentId);
 
         Task<DepartmentDetailsDto> GetDetailsByIdAsync(Guid departmentId);
-
-        Task<Guid> InsertAsync(Department department);
-
-        Task UpdateAsync(Department department);
-
-        Task DeleteAsync(Department department);
     }
 }

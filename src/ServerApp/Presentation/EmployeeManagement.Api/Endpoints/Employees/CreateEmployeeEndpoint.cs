@@ -1,10 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using EmployeeManagement.Api.Controllers;
-using EmployeeManagement.Application.Dtos.EmployeeDtos;
+using EmployeeManagement.Application.Commands.EmployeeCommands;
 using EmployeeManagement.Application.Queries.DepartmentQueries;
-using EmployeeManagement.Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +11,12 @@ using TanvirArjel.CustomValidation.Attributes;
 
 namespace EmployeeManagement.Api.Endpoints.Employees
 {
-    public class CreateEmployeeEndpoint : EmployeeEndpoint
+    public class CreateEmployeeEndpoint : EmployeeEndpointBase
     {
         private readonly IMediator _mediator;
-        private readonly IEmployeeService _employeeService;
 
-        public CreateEmployeeEndpoint(
-            IEmployeeService employeeService,
-            IMediator mediator)
+        public CreateEmployeeEndpoint(IMediator mediator)
         {
-            _employeeService = employeeService;
             _mediator = mediator;
         }
 
@@ -44,16 +38,14 @@ namespace EmployeeManagement.Api.Endpoints.Employees
                 return BadRequest(ModelState);
             }
 
-            CreateEmployeeDto createEmployeeDto = new CreateEmployeeDto()
-            {
-                Name = model.Name,
-                DepartmentId = model.DepartmentId,
-                DateOfBirth = model.DateOfBirth,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber
-            };
+            CreateEmployeeCommand createEmployeeCommand = new CreateEmployeeCommand(
+                model.Name,
+                model.DepartmentId,
+                model.DateOfBirth,
+                model.Email,
+                model.PhoneNumber);
 
-            await _employeeService.CreateAsync(createEmployeeDto);
+            await _mediator.Send(createEmployeeCommand);
             return StatusCode(StatusCodes.Status201Created);
         }
     }

@@ -1,0 +1,85 @@
+﻿using System;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
+using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
+using MediatR;
+using TanvirArjel.ArgumentChecker;
+using TanvirArjel.EFCore.GenericRepository;
+
+namespace EmployeeManagement.Application.Queries.EmployeeQueries;
+
+public class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
+{
+    public GetEmployeeListQuery(int pageIndex, int pageSize)
+    {
+        PageIndex = pageIndex.ThrowIfZeroOrNegative(nameof(pageIndex));
+        PageSize = pageSize.ThrowIfOutOfRange(1, 50, nameof(pageSize));
+    }
+
+    public int PageIndex { get; }
+
+    public int PageSize { get; }
+
+    private class GetEmployeeListQueryHandler : IRequestHandler<GetEmployeeListQuery, PaginatedList<EmployeeDto>>
+    {
+        private readonly IRepository _repository;
+
+        public GetEmployeeListQueryHandler(IRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public async Task<PaginatedList<EmployeeDto>> Handle(GetEmployeeListQuery request, CancellationToken cancellationToken)
+        {
+            request.ThrowIfNull(nameof(request));
+
+            Expression<Func<Employee, EmployeeDto>> selectExpression = e => new EmployeeDto
+            {
+                Id = e.Id,
+                Name = e.Name,
+                DepartmentId = e.DepartmentId,
+                DepartmentName = e.Department.Name,
+                DateOfBirth = e.DateOfBirth,
+                Email = e.Email,
+                PhoneNumber = e.PhoneNumber,
+                IsActive = e.IsActive,
+                CreatedAtUtc = e.CreatedAtUtc,
+                LastModifiedAtUtc = e.LastModifiedAtUtc
+            };
+
+            PaginationSpecification<Employee> paginationSpecification = new PaginationSpecification<Employee>
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize
+            };
+
+            PaginatedList<EmployeeDto> employeeDetailsDtos = await _repository.GetListAsync(paginationSpecification, selectExpression);
+
+            return employeeDetailsDtos;
+        }
+    }
+}
+
+public class EmployeeDto
+{
+    public Guid Id { get; set; }
+
+    public string Name { get; set; }
+
+    public Guid DepartmentId { get; set; }
+
+    public string DepartmentName { get; set; }
+
+    public DateTime DateOfBirth { get; set; }
+
+    public string Email { get; set; }
+
+    public string PhoneNumber { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public DateTime CreatedAtUtc { get; set; }
+
+    public DateTime? LastModifiedAtUtc { get; set; }
+}

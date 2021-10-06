@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmployeeManagement.Api.Controllers;
-using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Application.Services;
+using EmployeeManagement.Application.Queries.EmployeeQueries;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace EmployeeManagement.Api.Endpoints.Employees
 {
-    public class GetEmployeeDetailsByIdEndpoint : EmployeeEndpoint
+    public class GetEmployeeDetailsByIdEndpoint : EmployeeEndpointBase
     {
-        private readonly IEmployeeService _employeeService;
+        private readonly IMediator _mediator;
 
-        public GetEmployeeDetailsByIdEndpoint(IEmployeeService employeeService)
+        public GetEmployeeDetailsByIdEndpoint(IMediator mediator)
         {
-            _employeeService = employeeService;
+            _mediator = mediator;
         }
 
         // GET: api/employees/5
@@ -31,7 +30,9 @@ namespace EmployeeManagement.Api.Endpoints.Employees
                 return BadRequest($"The value of {nameof(employeeId)} can't be empty.");
             }
 
-            EmployeeDetailsDto employeeDetailsDto = await _employeeService.GetDetailsByIdAsync(employeeId);
+            GetEmployeeByIdQuery getEmployeeByIdQuery = new GetEmployeeByIdQuery(employeeId);
+
+            EmployeeDetailsDto employeeDetailsDto = await _mediator.Send(getEmployeeByIdQuery);
             return employeeDetailsDto;
         }
     }

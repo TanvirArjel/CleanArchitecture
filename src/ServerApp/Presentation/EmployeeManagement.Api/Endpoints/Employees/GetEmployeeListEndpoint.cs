@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using EmployeeManagement.Api.Controllers;
-using EmployeeManagement.Application.Dtos.EmployeeDtos;
-using EmployeeManagement.Application.Services;
+using EmployeeManagement.Application.Queries.EmployeeQueries;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -9,13 +8,13 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Api.Endpoints.Employees
 {
-    public class GetEmployeeListEndpoint : EmployeeEndpoint
+    public class GetEmployeeListEndpoint : EmployeeEndpointBase
     {
-        private readonly IEmployeeService _employeeService;
+        private readonly IMediator _mediator;
 
-        public GetEmployeeListEndpoint(IEmployeeService employeeService)
+        public GetEmployeeListEndpoint(IMediator mediator)
         {
-            _employeeService = employeeService;
+            _mediator = mediator;
         }
 
         // GET: api/employees
@@ -25,21 +24,20 @@ namespace EmployeeManagement.Api.Endpoints.Employees
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Get the employee paginated list by page number and page size.")]
-        public async Task<ActionResult<PaginatedList<EmployeeDetailsDto>>> Get(int pageNumber, int pageSize)
+        public async Task<ActionResult<PaginatedList<EmployeeDto>>> Get(int pageNumber, int pageSize)
         {
-            if (pageNumber < 0)
+            if (pageNumber < 1)
             {
                 return BadRequest($"The {nameof(pageNumber)} must be greater than 0.");
             }
 
-            if (pageSize < 0)
+            if (pageSize < 1 || pageSize > 50)
             {
                 return BadRequest($"The {nameof(pageSize)} must be in between 1 and 50.");
             }
 
-            pageNumber = pageNumber == 0 ? 1 : pageNumber;
-            pageSize = pageSize == 0 ? 10 : pageSize;
-            PaginatedList<EmployeeDetailsDto> employeeList = await _employeeService.GetListAsync(pageNumber, pageSize);
+            GetEmployeeListQuery getEmployeeListQuery = new GetEmployeeListQuery(pageNumber, pageSize);
+            PaginatedList<EmployeeDto> employeeList = await _mediator.Send(getEmployeeListQuery);
             return employeeList;
         }
     }

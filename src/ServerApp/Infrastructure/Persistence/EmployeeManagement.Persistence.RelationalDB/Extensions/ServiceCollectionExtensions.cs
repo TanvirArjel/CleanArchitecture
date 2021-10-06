@@ -1,5 +1,6 @@
 ﻿using System;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using EmployeeManagement.Persistence.RelationalDB.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +43,7 @@ namespace EmployeeManagement.Persistence.RelationalDB.Extensions
             });
 
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             services.AddGenericRepository<EmployeeManagementDbContext>();
         }

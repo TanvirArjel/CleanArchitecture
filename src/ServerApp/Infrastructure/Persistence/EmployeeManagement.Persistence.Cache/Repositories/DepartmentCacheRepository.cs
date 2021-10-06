@@ -87,58 +87,5 @@ namespace EmployeeManagement.Persistence.Cache.Repositories
 
             return department;
         }
-
-        public async Task<Guid> InsertAsync(Department department)
-        {
-            object[] primaryKeyValues = await _repository.InsertAsync(department);
-
-            Guid departmentId = (Guid)primaryKeyValues[0];
-
-            // Add item to the cache list
-            string departmentListKey = DepartmentCacheKeys.ListKey;
-            await _distributedCache.RemoveAsync(departmentListKey);
-
-            string departmentSelectListKey = DepartmentCacheKeys.SelectListKey;
-            await _distributedCache.RemoveAsync(departmentSelectListKey);
-
-            return departmentId;
-        }
-
-        public async Task UpdateAsync(Department department)
-        {
-            await _repository.UpdateAsync(department);
-
-            // Update item in cache
-            string departmentCacheKey = DepartmentCacheKeys.GetKey(department.Id);
-            await _distributedCache.RemoveAsync(departmentCacheKey);
-
-            string departmentDetailsCacheKey = DepartmentCacheKeys.GetDetailsKey(department.Id);
-
-            await _distributedCache.RemoveAsync(departmentDetailsCacheKey);
-
-            string departmentListKey = DepartmentCacheKeys.ListKey;
-            await _distributedCache.RemoveAsync(departmentListKey);
-
-            string departmenSelecttListKey = DepartmentCacheKeys.SelectListKey;
-            await _distributedCache.RemoveAsync(departmenSelecttListKey);
-        }
-
-        public async Task DeleteAsync(Department department)
-        {
-            await _repository.DeleteAsync(department);
-
-            // Remove item from cache
-            string cacheKey = DepartmentCacheKeys.GetKey(department.Id);
-            await _distributedCache.RemoveAsync(cacheKey);
-
-            string departmentDetailsCacheKey = DepartmentCacheKeys.GetDetailsKey(department.Id);
-            await _distributedCache.RemoveAsync(departmentDetailsCacheKey);
-
-            string departmentListKey = DepartmentCacheKeys.ListKey;
-            await _distributedCache.RemoveFromListAsync<Department>(departmentListKey, d => d.Id == department.Id);
-
-            string departmentSelectListKey = DepartmentCacheKeys.SelectListKey;
-            await _distributedCache.RemoveFromListAsync<Department>(departmentSelectListKey, d => d.Id == department.Id);
-        }
     }
 }

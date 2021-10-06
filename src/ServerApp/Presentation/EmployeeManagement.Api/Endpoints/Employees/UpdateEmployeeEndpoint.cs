@@ -1,10 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using EmployeeManagement.Api.Controllers;
-using EmployeeManagement.Application.Dtos.EmployeeDtos;
+using EmployeeManagement.Application.Commands.EmployeeCommands;
 using EmployeeManagement.Application.Queries.DepartmentQueries;
-using EmployeeManagement.Application.Services;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,16 +10,12 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace EmployeeManagement.Api.Endpoints.Employees
 {
-    public class UpdateEmployeeEndpoint : EmployeeEndpoint
+    public class UpdateEmployeeEndpoint : EmployeeEndpointBase
     {
         private readonly IMediator _mediator;
-        private readonly IEmployeeService _employeeService;
 
-        public UpdateEmployeeEndpoint(
-            IEmployeeService employeeService,
-            IMediator mediator)
+        public UpdateEmployeeEndpoint(IMediator mediator)
         {
-            _employeeService = employeeService;
             _mediator = mediator;
         }
 
@@ -34,12 +28,6 @@ namespace EmployeeManagement.Api.Endpoints.Employees
         [SwaggerOperation(Summary = "Update an existing employee by employee id and posting the updated data.")]
         public async Task<ActionResult> Put(Guid employeeId, [FromBody] UpdateEmployeeModel model)
         {
-            if (employeeId != model.Id)
-            {
-                ModelState.AddModelError(nameof(model.Id), "The EmployeeId does not match with route value.");
-                return BadRequest(ModelState);
-            }
-
             IsDepartmentExistentByIdQuery isDepartmentExistentById = new IsDepartmentExistentByIdQuery(employeeId);
 
             bool isExistent = await _mediator.Send(isDepartmentExistentById);
@@ -50,26 +38,21 @@ namespace EmployeeManagement.Api.Endpoints.Employees
                 return BadRequest(ModelState);
             }
 
-            UpdateEmployeeDto updateEmployeeDto = new UpdateEmployeeDto
-            {
-                Id = model.Id,
-                Name = model.Name,
-                DepartmentId = model.DepartmentId,
-                DateOfBirth = model.DateOfBirth,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber
-            };
+            UpdateEmployeeCommand command = new UpdateEmployeeCommand(
+                employeeId,
+                model.Name,
+                model.DepartmentId,
+                model.DateOfBirth,
+                model.Email,
+                model.PhoneNumber);
 
-            await _employeeService.UpdateAsync(updateEmployeeDto);
+            await _mediator.Send(command);
             return Ok();
         }
     }
 
     public class UpdateEmployeeModel
     {
-        [Required]
-        public Guid Id { get; set; }
-
         [Required]
         [MaxLength(50)]
         [MinLength(4)]
