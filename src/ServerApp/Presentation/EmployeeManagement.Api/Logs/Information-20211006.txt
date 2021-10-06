@@ -2082,3 +2082,425 @@ DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
 2021-10-06 19:09:29.066 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 24.4356ms
 2021-10-06 19:09:29.066 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
 2021-10-06 19:09:29.066 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232 - 400 - application/problem+json;+charset=utf-8 28.4333ms
+2021-10-06 23:05:36.474 +06:00 [INF] Starting web host
+2021-10-06 23:05:40.527 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:05:50.462 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:05:50.462 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:05:50.462 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:05:50.558 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:05:50.826 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 272.7506ms
+2021-10-06 23:05:51.770 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:05:51.778 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 7.5749ms
+2021-10-06 23:05:52.018 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:05:52.241 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 222.8943ms
+2021-10-06 23:06:13.929 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/3fa85f64-5717-4562-b3fc-2c963f66afa6 application/json 179
+2021-10-06 23:06:14.000 +06:00 [INF] CORS policy execution failed.
+2021-10-06 23:06:14.000 +06:00 [INF] Request origin https://localhost:44390 does not have permission to access the resource.
+2021-10-06 23:06:14.222 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:06:14.265 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:06:14.346 +06:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2021-10-06 23:06:14.358 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 86.1917ms
+2021-10-06 23:06:14.360 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:06:14.361 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/3fa85f64-5717-4562-b3fc-2c963f66afa6 application/json 179 - 400 - application/problem+json;+charset=utf-8 431.9186ms
+2021-10-06 23:09:27.301 +06:00 [INF] Starting web host
+2021-10-06 23:09:27.658 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:09:29.796 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:09:29.797 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:09:29.798 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:09:29.832 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:09:30.034 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 203.9643ms
+2021-10-06 23:09:30.096 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:09:30.099 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 3.0582ms
+2021-10-06 23:09:30.360 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:09:30.562 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 201.8423ms
+2021-10-06 23:09:44.458 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/3fa85f64-5717-4562-b3fc-2c963f66afa6 application/json 179
+2021-10-06 23:09:44.529 +06:00 [INF] CORS policy execution failed.
+2021-10-06 23:09:44.529 +06:00 [INF] Request origin https://localhost:44390 does not have permission to access the resource.
+2021-10-06 23:09:44.574 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:09:44.612 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:09:44.664 +06:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.SerializableError'.
+2021-10-06 23:09:44.694 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 72.5931ms
+2021-10-06 23:09:44.696 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:09:44.697 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/3fa85f64-5717-4562-b3fc-2c963f66afa6 application/json 179 - 400 - application/json;+charset=utf-8 238.7956ms
+2021-10-06 23:10:12.309 +06:00 [INF] Starting web host
+2021-10-06 23:10:12.672 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:10:14.301 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:10:14.301 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:10:14.301 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:10:14.326 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:10:14.489 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 162.8912ms
+2021-10-06 23:10:14.503 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:10:14.507 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 4.3410ms
+2021-10-06 23:10:14.739 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:10:14.739 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/favicon-32x32.png - -
+2021-10-06 23:10:14.775 +06:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2021-10-06 23:10:14.776 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/favicon-32x32.png - - - 200 628 image/png 36.7962ms
+2021-10-06 23:10:14.890 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 159.2043ms
+2021-10-06 23:10:21.952 +06:00 [INF] Starting web host
+2021-10-06 23:10:22.739 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:10:25.311 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:10:25.311 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:10:25.311 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:10:25.332 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:10:25.583 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 254.2161ms
+2021-10-06 23:10:25.614 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:10:25.630 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 4.7142ms
+2021-10-06 23:10:25.894 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:10:26.058 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 163.2213ms
+2021-10-06 23:10:40.765 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/3fa85f64-5717-4562-b3fc-2c963f66afa6 application/json 179
+2021-10-06 23:10:40.812 +06:00 [INF] CORS policy execution failed.
+2021-10-06 23:10:40.813 +06:00 [INF] Request origin https://localhost:44390 does not have permission to access the resource.
+2021-10-06 23:10:40.850 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:10:40.884 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:10:41.372 +06:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.SerializableError'.
+2021-10-06 23:10:41.395 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 506.3046ms
+2021-10-06 23:10:41.397 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:10:41.401 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/3fa85f64-5717-4562-b3fc-2c963f66afa6 application/json 179 - 400 - application/json;+charset=utf-8 636.3622ms
+2021-10-06 23:10:47.681 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/departments - -
+2021-10-06 23:10:47.684 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:47.685 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/departments - - - 204 - - 3.4192ms
+2021-10-06 23:10:47.690 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/departments - -
+2021-10-06 23:10:47.692 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:47.873 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:10:47.875 +06:00 [INF] Route matched with {action = "Get", controller = "GetDepartmentListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[EmployeeManagement.Application.Queries.DepartmentQueries.DepartmentDto]]] Get() on controller EmployeeManagement.Api.Endpoints.Departments.GetDepartmentListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:10:48.017 +06:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[EmployeeManagement.Application.Queries.DepartmentQueries.DepartmentDto, EmployeeManagement.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2021-10-06 23:10:48.020 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Departments.GetDepartmentListEndpoint.Get (EmployeeManagement.Api) in 144.0279ms
+2021-10-06 23:10:48.021 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:10:48.022 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/departments - - - 200 - application/json;+charset=utf-8 332.1489ms
+2021-10-06 23:10:51.524 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:10:51.524 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:51.524 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 204 - - 0.5463ms
+2021-10-06 23:10:51.528 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:10:51.528 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:51.531 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:10:51.534 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TanvirArjel.EFCore.GenericRepository.PaginatedList`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto]]] Get(Int32, Int32) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:10:51.653 +06:00 [INF] Executing ObjectResult, writing value of type 'TanvirArjel.EFCore.GenericRepository.PaginatedList`1[[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto, EmployeeManagement.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2021-10-06 23:10:51.659 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api) in 125.1158ms
+2021-10-06 23:10:51.659 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:10:51.660 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 200 - application/json;+charset=utf-8 131.6370ms
+2021-10-06 23:10:53.077 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:10:53.077 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:53.078 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 0.7844ms
+2021-10-06 23:10:53.081 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:10:53.081 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:53.082 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:10:53.085 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeDetailsByIdEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto]] Get(System.Guid) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint (EmployeeManagement.Api).
+2021-10-06 23:10:53.115 +06:00 [INF] Executing ObjectResult, writing value of type 'EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto'.
+2021-10-06 23:10:53.117 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api) in 32.1589ms
+2021-10-06 23:10:53.117 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:10:53.117 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 200 - application/json;+charset=utf-8 37.2693ms
+2021-10-06 23:10:53.146 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:10:53.146 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:53.147 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 204 - - 0.5015ms
+2021-10-06 23:10:53.150 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:10:53.150 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:53.150 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:10:53.155 +06:00 [INF] Route matched with {action = "Get", controller = "GetDepartmentSelectListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Microsoft.AspNetCore.Mvc.Rendering.SelectList]] Get(System.Nullable`1[System.Guid]) on controller EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:10:53.160 +06:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.Rendering.SelectList'.
+2021-10-06 23:10:53.163 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api) in 8.2905ms
+2021-10-06 23:10:53.163 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:10:53.163 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 200 - application/json;+charset=utf-8 13.7462ms
+2021-10-06 23:10:54.207 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:10:54.207 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:54.207 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 0.7719ms
+2021-10-06 23:10:54.212 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232
+2021-10-06 23:10:54.212 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:10:54.213 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:10:54.213 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:10:54.220 +06:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.SerializableError'.
+2021-10-06 23:10:54.221 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 7.9624ms
+2021-10-06 23:10:54.221 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:10:54.221 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232 - 400 - application/json;+charset=utf-8 9.6737ms
+2021-10-06 23:11:18.802 +06:00 [INF] Starting web host
+2021-10-06 23:11:19.251 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:11:21.527 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:11:21.527 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:11:21.527 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:11:21.684 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:11:22.064 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 382.9084ms
+2021-10-06 23:11:22.083 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:11:22.084 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 1.0168ms
+2021-10-06 23:11:22.585 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:11:22.594 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 8.9982ms
+2021-10-06 23:11:22.898 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:11:22.898 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 0.6911ms
+2021-10-06 23:11:23.358 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:11:23.747 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 388.7214ms
+2021-10-06 23:12:50.610 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/3fa85f64-5717-4562-b3fc-2c963f66afa6 application/json 179
+2021-10-06 23:12:50.667 +06:00 [INF] CORS policy execution failed.
+2021-10-06 23:12:50.668 +06:00 [INF] Request origin https://localhost:44390 does not have permission to access the resource.
+2021-10-06 23:12:50.701 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:12:50.734 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:12:51.200 +06:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.SerializableError'.
+2021-10-06 23:12:51.226 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 487.2171ms
+2021-10-06 23:12:51.228 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:12:51.231 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/3fa85f64-5717-4562-b3fc-2c963f66afa6 application/json 179 - 400 - application/json;+charset=utf-8 621.2171ms
+2021-10-06 23:13:15.312 +06:00 [INF] Starting web host
+2021-10-06 23:13:15.917 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:13:17.767 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:13:17.767 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:13:17.767 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:13:17.796 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:13:17.951 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 158.4225ms
+2021-10-06 23:13:18.018 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:13:18.022 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 4.0312ms
+2021-10-06 23:13:18.218 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:13:18.233 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/favicon-32x32.png - -
+2021-10-06 23:13:18.250 +06:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2021-10-06 23:13:18.251 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/favicon-32x32.png - - - 200 628 image/png 17.6690ms
+2021-10-06 23:13:18.399 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 181.6978ms
+2021-10-06 23:13:32.682 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:13:32.690 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 8.0480ms
+2021-10-06 23:13:32.744 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:13:32.745 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 0.9128ms
+2021-10-06 23:13:32.948 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:13:32.962 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/favicon-32x32.png - -
+2021-10-06 23:13:32.962 +06:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2021-10-06 23:13:32.963 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/favicon-32x32.png - - - 200 628 image/png 1.1391ms
+2021-10-06 23:13:32.989 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 41.2712ms
+2021-10-06 23:14:07.396 +06:00 [INF] Starting web host
+2021-10-06 23:14:07.861 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:14:10.976 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:14:10.976 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:14:10.976 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:14:11.000 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:14:11.201 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 203.6155ms
+2021-10-06 23:14:11.311 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:14:11.315 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 3.2025ms
+2021-10-06 23:14:11.561 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:14:11.731 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 170.0389ms
+2021-10-06 23:14:14.128 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:14:14.164 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:14:14.167 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 204 - - 38.9272ms
+2021-10-06 23:14:14.173 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:14:14.179 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:14:14.384 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:14:14.417 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TanvirArjel.EFCore.GenericRepository.PaginatedList`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto]]] Get(Int32, Int32) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:14:14.947 +06:00 [INF] Executing ObjectResult, writing value of type 'TanvirArjel.EFCore.GenericRepository.PaginatedList`1[[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto, EmployeeManagement.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2021-10-06 23:14:14.981 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api) in 559.9412ms
+2021-10-06 23:14:14.983 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:14:14.987 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 200 - application/json;+charset=utf-8 813.4050ms
+2021-10-06 23:14:16.025 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:14:16.027 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:14:16.027 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 1.9368ms
+2021-10-06 23:14:16.031 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:14:16.031 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:14:16.033 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:14:16.041 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeDetailsByIdEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto]] Get(System.Guid) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint (EmployeeManagement.Api).
+2021-10-06 23:14:16.146 +06:00 [INF] Executing ObjectResult, writing value of type 'EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto'.
+2021-10-06 23:14:16.148 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api) in 106.6494ms
+2021-10-06 23:14:16.148 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:14:16.149 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 200 - application/json;+charset=utf-8 117.8682ms
+2021-10-06 23:14:16.176 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:14:16.177 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:14:16.177 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 204 - - 0.3793ms
+2021-10-06 23:14:16.180 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:14:16.181 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:14:16.184 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:14:16.190 +06:00 [INF] Route matched with {action = "Get", controller = "GetDepartmentSelectListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Microsoft.AspNetCore.Mvc.Rendering.SelectList]] Get(System.Nullable`1[System.Guid]) on controller EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:14:16.213 +06:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.Rendering.SelectList'.
+2021-10-06 23:14:16.215 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api) in 24.8284ms
+2021-10-06 23:14:16.215 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:14:16.215 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 200 - application/json;+charset=utf-8 35.1852ms
+2021-10-06 23:14:17.643 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:14:17.643 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:14:17.643 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 0.4480ms
+2021-10-06 23:14:17.647 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232
+2021-10-06 23:14:17.648 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:14:17.648 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:14:17.654 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:14:17.726 +06:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.SerializableError'.
+2021-10-06 23:14:17.727 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 73.4284ms
+2021-10-06 23:14:17.727 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:14:17.727 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232 - 400 - application/json;+charset=utf-8 80.1853ms
+2021-10-06 23:18:20.330 +06:00 [INF] Starting web host
+2021-10-06 23:18:22.162 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:18:26.216 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:18:26.216 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:18:26.216 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:18:26.295 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:18:26.555 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 263.3871ms
+2021-10-06 23:18:26.854 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:18:26.870 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 3.7675ms
+2021-10-06 23:18:27.133 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:18:27.375 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 241.1030ms
+2021-10-06 23:19:18.141 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:19:18.187 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:19:18.190 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 204 - - 51.9609ms
+2021-10-06 23:19:18.192 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:19:18.199 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:19:18.556 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:19:18.590 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TanvirArjel.EFCore.GenericRepository.PaginatedList`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto]]] Get(Int32, Int32) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:19:19.198 +06:00 [INF] Executing ObjectResult, writing value of type 'TanvirArjel.EFCore.GenericRepository.PaginatedList`1[[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto, EmployeeManagement.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2021-10-06 23:19:19.250 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api) in 654.9305ms
+2021-10-06 23:19:19.253 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:19:19.256 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 200 - application/json;+charset=utf-8 1063.7456ms
+2021-10-06 23:19:20.927 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:19:20.929 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:19:20.930 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 2.3657ms
+2021-10-06 23:19:20.932 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:19:20.933 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:19:20.938 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:19:20.943 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeDetailsByIdEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto]] Get(System.Guid) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint (EmployeeManagement.Api).
+2021-10-06 23:19:21.159 +06:00 [INF] Executing ObjectResult, writing value of type 'EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto'.
+2021-10-06 23:19:21.161 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api) in 217.4581ms
+2021-10-06 23:19:21.161 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:19:21.161 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 200 - application/json;+charset=utf-8 228.7200ms
+2021-10-06 23:19:21.190 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:19:21.191 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:19:21.191 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 204 - - 0.5153ms
+2021-10-06 23:19:21.193 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:19:21.193 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:19:21.196 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:19:21.199 +06:00 [INF] Route matched with {action = "Get", controller = "GetDepartmentSelectListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Microsoft.AspNetCore.Mvc.Rendering.SelectList]] Get(System.Nullable`1[System.Guid]) on controller EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:19:21.228 +06:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.Rendering.SelectList'.
+2021-10-06 23:19:21.232 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api) in 33.522ms
+2021-10-06 23:19:21.232 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:19:21.233 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 200 - application/json;+charset=utf-8 39.9892ms
+2021-10-06 23:19:22.862 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:19:22.862 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:19:22.863 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 1.2394ms
+2021-10-06 23:19:22.865 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232
+2021-10-06 23:19:22.865 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:19:22.865 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:19:22.876 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:19:51.750 +06:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.SerializableError'.
+2021-10-06 23:19:51.753 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 28877.1905ms
+2021-10-06 23:19:51.753 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:19:51.754 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232 - 400 - application/json;+charset=utf-8 28889.2451ms
+2021-10-06 23:20:30.333 +06:00 [INF] Starting web host
+2021-10-06 23:20:30.755 +06:00 [INF] User profile is available. Using 'C:\Users\TanvirArjel\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2021-10-06 23:20:32.838 +06:00 [INF] Application started. Press Ctrl+C to shut down.
+2021-10-06 23:20:32.839 +06:00 [INF] Hosting environment: Development
+2021-10-06 23:20:32.839 +06:00 [INF] Content root path: D:\GitHub\CleanArchitecture\src\ServerApp\Presentation\EmployeeManagement.Api
+2021-10-06 23:20:32.862 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/index.html - -
+2021-10-06 23:20:33.022 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/index.html - - - 200 - text/html;charset=utf-8 163.4878ms
+2021-10-06 23:20:33.121 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - -
+2021-10-06 23:20:33.124 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/_framework/aspnetcore-browser-refresh.js - - - 200 7932 application/javascript;+charset=utf-8 3.2963ms
+2021-10-06 23:20:33.674 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - -
+2021-10-06 23:20:34.026 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 351.9645ms
+2021-10-06 23:20:37.113 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:20:37.143 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:37.145 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 204 - - 31.5325ms
+2021-10-06 23:20:37.148 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:20:37.154 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:37.351 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:37.380 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TanvirArjel.EFCore.GenericRepository.PaginatedList`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto]]] Get(Int32, Int32) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:37.912 +06:00 [INF] Executing ObjectResult, writing value of type 'TanvirArjel.EFCore.GenericRepository.PaginatedList`1[[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto, EmployeeManagement.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2021-10-06 23:20:37.945 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api) in 558.5212ms
+2021-10-06 23:20:37.947 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:37.950 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 200 - application/json;+charset=utf-8 802.2475ms
+2021-10-06 23:20:39.882 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:20:39.885 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:39.886 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 3.3336ms
+2021-10-06 23:20:39.889 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:20:39.889 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:39.890 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:39.893 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeDetailsByIdEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto]] Get(System.Guid) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:39.995 +06:00 [INF] Executing ObjectResult, writing value of type 'EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto'.
+2021-10-06 23:20:39.997 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api) in 103.6691ms
+2021-10-06 23:20:39.997 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:39.998 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 200 - application/json;+charset=utf-8 109.2092ms
+2021-10-06 23:20:40.020 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:20:40.020 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:40.020 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 204 - - 0.3647ms
+2021-10-06 23:20:40.023 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:20:40.024 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:40.026 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:40.029 +06:00 [INF] Route matched with {action = "Get", controller = "GetDepartmentSelectListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Microsoft.AspNetCore.Mvc.Rendering.SelectList]] Get(System.Nullable`1[System.Guid]) on controller EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:40.047 +06:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.Rendering.SelectList'.
+2021-10-06 23:20:40.049 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api) in 19.6688ms
+2021-10-06 23:20:40.049 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:40.049 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 200 - application/json;+charset=utf-8 25.7399ms
+2021-10-06 23:20:41.810 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:20:41.810 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:41.810 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 0.5764ms
+2021-10-06 23:20:41.814 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232
+2021-10-06 23:20:41.814 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:41.815 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:20:41.820 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:42.077 +06:00 [INF] Executing StatusCodeResult, setting HTTP status code 200
+2021-10-06 23:20:42.077 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 256.6447ms
+2021-10-06 23:20:42.077 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:20:42.081 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232 - 200 - - 267.2888ms
+2021-10-06 23:20:42.128 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:20:42.128 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:42.128 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:42.129 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TanvirArjel.EFCore.GenericRepository.PaginatedList`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto]]] Get(Int32, Int32) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:42.138 +06:00 [INF] Executing ObjectResult, writing value of type 'TanvirArjel.EFCore.GenericRepository.PaginatedList`1[[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto, EmployeeManagement.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2021-10-06 23:20:42.139 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api) in 10.2465ms
+2021-10-06 23:20:42.139 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:42.140 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 200 - application/json;+charset=utf-8 12.1237ms
+2021-10-06 23:20:43.977 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:20:43.977 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:43.978 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:43.978 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeDetailsByIdEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto]] Get(System.Guid) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:43.980 +06:00 [INF] Executing ObjectResult, writing value of type 'EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto'.
+2021-10-06 23:20:43.981 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api) in 2.5536ms
+2021-10-06 23:20:43.981 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:43.981 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 200 - application/json;+charset=utf-8 4.6883ms
+2021-10-06 23:20:43.994 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:20:43.994 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:43.995 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:43.995 +06:00 [INF] Route matched with {action = "Get", controller = "GetDepartmentSelectListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Microsoft.AspNetCore.Mvc.Rendering.SelectList]] Get(System.Nullable`1[System.Guid]) on controller EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:43.998 +06:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.Rendering.SelectList'.
+2021-10-06 23:20:43.998 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api) in 3.2755ms
+2021-10-06 23:20:43.998 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:43.998 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 200 - application/json;+charset=utf-8 4.7063ms
+2021-10-06 23:20:46.944 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:20:46.945 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:46.945 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 204 - - 0.4241ms
+2021-10-06 23:20:46.948 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 233
+2021-10-06 23:20:46.948 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:46.948 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:20:46.949 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:47.075 +06:00 [INF] Executing StatusCodeResult, setting HTTP status code 200
+2021-10-06 23:20:47.075 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 126.1124ms
+2021-10-06 23:20:47.075 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:20:47.075 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 233 - 200 - - 127.6358ms
+2021-10-06 23:20:47.120 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:20:47.120 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:47.120 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 204 - - 0.5069ms
+2021-10-06 23:20:47.124 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:20:47.124 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:47.125 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:47.125 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TanvirArjel.EFCore.GenericRepository.PaginatedList`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto]]] Get(Int32, Int32) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:47.128 +06:00 [INF] Executing ObjectResult, writing value of type 'TanvirArjel.EFCore.GenericRepository.PaginatedList`1[[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto, EmployeeManagement.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2021-10-06 23:20:47.129 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api) in 4.0876ms
+2021-10-06 23:20:47.129 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:47.129 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 200 - application/json;+charset=utf-8 5.3353ms
+2021-10-06 23:20:48.345 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - -
+2021-10-06 23:20:48.346 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:48.346 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:48.347 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeDetailsByIdEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto]] Get(System.Guid) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:48.350 +06:00 [INF] Executing ObjectResult, writing value of type 'EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDetailsDto'.
+2021-10-06 23:20:48.351 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api) in 4.6643ms
+2021-10-06 23:20:48.351 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeDetailsByIdEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:48.352 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 - - - 200 - application/json;+charset=utf-8 6.1758ms
+2021-10-06 23:20:48.362 +06:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:20:48.363 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:48.363 +06:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 204 - - 0.3717ms
+2021-10-06 23:20:48.381 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - -
+2021-10-06 23:20:48.382 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:48.382 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:48.382 +06:00 [INF] Route matched with {action = "Get", controller = "GetDepartmentSelectListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[Microsoft.AspNetCore.Mvc.Rendering.SelectList]] Get(System.Nullable`1[System.Guid]) on controller EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:48.384 +06:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.Rendering.SelectList'.
+2021-10-06 23:20:48.385 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api) in 2.4182ms
+2021-10-06 23:20:48.385 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Departments.GetDepartmentSelectListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:48.385 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/departments/select-list?selectedDepartment=506acc45-c290-404e-553e-08d94d9ec87d - - - 200 - application/json;+charset=utf-8 4.1463ms
+2021-10-06 23:20:51.151 +06:00 [INF] Request starting HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232
+2021-10-06 23:20:51.152 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:51.153 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:20:51.153 +06:00 [INF] Route matched with {action = "Put", controller = "UpdateEmployeeEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Put(System.Guid, EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeModel) on controller EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:51.167 +06:00 [INF] Executing StatusCodeResult, setting HTTP status code 200
+2021-10-06 23:20:51.167 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api) in 13.595ms
+2021-10-06 23:20:51.167 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.UpdateEmployeeEndpoint.Put (EmployeeManagement.Api)'
+2021-10-06 23:20:51.167 +06:00 [INF] Request finished HTTP/2 PUT https://localhost:44390/api/v1/employees/bacc2e07-2dab-487e-54ea-08d9671b7f97 application/json;+charset=utf-8 232 - 200 - - 16.3703ms
+2021-10-06 23:20:51.216 +06:00 [INF] Request starting HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - -
+2021-10-06 23:20:51.216 +06:00 [INF] CORS policy execution successful.
+2021-10-06 23:20:51.217 +06:00 [INF] Executing endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:51.218 +06:00 [INF] Route matched with {action = "Get", controller = "GetEmployeeListEndpoint"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TanvirArjel.EFCore.GenericRepository.PaginatedList`1[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto]]] Get(Int32, Int32) on controller EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint (EmployeeManagement.Api).
+2021-10-06 23:20:51.221 +06:00 [INF] Executing ObjectResult, writing value of type 'TanvirArjel.EFCore.GenericRepository.PaginatedList`1[[EmployeeManagement.Application.Queries.EmployeeQueries.EmployeeDto, EmployeeManagement.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2021-10-06 23:20:51.221 +06:00 [INF] Executed action EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api) in 3.3779ms
+2021-10-06 23:20:51.221 +06:00 [INF] Executed endpoint 'EmployeeManagement.Api.Endpoints.Employees.GetEmployeeListEndpoint.Get (EmployeeManagement.Api)'
+2021-10-06 23:20:51.222 +06:00 [INF] Request finished HTTP/2 GET https://localhost:44390/api/v1/employees?pageNumber=1&&pageSize=50 - - - 200 - application/json;+charset=utf-8 6.1040ms

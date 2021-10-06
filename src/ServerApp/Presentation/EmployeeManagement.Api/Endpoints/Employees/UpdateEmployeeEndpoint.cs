@@ -19,16 +19,16 @@ namespace EmployeeManagement.Api.Endpoints.Employees
             _mediator = mediator;
         }
 
-        // PUT: api/employees/5
+        // PUT: api/v1/employees/{Guid}
         [HttpPut("{employeeId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [SwaggerOperation(Summary = "Update an existing employee by employee id and posting the updated data.")]
-        public async Task<ActionResult> Put(Guid employeeId, [FromBody] UpdateEmployeeModel model)
+        public async Task<ActionResult> Put(Guid employeeId, UpdateEmployeeModel model)
         {
-            IsDepartmentExistentByIdQuery isDepartmentExistentById = new IsDepartmentExistentByIdQuery(employeeId);
+            IsDepartmentExistentByIdQuery isDepartmentExistentById = new IsDepartmentExistentByIdQuery(model.DepartmentId);
 
             bool isExistent = await _mediator.Send(isDepartmentExistentById);
 
@@ -59,7 +59,6 @@ namespace EmployeeManagement.Api.Endpoints.Employees
         public string Name { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue)]
         public Guid DepartmentId { get; set; }
 
         [Required]
