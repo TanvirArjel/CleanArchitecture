@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EmployeeManagement.Application.CacheRepositories;
+using EmployeeManagement.Application.Caching.Repositories;
 using EmployeeManagement.Application.Dtos.EmployeeDtos;
 using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Application.Services;

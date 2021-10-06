@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Domain.Entities;
+﻿using System;
+using EmployeeManagement.Domain.Entities;
 using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
@@ -7,8 +8,10 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
     {
         internal Department(string name, string description)
         {
+            Id = Guid.NewGuid();
             SetName(name);
             SetDescription(description);
+            CreatedAtUtc = DateTime.UtcNow;
         }
 
         // This is needed for EF Core query mapping or deserialization.

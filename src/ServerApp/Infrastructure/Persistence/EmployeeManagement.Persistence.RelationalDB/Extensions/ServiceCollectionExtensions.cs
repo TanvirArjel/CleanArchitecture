@@ -1,4 +1,6 @@
 ﻿using System;
+using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+using EmployeeManagement.Persistence.RelationalDB.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,6 +40,8 @@ namespace EmployeeManagement.Persistence.RelationalDB.Extensions
                     builder.MigrationsHistoryTable("__EFCoreMigrationsHistory", schema: "_Migration");
                 });
             });
+
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
             services.AddGenericRepository<EmployeeManagementDbContext>();
         }

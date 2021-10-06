@@ -46,9 +46,9 @@ namespace EmployeeManagement.Persistence.RelationalDB.Extensions
             {
                 foreach (EntityEntry<BaseEntity> entityEntry in modifiedEntries)
                 {
-                    bool hasAnyPropertyValueModified = entityEntry.Properties.Any(p => p.IsModified);
+                    int changePropertiesCount = entityEntry.Properties.Where(p => p.IsModified).Count();
 
-                    if (hasAnyPropertyValueModified)
+                    if (changePropertiesCount > 0)
                     {
                         bool isMenuallySet = entityEntry.Property(p => p.LastModifiedAtUtc).IsModified;
                         if (isMenuallySet)

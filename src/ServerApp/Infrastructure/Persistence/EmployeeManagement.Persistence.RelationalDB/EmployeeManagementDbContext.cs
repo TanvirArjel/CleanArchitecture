@@ -14,7 +14,7 @@ namespace EmployeeManagement.Persistence.RelationalDB
         {
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             ChangeTracker.ApplyValueGenerationOnUpdate();
             return base.SaveChangesAsync(cancellationToken);

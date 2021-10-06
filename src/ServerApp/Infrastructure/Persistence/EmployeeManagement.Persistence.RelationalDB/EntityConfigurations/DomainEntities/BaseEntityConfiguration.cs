@@ -21,7 +21,7 @@ namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.Domai
 
                 builder.HasKey(cr => cr.Id);
                 builder.Property(cr => cr.CreatedAtUtc).HasDefaultValueSql("getutcdate()");
-                builder.Property(cr => cr.CreatedAtUtc).Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Throw);
+                ////builder.Property(cr => cr.CreatedAtUtc).Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Throw);
                 builder.Property(cr => cr.CreatedAtUtc).Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Throw);
 
                 builder.Property(cr => cr.LastModifiedAtUtc).Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Throw);
