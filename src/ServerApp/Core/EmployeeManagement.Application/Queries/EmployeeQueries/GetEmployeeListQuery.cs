@@ -23,9 +23,9 @@ public class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
 
     private class GetEmployeeListQueryHandler : IRequestHandler<GetEmployeeListQuery, PaginatedList<EmployeeDto>>
     {
-        private readonly IRepository _repository;
+        private readonly IQueryRepository _repository;
 
-        public GetEmployeeListQueryHandler(IRepository repository)
+        public GetEmployeeListQueryHandler(IQueryRepository repository)
         {
             _repository = repository;
         }

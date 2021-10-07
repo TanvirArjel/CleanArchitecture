@@ -6,6 +6,6 @@ namespace EmployeeManagement.Application.Caching.Handlers
     [ScopedService]
     public interface IDepartmentCacheHandler
     {
-        Task RemoveListCacheAsync();
+        Task RemoveListAsync();
     }
 }

@@ -41,7 +41,7 @@ namespace EmployeeManagement.Application.Commands.DepartmentCommands
                 }
 
                 await _departmentRepository.DeleteAsync(department);
-                await _departmentCacheHandler.RemoveListCacheAsync();
+                await _departmentCacheHandler.RemoveListAsync();
 
                 return Unit.Value;
             }

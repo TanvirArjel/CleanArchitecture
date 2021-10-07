@@ -45,7 +45,7 @@ namespace EmployeeManagement.Persistence.RelationalDB.Extensions
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
-            services.AddGenericRepository<EmployeeManagementDbContext>();
+            services.AddQueryRepository<EmployeeManagementDbContext>();
         }
     }
 }

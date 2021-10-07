@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using EmployeeManagement.Domain.Exceptions;
 using TanvirArjel.ArgumentChecker;
-using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
@@ -11,11 +10,13 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
     [ScopedService]
     public class EmployeeManipulator
     {
-        private readonly IRepository _repository;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeManipulator(IRepository repository)
+        public EmployeeManipulator(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository)
         {
-            _repository = repository;
+            _departmentRepository = departmentRepository;
+            _employeeRepository = employeeRepository;
         }
 
         public async Task<Employee> SetDepartmentAsync(Employee employee, Guid departmentId)
@@ -28,7 +29,7 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
                 return employee;
             }
 
-            bool isDepartmentExistent = await _repository.ExistsAsync<Department>(d => d.Id == departmentId);
+            bool isDepartmentExistent = await _departmentRepository.ExistsAsync(d => d.Id == departmentId);
 
             if (isDepartmentExistent == false)
             {
@@ -50,7 +51,7 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
                 return employee;
             }
 
-            bool isPhoneNumberExistent = await _repository.ExistsAsync<Employee>(d => d.Email == email);
+            bool isPhoneNumberExistent = await _employeeRepository.ExistsAsync(d => d.Email == email);
 
             if (isPhoneNumberExistent)
             {
@@ -72,7 +73,7 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
                 return employee;
             }
 
-            bool isPhoneNumberExistent = await _repository.ExistsAsync<Employee>(d => d.PhoneNumber == phoneNumber);
+            bool isPhoneNumberExistent = await _employeeRepository.ExistsAsync(d => d.PhoneNumber == phoneNumber);
 
             if (isPhoneNumberExistent)
             {

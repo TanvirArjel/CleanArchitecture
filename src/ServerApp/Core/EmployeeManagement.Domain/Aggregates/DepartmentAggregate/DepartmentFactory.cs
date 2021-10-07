@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TanvirArjel.ArgumentChecker;
-using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
@@ -9,11 +8,11 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
     [ScopedService]
     public class DepartmentFactory
     {
-        private readonly IRepository _repository;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public DepartmentFactory(IRepository repository)
+        public DepartmentFactory(IDepartmentRepository departmentRepository)
         {
-            _repository = repository;
+            _departmentRepository = departmentRepository;
         }
 
         public async Task<Department> CreateAsync(string name, string description)
@@ -21,11 +20,11 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
             name.ThrowIfNullOrEmpty(nameof(name));
             description.ThrowIfNullOrEmpty(nameof(description));
 
-            bool isNameExistent = await _repository.ExistsAsync<Department>(d => d.Name == name);
+            bool isNameExistent = await _departmentRepository.ExistsAsync(d => d.Name == name);
 
             if (isNameExistent)
             {
-                throw new InvalidOperationException("A department already exists with the name.");
+                throw new InvalidOperationException($"A department already exists with the name {name}.");
             }
 
             Department department = new Department(name, description);

@@ -18,9 +18,9 @@ namespace EmployeeManagement.Application.Queries.DepartmentQueries
 
         private class IsDepartmentExistentByNameQueryHandler : IRequestHandler<IsDepartmentExistentByNameQuery, bool>
         {
-            private readonly IRepository _repository;
+            private readonly IQueryRepository _repository;
 
-            public IsDepartmentExistentByNameQueryHandler(IRepository repository)
+            public IsDepartmentExistentByNameQueryHandler(IQueryRepository repository)
             {
                 _repository = repository;
             }

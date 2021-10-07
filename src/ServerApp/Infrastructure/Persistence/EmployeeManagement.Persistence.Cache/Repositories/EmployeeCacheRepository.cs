@@ -14,9 +14,9 @@ namespace EmployeeManagement.Persistence.Cache.Repositories
     internal class EmployeeCacheRepository : IEmployeeCacheRepository
     {
         private readonly IDistributedCache _distributedCache;
-        private readonly IRepository _repository;
+        private readonly IQueryRepository _repository;
 
-        public EmployeeCacheRepository(IDistributedCache distributedCache, IRepository repository)
+        public EmployeeCacheRepository(IDistributedCache distributedCache, IQueryRepository repository)
         {
             _distributedCache = distributedCache;
             _repository = repository;

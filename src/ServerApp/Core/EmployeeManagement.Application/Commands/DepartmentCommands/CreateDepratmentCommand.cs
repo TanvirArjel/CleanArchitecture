@@ -46,7 +46,7 @@ namespace EmployeeManagement.Application.Commands.DepartmentCommands
                 await _departmentRepository.InsertAsync(department);
 
                 // Remove the cache
-                await _departmentCacheHandler.RemoveListCacheAsync();
+                await _departmentCacheHandler.RemoveListAsync();
 
                 return department.Id;
             }

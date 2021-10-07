@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TanvirArjel.ArgumentChecker;
-using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
@@ -9,11 +8,11 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
     [ScopedService]
     public class DepartmentManipulator
     {
-        private readonly IRepository _repository;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public DepartmentManipulator(IRepository repository)
+        public DepartmentManipulator(IDepartmentRepository departmentRepository)
         {
-            _repository = repository;
+            _departmentRepository = departmentRepository;
         }
 
         public async Task<Department> SetNameAsync(Department department, string name)
@@ -25,7 +24,7 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
                 return department;
             }
 
-            bool isNameExistent = await _repository.ExistsAsync<Department>(d => d.Name == name);
+            bool isNameExistent = await _departmentRepository.ExistsAsync(d => d.Name == name);
 
             if (isNameExistent)
             {

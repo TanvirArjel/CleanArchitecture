@@ -24,7 +24,7 @@
 		</PackageReference>
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.12" />
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
-		<PackageReference Include="TanvirArjel.EFCore.GenericRepository" Version="5.6.0" />
+		<PackageReference Include="TanvirArjel.EFCore.QueryRepository" Version="1.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

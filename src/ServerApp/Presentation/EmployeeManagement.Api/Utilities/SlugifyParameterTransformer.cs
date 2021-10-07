@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Routing;
 
-namespace EmployeeManagement.Api.Utilities.Mixed
+namespace EmployeeManagement.Api.Utilities
 {
     public class SlugifyParameterTransformer : IOutboundParameterTransformer
     {

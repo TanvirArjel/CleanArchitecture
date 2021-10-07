@@ -22,9 +22,9 @@ namespace EmployeeManagement.Application.Queries.DepartmentQueries
 
         private class IsDepartmentNameUniqueQueryHandler : IRequestHandler<IsDepartmentNameUniqueQuery, bool>
         {
-            private readonly IRepository _repository;
+            private readonly IQueryRepository _repository;
 
-            public IsDepartmentNameUniqueQueryHandler(IRepository repository)
+            public IsDepartmentNameUniqueQueryHandler(IQueryRepository repository)
             {
                 _repository = repository;
             }

@@ -14,7 +14,7 @@ namespace EmployeeManagement.Persistence.Cache.Handlers
             _distributedCache = distributedCache;
         }
 
-        public async Task RemoveListCacheAsync()
+        public async Task RemoveListAsync()
         {
             string departmentListKey = DepartmentCacheKeys.ListKey;
             await _distributedCache.RemoveAsync(departmentListKey);

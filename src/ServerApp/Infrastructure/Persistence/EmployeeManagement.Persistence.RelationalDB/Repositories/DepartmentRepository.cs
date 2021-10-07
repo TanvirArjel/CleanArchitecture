@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TanvirArjel.ArgumentChecker;
 
@@ -14,6 +16,18 @@ namespace EmployeeManagement.Persistence.RelationalDB.Repositories
         public DepartmentRepository(EmployeeManagementDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public Task<bool> ExistsAsync(Expression<Func<Department, bool>> condition)
+        {
+            IQueryable<Department> queryable = _dbContext.Set<Department>();
+
+            if (condition != null)
+            {
+                queryable = queryable.Where(condition);
+            }
+
+            return queryable.AnyAsync();
         }
 
         public async Task<Department> GetByIdAsync(Guid departmentId)

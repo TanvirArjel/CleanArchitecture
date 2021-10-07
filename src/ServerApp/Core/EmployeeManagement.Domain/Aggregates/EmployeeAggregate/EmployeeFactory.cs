@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using EmployeeManagement.Domain.Exceptions;
 using TanvirArjel.ArgumentChecker;
-using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
@@ -11,11 +10,13 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
     [ScopedService]
     public class EmployeeFactory
     {
-        private readonly IRepository _repository;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeFactory(IRepository repository)
+        public EmployeeFactory(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository)
         {
-            _repository = repository;
+            _departmentRepository = departmentRepository;
+            _employeeRepository = employeeRepository;
         }
 
         public async Task<Employee> CreateAsync(
@@ -29,21 +30,21 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
             departmentId.ThrowIfEmpty(nameof(departmentId));
             phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
 
-            bool isDepartmentExistent = await _repository.ExistsAsync<Department>(d => d.Id == departmentId);
+            bool isDepartmentExistent = await _departmentRepository.ExistsAsync(d => d.Id == departmentId);
 
             if (isDepartmentExistent == false)
             {
                 throw new EntityNotFoundException(typeof(Department), departmentId);
             }
 
-            bool isEmployeeExistent = await _repository.ExistsAsync<Employee>(d => d.Email == email);
+            bool isEmployeeExistent = await _employeeRepository.ExistsAsync(d => d.Email == email);
 
             if (isEmployeeExistent)
             {
                 throw new InvalidOperationException("An employee already exists with the provided email.");
             }
 
-            bool isPhoneNumberExistent = await _repository.ExistsAsync<Employee>(d => d.PhoneNumber == phoneNumber);
+            bool isPhoneNumberExistent = await _employeeRepository.ExistsAsync(d => d.PhoneNumber == phoneNumber);
 
             if (isPhoneNumberExistent)
             {

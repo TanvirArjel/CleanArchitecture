@@ -20,9 +20,9 @@ public class GetDepartmentByIdQuery : IRequest<DepartmentDetailsDto>
 
     private class GetDepartmentByIdQueryHandler : IRequestHandler<GetDepartmentByIdQuery, DepartmentDetailsDto>
     {
-        private readonly IRepository _repository;
+        private readonly IQueryRepository _repository;
 
-        public GetDepartmentByIdQueryHandler(IRepository repository)
+        public GetDepartmentByIdQueryHandler(IQueryRepository repository)
         {
             _repository = repository;
         }

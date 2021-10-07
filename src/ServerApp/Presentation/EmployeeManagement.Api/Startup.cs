@@ -3,7 +3,7 @@ using System.IO.Compression;
 using EmployeeManagement.Api.Extensions;
 using EmployeeManagement.Api.Filters;
 using EmployeeManagement.Api.Swagger;
-using EmployeeManagement.Api.Utilities.Mixed;
+using EmployeeManagement.Api.Utilities;
 using EmployeeManagement.Application.Commands.DepartmentCommands;
 using EmployeeManagement.Infrastructure.Services;
 using EmployeeManagement.Persistence.Cache;

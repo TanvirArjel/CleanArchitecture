@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Persistence.RelationalDB.Repositories
@@ -48,6 +49,14 @@ namespace EmployeeManagement.Persistence.RelationalDB.Repositories
         public async Task UpdateAsync(Employee employeeToBeUpdated)
         {
             employeeToBeUpdated.ThrowIfNull(nameof(employeeToBeUpdated));
+
+            EntityEntry<Employee> trackedEntity = _dbContext.ChangeTracker.Entries<Employee>()
+               .FirstOrDefault(x => x.Entity == employeeToBeUpdated);
+
+            if (trackedEntity == null)
+            {
+                _dbContext.Update(employeeToBeUpdated);
+            }
 
             await _dbContext.SaveChangesAsync();
         }

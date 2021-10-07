@@ -64,7 +64,7 @@ namespace EmployeeManagement.Application.Commands.DepartmentCommands
                 departmentToBeUpdated.IsActive = request.IsActive;
                 await _departmentRepository.UpdateAsync(departmentToBeUpdated);
 
-                await _departmentCacheHandler.RemoveListCacheAsync();
+                await _departmentCacheHandler.RemoveListAsync();
 
                 return Unit.Value;
             }
