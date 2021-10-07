@@ -2,6 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -16,8 +19,8 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.10" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="5.0.10" />
 	</ItemGroup>

@@ -2,6 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -9,7 +12,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
+		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.1" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.Caching" Version="1.0.0" />
 	</ItemGroup>
 

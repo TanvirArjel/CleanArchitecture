@@ -23,7 +23,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.12" />
-		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.0" />
+		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.1" />
 		<PackageReference Include="TanvirArjel.EFCore.QueryRepository" Version="1.0.0" />
 	</ItemGroup>
 
