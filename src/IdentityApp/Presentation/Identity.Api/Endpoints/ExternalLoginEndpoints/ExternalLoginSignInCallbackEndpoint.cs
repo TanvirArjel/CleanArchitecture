@@ -15,14 +15,14 @@ namespace Identity.Api.Endpoints.ExternalLoginEndpoints
     [ApiVersion("1.0")]
     public class ExternalLoginSignInCallbackEndpoint : ExternalLoginEndpointBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly TokenManager _tokenManager;
         private readonly ILogger<ExternalLoginSignInCallbackEndpoint> _logger;
 
         public ExternalLoginSignInCallbackEndpoint(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             ILogger<ExternalLoginSignInCallbackEndpoint> logger,
             TokenManager tokenGenerator)
         {
@@ -55,7 +55,7 @@ namespace Identity.Api.Endpoints.ExternalLoginEndpoints
                 return RedirectWithError(ErrorMessage);
             }
 
-            ApplicationUser applicationUser = await _userManager.FindByLoginAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey);
+            User applicationUser = await _userManager.FindByLoginAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey);
 
             if (applicationUser == null)
             {

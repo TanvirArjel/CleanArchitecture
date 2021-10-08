@@ -4,9 +4,11 @@ using Identity.Api.Filters;
 using Identity.Api.Swagger;
 using Identity.Api.Utils;
 using Identity.Application;
+using Identity.Application.Queries.UserQueries;
 using Identity.Infrastructure.Services;
 using Identity.Persistence.RelationalDB;
 using Identity.Persistence.RelationalDB.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -100,6 +102,8 @@ namespace Identity.Api
 
             string sendGridApiKey = "yourSendGridKey";
             services.AddSendGrid(sendGridApiKey);
+
+            services.AddMediatR(typeof(GetRefreshTokenQuery));
 
             services.AddServicesOfAllTypes();
 

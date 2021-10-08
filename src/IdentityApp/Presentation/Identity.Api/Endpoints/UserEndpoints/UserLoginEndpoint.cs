@@ -15,14 +15,14 @@ namespace Identity.Api.Endpoints.UserEndpoints
     [ApiVersion("1.0")]
     public class UserLoginEndpoint : UserEndpointBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly TokenManager _tokenManager;
         private readonly IExceptionLogger _exceptionLogger;
 
         public UserLoginEndpoint(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             IExceptionLogger exceptionLogger,
             TokenManager tokenManager)
         {
@@ -43,7 +43,7 @@ namespace Identity.Api.Endpoints.UserEndpoints
         {
             try
             {
-                ApplicationUser applicationUser = await _userManager.FindByEmailAsync(loginModel.EmailOrUserName);
+                User applicationUser = await _userManager.FindByEmailAsync(loginModel.EmailOrUserName);
 
                 if (applicationUser == null)
                 {

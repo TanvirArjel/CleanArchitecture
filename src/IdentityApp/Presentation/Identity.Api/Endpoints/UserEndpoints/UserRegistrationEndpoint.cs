@@ -14,10 +14,10 @@ namespace Identity.Api.Endpoints.UserEndpoints
     [ApiVersion("1.0")]
     public class UserRegistrationEndpoint : UserEndpointBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IExceptionLogger _exceptionLogger;
 
-        public UserRegistrationEndpoint(UserManager<ApplicationUser> userManager, IExceptionLogger exceptionLogger)
+        public UserRegistrationEndpoint(UserManager<User> userManager, IExceptionLogger exceptionLogger)
         {
             _userManager = userManager;
             _exceptionLogger = exceptionLogger;
@@ -34,7 +34,7 @@ namespace Identity.Api.Endpoints.UserEndpoints
         {
             try
             {
-                ApplicationUser applicationUser = new ApplicationUser
+                User applicationUser = new User
                 {
                     FullName = model.FirstName + " " + model.LastName,
                     UserName = model.Email,

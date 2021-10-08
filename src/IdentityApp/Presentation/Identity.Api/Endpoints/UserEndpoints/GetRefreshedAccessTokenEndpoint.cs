@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Identity.Api.Helpers;
-using Identity.Application.Services;
+using Identity.Application.Queries.UserQueries;
 using Identity.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,18 +17,18 @@ namespace Identity.Api.Endpoints.UserEndpoints
     [ApiVersion("1.0")]
     public class GetRefreshedAccessTokenEndpoint : UserEndpointBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IApplicationUserService _applicationUserService;
+        private readonly UserManager<User> _userManager;
         private readonly TokenManager _tokenManager;
+        private readonly IMediator _mediator;
 
         public GetRefreshedAccessTokenEndpoint(
-            UserManager<ApplicationUser> userManager,
-            IApplicationUserService applicationUserService,
-            TokenManager tokenManager)
+            UserManager<User> userManager,
+            TokenManager tokenManager,
+            IMediator mediator)
         {
             _userManager = userManager;
-            _applicationUserService = applicationUserService;
             _tokenManager = tokenManager;
+            _mediator = mediator;
         }
 
         [HttpPost("refresh-token")]
@@ -58,7 +59,9 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 return BadRequest(ModelState);
             }
 
-            bool isValid = await _applicationUserService.IsRefreshTokenValidAsync(Guid.Parse(userId), model.RefreshToken);
+            IsRefreshTokenValidQuery isRefreshTokenValidQuery = new IsRefreshTokenValidQuery(Guid.Parse(userId), model.RefreshToken);
+
+            bool isValid = await _mediator.Send(isRefreshTokenValidQuery);
 
             if (!isValid)
             {
@@ -66,7 +69,7 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 return BadRequest(ModelState);
             }
 
-            ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
+            User applicationUser = await _userManager.FindByIdAsync(userId);
             string jsonWebToken = await _tokenManager.GetJwtTokenAsync(applicationUser);
 
             return Ok(jsonWebToken);

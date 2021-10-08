@@ -2,8 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Identity.Application.Commands.UserCommands;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,18 +18,18 @@ namespace Identity.Api.Endpoints.UserEndpoints
     [ApiVersion("1.0")]
     public class ConfirmUserEmailEndpoint : UserEndpointBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IEmailVerificationCodeService _emailVerificationCodeService;
-        private readonly IApplicationUserService _applicationUserService;
+        private readonly IMediator _mediator;
 
         public ConfirmUserEmailEndpoint(
-            UserManager<ApplicationUser> userManager,
-            IApplicationUserService applicationUserService,
-            IEmailVerificationCodeService emailVerificationCodeService)
+            UserManager<User> userManager,
+            IEmailVerificationCodeService emailVerificationCodeService,
+            IMediator mediator)
         {
             _userManager = userManager;
-            _applicationUserService = applicationUserService;
             _emailVerificationCodeService = emailVerificationCodeService;
+            _mediator = mediator;
         }
 
         [HttpPost("confirm-email")]
@@ -61,7 +63,9 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 return BadRequest(ModelState);
             }
 
-            await _applicationUserService.VerifyEmailAsync(model.Email, model.Code);
+            VerifyUserEmailCommand verifyUserEmailCommand = new VerifyUserEmailCommand(model.Email, model.Code);
+
+            await _mediator.Send(verifyUserEmailCommand);
 
             return Ok();
         }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Persistence.RelationalDB
 {
-    internal class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    internal class ApplicationDbContext : IdentityDbContext<User, ApplicationRole, Guid>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

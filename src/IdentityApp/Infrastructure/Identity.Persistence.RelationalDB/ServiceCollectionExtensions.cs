@@ -17,7 +17,7 @@ namespace Identity.Persistence.RelationalDB
 
             services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(connectionString));
 
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+            services.AddIdentity<User, ApplicationRole>(options =>
             {
                 // Password settings.
                 options.Password.RequireDigit = false;

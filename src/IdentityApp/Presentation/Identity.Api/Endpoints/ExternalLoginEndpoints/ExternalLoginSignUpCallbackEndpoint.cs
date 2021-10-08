@@ -18,15 +18,15 @@ namespace Identity.Api.Endpoints.ExternalLoginEndpoints
     [ApiVersion("1.0")]
     public class ExternalLoginSignUpCallbackEndpoint : ExternalLoginEndpointBase
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly TokenManager _tokenManager;
         private readonly ILogger<ExternalLoginSignUpCallbackEndpoint> _logger;
         private readonly IExceptionLogger _exceptionLogger;
 
         public ExternalLoginSignUpCallbackEndpoint(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
             TokenManager tokenManager,
             ILogger<ExternalLoginSignUpCallbackEndpoint> logger,
             IExceptionLogger exceptionLogger)
@@ -72,11 +72,11 @@ namespace Identity.Api.Endpoints.ExternalLoginEndpoints
                     return RedirectToPage("/ExternalLoginConfirmationPage");
                 }
 
-                ApplicationUser applicationUser = await _userManager.FindByEmailAsync(email);
+                User applicationUser = await _userManager.FindByEmailAsync(email);
 
                 if (applicationUser == null)
                 {
-                    applicationUser = new ApplicationUser { UserName = email, Email = email, EmailConfirmed = true };
+                    applicationUser = new User { UserName = email, Email = email, EmailConfirmed = true };
                     IdentityResult userCreationResult = await _userManager.CreateAsync(applicationUser);
 
                     if (!userCreationResult.Succeeded)

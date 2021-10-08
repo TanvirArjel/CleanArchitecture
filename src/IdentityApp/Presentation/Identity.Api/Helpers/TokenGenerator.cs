@@ -8,8 +8,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Identity.Application;
-using Identity.Application.Services;
+using Identity.Application.Commands.UserCommands;
+using Identity.Application.Queries.UserQueries;
 using Identity.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using TanvirArjel.ArgumentChecker;
@@ -20,54 +22,58 @@ namespace Identity.Api.Helpers
     [ScopedService]
     public class TokenManager
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IApplicationUserService _applicationUserService;
+        private readonly UserManager<User> _userManager;
+        private readonly IMediator _mediator;
         private readonly JwtConfig _jwtConfig;
 
         public TokenManager(
             JwtConfig jwtConfig,
-            UserManager<ApplicationUser> userManager,
-            IApplicationUserService applicationUserService)
+            UserManager<User> userManager,
+            IMediator mediator)
         {
             _jwtConfig = jwtConfig;
             _userManager = userManager;
-            _applicationUserService = applicationUserService;
+            _mediator = mediator;
         }
 
-        public async Task<string> GetJwtTokenAsync(ApplicationUser applicationUser)
+        public async Task<string> GetJwtTokenAsync(User user)
         {
-            applicationUser.ThrowIfNull(nameof(applicationUser));
+            user.ThrowIfNull(nameof(user));
 
-            IList<string> roles = await _userManager.GetRolesAsync(applicationUser).ConfigureAwait(false);
+            IList<string> roles = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
 
-            RefreshToken refreshToken = await _applicationUserService.GetRefreshTokenAsync(applicationUser.Id);
+            GetRefreshTokenQuery getRefreshTokenQuery = new GetRefreshTokenQuery(user.Id);
+
+            RefreshToken refreshToken = await _mediator.Send(getRefreshTokenQuery);
 
             if (refreshToken == null)
             {
                 string token = GetRefreshToken();
-                refreshToken = await _applicationUserService.StoreRefreshTokenAsync(applicationUser.Id, token);
+                StoreRefreshTokenCommand storeRefreshTokenCommand = new StoreRefreshTokenCommand(user.Id, token);
+                refreshToken = await _mediator.Send(storeRefreshTokenCommand);
             }
             else
             {
                 if (refreshToken.ExpireAtUtc < DateTime.UtcNow)
                 {
                     string token = GetRefreshToken();
-                    refreshToken = await _applicationUserService.UpdateRefreshTokenAsync(applicationUser.Id, token);
+                    UpdateRefreshTokenCommand updateRefreshTokenCommand = new UpdateRefreshTokenCommand(user.Id, token);
+                    refreshToken = await _mediator.Send(updateRefreshTokenCommand);
                 }
             }
 
             DateTime utcNow = DateTime.Now;
 
-            string fullName = string.IsNullOrWhiteSpace(applicationUser.FullName) ? applicationUser.UserName : applicationUser.FullName;
+            string fullName = string.IsNullOrWhiteSpace(user.FullName) ? user.UserName : user.FullName;
 
             List<Claim> claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, applicationUser.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, fullName),
-                new Claim(JwtRegisteredClaimNames.Sub, applicationUser.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Sid, applicationUser.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, applicationUser.UserName),
-                new Claim(JwtRegisteredClaimNames.Email, applicationUser.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, fullName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)),

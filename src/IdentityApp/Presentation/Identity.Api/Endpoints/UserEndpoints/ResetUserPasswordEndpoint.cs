@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Identity.Application.Commands.UserCommands;
 using Identity.Application.Infrastrucures;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +17,16 @@ namespace Identity.Api.Endpoints.UserEndpoints
     public class ResetUserPasswordEndpoint : UserEndpointBase
     {
         private readonly IPasswordResetCodeService _passwordResetCodeService;
-        private readonly IApplicationUserService _applicationUserService;
+        private readonly IMediator _mediator;
 
         private readonly IExceptionLogger _exceptionLogger;
 
         public ResetUserPasswordEndpoint(
-            IApplicationUserService applicationUserService,
+            IMediator mediator,
             IExceptionLogger exceptionLogger,
             IPasswordResetCodeService passwordResetCodeService)
         {
-            _applicationUserService = applicationUserService;
+            _mediator = mediator;
             _exceptionLogger = exceptionLogger;
             _passwordResetCodeService = passwordResetCodeService;
         }
@@ -54,7 +56,9 @@ namespace Identity.Api.Endpoints.UserEndpoints
                     return BadRequest(ModelState);
                 }
 
-                await _applicationUserService.ResetPasswordAsync(model.Email, model.Code, model.Password);
+                ResetPasswordCommand resetPasswordCommand = new ResetPasswordCommand(model.Email, model.Code, model.Password);
+
+                await _mediator.Send(resetPasswordCommand);
 
                 return Ok();
             }

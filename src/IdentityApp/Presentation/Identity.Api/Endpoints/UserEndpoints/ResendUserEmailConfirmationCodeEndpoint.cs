@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Identity.Application.Commands.UserCommands;
 using Identity.Application.Services;
 using Identity.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -13,18 +15,18 @@ namespace Identity.Api.Endpoints.UserEndpoints
     [ApiVersion("1.0")]
     public class ResendUserEmailConfirmationCodeEndpoint : UserEndpointBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IApplicationUserService _applicationUserService;
+        private readonly UserManager<User> _userManager;
         private readonly IEmailVerificationCodeService _emailVerificationCodeService;
+        private readonly IMediator _mediator;
 
         public ResendUserEmailConfirmationCodeEndpoint(
-            UserManager<ApplicationUser> userManager,
-            IApplicationUserService applicationUserService,
-            IEmailVerificationCodeService emailVerificationCodeService)
+            UserManager<User> userManager,
+            IEmailVerificationCodeService emailVerificationCodeService,
+            IMediator mediator)
         {
             _userManager = userManager;
-            _applicationUserService = applicationUserService;
             _emailVerificationCodeService = emailVerificationCodeService;
+            _mediator = mediator;
         }
 
         [HttpPost("resend-email-confirmation-code")]
@@ -36,7 +38,7 @@ namespace Identity.Api.Endpoints.UserEndpoints
         [SwaggerOperation(Summary = "Resend email confiramtion code to the newly registered user's email.")]
         public async Task<ActionResult> Post(ResendEmailConfirmationCodeModel model)
         {
-            ApplicationUser applicationUser = await _userManager.FindByEmailAsync(model.Email);
+            User applicationUser = await _userManager.FindByEmailAsync(model.Email);
 
             if (applicationUser == null)
             {
@@ -58,7 +60,9 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 return BadRequest(ModelState);
             }
 
-            await _applicationUserService.SendEmailVerificationCodeAsync(model.Email);
+            SendEmailVerificationCodeCommand command = new SendEmailVerificationCodeCommand(model.Email);
+            await _mediator.Send(command);
+
             return Ok();
         }
     }

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Identity.Application.Services;
+using Identity.Application.Commands.UserCommands;
 using Identity.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -15,15 +16,15 @@ namespace Identity.Api.Endpoints.UserEndpoints
     [ApiVersion("1.0")]
     public class SendUserPasswordResetCodeEndpoint : UserEndpointBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IApplicationUserService _applicationUserService;
+        private readonly UserManager<User> _userManager;
+        private readonly IMediator _mediator;
 
         public SendUserPasswordResetCodeEndpoint(
-            IApplicationUserService applicationUserService,
-            UserManager<ApplicationUser> userManager)
+            UserManager<User> userManager,
+            IMediator mediator)
         {
-            _applicationUserService = applicationUserService;
             _userManager = userManager;
+            _mediator = mediator;
         }
 
         [AllowAnonymous]
@@ -41,7 +42,9 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 ModelState.AddModelError(nameof(model.Email), "The email does not belong to any user.");
             }
 
-            await _applicationUserService.SendPasswordResetCodeAsync(model.Email);
+            SendPasswordResetCodeCommand command = new SendPasswordResetCodeCommand(model.Email);
+            await _mediator.Send(command);
+
             return Ok();
         }
     }

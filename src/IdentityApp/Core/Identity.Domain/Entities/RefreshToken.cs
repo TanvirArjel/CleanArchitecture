@@ -12,6 +12,6 @@ namespace Identity.Domain.Entities
 
         public DateTime ExpireAtUtc { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
+        public User ApplicationUser { get; set; }
     }
 }
