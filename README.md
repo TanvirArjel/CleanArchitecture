@@ -5,25 +5,26 @@
 -->
 
 # 🏃‍♂️ How to Run the Project
-  1. First build the solution.
+  1. First build the solution to make sure that there is no error.
   2. Now make **`Identity.Api`, `EmployeeManagement.Api` and `BlazorWasmApp`** projects as startup projects and then run it. On startup necessary databases will be created in **MSSQLLocalDB**
 
 # Clean Architecture in ASP.NET Core
-This repository contain the implementation of domain driven design and clear architecture in ASP.NET Core.
+This repository contains the implementation of Domain Driven Design and Clear Architecture in ASP.NET Core.
 
 # ⚙️ Fetures
 1. Domain Driven Design
-2. REST API
-3. API Versioning
-4. Blazor Client (Web Assembly)
-5. Caching with InMemory and Redis
-6. Logging with Serilog
-7. EF Core Repository and Cache Repository
-8. Microsoft SQL Server
-9. Simple and clean admin template for starter
+2. CQRS
+3. REST API
+4. API Versioning
+5. Blazor Client (Web Assembly)
+6. Caching with InMemory and Redis
+7. Logging with Serilog
+8. EF Core Repository and Cache Repository
+9. Microsoft SQL Server
+10. Simple and clean admin template for starter
 
 # 📁 Folder Structures:
-![SolutionFolder](https://user-images.githubusercontent.com/14342773/123045601-ea4cb300-d41c-11eb-8caf-8b7846564f28.PNG)
+![Solution](https://user-images.githubusercontent.com/14342773/136792372-b520315f-7d64-4b1b-87f7-0189320f5e5c.PNG)
 
 ## 📂 src/Server:
   Will contain all the projects of the server side app and will look like as follows:
@@ -41,20 +42,21 @@ This repository contain the implementation of domain driven design and clear arc
    2. Domain logic,
    3. Domain repositories
    4. Value objects.
+   5. Domain Exceptions
 
 This will not depend on any other project. This is fully independent.
 
 #### 📝 EmployeeManagement.Application Project:
   This is application's **Application Layer** which will contain:
-   1. Appplication Business Logic
+   1. Appplication Logic
    2. Infrastructure repositories' interfaces i.e Cache Repository interfaces.
    3. Infrastructure services' interfaces i.e IEmailSender, ISmsSender, IExceptionLogger etc.
    4. Data Transfer Objects (Dtos)
-   5. Application Custom Exception types.
+   5. Command and Queries
   
   It will only depend on Domain project aka **Domain Layer.**
   
-  ![CoreApplication](https://user-images.githubusercontent.com/14342773/123301594-a2717d00-d53d-11eb-8f74-076ff92f682d.PNG)
+  ![Application](https://user-images.githubusercontent.com/14342773/136792482-c61660a2-af4e-4b85-940c-b1370b7e96f9.PNG)
 
   
 ### 📂 src/Server/Infrastructure:
