@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EmployeeManagement.Application.Exceptions;
 using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
+using EmployeeManagement.Domain.Exceptions;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
