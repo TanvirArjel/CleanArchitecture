@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Identity.Application.Commands.UserCommands;
-using Identity.Application.Services;
+using Identity.Application.Queries.UserQueries;
 using Identity.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,16 +19,13 @@ namespace Identity.Api.Endpoints.UserEndpoints
     public class ConfirmUserEmailEndpoint : UserEndpointBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly IEmailVerificationCodeService _emailVerificationCodeService;
         private readonly IMediator _mediator;
 
         public ConfirmUserEmailEndpoint(
             UserManager<User> userManager,
-            IEmailVerificationCodeService emailVerificationCodeService,
             IMediator mediator)
         {
             _userManager = userManager;
-            _emailVerificationCodeService = emailVerificationCodeService;
             _mediator = mediator;
         }
 
@@ -49,7 +46,9 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 return BadRequest(ModelState);
             }
 
-            EmailVerificationCode emailVerificationCode = await _emailVerificationCodeService.GetAsync(model.Email, model.Code);
+            GetEmailVerificationCodeQuery query = new GetEmailVerificationCodeQuery(model.Email, model.Code);
+
+            EmailVerificationCode emailVerificationCode = await _mediator.Send(query);
 
             if (emailVerificationCode == null)
             {

@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Identity.Application;
+using Identity.Api.Configs;
 using Identity.Application.Commands.UserCommands;
 using Identity.Application.Queries.UserQueries;
 using Identity.Domain.Entities;

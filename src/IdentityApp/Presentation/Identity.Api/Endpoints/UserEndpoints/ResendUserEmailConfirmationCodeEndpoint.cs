@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Identity.Application.Commands.UserCommands;
-using Identity.Application.Services;
+using Identity.Application.Queries.UserQueries;
 using Identity.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,16 +16,13 @@ namespace Identity.Api.Endpoints.UserEndpoints
     public class ResendUserEmailConfirmationCodeEndpoint : UserEndpointBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly IEmailVerificationCodeService _emailVerificationCodeService;
         private readonly IMediator _mediator;
 
         public ResendUserEmailConfirmationCodeEndpoint(
             UserManager<User> userManager,
-            IEmailVerificationCodeService emailVerificationCodeService,
             IMediator mediator)
         {
             _userManager = userManager;
-            _emailVerificationCodeService = emailVerificationCodeService;
             _mediator = mediator;
         }
 
@@ -52,7 +49,9 @@ namespace Identity.Api.Endpoints.UserEndpoints
                 return BadRequest(ModelState);
             }
 
-            bool isExists = await _emailVerificationCodeService.HasActiveCodeAsync(model.Email);
+            HasUserActiveEmailVerificationCodeQuery query = new HasUserActiveEmailVerificationCodeQuery(model.Email);
+
+            bool isExists = await _mediator.Send(query);
 
             if (isExists)
             {

@@ -1,6 +1,6 @@
 ﻿using TanvirArjel.ArgumentChecker;
 
-namespace Identity.Application
+namespace Identity.Api.Configs
 {
     public class JwtConfig
     {

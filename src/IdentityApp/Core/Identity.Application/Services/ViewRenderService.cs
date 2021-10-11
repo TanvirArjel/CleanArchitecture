@@ -6,7 +6,6 @@ using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using Identity.Application.Infrastrucures;
-using Identity.Application.Services;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,10 +19,12 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using TanvirArjel.ArgumentChecker;
+using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Application.Implementations.Services
+namespace Identity.Application.Services
 {
-    public class ViewRenderService : IViewRenderService
+    [ScopedService]
+    public class ViewRenderService
     {
         private readonly IRazorViewEngine _razorViewEngine;
         private readonly ITempDataProvider _tempDataProvider;
@@ -71,21 +72,19 @@ namespace EmployeeManagement.Application.Implementations.Services
 
                 IView view = viewEngineResult.View;
 
-                using (StringWriter stringWriter = new StringWriter())
+                using StringWriter stringWriter = new StringWriter();
+                ViewDataDictionary viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
                 {
-                    ViewDataDictionary viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
-                    {
-                        Model = model
-                    };
+                    Model = model
+                };
 
-                    TempDataDictionary tempData = new TempDataDictionary(actionContext.HttpContext, _tempDataProvider);
+                TempDataDictionary tempData = new TempDataDictionary(actionContext.HttpContext, _tempDataProvider);
 
-                    ViewContext viewContext = new ViewContext(actionContext, view, viewDictionary, tempData, stringWriter, new HtmlHelperOptions());
+                ViewContext viewContext = new ViewContext(actionContext, view, viewDictionary, tempData, stringWriter, new HtmlHelperOptions());
 
-                    await view.RenderAsync(viewContext);
+                await view.RenderAsync(viewContext);
 
-                    return stringWriter.ToString();
-                }
+                return stringWriter.ToString();
             }
             catch (Exception exception)
             {

@@ -23,12 +23,12 @@ namespace Identity.Application.Commands.UserCommands
         private class SendEmailVerificationCodeCommandHanlder : IRequestHandler<SendEmailVerificationCodeCommand>
         {
             private readonly IRepository _repository;
-            private readonly IViewRenderService _viewRenderService;
+            private readonly ViewRenderService _viewRenderService;
             private readonly IEmailSender _emailSender;
 
             public SendEmailVerificationCodeCommandHanlder(
                 IRepository repository,
-                IViewRenderService viewRenderService,
+                ViewRenderService viewRenderService,
                 IEmailSender emailSender)
             {
                 _repository = repository;

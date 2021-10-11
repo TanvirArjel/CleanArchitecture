@@ -23,12 +23,12 @@ namespace Identity.Application.Commands.UserCommands
         private class SendPasswordResetCodeCommandHandler : IRequestHandler<SendPasswordResetCodeCommand>
         {
             private readonly IRepository _repository;
-            private readonly IViewRenderService _viewRenderService;
+            private readonly ViewRenderService _viewRenderService;
             private readonly IEmailSender _emailSender;
 
             public SendPasswordResetCodeCommandHandler(
                 IRepository repository,
-                IViewRenderService viewRenderService,
+                ViewRenderService viewRenderService,
                 IEmailSender emailSender)
             {
                 _repository = repository;

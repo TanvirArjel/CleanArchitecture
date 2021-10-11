@@ -1,9 +1,9 @@
 using System.IO.Compression;
+using Identity.Api.Configs;
 using Identity.Api.Extensions;
 using Identity.Api.Filters;
 using Identity.Api.Swagger;
 using Identity.Api.Utils;
-using Identity.Application;
 using Identity.Application.Queries.UserQueries;
 using Identity.Infrastructure.Services;
 using Identity.Persistence.RelationalDB;
