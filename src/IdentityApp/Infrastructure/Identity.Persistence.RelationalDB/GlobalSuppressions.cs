@@ -5,4 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1122:Use string.Empty for empty strings", Justification = "Not Application", Scope = "namespaceanddescendants", Target = "Identity.Persistence.RelationalDB.Migrations")]
+[assembly: SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1122:Use string.Empty for empty strings", Justification = "Not Applicable", Scope = "namespaceanddescendants", Target = "Identity.Persistence.RelationalDB.Migrations")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not Applicable", Scope = "namespaceanddescendants", Target = "Identity.Persistence.RelationalDB.Migrations")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not Applicable", Scope = "namespaceanddescendants", Target = "~N:Identity.Persistence.RelationalDB.EntityConfigurations")]

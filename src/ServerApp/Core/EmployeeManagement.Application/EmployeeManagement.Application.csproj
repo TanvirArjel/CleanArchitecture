@@ -13,7 +13,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="9.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.0-rc.1.21452.15" />
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.1" />
 		<PackageReference Include="TanvirArjel.EFCore.QueryRepository" Version="1.0.0" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="2.0.0" />

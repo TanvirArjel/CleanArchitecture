@@ -31,7 +31,7 @@ namespace Identity.Application.Queries.UserQueries
                 request.ThrowIfNull(nameof(request));
 
                 bool isExists = await _repository
-                .ExistsAsync<EmailVerificationCode>(evc => evc.Email == request.Email && evc.SentAtUtc.AddMinutes(5) > DateTime.UtcNow);
+                .ExistsAsync<EmailVerificationCode>(evc => evc.Email == request.Email && evc.SentAtUtc.AddMinutes(5) > DateTime.UtcNow, cancellationToken);
                 return isExists;
             }
         }

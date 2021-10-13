@@ -33,7 +33,7 @@ namespace Identity.Application.Commands.UserCommands
             {
                 request.ThrowIfNull(nameof(request));
 
-                User applicationUserToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId);
+                User applicationUserToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
 
                 if (applicationUserToBeUpdated == null)
                 {
@@ -41,7 +41,7 @@ namespace Identity.Application.Commands.UserCommands
                 }
 
                 applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
-                await _repository.UpdateAsync(applicationUserToBeUpdated);
+                await _repository.UpdateAsync(applicationUserToBeUpdated, cancellationToken);
 
                 return Unit.Value;
             }

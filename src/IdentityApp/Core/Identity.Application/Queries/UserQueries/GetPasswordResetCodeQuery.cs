@@ -33,7 +33,7 @@ namespace Identity.Application.Queries.UserQueries
                 request.ThrowIfNull(nameof(request));
 
                 PasswordResetCode passwordResetCode = await _repository
-                .GetAsync<PasswordResetCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null);
+                .GetAsync<PasswordResetCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null, cancellationToken);
 
                 return passwordResetCode;
             }

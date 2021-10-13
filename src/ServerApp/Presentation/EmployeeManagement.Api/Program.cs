@@ -1,7 +1,5 @@
 using System;
-using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -9,10 +7,10 @@ namespace EmployeeManagement.Api
 {
     public static class Program
     {
-        private static readonly IConfiguration _configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true).Build();
+        ////private static readonly IConfiguration _configuration = new ConfigurationBuilder()
+        ////        .SetBasePath(Directory.GetCurrentDirectory())
+        ////        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        ////        .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true).Build();
 
         public static void Main(string[] args)
         {

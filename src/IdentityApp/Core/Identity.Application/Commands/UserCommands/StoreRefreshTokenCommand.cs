@@ -41,7 +41,7 @@ namespace Identity.Application.Commands.UserCommands
                     ExpireAtUtc = DateTime.UtcNow.AddDays(30)
                 };
 
-                await _repository.InsertAsync(refreshToken);
+                await _repository.InsertAsync(refreshToken, cancellationToken);
                 return refreshToken;
             }
         }

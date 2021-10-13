@@ -33,7 +33,7 @@ namespace Identity.Application.Queries.UserQueries
                 request.ThrowIfNull(nameof(request));
 
                 string userLanguageCulture = await _repository.GetQueryable<User>().Where(u => u.Id == request.UserId)
-                    .Select(u => u.LanguageCulture).FirstOrDefaultAsync();
+                    .Select(u => u.LanguageCulture).FirstOrDefaultAsync(cancellationToken);
 
                 return userLanguageCulture;
             }

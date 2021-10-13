@@ -30,7 +30,7 @@ namespace EmployeeManagement.Application.Queries.DepartmentQueries
             {
                 request.ThrowIfNull(nameof(request));
 
-                bool isExists = await _repository.ExistsAsync<Department>(d => d.Id == request.Id);
+                bool isExists = await _repository.ExistsAsync<Department>(d => d.Id == request.Id, cancellationToken);
                 return isExists;
             }
         }

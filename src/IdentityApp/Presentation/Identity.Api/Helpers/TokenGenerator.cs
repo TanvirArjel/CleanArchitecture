@@ -110,8 +110,8 @@ namespace Identity.Api.Helpers
         {
             TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = false,
-                ValidateIssuer = false,
+                ValidateAudience = true,
+                ValidateIssuer = true,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key)),
                 ValidateLifetime = false
@@ -132,8 +132,8 @@ namespace Identity.Api.Helpers
         private string GetRefreshToken()
         {
             byte[] randomNumber = new byte[32];
-            using RNGCryptoServiceProvider generator = new RNGCryptoServiceProvider();
-            generator.GetBytes(randomNumber);
+            using RandomNumberGenerator randomNumberGenerator = RandomNumberGenerator.Create();
+            randomNumberGenerator.GetBytes(randomNumber);
 
             string refreshToken = Convert.ToBase64String(randomNumber);
 

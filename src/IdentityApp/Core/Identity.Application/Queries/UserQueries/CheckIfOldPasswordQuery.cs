@@ -39,7 +39,7 @@ namespace Identity.Application.Queries.UserQueries
                 request.ThrowIfNull(nameof(request));
 
                 List<UserOldPassword> userOldPasswords = await _repository.GetQueryable<UserOldPassword>()
-                    .Where(uop => uop.UserId == request.User.Id).ToListAsync();
+                    .Where(uop => uop.UserId == request.User.Id).ToListAsync(cancellationToken);
 
                 if (userOldPasswords.Count == 0)
                 {

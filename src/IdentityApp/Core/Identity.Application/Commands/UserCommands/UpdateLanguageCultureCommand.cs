@@ -33,7 +33,7 @@ namespace Identity.Application.Commands.UserCommands
             {
                 request.ThrowIfNull(nameof(request));
 
-                User userToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId);
+                User userToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
 
                 if (userToBeUpdated == null)
                 {
@@ -41,7 +41,7 @@ namespace Identity.Application.Commands.UserCommands
                 }
 
                 userToBeUpdated.LanguageCulture = request.LanguageCulture;
-                await _repository.UpdateAsync(userToBeUpdated);
+                await _repository.UpdateAsync(userToBeUpdated, cancellationToken);
 
                 return Unit.Value;
             }

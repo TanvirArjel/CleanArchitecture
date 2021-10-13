@@ -30,7 +30,7 @@ namespace Identity.Application.Queries.UserQueries
             {
                 request.ThrowIfNull(nameof(request));
 
-                RefreshToken refreshToken = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId);
+                RefreshToken refreshToken = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
 
                 return refreshToken;
             }

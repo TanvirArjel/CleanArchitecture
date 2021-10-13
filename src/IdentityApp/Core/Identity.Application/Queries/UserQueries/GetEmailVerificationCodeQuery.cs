@@ -33,7 +33,7 @@ namespace Identity.Application.Queries.UserQueries
                 request.ThrowIfNull(nameof(request));
 
                 EmailVerificationCode emailVerificationCode = await _repository
-                .GetAsync<EmailVerificationCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null);
+                .GetAsync<EmailVerificationCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null, cancellationToken);
 
                 return emailVerificationCode;
             }

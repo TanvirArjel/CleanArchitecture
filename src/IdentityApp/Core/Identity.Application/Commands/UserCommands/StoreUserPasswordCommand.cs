@@ -45,7 +45,7 @@ namespace Identity.Application.Commands.UserCommands
                     SetAtUtc = DateTime.UtcNow
                 };
 
-                await _repository.InsertAsync(userOldPassword);
+                await _repository.InsertAsync(userOldPassword, cancellationToken);
 
                 return Unit.Value;
             }

@@ -19,7 +19,7 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
         {
             department.ThrowIfNull(nameof(department));
 
-            if (department.Name.Equals(name))
+            if (department.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
             {
                 return department;
             }

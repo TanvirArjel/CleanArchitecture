@@ -46,7 +46,7 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
             employee.ThrowIfNull(nameof(employee));
             email.ThrowIfNullOrEmpty(nameof(email));
 
-            if (employee.Email.Equals(email))
+            if (employee.Email.Equals(email, StringComparison.OrdinalIgnoreCase))
             {
                 return employee;
             }
@@ -68,7 +68,7 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
             employee.ThrowIfNull(nameof(employee));
             phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
 
-            if (employee.PhoneNumber.Equals(phoneNumber))
+            if (employee.PhoneNumber.Equals(phoneNumber, StringComparison.OrdinalIgnoreCase))
             {
                 return employee;
             }

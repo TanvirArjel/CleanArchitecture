@@ -28,7 +28,7 @@ namespace EmployeeManagement.Application.Queries.DepartmentQueries
             public async Task<bool> Handle(IsDepartmentExistentByNameQuery request, CancellationToken cancellationToken)
             {
                 request.ThrowIfNull(nameof(request));
-                bool isExists = await _repository.ExistsAsync<Department>(d => d.Name == request.Name);
+                bool isExists = await _repository.ExistsAsync<Department>(d => d.Name == request.Name, cancellationToken);
                 return isExists;
             }
         }

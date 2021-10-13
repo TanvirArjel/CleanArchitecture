@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using Identity.Domain.Entities;
@@ -40,12 +41,13 @@ namespace Identity.Application.Commands.UserCommands
             {
                 request.ThrowIfNull(nameof(request));
 
-                IDbContextTransaction dbContextTransaction = await _repository.BeginTransactionAsync();
+                IDbContextTransaction dbContextTransaction = await _repository
+                    .BeginTransactionAsync(IsolationLevel.Unspecified, cancellationToken);
 
                 try
                 {
                     PasswordResetCode passwordResetCode = await _repository
-                    .GetAsync<PasswordResetCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null);
+                    .GetAsync<PasswordResetCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null, cancellationToken);
 
                     if (passwordResetCode == null)
                     {
@@ -57,7 +59,7 @@ namespace Identity.Application.Commands.UserCommands
                         throw new InvalidOperationException("The code is expired.");
                     }
 
-                    User applicationUser = await _repository.GetAsync<User>(au => au.Email == request.Email);
+                    User applicationUser = await _repository.GetAsync<User>(au => au.Email == request.Email, cancellationToken);
 
                     if (applicationUser == null)
                     {
@@ -66,18 +68,18 @@ namespace Identity.Application.Commands.UserCommands
 
                     string newHashedPassword = _passwordHasher.HashPassword(applicationUser, request.NewPassword);
                     applicationUser.PasswordHash = newHashedPassword;
-                    await _repository.UpdateAsync(applicationUser);
+                    await _repository.UpdateAsync(applicationUser, cancellationToken);
 
                     passwordResetCode.UsedAtUtc = DateTime.UtcNow;
-                    await _repository.UpdateAsync(passwordResetCode);
+                    await _repository.UpdateAsync(passwordResetCode, cancellationToken);
 
-                    await dbContextTransaction.CommitAsync();
+                    await dbContextTransaction.CommitAsync(cancellationToken);
 
                     return Unit.Value;
                 }
                 catch (Exception)
                 {
-                    await dbContextTransaction.RollbackAsync();
+                    await dbContextTransaction.RollbackAsync(cancellationToken);
                     throw;
                 }
             }

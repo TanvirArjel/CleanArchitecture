@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "Not applicable.", Scope = "namespaceanddescendants", Target = "~N:Identity.Api.Endpoints")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable", Scope = "namespaceanddescendants", Target = "~N:Identity.Api.Endpoints")]

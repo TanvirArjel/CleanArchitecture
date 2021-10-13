@@ -30,11 +30,11 @@ namespace Identity.Infrastructure.Services
                 if (paramters != null)
                 {
                     string jsonParamters = JsonSerializer.Serialize(paramters);
-                    _logger.LogCritical(exception, "Paramters: {0}", jsonParamters);
+                    _logger.LogCritical(exception, "Paramters: {JsonParamters}", jsonParamters);
                 }
                 else
                 {
-                    _logger.LogCritical(exception, exception.Message);
+                    _logger.LogCritical(exception, "Exception Occured: {P1}", exception.Message);
                 }
 
                 await Task.CompletedTask;
@@ -51,7 +51,7 @@ namespace Identity.Infrastructure.Services
             {
                 exception.ThrowIfNull(nameof(exception));
 
-                _logger.LogCritical(exception, "RequestPath: {0} and RequestBody: {1}", requestPath, requestBody);
+                _logger.LogCritical(exception, "RequestPath: {RequestPath} and RequestBody: {RequestBody}", requestPath, requestBody);
 
                 await Task.CompletedTask;
             }

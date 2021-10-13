@@ -33,7 +33,7 @@ namespace Identity.Application.Queries.UserQueries
             {
                 request.ThrowIfNull(nameof(request));
 
-                bool isRefreshTokenValid = await _repository.ExistsAsync<RefreshToken>(rt => rt.UserId == request.UserId && rt.Token == request.RefreshToken);
+                bool isRefreshTokenValid = await _repository.ExistsAsync<RefreshToken>(rt => rt.UserId == request.UserId && rt.Token == request.RefreshToken, cancellationToken);
 
                 return isRefreshTokenValid;
             }

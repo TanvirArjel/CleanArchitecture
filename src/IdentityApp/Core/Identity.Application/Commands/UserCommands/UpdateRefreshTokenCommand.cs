@@ -33,7 +33,7 @@ namespace Identity.Application.Commands.UserCommands
             {
                 request.ThrowIfNull(nameof(request));
 
-                RefreshToken refreshTokenToBeUpdated = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId);
+                RefreshToken refreshTokenToBeUpdated = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
 
                 if (refreshTokenToBeUpdated == null)
                 {
@@ -44,7 +44,7 @@ namespace Identity.Application.Commands.UserCommands
                 refreshTokenToBeUpdated.ExpireAtUtc = DateTime.UtcNow;
                 refreshTokenToBeUpdated.CreatedAtUtc = DateTime.UtcNow.AddDays(10);
 
-                await _repository.UpdateAsync(refreshTokenToBeUpdated);
+                await _repository.UpdateAsync(refreshTokenToBeUpdated, cancellationToken);
 
                 return refreshTokenToBeUpdated;
             }

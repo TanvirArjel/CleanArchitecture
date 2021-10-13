@@ -10,15 +10,15 @@
 
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.1.21452.15" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.1.21452.15" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-rc.1.21451.13" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.2.21480.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.2.21480.10" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-rc.2.21480.5" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.13.1" />
-		<PackageReference Include="System.Net.Http.Json" Version="6.0.0-rc.1.21451.13" />
+		<PackageReference Include="System.Net.Http.Json" Version="6.0.0-rc.2.21480.5" />
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.1" />
 		<PackageReference Include="TanvirArjel.Blazor" Version="1.6.0" />
 		<PackageReference Include="TanvirArjel.CustomValidation" Version="1.2.1" />

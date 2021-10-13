@@ -41,7 +41,7 @@ public class GetDepartmentByIdQuery : IRequest<DepartmentDetailsDto>
                 LastModifiedAtUtc = d.LastModifiedAtUtc
             };
 
-            DepartmentDetailsDto departmentDetailsDto = await _repository.GetByIdAsync(request.Id, selectExp);
+            DepartmentDetailsDto departmentDetailsDto = await _repository.GetByIdAsync(request.Id, selectExp, cancellationToken);
 
             return departmentDetailsDto;
         }

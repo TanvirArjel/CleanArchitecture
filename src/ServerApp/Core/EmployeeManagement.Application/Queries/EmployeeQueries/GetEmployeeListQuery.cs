@@ -54,7 +54,7 @@ public class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
                 PageSize = request.PageSize
             };
 
-            PaginatedList<EmployeeDto> employeeDetailsDtos = await _repository.GetListAsync(paginationSpecification, selectExpression);
+            PaginatedList<EmployeeDto> employeeDetailsDtos = await _repository.GetListAsync(paginationSpecification, selectExpression, cancellationToken);
 
             return employeeDetailsDtos;
         }

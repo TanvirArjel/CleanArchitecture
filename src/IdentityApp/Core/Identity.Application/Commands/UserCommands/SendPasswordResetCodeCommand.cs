@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Identity.Application.Infrastrucures;
@@ -40,15 +41,15 @@ namespace Identity.Application.Commands.UserCommands
             {
                 request.ThrowIfNull(nameof(request));
 
-                bool isExistent = await _repository.ExistsAsync<User>(u => u.Email == request.Email);
+                bool isExistent = await _repository.ExistsAsync<User>(u => u.Email == request.Email, cancellationToken);
 
                 if (isExistent == false)
                 {
                     throw new InvalidOperationException("The user does not exist with the provided email.");
                 }
 
-                Random generator = new Random();
-                string verificationCode = generator.Next(0, 1000000).ToString("D6", CultureInfo.InvariantCulture);
+                int randomNumber = RandomNumberGenerator.GetInt32(0, 1000000);
+                string verificationCode = randomNumber.ToString("D6", CultureInfo.InvariantCulture);
 
                 PasswordResetCode emailVerificationCode = new PasswordResetCode()
                 {
@@ -57,7 +58,7 @@ namespace Identity.Application.Commands.UserCommands
                     SentAtUtc = DateTime.UtcNow
                 };
 
-                await _repository.InsertAsync(emailVerificationCode);
+                await _repository.InsertAsync(emailVerificationCode, cancellationToken);
 
                 (string Email, string VerificationCode) model = (request.Email, verificationCode);
                 string subject = "Reset Password";
