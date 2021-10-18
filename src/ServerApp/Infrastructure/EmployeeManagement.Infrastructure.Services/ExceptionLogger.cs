@@ -29,15 +29,8 @@ namespace EmployeeManagement.Infrastructure.Services
                     throw new ArgumentNullException(nameof(exception));
                 }
 
-                if (paramters != null)
-                {
-                    string jsonParamters = JsonSerializer.Serialize(paramters);
-                    _logger.LogCritical(exception, "Paramters: {JsonParamters}", jsonParamters);
-                }
-                else
-                {
-                    _logger.LogCritical(exception, "Exception Occured: {P1}", exception.Message);
-                }
+                string jsonParamters = paramters != null ? JsonSerializer.Serialize(paramters) : "No paratmer.";
+                _logger.LogCritical(exception, "Paramters: {P1}", jsonParamters);
 
                 await Task.CompletedTask;
             }
@@ -56,7 +49,7 @@ namespace EmployeeManagement.Infrastructure.Services
                     throw new ArgumentNullException(nameof(exception));
                 }
 
-                _logger.LogCritical(exception, "RequestedPath: {RequestPath} and RequestBody: {RequestBody}", requestPath, requestBody);
+                _logger.LogCritical(exception, "RequestedPath: {P1} and RequestBody: {P2}", requestPath, requestBody);
 
                 await Task.CompletedTask;
             }

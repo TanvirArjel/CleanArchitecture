@@ -27,15 +27,8 @@ namespace Identity.Infrastructure.Services
             {
                 exception.ThrowIfNull(nameof(exception));
 
-                if (paramters != null)
-                {
-                    string jsonParamters = JsonSerializer.Serialize(paramters);
-                    _logger.LogCritical(exception, "Paramters: {JsonParamters}", jsonParamters);
-                }
-                else
-                {
-                    _logger.LogCritical(exception, "Exception Occured: {P1}", exception.Message);
-                }
+                string jsonParamters = paramters != null ? JsonSerializer.Serialize(paramters) : "No paratemr";
+                _logger.LogCritical(exception, "Paramters: {P1}", jsonParamters);
 
                 await Task.CompletedTask;
             }
@@ -51,7 +44,7 @@ namespace Identity.Infrastructure.Services
             {
                 exception.ThrowIfNull(nameof(exception));
 
-                _logger.LogCritical(exception, "RequestPath: {RequestPath} and RequestBody: {RequestBody}", requestPath, requestBody);
+                _logger.LogCritical(exception, "RequestPath: {P1} and RequestBody: {P2}", requestPath, requestBody);
 
                 await Task.CompletedTask;
             }
