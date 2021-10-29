@@ -6,7 +6,7 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
 {
     public class Department : BaseEntity
     {
-        internal Department(string name, string description)
+        public Department(string name, string description)
         {
             Id = Guid.NewGuid();
             SetName(name);
@@ -29,7 +29,7 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
                                      .ThrowIfOutOfLength(20, 100, nameof(description));
         }
 
-        internal void SetName(string name)
+        public void SetName(string name)
         {
             Name = name.ThrowIfNullOrEmpty(nameof(name))
                        .ThrowIfOutOfLength(2, 50, nameof(name));

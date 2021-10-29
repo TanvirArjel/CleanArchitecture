@@ -7,7 +7,7 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
 {
     public class Employee : BaseEntity
     {
-        internal Employee(
+        public Employee(
             string name,
             Guid departmentId,
             DateTime dateOfBirth,
@@ -56,18 +56,18 @@ namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
             DateOfBirth = dateOfBirth;
         }
 
-        internal void SetDeparment(Guid departmentId)
+        public void SetDeparment(Guid departmentId)
         {
             DepartmentId = departmentId.ThrowIfEmpty(nameof(departmentId));
         }
 
-        internal void SetEmail(string email)
+        public void SetEmail(string email)
         {
             Email = email.ThrowIfNullOrEmpty(nameof(email))
                          .ThrowIfNotValidEmail(nameof(email));
         }
 
-        internal void SetPhoneNumber(string phoneNumber)
+        public void SetPhoneNumber(string phoneNumber)
         {
             PhoneNumber = phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
         }

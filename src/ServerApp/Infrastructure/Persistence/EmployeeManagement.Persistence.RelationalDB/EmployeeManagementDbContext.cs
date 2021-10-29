@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Persistence.RelationalDB
 {
-    internal class EmployeeManagementDbContext : DbContext
+    public class EmployeeManagementDbContext : DbContext
     {
         public EmployeeManagementDbContext(DbContextOptions<EmployeeManagementDbContext> options)
             : base(options)
