@@ -10,12 +10,12 @@
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="9.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.2.0" />
-		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.13.1" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.14.1" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.13.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.1" />
 		<PackageReference Include="TanvirArjel.EFCore.GenericRepository" Version="5.7.0" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="2.0.0" />

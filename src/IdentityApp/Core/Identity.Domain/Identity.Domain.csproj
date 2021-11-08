@@ -13,7 +13,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.2.1" />
-		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.0-rc.2.21480.10" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.0" />
 	</ItemGroup>
 
 </Project>
