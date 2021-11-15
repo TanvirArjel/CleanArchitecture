@@ -23,12 +23,14 @@ namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
 
         public string Description { get; private set; }
 
+        // Public methods
         public void SetDescription(string description)
         {
             Description = description.ThrowIfNullOrEmpty(nameof(description))
                                      .ThrowIfOutOfLength(20, 100, nameof(description));
         }
 
+        // Internal methods
         internal void SetName(string name)
         {
             Name = name.ThrowIfNullOrEmpty(nameof(name))
