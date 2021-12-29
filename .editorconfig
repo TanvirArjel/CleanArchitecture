@@ -68,3 +68,6 @@ dotnet_diagnostic.CA1056.severity = none
 
 # CA1054: URI-like parameters should not be strings
 dotnet_diagnostic.CA1054.severity = none
+
+# CA1716: Rename namespace BlazorApps.Shared.Extensions so that it no longer conflicts with the reserved language keyword 'Shared'.
+dotnet_diagnostic.CA1716.severity = none
