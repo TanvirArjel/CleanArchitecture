@@ -8,11 +8,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -22,8 +22,8 @@
 		</PackageReference>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
