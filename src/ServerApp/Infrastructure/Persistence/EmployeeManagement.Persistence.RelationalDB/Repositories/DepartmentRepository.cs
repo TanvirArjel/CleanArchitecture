@@ -7,66 +7,65 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TanvirArjel.ArgumentChecker;
 
-namespace EmployeeManagement.Persistence.RelationalDB.Repositories
+namespace EmployeeManagement.Persistence.RelationalDB.Repositories;
+
+internal class DepartmentRepository : IDepartmentRepository
 {
-    internal class DepartmentRepository : IDepartmentRepository
+    private readonly EmployeeManagementDbContext _dbContext;
+
+    public DepartmentRepository(EmployeeManagementDbContext dbContext)
     {
-        private readonly EmployeeManagementDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public DepartmentRepository(EmployeeManagementDbContext dbContext)
+    public Task<bool> ExistsAsync(Expression<Func<Department, bool>> condition)
+    {
+        IQueryable<Department> queryable = _dbContext.Set<Department>();
+
+        if (condition != null)
         {
-            _dbContext = dbContext;
+            queryable = queryable.Where(condition);
         }
 
-        public Task<bool> ExistsAsync(Expression<Func<Department, bool>> condition)
+        return queryable.AnyAsync();
+    }
+
+    public async Task<Department> GetByIdAsync(Guid departmentId)
+    {
+        departmentId.ThrowIfEmpty(nameof(departmentId));
+
+        Department department = await _dbContext.Set<Department>().FindAsync(departmentId);
+        return department;
+    }
+
+    public async Task InsertAsync(Department department)
+    {
+        department.ThrowIfNull(nameof(department));
+
+        await _dbContext.AddAsync(department);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Department department)
+    {
+        department.ThrowIfNull(nameof(department));
+
+        EntityEntry<Department> trackedEntity = _dbContext.ChangeTracker.Entries<Department>()
+            .FirstOrDefault(x => x.Entity == department);
+
+        if (trackedEntity == null)
         {
-            IQueryable<Department> queryable = _dbContext.Set<Department>();
-
-            if (condition != null)
-            {
-                queryable = queryable.Where(condition);
-            }
-
-            return queryable.AnyAsync();
+            _dbContext.Update(department);
         }
 
-        public async Task<Department> GetByIdAsync(Guid departmentId)
-        {
-            departmentId.ThrowIfEmpty(nameof(departmentId));
+        await _dbContext.SaveChangesAsync();
+    }
 
-            Department department = await _dbContext.Set<Department>().FindAsync(departmentId);
-            return department;
-        }
+    public async Task DeleteAsync(Department department)
+    {
+        department.ThrowIfNull(nameof(department));
 
-        public async Task InsertAsync(Department department)
-        {
-            department.ThrowIfNull(nameof(department));
-
-            await _dbContext.AddAsync(department);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Department department)
-        {
-            department.ThrowIfNull(nameof(department));
-
-            EntityEntry<Department> trackedEntity = _dbContext.ChangeTracker.Entries<Department>()
-                .FirstOrDefault(x => x.Entity == department);
-
-            if (trackedEntity == null)
-            {
-                _dbContext.Update(department);
-            }
-
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(Department department)
-        {
-            department.ThrowIfNull(nameof(department));
-
-            _dbContext.Remove(department);
-            await _dbContext.SaveChangesAsync();
-        }
+        _dbContext.Remove(department);
+        await _dbContext.SaveChangesAsync();
     }
 }

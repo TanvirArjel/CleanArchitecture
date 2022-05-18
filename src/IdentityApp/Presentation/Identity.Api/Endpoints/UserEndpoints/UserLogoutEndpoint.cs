@@ -2,16 +2,15 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Identity.Api.Endpoints.UserEndpoints
+namespace Identity.Api.Endpoints.UserEndpoints;
+
+[ApiVersion("1.0")]
+public class UserLogoutEndpoint : UserEndpointBase
 {
-    [ApiVersion("1.0")]
-    public class UserLogoutEndpoint : UserEndpointBase
+    [HttpPost("logout")]
+    public async Task<ActionResult> Post()
     {
-        [HttpPost("logout")]
-        public async Task<ActionResult> Post()
-        {
-            await HttpContext.SignOutAsync();
-            return Ok();
-        }
+        await HttpContext.SignOutAsync();
+        return Ok();
     }
 }

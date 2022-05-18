@@ -1,85 +1,81 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Application.Caching.Handlers;
+﻿using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using EmployeeManagement.Domain.Exceptions;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
-namespace EmployeeManagement.Application.Commands.EmployeeCommands
+namespace EmployeeManagement.Application.Commands.EmployeeCommands;
+
+public class UpdateEmployeeCommand : IRequest
 {
-    public class UpdateEmployeeCommand : IRequest
+    public UpdateEmployeeCommand(
+       Guid id,
+       string name,
+       Guid departmentId,
+       DateTime dateOfBirth,
+       string email,
+       string phoneNumber)
     {
-        public UpdateEmployeeCommand(
-           Guid id,
-           string name,
-           Guid departmentId,
-           DateTime dateOfBirth,
-           string email,
-           string phoneNumber)
+        Id = id;
+        Name = name;
+        DepartmentId = departmentId;
+        DateOfBirth = dateOfBirth;
+        Email = email;
+        PhoneNumber = phoneNumber;
+    }
+
+    public Guid Id { get; }
+
+    public string Name { get; }
+
+    public Guid DepartmentId { get; }
+
+    public DateTime DateOfBirth { get; }
+
+    public string Email { get; }
+
+    public string PhoneNumber { get; }
+
+    private class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand>
+    {
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly EmployeeManipulator _employeeManipulator;
+        private readonly IEmployeeCacheHandler _employeeCacheHandler;
+
+        public UpdateEmployeeCommandHandler(
+            IEmployeeRepository employeeRepository,
+            EmployeeManipulator employeeManipulator,
+            IEmployeeCacheHandler employeeCacheHandler)
         {
-            Id = id;
-            Name = name;
-            DepartmentId = departmentId;
-            DateOfBirth = dateOfBirth;
-            Email = email;
-            PhoneNumber = phoneNumber;
+            _employeeRepository = employeeRepository;
+            _employeeManipulator = employeeManipulator;
+            _employeeCacheHandler = employeeCacheHandler;
         }
 
-        public Guid Id { get; }
-
-        public string Name { get; }
-
-        public Guid DepartmentId { get; }
-
-        public DateTime DateOfBirth { get; }
-
-        public string Email { get; }
-
-        public string PhoneNumber { get; }
-
-        private class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand>
+        public async Task<Unit> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
         {
-            private readonly IEmployeeRepository _employeeRepository;
-            private readonly EmployeeManipulator _employeeManipulator;
-            private readonly IEmployeeCacheHandler _employeeCacheHandler;
+            request.ThrowIfNull(nameof(request));
 
-            public UpdateEmployeeCommandHandler(
-                IEmployeeRepository employeeRepository,
-                EmployeeManipulator employeeManipulator,
-                IEmployeeCacheHandler employeeCacheHandler)
+            Employee employeeeToBeUpdated = await _employeeRepository.GetByIdAsync(request.Id);
+
+            if (employeeeToBeUpdated == null)
             {
-                _employeeRepository = employeeRepository;
-                _employeeManipulator = employeeManipulator;
-                _employeeCacheHandler = employeeCacheHandler;
+                throw new EntityNotFoundException(typeof(Employee), request.Id);
             }
 
-            public async Task<Unit> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
+            employeeeToBeUpdated.SetName(request.Name);
+            employeeeToBeUpdated.SetDateOfBirth(request.DateOfBirth);
 
-                Employee employeeeToBeUpdated = await _employeeRepository.GetByIdAsync(request.Id);
+            await _employeeManipulator.SetDepartmentAsync(employeeeToBeUpdated, request.DepartmentId);
+            await _employeeManipulator.SetEmailAsync(employeeeToBeUpdated, request.Email);
+            await _employeeManipulator.SetPhoneNumberAsync(employeeeToBeUpdated, request.PhoneNumber);
 
-                if (employeeeToBeUpdated == null)
-                {
-                    throw new EntityNotFoundException(typeof(Employee), request.Id);
-                }
+            await _employeeRepository.UpdateAsync(employeeeToBeUpdated);
 
-                employeeeToBeUpdated.SetName(request.Name);
-                employeeeToBeUpdated.SetDateOfBirth(request.DateOfBirth);
+            // Remove the cache for this employee
+            await _employeeCacheHandler.RemoveDetailsByIdAsync(request.Id);
 
-                await _employeeManipulator.SetDepartmentAsync(employeeeToBeUpdated, request.DepartmentId);
-                await _employeeManipulator.SetEmailAsync(employeeeToBeUpdated, request.Email);
-                await _employeeManipulator.SetPhoneNumberAsync(employeeeToBeUpdated, request.PhoneNumber);
-
-                await _employeeRepository.UpdateAsync(employeeeToBeUpdated);
-
-                // Remove the cache for this employee
-                await _employeeCacheHandler.RemoveDetailsByIdAsync(request.Id);
-
-                return Unit.Value;
-            }
+            return Unit.Value;
         }
     }
 }

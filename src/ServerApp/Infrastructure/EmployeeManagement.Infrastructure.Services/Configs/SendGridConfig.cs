@@ -1,14 +1,13 @@
 ﻿using TanvirArjel.ArgumentChecker;
 
-namespace EmployeeManagement.Infrastructure.Services.Configs
-{
-    public class SendGridConfig
-    {
-        public SendGridConfig(string apiKey)
-        {
-            ApiKey = apiKey.ThrowIfNullOrEmpty(nameof(apiKey));
-        }
+namespace EmployeeManagement.Infrastructure.Services.Configs;
 
-        public string ApiKey { get; set; }
+public class SendGridConfig
+{
+    public SendGridConfig(string apiKey)
+    {
+        ApiKey = apiKey.ThrowIfNullOrEmpty(nameof(apiKey));
     }
+
+    public string ApiKey { get; set; }
 }

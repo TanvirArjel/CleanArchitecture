@@ -9,73 +9,72 @@ using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Blazor.Components;
 using TanvirArjel.Blazor.Utilities;
 
-namespace BlazorWasmApp.Components.DepartmentComponents
+namespace BlazorWasmApp.Components.DepartmentComponents;
+
+public partial class DeleteDepartmentModalComponent
 {
-    public partial class DeleteDepartmentModalComponent
+    private readonly DepartmentService _departmentService;
+    private readonly ExceptionLogger _exceptionLogger;
+
+    public DeleteDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
     {
-        private readonly DepartmentService _departmentService;
-        private readonly ExceptionLogger _exceptionLogger;
+        _departmentService = departmentService;
+        _exceptionLogger = exceptionLogger;
+    }
 
-        public DeleteDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
+    [Parameter]
+    public EventCallback DepartmentDeleted { get; set; }
+
+    private string ModalClass { get; set; } = string.Empty;
+
+    private bool ShowBackdrop { get; set; }
+
+    private DepartmentDetailsModel DepartmentDetailsModel { get; set; }
+
+    private CustomValidationMessages CustomValidationMessages { get; set; }
+
+    public async Task ShowAsync(Guid departmentId)
+    {
+        DepartmentDetailsModel = await _departmentService.GetByIdAsync(departmentId);
+
+        ModalClass = "show d-block";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        DepartmentDetailsModel = new DepartmentDetailsModel();
+    }
+
+    private void Close()
+    {
+        ModalClass = string.Empty;
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    private async Task HandleValidSubmit(Guid departmentId)
+    {
+        try
         {
-            _departmentService = departmentService;
-            _exceptionLogger = exceptionLogger;
-        }
+            departmentId.ThrowIfEmpty(nameof(departmentId));
 
-        [Parameter]
-        public EventCallback DepartmentDeleted { get; set; }
+            HttpResponseMessage httpResponseMessage = await _departmentService.DeleteAsync(departmentId);
 
-        private string ModalClass { get; set; } = string.Empty;
-
-        private bool ShowBackdrop { get; set; }
-
-        private DepartmentDetailsModel DepartmentDetailsModel { get; set; }
-
-        private CustomValidationMessages CustomValidationMessages { get; set; }
-
-        public async Task ShowAsync(Guid departmentId)
-        {
-            DepartmentDetailsModel = await _departmentService.GetByIdAsync(departmentId);
-
-            ModalClass = "show d-block";
-            ShowBackdrop = true;
-            StateHasChanged();
-        }
-
-        protected override void OnInitialized()
-        {
-            DepartmentDetailsModel = new DepartmentDetailsModel();
-        }
-
-        private void Close()
-        {
-            ModalClass = string.Empty;
-            ShowBackdrop = false;
-            StateHasChanged();
-        }
-
-        private async Task HandleValidSubmit(Guid departmentId)
-        {
-            try
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                departmentId.ThrowIfEmpty(nameof(departmentId));
-
-                HttpResponseMessage httpResponseMessage = await _departmentService.DeleteAsync(departmentId);
-
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    Close();
-                    await DepartmentDeleted.InvokeAsync();
-                    return;
-                }
-
-                await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
+                Close();
+                await DepartmentDeleted.InvokeAsync();
+                return;
             }
-            catch (Exception exception)
-            {
-                CustomValidationMessages.AddAndDisplay(string.Empty, ErrorMessages.ClientErrorMessage);
-                await _exceptionLogger.LogAsync(exception);
-            }
+
+            await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
+        }
+        catch (Exception exception)
+        {
+            CustomValidationMessages.AddAndDisplay(string.Empty, ErrorMessages.ClientErrorMessage);
+            await _exceptionLogger.LogAsync(exception);
         }
     }
 }

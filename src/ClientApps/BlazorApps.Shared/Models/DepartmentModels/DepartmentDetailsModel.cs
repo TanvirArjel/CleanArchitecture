@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace BlazorApps.Shared.Models.DepartmentModels
+namespace BlazorApps.Shared.Models.DepartmentModels;
+
+public class DepartmentDetailsModel
 {
-    public class DepartmentDetailsModel
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        public bool IsActive { get; set; }
+    public bool IsActive { get; set; }
 
-        public DateTime CreatedAtUtc { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
 
-        public DateTime? LastModifiedAtUtc { get; set; }
-    }
+    public DateTime? LastModifiedAtUtc { get; set; }
 }

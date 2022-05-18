@@ -5,84 +5,83 @@ using EmployeeManagement.Domain.Exceptions;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate
+namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
+
+[ScopedService]
+public class EmployeeManipulator
 {
-    [ScopedService]
-    public class EmployeeManipulator
+    private readonly IDepartmentRepository _departmentRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+
+    public EmployeeManipulator(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository)
     {
-        private readonly IDepartmentRepository _departmentRepository;
-        private readonly IEmployeeRepository _employeeRepository;
+        _departmentRepository = departmentRepository;
+        _employeeRepository = employeeRepository;
+    }
 
-        public EmployeeManipulator(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository)
+    public async Task<Employee> SetDepartmentAsync(Employee employee, Guid departmentId)
+    {
+        employee.ThrowIfNull(nameof(employee));
+        departmentId.ThrowIfEmpty(nameof(departmentId));
+
+        if (employee.DepartmentId.Equals(departmentId))
         {
-            _departmentRepository = departmentRepository;
-            _employeeRepository = employeeRepository;
-        }
-
-        public async Task<Employee> SetDepartmentAsync(Employee employee, Guid departmentId)
-        {
-            employee.ThrowIfNull(nameof(employee));
-            departmentId.ThrowIfEmpty(nameof(departmentId));
-
-            if (employee.DepartmentId.Equals(departmentId))
-            {
-                return employee;
-            }
-
-            bool isDepartmentExistent = await _departmentRepository.ExistsAsync(d => d.Id == departmentId);
-
-            if (isDepartmentExistent == false)
-            {
-                throw new EntityNotFoundException(typeof(Department), departmentId);
-            }
-
-            employee.SetDeparment(departmentId);
-
             return employee;
         }
 
-        public async Task<Employee> SetEmailAsync(Employee employee, string email)
+        bool isDepartmentExistent = await _departmentRepository.ExistsAsync(d => d.Id == departmentId);
+
+        if (isDepartmentExistent == false)
         {
-            employee.ThrowIfNull(nameof(employee));
-            email.ThrowIfNullOrEmpty(nameof(email));
+            throw new EntityNotFoundException(typeof(Department), departmentId);
+        }
 
-            if (employee.Email.Equals(email, StringComparison.OrdinalIgnoreCase))
-            {
-                return employee;
-            }
+        employee.SetDeparment(departmentId);
 
-            bool isPhoneNumberExistent = await _employeeRepository.ExistsAsync(d => d.Email == email);
+        return employee;
+    }
 
-            if (isPhoneNumberExistent)
-            {
-                throw new InvalidOperationException("An employee already exists with the provided email.");
-            }
+    public async Task<Employee> SetEmailAsync(Employee employee, string email)
+    {
+        employee.ThrowIfNull(nameof(employee));
+        email.ThrowIfNullOrEmpty(nameof(email));
 
-            employee.SetEmail(email);
-
+        if (employee.Email.Equals(email, StringComparison.OrdinalIgnoreCase))
+        {
             return employee;
         }
 
-        public async Task<Employee> SetPhoneNumberAsync(Employee employee, string phoneNumber)
+        bool isPhoneNumberExistent = await _employeeRepository.ExistsAsync(d => d.Email == email);
+
+        if (isPhoneNumberExistent)
         {
-            employee.ThrowIfNull(nameof(employee));
-            phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
+            throw new InvalidOperationException("An employee already exists with the provided email.");
+        }
 
-            if (employee.PhoneNumber.Equals(phoneNumber, StringComparison.OrdinalIgnoreCase))
-            {
-                return employee;
-            }
+        employee.SetEmail(email);
 
-            bool isPhoneNumberExistent = await _employeeRepository.ExistsAsync(d => d.PhoneNumber == phoneNumber);
+        return employee;
+    }
 
-            if (isPhoneNumberExistent)
-            {
-                throw new InvalidOperationException("An employee already exists with the provided phone number.");
-            }
+    public async Task<Employee> SetPhoneNumberAsync(Employee employee, string phoneNumber)
+    {
+        employee.ThrowIfNull(nameof(employee));
+        phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
 
-            employee.SetPhoneNumber(phoneNumber);
-
+        if (employee.PhoneNumber.Equals(phoneNumber, StringComparison.OrdinalIgnoreCase))
+        {
             return employee;
         }
+
+        bool isPhoneNumberExistent = await _employeeRepository.ExistsAsync(d => d.PhoneNumber == phoneNumber);
+
+        if (isPhoneNumberExistent)
+        {
+            throw new InvalidOperationException("An employee already exists with the provided phone number.");
+        }
+
+        employee.SetPhoneNumber(phoneNumber);
+
+        return employee;
     }
 }

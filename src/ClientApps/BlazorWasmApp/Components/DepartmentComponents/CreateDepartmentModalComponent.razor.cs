@@ -10,75 +10,74 @@ using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor.Components;
 using TanvirArjel.Blazor.Utilities;
 
-namespace BlazorWasmApp.Components.DepartmentComponents
+namespace BlazorWasmApp.Components.DepartmentComponents;
+
+public partial class CreateDepartmentModalComponent
 {
-    public partial class CreateDepartmentModalComponent
+    private readonly DepartmentService _departmentService;
+    private readonly ExceptionLogger _exceptionLogger;
+
+    public CreateDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
     {
-        private readonly DepartmentService _departmentService;
-        private readonly ExceptionLogger _exceptionLogger;
+        _departmentService = departmentService;
+        _exceptionLogger = exceptionLogger;
+    }
 
-        public CreateDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
+    [Parameter]
+    public EventCallback DepartmentCreated { get; set; }
+
+    private string ModalClass { get; set; } = string.Empty;
+
+    private bool ShowBackdrop { get; set; }
+
+    private CustomValidationMessages CustomValidationMessages { get; set; }
+
+    private EditContext FormEditContext { get; set; }
+
+    private CreateDepartmentModel CreateDepartmentModel { get; set; } = new CreateDepartmentModel();
+
+    public void Show()
+    {
+        FormEditContext = new EditContext(CreateDepartmentModel);
+
+        ModalClass = "show d-block";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        try
         {
-            _departmentService = departmentService;
-            _exceptionLogger = exceptionLogger;
-        }
+            HttpResponseMessage httpResponseMessage = await _departmentService.CreateAsync(CreateDepartmentModel);
 
-        [Parameter]
-        public EventCallback DepartmentCreated { get; set; }
-
-        private string ModalClass { get; set; } = string.Empty;
-
-        private bool ShowBackdrop { get; set; }
-
-        private CustomValidationMessages CustomValidationMessages { get; set; }
-
-        private EditContext FormEditContext { get; set; }
-
-        private CreateDepartmentModel CreateDepartmentModel { get; set; } = new CreateDepartmentModel();
-
-        public void Show()
-        {
-            FormEditContext = new EditContext(CreateDepartmentModel);
-
-            ModalClass = "show d-block";
-            ShowBackdrop = true;
-            StateHasChanged();
-        }
-
-        public async Task HandleValidSubmit()
-        {
-            try
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                HttpResponseMessage httpResponseMessage = await _departmentService.CreateAsync(CreateDepartmentModel);
-
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    Close();
-                    await DepartmentCreated.InvokeAsync();
-                    return;
-                }
-
-                await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
+                Close();
+                await DepartmentCreated.InvokeAsync();
+                return;
             }
-            catch (Exception exception)
-            {
-                CustomValidationMessages.AddAndDisplay(ErrorMessages.ClientErrorMessage);
-                await _exceptionLogger.LogAsync(exception);
-            }
-        }
 
-        protected override void OnInitialized()
-        {
-            FormEditContext = new EditContext(CreateDepartmentModel);
-            FormEditContext.AddBootstrapValidationClassProvider();
+            await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
         }
+        catch (Exception exception)
+        {
+            CustomValidationMessages.AddAndDisplay(ErrorMessages.ClientErrorMessage);
+            await _exceptionLogger.LogAsync(exception);
+        }
+    }
 
-        private void Close()
-        {
-            CreateDepartmentModel = new CreateDepartmentModel();
-            ModalClass = string.Empty;
-            ShowBackdrop = false;
-            StateHasChanged();
-        }
+    protected override void OnInitialized()
+    {
+        FormEditContext = new EditContext(CreateDepartmentModel);
+        FormEditContext.AddBootstrapValidationClassProvider();
+    }
+
+    private void Close()
+    {
+        CreateDepartmentModel = new CreateDepartmentModel();
+        ModalClass = string.Empty;
+        ShowBackdrop = false;
+        StateHasChanged();
     }
 }

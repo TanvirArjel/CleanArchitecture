@@ -1,7 +1,6 @@
-﻿namespace BlazorApps.Shared.Common
+﻿namespace BlazorApps.Shared.Common;
+
+public static class LocalStorageKey
 {
-    public static class LocalStorageKey
-    {
-        public const string Jwt = "LoggedInUserInfo";
-    }
+    public const string Jwt = "LoggedInUserInfo";
 }

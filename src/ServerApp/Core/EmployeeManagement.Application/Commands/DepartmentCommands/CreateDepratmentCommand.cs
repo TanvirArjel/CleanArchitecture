@@ -1,55 +1,51 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Application.Caching.Handlers;
+﻿using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
-namespace EmployeeManagement.Application.Commands.DepartmentCommands
+namespace EmployeeManagement.Application.Commands.DepartmentCommands;
+
+public class CreateDepratmentCommand : IRequest<Guid>
 {
-    public class CreateDepratmentCommand : IRequest<Guid>
+    public CreateDepratmentCommand(string name, string description)
     {
-        public CreateDepratmentCommand(string name, string description)
+        Name = name;
+        Description = description;
+    }
+
+    public string Name { get; }
+
+    public string Description { get; }
+
+    private class CreateDepratmentCommandHandler : IRequestHandler<CreateDepratmentCommand, Guid>
+    {
+        private readonly DepartmentFactory _departmentFactory;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IDepartmentCacheHandler _departmentCacheHandler;
+
+        public CreateDepratmentCommandHandler(
+            DepartmentFactory departmentFactory,
+            IDepartmentRepository departmentRepository,
+            IDepartmentCacheHandler departmentCacheHandler)
         {
-            Name = name;
-            Description = description;
+            _departmentFactory = departmentFactory;
+            _departmentRepository = departmentRepository;
+            _departmentCacheHandler = departmentCacheHandler;
         }
 
-        public string Name { get; }
-
-        public string Description { get; }
-
-        private class CreateDepratmentCommandHandler : IRequestHandler<CreateDepratmentCommand, Guid>
+        public async Task<Guid> Handle(CreateDepratmentCommand request, CancellationToken cancellationToken)
         {
-            private readonly DepartmentFactory _departmentFactory;
-            private readonly IDepartmentRepository _departmentRepository;
-            private readonly IDepartmentCacheHandler _departmentCacheHandler;
+            request.ThrowIfNull(nameof(request));
 
-            public CreateDepratmentCommandHandler(
-                DepartmentFactory departmentFactory,
-                IDepartmentRepository departmentRepository,
-                IDepartmentCacheHandler departmentCacheHandler)
-            {
-                _departmentFactory = departmentFactory;
-                _departmentRepository = departmentRepository;
-                _departmentCacheHandler = departmentCacheHandler;
-            }
+            Department department = await _departmentFactory.CreateAsync(request.Name, request.Description);
 
-            public async Task<Guid> Handle(CreateDepratmentCommand request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
+            // Persist to the database
+            await _departmentRepository.InsertAsync(department);
 
-                Department department = await _departmentFactory.CreateAsync(request.Name, request.Description);
+            // Remove the cache
+            await _departmentCacheHandler.RemoveListAsync();
 
-                // Persist to the database
-                await _departmentRepository.InsertAsync(department);
-
-                // Remove the cache
-                await _departmentCacheHandler.RemoveListAsync();
-
-                return department.Id;
-            }
+            return department.Id;
         }
     }
 }

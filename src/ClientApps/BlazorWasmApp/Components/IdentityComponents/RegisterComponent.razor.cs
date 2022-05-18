@@ -10,79 +10,78 @@ using TanvirArjel.Blazor.Components;
 using TanvirArjel.Blazor.Extensions;
 using TanvirArjel.Blazor.Utilities;
 
-namespace BlazorWasmApp.Components.IdentityComponents
+namespace BlazorWasmApp.Components.IdentityComponents;
+
+public partial class RegisterComponent
 {
-    public partial class RegisterComponent
+    private readonly UserService _userService;
+    private readonly NavigationManager _navigationManager;
+    private readonly ExceptionLogger _exceptionLogger;
+
+    public RegisterComponent(
+        UserService userService,
+        NavigationManager navigationManager,
+        ExceptionLogger exceptionLogger)
     {
-        private readonly UserService _userService;
-        private readonly NavigationManager _navigationManager;
-        private readonly ExceptionLogger _exceptionLogger;
+        _userService = userService;
+        _navigationManager = navigationManager;
+        _exceptionLogger = exceptionLogger;
+    }
 
-        public RegisterComponent(
-            UserService userService,
-            NavigationManager navigationManager,
-            ExceptionLogger exceptionLogger)
+    private EditContext FormContext { get; set; }
+
+    private RegistrationModel RegistrationModel { get; set; } = new RegistrationModel();
+
+    private CustomValidationMessages ValidationMessages { get; set; }
+
+    private bool IsSubmitBtnDisabled { get; set; }
+
+    protected override void OnInitialized()
+    {
+        FormContext = new EditContext(RegistrationModel);
+        FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
         {
-            _userService = userService;
-            _navigationManager = navigationManager;
-            _exceptionLogger = exceptionLogger;
-        }
+            string error = _navigationManager.GetQuery("error");
 
-        private EditContext FormContext { get; set; }
-
-        private RegistrationModel RegistrationModel { get; set; } = new RegistrationModel();
-
-        private CustomValidationMessages ValidationMessages { get; set; }
-
-        private bool IsSubmitBtnDisabled { get; set; }
-
-        protected override void OnInitialized()
-        {
-            FormContext = new EditContext(RegistrationModel);
-            FormContext.SetFieldCssClassProvider(new BootstrapValidationClassProvider());
-        }
-
-        protected override void OnAfterRender(bool firstRender)
-        {
-            if (firstRender)
+            if (!string.IsNullOrWhiteSpace(error))
             {
-                string error = _navigationManager.GetQuery("error");
-
-                if (!string.IsNullOrWhiteSpace(error))
-                {
-                    ValidationMessages.AddAndDisplay(string.Empty, error);
-                }
+                ValidationMessages.AddAndDisplay(string.Empty, error);
             }
         }
+    }
 
-        private async Task HandleValidSubmitAsync()
+    private async Task HandleValidSubmitAsync()
+    {
+        try
         {
-            try
-            {
-                IsSubmitBtnDisabled = true;
-                HttpResponseMessage httpResponseMessage = await _userService.RegisterAsync(RegistrationModel);
+            IsSubmitBtnDisabled = true;
+            HttpResponseMessage httpResponseMessage = await _userService.RegisterAsync(RegistrationModel);
 
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    _navigationManager.NavigateTo("identity/login");
-                    return;
-                }
-
-                await ValidationMessages.AddAndDisplayAsync(httpResponseMessage);
-                IsSubmitBtnDisabled = false;
-            }
-            catch (Exception exception)
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                IsSubmitBtnDisabled = false;
-                ValidationMessages.AddAndDisplay(ErrorMessages.ClientErrorMessage);
-                await _exceptionLogger.LogAsync(exception);
+                _navigationManager.NavigateTo("identity/login");
+                return;
             }
+
+            await ValidationMessages.AddAndDisplayAsync(httpResponseMessage);
+            IsSubmitBtnDisabled = false;
         }
-
-        private void SignUpWithGoogle()
+        catch (Exception exception)
         {
-            string loginUrl = "https://localhost:44363/api/v1/external-login/sign-up?provider=Google";
-            _navigationManager.NavigateTo(loginUrl, true);
+            IsSubmitBtnDisabled = false;
+            ValidationMessages.AddAndDisplay(ErrorMessages.ClientErrorMessage);
+            await _exceptionLogger.LogAsync(exception);
         }
+    }
+
+    private void SignUpWithGoogle()
+    {
+        string loginUrl = "https://localhost:44363/api/v1/external-login/sign-up?provider=Google";
+        _navigationManager.NavigateTo(loginUrl, true);
     }
 }

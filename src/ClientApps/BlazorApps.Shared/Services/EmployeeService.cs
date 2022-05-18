@@ -8,59 +8,58 @@ using BlazorApps.Shared.Models;
 using BlazorApps.Shared.Models.EmployeeModels;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace BlazorApps.Shared.Services
+namespace BlazorApps.Shared.Services;
+
+[SingletonService]
+public class EmployeeService
 {
-    [SingletonService]
-    public class EmployeeService
+    private readonly HttpClient _httpClient;
+
+    public EmployeeService(IHttpClientFactory httpClientFactory)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClientFactory.CreateClient("EmployeeManagementApi");
+    }
 
-        public EmployeeService(IHttpClientFactory httpClientFactory)
+    public async Task<List<EmployeeDetailsModel>> GetListAsync()
+    {
+        PaginatedList<EmployeeDetailsModel> paginatedList = await _httpClient
+            .GetFromJsonAsync<PaginatedList<EmployeeDetailsModel>>("v1/employees?pageNumber=1&&pageSize=50");
+        return paginatedList.Items.ToList();
+    }
+
+    public async Task<EmployeeDetailsModel> GetDetailsByIdAsync(Guid employeeId)
+    {
+        EmployeeDetailsModel employee = await _httpClient.GetFromJsonAsync<EmployeeDetailsModel>($"v1/employees/{employeeId}");
+        return employee;
+    }
+
+    public async Task<HttpResponseMessage> CreateAsync(CreateEmployeeModel createEmployeeViewModel)
+    {
+        if (createEmployeeViewModel == null)
         {
-            _httpClient = httpClientFactory.CreateClient("EmployeeManagementApi");
+            throw new ArgumentNullException(nameof(createEmployeeViewModel));
         }
 
-        public async Task<List<EmployeeDetailsModel>> GetListAsync()
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync("v1/employees", createEmployeeViewModel);
+        return response;
+    }
+
+    public async Task<HttpResponseMessage> UpdateAsync(UpdateEmployeeModel updateEmployeeViewModel)
+    {
+        if (updateEmployeeViewModel == null)
         {
-            PaginatedList<EmployeeDetailsModel> paginatedList = await _httpClient
-                .GetFromJsonAsync<PaginatedList<EmployeeDetailsModel>>("v1/employees?pageNumber=1&&pageSize=50");
-            return paginatedList.Items.ToList();
+            throw new ArgumentNullException(nameof(updateEmployeeViewModel));
         }
 
-        public async Task<EmployeeDetailsModel> GetDetailsByIdAsync(Guid employeeId)
-        {
-            EmployeeDetailsModel employee = await _httpClient.GetFromJsonAsync<EmployeeDetailsModel>($"v1/employees/{employeeId}");
-            return employee;
-        }
+        HttpResponseMessage response = await _httpClient
+            .PutAsJsonAsync($"v1/employees/{updateEmployeeViewModel.Id}", updateEmployeeViewModel);
 
-        public async Task<HttpResponseMessage> CreateAsync(CreateEmployeeModel createEmployeeViewModel)
-        {
-            if (createEmployeeViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(createEmployeeViewModel));
-            }
+        return response;
+    }
 
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync("v1/employees", createEmployeeViewModel);
-            return response;
-        }
-
-        public async Task<HttpResponseMessage> UpdateAsync(UpdateEmployeeModel updateEmployeeViewModel)
-        {
-            if (updateEmployeeViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(updateEmployeeViewModel));
-            }
-
-            HttpResponseMessage response = await _httpClient
-                .PutAsJsonAsync($"v1/employees/{updateEmployeeViewModel.Id}", updateEmployeeViewModel);
-
-            return response;
-        }
-
-        public async Task<HttpResponseMessage> DeleteAsync(Guid employeeId)
-        {
-            HttpResponseMessage response = await _httpClient.DeleteAsync($"v1/employees/{employeeId}");
-            return response;
-        }
+    public async Task<HttpResponseMessage> DeleteAsync(Guid employeeId)
+    {
+        HttpResponseMessage response = await _httpClient.DeleteAsync($"v1/employees/{employeeId}");
+        return response;
     }
 }

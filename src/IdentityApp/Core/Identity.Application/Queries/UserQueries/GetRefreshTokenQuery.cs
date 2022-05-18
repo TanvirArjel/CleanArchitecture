@@ -6,34 +6,33 @@ using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace Identity.Application.Queries.UserQueries
+namespace Identity.Application.Queries.UserQueries;
+
+public class GetRefreshTokenQuery : IRequest<RefreshToken>
 {
-    public class GetRefreshTokenQuery : IRequest<RefreshToken>
+    public GetRefreshTokenQuery(Guid userId)
     {
-        public GetRefreshTokenQuery(Guid userId)
+        UserId = userId.ThrowIfEmpty(nameof(userId));
+    }
+
+    public Guid UserId { get; }
+
+    private class GetRefreshTokenQueryHanlder : IRequestHandler<GetRefreshTokenQuery, RefreshToken>
+    {
+        private readonly IRepository _repository;
+
+        public GetRefreshTokenQueryHanlder(IRepository repository)
         {
-            UserId = userId.ThrowIfEmpty(nameof(userId));
+            _repository = repository;
         }
 
-        public Guid UserId { get; }
-
-        private class GetRefreshTokenQueryHanlder : IRequestHandler<GetRefreshTokenQuery, RefreshToken>
+        public async Task<RefreshToken> Handle(GetRefreshTokenQuery request, CancellationToken cancellationToken)
         {
-            private readonly IRepository _repository;
+            request.ThrowIfNull(nameof(request));
 
-            public GetRefreshTokenQueryHanlder(IRepository repository)
-            {
-                _repository = repository;
-            }
+            RefreshToken refreshToken = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
 
-            public async Task<RefreshToken> Handle(GetRefreshTokenQuery request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
-
-                RefreshToken refreshToken = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
-
-                return refreshToken;
-            }
+            return refreshToken;
         }
     }
 }

@@ -7,97 +7,96 @@ using Microsoft.IdentityModel.Tokens;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace BlazorApps.Shared.Common
+namespace BlazorApps.Shared.Common;
+
+[ScopedService]
+public class JwtTokenParser
 {
-    [ScopedService]
-    public class JwtTokenParser
+    private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+
+    public JwtTokenParser(JwtSecurityTokenHandler jwtSecurityTokenHandler)
     {
-        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+        _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
+    }
 
-        public JwtTokenParser(JwtSecurityTokenHandler jwtSecurityTokenHandler)
+    [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Not applicable here.")]
+    public ClaimsPrincipal GetClaimsPrincipal(string token)
+    {
+        token.ThrowIfNullOrEmpty(nameof(token));
+
+        JwtSecurityToken jwtToken = new JwtSecurityToken(token);
+
+        List<Claim> microsoftClaims = new List<Claim>();
+
+        foreach (Claim item in jwtToken.Claims)
         {
-            _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
-        }
-
-        [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Not applicable here.")]
-        public ClaimsPrincipal GetClaimsPrincipal(string token)
-        {
-            token.ThrowIfNullOrEmpty(nameof(token));
-
-            JwtSecurityToken jwtToken = new JwtSecurityToken(token);
-
-            List<Claim> microsoftClaims = new List<Claim>();
-
-            foreach (Claim item in jwtToken.Claims)
+            switch (item.Type)
             {
-                switch (item.Type)
-                {
-                    case JwtRegisteredClaimNames.NameId:
-                        microsoftClaims.Add(new Claim(ClaimTypes.NameIdentifier, item.Value));
-                        break;
-                    case JwtRegisteredClaimNames.Name:
-                        microsoftClaims.Add(new Claim(ClaimTypes.Name, item.Value));
-                        break;
-                    case JwtRegisteredClaimNames.GivenName:
-                        microsoftClaims.Add(new Claim(ClaimTypes.GivenName, item.Value));
-                        break;
-                    case JwtRegisteredClaimNames.Sub:
-                        microsoftClaims.Add(new Claim(ClaimTypes.NameIdentifier, item.Value));
-                        break;
-                    case JwtRegisteredClaimNames.Email:
-                        microsoftClaims.Add(new Claim(ClaimTypes.Email, item.Value));
-                        break;
-                    case JwtRegisteredClaimNames.Iat:
-                        microsoftClaims.Add(new Claim(ClaimTypes.Expiration, item.Value));
-                        break;
-                    case JwtRegisteredClaimNames.Jti:
-                        microsoftClaims.Add(new Claim(ClaimTypes.Sid, item.Value));
-                        break;
-                    default:
-                        break;
-                }
+                case JwtRegisteredClaimNames.NameId:
+                    microsoftClaims.Add(new Claim(ClaimTypes.NameIdentifier, item.Value));
+                    break;
+                case JwtRegisteredClaimNames.Name:
+                    microsoftClaims.Add(new Claim(ClaimTypes.Name, item.Value));
+                    break;
+                case JwtRegisteredClaimNames.GivenName:
+                    microsoftClaims.Add(new Claim(ClaimTypes.GivenName, item.Value));
+                    break;
+                case JwtRegisteredClaimNames.Sub:
+                    microsoftClaims.Add(new Claim(ClaimTypes.NameIdentifier, item.Value));
+                    break;
+                case JwtRegisteredClaimNames.Email:
+                    microsoftClaims.Add(new Claim(ClaimTypes.Email, item.Value));
+                    break;
+                case JwtRegisteredClaimNames.Iat:
+                    microsoftClaims.Add(new Claim(ClaimTypes.Expiration, item.Value));
+                    break;
+                case JwtRegisteredClaimNames.Jti:
+                    microsoftClaims.Add(new Claim(ClaimTypes.Sid, item.Value));
+                    break;
+                default:
+                    break;
             }
-
-            ClaimsIdentity identity = new ClaimsIdentity(microsoftClaims, "ServerAuth");
-            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
-
-            return claimsPrincipal;
         }
 
-        public ClaimsPrincipal Parse(string token)
+        ClaimsIdentity identity = new ClaimsIdentity(microsoftClaims, "ServerAuth");
+        ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
+
+        return claimsPrincipal;
+    }
+
+    public ClaimsPrincipal Parse(string token)
+    {
+        TokenValidationParameters validationParameters = new TokenValidationParameters
         {
-            TokenValidationParameters validationParameters = new TokenValidationParameters
+            ValidateIssuer = false,
+            ValidIssuer = "SampleApp",
+
+            ValidateAudience = false,
+            ValidAudience = "SampleApp",
+
+            ValidateIssuerSigningKey = false,
+            ////IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey)),
+            ////comment this and add this line to fool the validation logic
+            SignatureValidator = (token, parameters) =>
             {
-                ValidateIssuer = false,
-                ValidIssuer = "SampleApp",
+                JwtSecurityToken jwt = new JwtSecurityToken(token);
 
-                ValidateAudience = false,
-                ValidAudience = "SampleApp",
+                return jwt;
+            },
 
-                ValidateIssuerSigningKey = false,
-                ////IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey)),
-                ////comment this and add this line to fool the validation logic
-                SignatureValidator = (token, parameters) =>
-                {
-                    JwtSecurityToken jwt = new JwtSecurityToken(token);
+            RequireExpirationTime = true,
+            ValidateLifetime = true,
 
-                    return jwt;
-                },
+            ClockSkew = TimeSpan.Zero,
+        };
 
-                RequireExpirationTime = true,
-                ValidateLifetime = true,
+        validationParameters.RequireSignedTokens = false;
 
-                ClockSkew = TimeSpan.Zero,
-            };
+        _jwtSecurityTokenHandler.InboundClaimTypeMap[JwtRegisteredClaimNames.Name] = ClaimTypes.Name;
 
-            validationParameters.RequireSignedTokens = false;
+        ClaimsPrincipal claimsPrincipal = _jwtSecurityTokenHandler
+            .ValidateToken(token, validationParameters, out SecurityToken securityToken);
 
-            _jwtSecurityTokenHandler.InboundClaimTypeMap[JwtRegisteredClaimNames.Name] = ClaimTypes.Name;
-
-            ClaimsPrincipal claimsPrincipal = _jwtSecurityTokenHandler
-                .ValidateToken(token, validationParameters, out SecurityToken securityToken);
-
-            return claimsPrincipal;
-        }
+        return claimsPrincipal;
     }
 }

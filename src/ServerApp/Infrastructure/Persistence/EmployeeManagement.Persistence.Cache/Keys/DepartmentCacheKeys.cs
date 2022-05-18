@@ -1,21 +1,20 @@
 ﻿using System;
 
-namespace EmployeeManagement.Persistence.Cache.Keys
+namespace EmployeeManagement.Persistence.Cache.Keys;
+
+internal static class DepartmentCacheKeys
 {
-    internal static class DepartmentCacheKeys
+    public static string ListKey => "DepartmentList";
+
+    public static string SelectListKey => "DepartmentSelectList";
+
+    public static string GetKey(Guid departmentId)
     {
-        public static string ListKey => "DepartmentList";
+        return $"Department-{departmentId}";
+    }
 
-        public static string SelectListKey => "DepartmentSelectList";
-
-        public static string GetKey(Guid departmentId)
-        {
-            return $"Department-{departmentId}";
-        }
-
-        public static string GetDetailsKey(Guid departmentId)
-        {
-            return $"DepartmentDetails-{departmentId}";
-        }
+    public static string GetDetailsKey(Guid departmentId)
+    {
+        return $"DepartmentDetails-{departmentId}";
     }
 }

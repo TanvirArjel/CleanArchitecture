@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SendGrid" Version="9.25.3" />
+		<PackageReference Include="SendGrid" Version="9.27.0" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

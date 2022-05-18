@@ -5,50 +5,49 @@ using Identity.Infrastructure.Services.Configs;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace Identity.Infrastructure.Services
+namespace Identity.Infrastructure.Services;
+
+public class EmailSender : IEmailSender
 {
-    public class EmailSender : IEmailSender
+    private readonly SendGridConfig _sendGridConfig;
+    private readonly IExceptionLogger _exceptionLogger;
+
+    public EmailSender(SendGridConfig sendGridConfig, IExceptionLogger exceptionLogger)
     {
-        private readonly SendGridConfig _sendGridConfig;
-        private readonly IExceptionLogger _exceptionLogger;
+        _exceptionLogger = exceptionLogger;
+        _sendGridConfig = sendGridConfig;
+    }
 
-        public EmailSender(SendGridConfig sendGridConfig, IExceptionLogger exceptionLogger)
+    private SendGridClient SendGridClient => new SendGridClient(_sendGridConfig.ApiKey);
+
+    public async Task SendAsync(EmailObject emailObject)
+    {
+        try
         {
-            _exceptionLogger = exceptionLogger;
-            _sendGridConfig = sendGridConfig;
+            if (emailObject == null)
+            {
+                throw new ArgumentNullException(nameof(emailObject));
+            }
+
+            SendGridMessage message = new SendGridMessage()
+            {
+                Subject = emailObject.Subject,
+                HtmlContent = emailObject.MailBody,
+            };
+
+            message.AddTo(new EmailAddress(emailObject.ReceiverEmail, emailObject.ReceiverName));
+
+            if (!string.IsNullOrWhiteSpace(emailObject.SenderEmail))
+            {
+                message.From = new EmailAddress(emailObject.SenderEmail, emailObject.SenderName);
+                message.ReplyTo = new EmailAddress(emailObject.SenderEmail, emailObject.SenderName);
+            }
+
+            Response response = await SendGridClient.SendEmailAsync(message);
         }
-
-        private SendGridClient SendGridClient => new SendGridClient(_sendGridConfig.ApiKey);
-
-        public async Task SendAsync(EmailObject emailObject)
+        catch (Exception exception)
         {
-            try
-            {
-                if (emailObject == null)
-                {
-                    throw new ArgumentNullException(nameof(emailObject));
-                }
-
-                SendGridMessage message = new SendGridMessage()
-                {
-                    Subject = emailObject.Subject,
-                    HtmlContent = emailObject.MailBody,
-                };
-
-                message.AddTo(new EmailAddress(emailObject.ReceiverEmail, emailObject.ReceiverName));
-
-                if (!string.IsNullOrWhiteSpace(emailObject.SenderEmail))
-                {
-                    message.From = new EmailAddress(emailObject.SenderEmail, emailObject.SenderName);
-                    message.ReplyTo = new EmailAddress(emailObject.SenderEmail, emailObject.SenderName);
-                }
-
-                Response response = await SendGridClient.SendEmailAsync(message);
-            }
-            catch (Exception exception)
-            {
-                await _exceptionLogger.LogAsync(exception, emailObject);
-            }
+            await _exceptionLogger.LogAsync(exception, emailObject);
         }
     }
 }

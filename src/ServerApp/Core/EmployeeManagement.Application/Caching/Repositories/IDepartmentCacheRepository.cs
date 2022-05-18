@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using EmployeeManagement.Application.Queries.DepartmentQueries;
+﻿using EmployeeManagement.Application.Queries.DepartmentQueries;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Application.Caching.Repositories
+namespace EmployeeManagement.Application.Caching.Repositories;
+
+[ScopedService]
+public interface IDepartmentCacheRepository
 {
-    [ScopedService]
-    public interface IDepartmentCacheRepository
-    {
-        Task<List<DepartmentDto>> GetListAsync();
+    Task<List<DepartmentDto>> GetListAsync();
 
-        Task<Department> GetByIdAsync(Guid departmentId);
+    Task<Department> GetByIdAsync(Guid departmentId);
 
-        Task<DepartmentDetailsDto> GetDetailsByIdAsync(Guid departmentId);
-    }
+    Task<DepartmentDetailsDto> GetDetailsByIdAsync(Guid departmentId);
 }

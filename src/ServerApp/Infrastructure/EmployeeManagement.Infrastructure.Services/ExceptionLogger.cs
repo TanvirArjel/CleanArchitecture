@@ -4,59 +4,58 @@ using System.Threading.Tasks;
 using EmployeeManagement.Application.Infrastrucures;
 using Microsoft.Extensions.Logging;
 
-namespace EmployeeManagement.Infrastructure.Services
+namespace EmployeeManagement.Infrastructure.Services;
+
+internal class ExceptionLogger : IExceptionLogger
 {
-    internal class ExceptionLogger : IExceptionLogger
+    private readonly ILogger<ExceptionLogger> _logger;
+
+    public ExceptionLogger(ILogger<ExceptionLogger> logger)
     {
-        private readonly ILogger<ExceptionLogger> _logger;
+        _logger = logger;
+    }
 
-        public ExceptionLogger(ILogger<ExceptionLogger> logger)
+    public async Task LogAsync(Exception exception)
+    {
+        await LogAsync(exception, null);
+    }
+
+    public async Task LogAsync(Exception exception, object paramters)
+    {
+        try
         {
-            _logger = logger;
+            if (exception == null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+
+            string jsonParamters = paramters != null ? JsonSerializer.Serialize(paramters) : "No paratmer.";
+            _logger.LogCritical(exception, "Paramters: {P1}", jsonParamters);
+
+            await Task.CompletedTask;
         }
-
-        public async Task LogAsync(Exception exception)
+        catch (Exception loggerException)
         {
-            await LogAsync(exception, null);
+            _logger.LogCritical(loggerException, "Exception thrown in exception logger.");
         }
+    }
 
-        public async Task LogAsync(Exception exception, object paramters)
+    public async Task LogAsync(Exception exception, string requestPath, string requestBody)
+    {
+        try
         {
-            try
+            if (exception == null)
             {
-                if (exception == null)
-                {
-                    throw new ArgumentNullException(nameof(exception));
-                }
-
-                string jsonParamters = paramters != null ? JsonSerializer.Serialize(paramters) : "No paratmer.";
-                _logger.LogCritical(exception, "Paramters: {P1}", jsonParamters);
-
-                await Task.CompletedTask;
+                throw new ArgumentNullException(nameof(exception));
             }
-            catch (Exception loggerException)
-            {
-                _logger.LogCritical(loggerException, "Exception thrown in exception logger.");
-            }
+
+            _logger.LogCritical(exception, "RequestedPath: {P1} and RequestBody: {P2}", requestPath, requestBody);
+
+            await Task.CompletedTask;
         }
-
-        public async Task LogAsync(Exception exception, string requestPath, string requestBody)
+        catch (Exception loggerException)
         {
-            try
-            {
-                if (exception == null)
-                {
-                    throw new ArgumentNullException(nameof(exception));
-                }
-
-                _logger.LogCritical(exception, "RequestedPath: {P1} and RequestBody: {P2}", requestPath, requestBody);
-
-                await Task.CompletedTask;
-            }
-            catch (Exception loggerException)
-            {
-                _logger.LogCritical(loggerException, "Exception thrown in exception logger.");
-            }
+            _logger.LogCritical(loggerException, "Exception thrown in exception logger.");
         }
     }
 }

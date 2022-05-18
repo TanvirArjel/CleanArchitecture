@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace EmployeeManagement.Persistence.Cache.Keys
-{
-    public static class EmployeeCacheKeys
-    {
-        public static string GetKey(Guid employeeId)
-        {
-            return $"Employee-{employeeId}";
-        }
+namespace EmployeeManagement.Persistence.Cache.Keys;
 
-        public static string GetDetailsKey(Guid employeeId)
-        {
-            return $"EmployeeDetails-{employeeId}";
-        }
+public static class EmployeeCacheKeys
+{
+    public static string GetKey(Guid employeeId)
+    {
+        return $"Employee-{employeeId}";
+    }
+
+    public static string GetDetailsKey(Guid employeeId)
+    {
+        return $"EmployeeDetails-{employeeId}";
     }
 }

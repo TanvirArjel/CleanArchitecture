@@ -22,140 +22,139 @@ using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace Identity.Api
+namespace Identity.Api;
+
+public class Startup
 {
-    public class Startup
+    private readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+    public Startup(IConfiguration configuration)
     {
-        private readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        Configuration = configuration;
+    }
 
-        public Startup(IConfiguration configuration)
+    public IConfiguration Configuration { get; }
+
+    // This method gets called by the runtime. Use this method to add services to the container.
+    public void ConfigureServices(IServiceCollection services)
+    {
+        ////services.AddCors(options =>
+        ////{
+        ////    options.AddPolicy(
+        ////        name: myAllowSpecificOrigins,
+        ////        builder =>
+        ////        {
+        ////            builder
+        ////            ////.WithOrigins("https://localhost:44364")
+        ////            .AllowAnyOrigin()
+        ////            .AllowAnyHeader()
+        ////            .AllowAnyMethod();
+        ////        });
+        ////});
+
+        services.AddCors(options =>
         {
-            Configuration = configuration;
+            options.AddPolicy(myAllowSpecificOrigins, builder =>
+            {
+                builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .SetIsOriginAllowed(_ => true);
+            });
+        });
+
+        services.AddControllersWithViews(options =>
+        {
+            options.Filters.Add(typeof(ExceptionHandlerFilter));
+            options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+        }).ConfigureApiBehaviorOptions(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                return new BadRequestObjectResult(context.ModelState);
+            };
+        });
+
+        services.AddResponseCompression(options =>
+        {
+            options.EnableForHttps = true;
+        });
+
+        services.Configure<GzipCompressionProviderOptions>(options =>
+        {
+            options.Level = CompressionLevel.Fastest;
+        });
+
+        services.Configure<BrotliCompressionProviderOptions>(options =>
+        {
+            options.Level = CompressionLevel.Fastest;
+        });
+
+        services.AddIdentityDbContext(Configuration.GetConnectionString("IdentityDbConnection"));
+
+        JwtConfig jwtConfig = new JwtConfig("SampleIdentity.com", "SampleIdentitySecretKey", 86400);
+        services.AddJwtAuthentication(jwtConfig);
+
+        services.AddJwtTokenGenerator(jwtConfig);
+
+        services.AddExternalLogins(Configuration);
+
+        string sendGridApiKey = "yourSendGridKey";
+        services.AddSendGrid(sendGridApiKey);
+
+        services.AddMediatR(typeof(GetRefreshTokenQuery));
+
+        services.AddServicesOfAllTypes();
+
+        services.AddSwaggerGeneration();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+    {
+        app.ApplyDatabaseMigrations();
+
+        app.Use((context, next) =>
+        {
+            context.Request.EnableBuffering();
+            return next();
+        });
+
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+        // specifying the Swagger JSON endpoint.
+        app.UseApiVersioning();
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
         {
-            ////services.AddCors(options =>
-            ////{
-            ////    options.AddPolicy(
-            ////        name: myAllowSpecificOrigins,
-            ////        builder =>
-            ////        {
-            ////            builder
-            ////            ////.WithOrigins("https://localhost:44364")
-            ////            .AllowAnyOrigin()
-            ////            .AllowAnyHeader()
-            ////            .AllowAnyMethod();
-            ////        });
-            ////});
+            options.DocExpansion(DocExpansion.None);
 
-            services.AddCors(options =>
+            foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
             {
-                options.AddPolicy(myAllowSpecificOrigins, builder =>
-                {
-                    builder
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials()
-                    .SetIsOriginAllowed(_ => true);
-                });
-            });
-
-            services.AddControllersWithViews(options =>
-            {
-                options.Filters.Add(typeof(ExceptionHandlerFilter));
-                options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
-            }).ConfigureApiBehaviorOptions(options =>
-            {
-                options.InvalidModelStateResponseFactory = context =>
-                {
-                    return new BadRequestObjectResult(context.ModelState);
-                };
-            });
-
-            services.AddResponseCompression(options =>
-            {
-                options.EnableForHttps = true;
-            });
-
-            services.Configure<GzipCompressionProviderOptions>(options =>
-            {
-                options.Level = CompressionLevel.Fastest;
-            });
-
-            services.Configure<BrotliCompressionProviderOptions>(options =>
-            {
-                options.Level = CompressionLevel.Fastest;
-            });
-
-            services.AddIdentityDbContext(Configuration.GetConnectionString("IdentityDbConnection"));
-
-            JwtConfig jwtConfig = new JwtConfig("SampleIdentity.com", "SampleIdentitySecretKey", 86400);
-            services.AddJwtAuthentication(jwtConfig);
-
-            services.AddJwtTokenGenerator(jwtConfig);
-
-            services.AddExternalLogins(Configuration);
-
-            string sendGridApiKey = "yourSendGridKey";
-            services.AddSendGrid(sendGridApiKey);
-
-            services.AddMediatR(typeof(GetRefreshTokenQuery));
-
-            services.AddServicesOfAllTypes();
-
-            services.AddSwaggerGeneration();
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
-        {
-            app.ApplyDatabaseMigrations();
-
-            app.Use((context, next) =>
-            {
-                context.Request.EnableBuffering();
-                return next();
-            });
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+                options.SwaggerEndpoint(
+                    $"/swagger/{description.GroupName}/swagger.json", $"API {description.GroupName.ToUpperInvariant()}");
             }
+        });
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseApiVersioning();
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.DocExpansion(DocExpansion.None);
+        app.UseResponseCompression();
 
-                foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
-                {
-                    options.SwaggerEndpoint(
-                        $"/swagger/{description.GroupName}/swagger.json", $"API {description.GroupName.ToUpperInvariant()}");
-                }
-            });
+        app.UseHttpsRedirection();
 
-            app.UseResponseCompression();
+        app.UseRouting();
 
-            app.UseHttpsRedirection();
+        app.UseCors(myAllowSpecificOrigins);
 
-            app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
-            app.UseCors(myAllowSpecificOrigins);
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
     }
 }

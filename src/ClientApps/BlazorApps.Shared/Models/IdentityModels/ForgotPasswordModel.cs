@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorApps.Shared.Models.IdentityModels
+namespace BlazorApps.Shared.Models.IdentityModels;
+
+public class ForgotPasswordModel
 {
-    public class ForgotPasswordModel
-    {
-        [Required(ErrorMessage = "Please enter your email address.")]
-        [EmailAddress]
-        public string Email { get; set; }
-    }
+    [Required(ErrorMessage = "Please enter your email address.")]
+    [EmailAddress]
+    public string Email { get; set; }
 }

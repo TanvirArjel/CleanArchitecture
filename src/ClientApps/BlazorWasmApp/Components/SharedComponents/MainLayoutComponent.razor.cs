@@ -1,20 +1,19 @@
 ﻿using System.Threading.Tasks;
 using BlazorApps.Shared.Common;
 
-namespace BlazorWasmApp.Components.SharedComponents
+namespace BlazorWasmApp.Components.SharedComponents;
+
+public partial class MainLayoutComponent
 {
-    public partial class MainLayoutComponent
+    private readonly HostAuthStateProvider _hostAuthStateProvider;
+
+    public MainLayoutComponent(HostAuthStateProvider hostAuthStateProvider)
     {
-        private readonly HostAuthStateProvider _hostAuthStateProvider;
+        _hostAuthStateProvider = hostAuthStateProvider;
+    }
 
-        public MainLayoutComponent(HostAuthStateProvider hostAuthStateProvider)
-        {
-            _hostAuthStateProvider = hostAuthStateProvider;
-        }
-
-        private async Task LogOutAsync()
-        {
-            await _hostAuthStateProvider.LogOutAsync("identity/login");
-        }
+    private async Task LogOutAsync()
+    {
+        await _hostAuthStateProvider.LogOutAsync("identity/login");
     }
 }

@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-using TanvirArjel.Extensions.Microsoft.DependencyInjection;
+﻿using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Application.Caching.Handlers
+namespace EmployeeManagement.Application.Caching.Handlers;
+
+[ScopedService]
+public interface IDepartmentCacheHandler
 {
-    [ScopedService]
-    public interface IDepartmentCacheHandler
-    {
-        Task RemoveListAsync();
-    }
+    Task RemoveListAsync();
 }

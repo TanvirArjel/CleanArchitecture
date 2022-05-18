@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Application.Caching.Repositories;
+﻿using EmployeeManagement.Application.Caching.Repositories;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 

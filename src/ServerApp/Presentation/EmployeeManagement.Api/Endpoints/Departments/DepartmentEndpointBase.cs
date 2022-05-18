@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EmployeeManagement.Api.Endpoints.Departments
+namespace EmployeeManagement.Api.Endpoints.Departments;
+
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/departments")]
+[ApiController]
+[Authorize]
+[ApiExplorerSettings(GroupName = "Department Endpoints")]
+public abstract class DepartmentEndpointBase : ControllerBase
 {
-    [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/departments")]
-    [ApiController]
-    [Authorize]
-    [ApiExplorerSettings(GroupName = "Department Endpoints")]
-    public abstract class DepartmentEndpointBase : ControllerBase
-    {
-    }
 }

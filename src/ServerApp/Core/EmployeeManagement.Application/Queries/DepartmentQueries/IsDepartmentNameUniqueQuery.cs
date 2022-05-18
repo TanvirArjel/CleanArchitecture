@@ -1,41 +1,37 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+﻿using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace EmployeeManagement.Application.Queries.DepartmentQueries
+namespace EmployeeManagement.Application.Queries.DepartmentQueries;
+
+public class IsDepartmentNameUniqueQuery : IRequest<bool>
 {
-    public class IsDepartmentNameUniqueQuery : IRequest<bool>
+    public IsDepartmentNameUniqueQuery(Guid departmentId, string name)
     {
-        public IsDepartmentNameUniqueQuery(Guid departmentId, string name)
+        Id = departmentId.ThrowIfEmpty(nameof(departmentId));
+        Name = name.ThrowIfNullOrEmpty(nameof(name));
+    }
+
+    public Guid Id { get; }
+
+    public string Name { get; }
+
+    private class IsDepartmentNameUniqueQueryHandler : IRequestHandler<IsDepartmentNameUniqueQuery, bool>
+    {
+        private readonly IQueryRepository _repository;
+
+        public IsDepartmentNameUniqueQueryHandler(IQueryRepository repository)
         {
-            Id = departmentId.ThrowIfEmpty(nameof(departmentId));
-            Name = name.ThrowIfNullOrEmpty(nameof(name));
+            _repository = repository;
         }
 
-        public Guid Id { get; }
-
-        public string Name { get; }
-
-        private class IsDepartmentNameUniqueQueryHandler : IRequestHandler<IsDepartmentNameUniqueQuery, bool>
+        public async Task<bool> Handle(IsDepartmentNameUniqueQuery request, CancellationToken cancellationToken)
         {
-            private readonly IQueryRepository _repository;
+            request.ThrowIfNull(nameof(request));
 
-            public IsDepartmentNameUniqueQueryHandler(IQueryRepository repository)
-            {
-                _repository = repository;
-            }
-
-            public async Task<bool> Handle(IsDepartmentNameUniqueQuery request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
-
-                bool isExistent = await _repository.ExistsAsync<Department>(d => d.Id != request.Id && d.Name == request.Name, cancellationToken);
-                return !isExistent;
-            }
+            bool isExistent = await _repository.ExistsAsync<Department>(d => d.Id != request.Id && d.Name == request.Name, cancellationToken);
+            return !isExistent;
         }
     }
 }

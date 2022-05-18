@@ -7,66 +7,65 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TanvirArjel.ArgumentChecker;
 
-namespace EmployeeManagement.Persistence.RelationalDB.Repositories
+namespace EmployeeManagement.Persistence.RelationalDB.Repositories;
+
+internal class EmployeeRepository : IEmployeeRepository
 {
-    internal class EmployeeRepository : IEmployeeRepository
+    private readonly EmployeeManagementDbContext _dbContext;
+
+    public EmployeeRepository(EmployeeManagementDbContext dbContext)
     {
-        private readonly EmployeeManagementDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public EmployeeRepository(EmployeeManagementDbContext dbContext)
+    public async Task<Employee> GetByIdAsync(Guid employeeId)
+    {
+        employeeId.ThrowIfEmpty(nameof(employeeId));
+
+        Employee employee = await _dbContext.Set<Employee>().FindAsync(employeeId);
+        return employee;
+    }
+
+    public async Task<bool> ExistsAsync(Expression<Func<Employee, bool>> condition)
+    {
+        IQueryable<Employee> queryable = _dbContext.Set<Employee>();
+
+        if (condition != null)
         {
-            _dbContext = dbContext;
+            queryable = queryable.Where(condition);
         }
 
-        public async Task<Employee> GetByIdAsync(Guid employeeId)
-        {
-            employeeId.ThrowIfEmpty(nameof(employeeId));
+        return await queryable.AnyAsync();
+    }
 
-            Employee employee = await _dbContext.Set<Employee>().FindAsync(employeeId);
-            return employee;
+    public async Task InsertAsync(Employee employee)
+    {
+        employee.ThrowIfNull(nameof(employee));
+
+        await _dbContext.Set<Employee>().AddAsync(employee);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Employee employeeToBeUpdated)
+    {
+        employeeToBeUpdated.ThrowIfNull(nameof(employeeToBeUpdated));
+
+        EntityEntry<Employee> trackedEntity = _dbContext.ChangeTracker.Entries<Employee>()
+           .FirstOrDefault(x => x.Entity == employeeToBeUpdated);
+
+        if (trackedEntity == null)
+        {
+            _dbContext.Update(employeeToBeUpdated);
         }
 
-        public async Task<bool> ExistsAsync(Expression<Func<Employee, bool>> condition)
-        {
-            IQueryable<Employee> queryable = _dbContext.Set<Employee>();
+        await _dbContext.SaveChangesAsync();
+    }
 
-            if (condition != null)
-            {
-                queryable = queryable.Where(condition);
-            }
+    public async Task DeleteAsync(Employee employeeToBeDeleted)
+    {
+        employeeToBeDeleted.ThrowIfNull(nameof(employeeToBeDeleted));
 
-            return await queryable.AnyAsync();
-        }
-
-        public async Task InsertAsync(Employee employee)
-        {
-            employee.ThrowIfNull(nameof(employee));
-
-            await _dbContext.Set<Employee>().AddAsync(employee);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Employee employeeToBeUpdated)
-        {
-            employeeToBeUpdated.ThrowIfNull(nameof(employeeToBeUpdated));
-
-            EntityEntry<Employee> trackedEntity = _dbContext.ChangeTracker.Entries<Employee>()
-               .FirstOrDefault(x => x.Entity == employeeToBeUpdated);
-
-            if (trackedEntity == null)
-            {
-                _dbContext.Update(employeeToBeUpdated);
-            }
-
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(Employee employeeToBeDeleted)
-        {
-            employeeToBeDeleted.ThrowIfNull(nameof(employeeToBeDeleted));
-
-            _dbContext.Set<Employee>().Remove(employeeToBeDeleted);
-            await _dbContext.SaveChangesAsync();
-        }
+        _dbContext.Set<Employee>().Remove(employeeToBeDeleted);
+        await _dbContext.SaveChangesAsync();
     }
 }

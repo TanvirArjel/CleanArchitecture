@@ -4,21 +4,20 @@ using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Persistence.Cache.Keys;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace EmployeeManagement.Persistence.Cache.Handlers
+namespace EmployeeManagement.Persistence.Cache.Handlers;
+
+internal class EmployeeCacheHandler : IEmployeeCacheHandler
 {
-    internal class EmployeeCacheHandler : IEmployeeCacheHandler
+    private readonly IDistributedCache _distributedCache;
+
+    public EmployeeCacheHandler(IDistributedCache distributedCache)
     {
-        private readonly IDistributedCache _distributedCache;
+        _distributedCache = distributedCache;
+    }
 
-        public EmployeeCacheHandler(IDistributedCache distributedCache)
-        {
-            _distributedCache = distributedCache;
-        }
-
-        public async Task RemoveDetailsByIdAsync(Guid employeeId)
-        {
-            string detailsKey = EmployeeCacheKeys.GetDetailsKey(employeeId);
-            await _distributedCache.RemoveAsync(detailsKey);
-        }
+    public async Task RemoveDetailsByIdAsync(Guid employeeId)
+    {
+        string detailsKey = EmployeeCacheKeys.GetDetailsKey(employeeId);
+        await _distributedCache.RemoveAsync(detailsKey);
     }
 }

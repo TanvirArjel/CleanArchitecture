@@ -6,45 +6,44 @@ using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace Identity.Application.Commands.UserCommands
+namespace Identity.Application.Commands.UserCommands;
+
+public class UpdateDialCodeCommand : IRequest
 {
-    public class UpdateDialCodeCommand : IRequest
+    public UpdateDialCodeCommand(Guid userId, string dialCode)
     {
-        public UpdateDialCodeCommand(Guid userId, string dialCode)
+        UserId = userId.ThrowIfEmpty(nameof(UserId));
+        DialCode = dialCode.ThrowIfNullOrEmpty(nameof(DialCode));
+    }
+
+    public Guid UserId { get; }
+
+    public string DialCode { get; }
+
+    private class UpdateDialCodeCommandHandler : IRequestHandler<UpdateDialCodeCommand>
+    {
+        private readonly IRepository _repository;
+
+        public UpdateDialCodeCommandHandler(IRepository repository)
         {
-            UserId = userId.ThrowIfEmpty(nameof(UserId));
-            DialCode = dialCode.ThrowIfNullOrEmpty(nameof(DialCode));
+            _repository = repository;
         }
 
-        public Guid UserId { get; }
-
-        public string DialCode { get; }
-
-        private class UpdateDialCodeCommandHandler : IRequestHandler<UpdateDialCodeCommand>
+        public async Task<Unit> Handle(UpdateDialCodeCommand request, CancellationToken cancellationToken)
         {
-            private readonly IRepository _repository;
+            request.ThrowIfNull(nameof(request));
 
-            public UpdateDialCodeCommandHandler(IRepository repository)
+            User applicationUserToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
+
+            if (applicationUserToBeUpdated == null)
             {
-                _repository = repository;
+                throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
             }
 
-            public async Task<Unit> Handle(UpdateDialCodeCommand request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
+            applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
+            await _repository.UpdateAsync(applicationUserToBeUpdated, cancellationToken);
 
-                User applicationUserToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
-
-                if (applicationUserToBeUpdated == null)
-                {
-                    throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
-                }
-
-                applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
-                await _repository.UpdateAsync(applicationUserToBeUpdated, cancellationToken);
-
-                return Unit.Value;
-            }
+            return Unit.Value;
         }
     }
 }

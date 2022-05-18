@@ -5,37 +5,36 @@ using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DomainEnt
 using EmployeeManagement.Persistence.RelationalDB.Extensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmployeeManagement.Persistence.RelationalDB
+namespace EmployeeManagement.Persistence.RelationalDB;
+
+internal class EmployeeManagementDbContext : DbContext
 {
-    internal class EmployeeManagementDbContext : DbContext
+    public EmployeeManagementDbContext(DbContextOptions<EmployeeManagementDbContext> options)
+        : base(options)
     {
-        public EmployeeManagementDbContext(DbContextOptions<EmployeeManagementDbContext> options)
-            : base(options)
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ChangeTracker.ApplyValueGenerationOnUpdate();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override int SaveChanges()
+    {
+        ChangeTracker.ApplyValueGenerationOnUpdate();
+        return base.SaveChanges();
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        if (modelBuilder == null)
         {
+            throw new ArgumentNullException(nameof(modelBuilder));
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            ChangeTracker.ApplyValueGenerationOnUpdate();
-            return base.SaveChangesAsync(cancellationToken);
-        }
-
-        public override int SaveChanges()
-        {
-            ChangeTracker.ApplyValueGenerationOnUpdate();
-            return base.SaveChanges();
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
-
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeConfiguration).Assembly);
-            modelBuilder.ApplyBaseEntityConfiguration(); // This should be called after calling the derived entity configurations
-        }
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeConfiguration).Assembly);
+        modelBuilder.ApplyBaseEntityConfiguration(); // This should be called after calling the derived entity configurations
     }
 }

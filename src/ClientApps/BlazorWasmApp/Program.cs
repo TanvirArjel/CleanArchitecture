@@ -4,21 +4,20 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TanvirArjel.Blazor.DependencyInjection;
 
-namespace BlazorWasmApp
+namespace BlazorWasmApp;
+
+public static class Program
 {
-    public static class Program
+    public static async Task Main(string[] args)
     {
-        public static async Task Main(string[] args)
-        {
-            WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
-            builder.RootComponents.Add<HeadOutlet>("head::after");
+        WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
+        builder.RootComponents.Add<App>("#app");
+        builder.RootComponents.Add<HeadOutlet>("head::after");
 
-            builder.Services.AddComponents();
+        builder.Services.AddComponents();
 
-            builder.Services.AddSharedServices();
+        builder.Services.AddSharedServices();
 
-            await builder.Build().RunAsync();
-        }
+        await builder.Build().RunAsync();
     }
 }

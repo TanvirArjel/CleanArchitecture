@@ -1,46 +1,42 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
+﻿using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using EmployeeManagement.Domain.Exceptions;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
-namespace EmployeeManagement.Application.Commands.EmployeeCommands
+namespace EmployeeManagement.Application.Commands.EmployeeCommands;
+
+public class DeleteEmployeeCommand : IRequest
 {
-    public class DeleteEmployeeCommand : IRequest
+    public DeleteEmployeeCommand(Guid employeeId)
     {
-        public DeleteEmployeeCommand(Guid employeeId)
+        EmployeeId = employeeId;
+    }
+
+    public Guid EmployeeId { get; }
+
+    private class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand>
+    {
+        private readonly IEmployeeRepository _employeeRepository;
+
+        public DeleteEmployeeCommandHandler(IEmployeeRepository employeeRepository)
         {
-            EmployeeId = employeeId;
+            _employeeRepository = employeeRepository;
         }
 
-        public Guid EmployeeId { get; }
-
-        private class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand>
+        public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
         {
-            private readonly IEmployeeRepository _employeeRepository;
+            request.ThrowIfNull(nameof(request));
 
-            public DeleteEmployeeCommandHandler(IEmployeeRepository employeeRepository)
+            Employee employeeToBeDeleted = await _employeeRepository.GetByIdAsync(request.EmployeeId);
+
+            if (employeeToBeDeleted == null)
             {
-                _employeeRepository = employeeRepository;
+                throw new EntityNotFoundException(typeof(Employee), request.EmployeeId);
             }
 
-            public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
+            await _employeeRepository.DeleteAsync(employeeToBeDeleted);
 
-                Employee employeeToBeDeleted = await _employeeRepository.GetByIdAsync(request.EmployeeId);
-
-                if (employeeToBeDeleted == null)
-                {
-                    throw new EntityNotFoundException(typeof(Employee), request.EmployeeId);
-                }
-
-                await _employeeRepository.DeleteAsync(employeeToBeDeleted);
-
-                return Unit.Value;
-            }
+            return Unit.Value;
         }
     }
 }

@@ -6,45 +6,44 @@ using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace Identity.Application.Commands.UserCommands
+namespace Identity.Application.Commands.UserCommands;
+
+public class UpdateLanguageCultureCommand : IRequest
 {
-    public class UpdateLanguageCultureCommand : IRequest
+    public UpdateLanguageCultureCommand(Guid userId, string languageCulture)
     {
-        public UpdateLanguageCultureCommand(Guid userId, string languageCulture)
+        UserId = userId.ThrowIfEmpty(nameof(userId));
+        LanguageCulture = languageCulture.ThrowIfNullOrEmpty(nameof(languageCulture));
+    }
+
+    public Guid UserId { get; }
+
+    public string LanguageCulture { get; }
+
+    private class UpdateLanguageCultureCommandHandler : IRequestHandler<UpdateLanguageCultureCommand>
+    {
+        private readonly IRepository _repository;
+
+        public UpdateLanguageCultureCommandHandler(IRepository repository)
         {
-            UserId = userId.ThrowIfEmpty(nameof(userId));
-            LanguageCulture = languageCulture.ThrowIfNullOrEmpty(nameof(languageCulture));
+            _repository = repository;
         }
 
-        public Guid UserId { get; }
-
-        public string LanguageCulture { get; }
-
-        private class UpdateLanguageCultureCommandHandler : IRequestHandler<UpdateLanguageCultureCommand>
+        public async Task<Unit> Handle(UpdateLanguageCultureCommand request, CancellationToken cancellationToken)
         {
-            private readonly IRepository _repository;
+            request.ThrowIfNull(nameof(request));
 
-            public UpdateLanguageCultureCommandHandler(IRepository repository)
+            User userToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
+
+            if (userToBeUpdated == null)
             {
-                _repository = repository;
+                throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
             }
 
-            public async Task<Unit> Handle(UpdateLanguageCultureCommand request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
+            userToBeUpdated.LanguageCulture = request.LanguageCulture;
+            await _repository.UpdateAsync(userToBeUpdated, cancellationToken);
 
-                User userToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
-
-                if (userToBeUpdated == null)
-                {
-                    throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
-                }
-
-                userToBeUpdated.LanguageCulture = request.LanguageCulture;
-                await _repository.UpdateAsync(userToBeUpdated, cancellationToken);
-
-                return Unit.Value;
-            }
+            return Unit.Value;
         }
     }
 }

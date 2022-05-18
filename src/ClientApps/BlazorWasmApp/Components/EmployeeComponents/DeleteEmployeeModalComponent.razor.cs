@@ -8,65 +8,64 @@ using Microsoft.AspNetCore.Components;
 using TanvirArjel.Blazor.Components;
 using TanvirArjel.Blazor.Utilities;
 
-namespace BlazorWasmApp.Components.EmployeeComponents
+namespace BlazorWasmApp.Components.EmployeeComponents;
+
+public partial class DeleteEmployeeModalComponent
 {
-    public partial class DeleteEmployeeModalComponent
+    private readonly EmployeeService _employeeService;
+    private readonly ExceptionLogger _exceptionLogger;
+
+    public DeleteEmployeeModalComponent(EmployeeService employeeService, ExceptionLogger exceptionLogger)
     {
-        private readonly EmployeeService _employeeService;
-        private readonly ExceptionLogger _exceptionLogger;
+        _employeeService = employeeService;
+        _exceptionLogger = exceptionLogger;
+    }
 
-        public DeleteEmployeeModalComponent(EmployeeService employeeService, ExceptionLogger exceptionLogger)
+    [Parameter]
+    public EventCallback EmployeeDeleted { get; set; }
+
+    private string ModalClass { get; set; } = string.Empty;
+
+    private bool ShowBackdrop { get; set; }
+
+    private CustomValidationMessages CustomValidationMessages { get; set; }
+
+    private EmployeeDetailsModel EmployeeDetailsModel { get; set; } = new EmployeeDetailsModel();
+
+    public async Task OpenAsync(Guid employeeId)
+    {
+        EmployeeDetailsModel = await _employeeService.GetDetailsByIdAsync(employeeId);
+        ModalClass = "show d-block";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    private void Close()
+    {
+        ModalClass = string.Empty;
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
         {
-            _employeeService = employeeService;
-            _exceptionLogger = exceptionLogger;
-        }
+            HttpResponseMessage httpResponseMessage = await _employeeService.DeleteAsync(EmployeeDetailsModel.Id);
 
-        [Parameter]
-        public EventCallback EmployeeDeleted { get; set; }
-
-        private string ModalClass { get; set; } = string.Empty;
-
-        private bool ShowBackdrop { get; set; }
-
-        private CustomValidationMessages CustomValidationMessages { get; set; }
-
-        private EmployeeDetailsModel EmployeeDetailsModel { get; set; } = new EmployeeDetailsModel();
-
-        public async Task OpenAsync(Guid employeeId)
-        {
-            EmployeeDetailsModel = await _employeeService.GetDetailsByIdAsync(employeeId);
-            ModalClass = "show d-block";
-            ShowBackdrop = true;
-            StateHasChanged();
-        }
-
-        private void Close()
-        {
-            ModalClass = string.Empty;
-            ShowBackdrop = false;
-            StateHasChanged();
-        }
-
-        private async Task HandleValidSubmit()
-        {
-            try
+            if (httpResponseMessage.IsSuccessStatusCode)
             {
-                HttpResponseMessage httpResponseMessage = await _employeeService.DeleteAsync(EmployeeDetailsModel.Id);
-
-                if (httpResponseMessage.IsSuccessStatusCode)
-                {
-                    await EmployeeDeleted.InvokeAsync();
-                    Close();
-                    return;
-                }
-
-                await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
+                await EmployeeDeleted.InvokeAsync();
+                Close();
+                return;
             }
-            catch (Exception exception)
-            {
-                CustomValidationMessages.AddAndDisplay(string.Empty, ErrorMessages.ClientErrorMessage);
-                await _exceptionLogger.LogAsync(exception);
-            }
+
+            await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
+        }
+        catch (Exception exception)
+        {
+            CustomValidationMessages.AddAndDisplay(string.Empty, ErrorMessages.ClientErrorMessage);
+            await _exceptionLogger.LogAsync(exception);
         }
     }
 }

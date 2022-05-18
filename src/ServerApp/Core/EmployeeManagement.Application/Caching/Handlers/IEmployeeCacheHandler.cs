@@ -1,10 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿namespace EmployeeManagement.Application.Caching.Handlers;
 
-namespace EmployeeManagement.Application.Caching.Handlers
+public interface IEmployeeCacheHandler
 {
-    public interface IEmployeeCacheHandler
-    {
-        Task RemoveDetailsByIdAsync(Guid employeeId);
-    }
+    Task RemoveDetailsByIdAsync(Guid employeeId);
 }

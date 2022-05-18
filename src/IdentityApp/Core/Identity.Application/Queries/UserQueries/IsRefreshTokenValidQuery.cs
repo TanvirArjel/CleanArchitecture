@@ -6,37 +6,36 @@ using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace Identity.Application.Queries.UserQueries
+namespace Identity.Application.Queries.UserQueries;
+
+public class IsRefreshTokenValidQuery : IRequest<bool>
 {
-    public class IsRefreshTokenValidQuery : IRequest<bool>
+    public IsRefreshTokenValidQuery(Guid userId, string refreshToken)
     {
-        public IsRefreshTokenValidQuery(Guid userId, string refreshToken)
+        UserId = userId;
+        RefreshToken = refreshToken;
+    }
+
+    public Guid UserId { get; }
+
+    public string RefreshToken { get; }
+
+    private class IsRefreshTokenValidQueryHandler : IRequestHandler<IsRefreshTokenValidQuery, bool>
+    {
+        private readonly IRepository _repository;
+
+        public IsRefreshTokenValidQueryHandler(IRepository repository)
         {
-            UserId = userId;
-            RefreshToken = refreshToken;
+            _repository = repository;
         }
 
-        public Guid UserId { get; }
-
-        public string RefreshToken { get; }
-
-        private class IsRefreshTokenValidQueryHandler : IRequestHandler<IsRefreshTokenValidQuery, bool>
+        public async Task<bool> Handle(IsRefreshTokenValidQuery request, CancellationToken cancellationToken)
         {
-            private readonly IRepository _repository;
+            request.ThrowIfNull(nameof(request));
 
-            public IsRefreshTokenValidQueryHandler(IRepository repository)
-            {
-                _repository = repository;
-            }
+            bool isRefreshTokenValid = await _repository.ExistsAsync<RefreshToken>(rt => rt.UserId == request.UserId && rt.Token == request.RefreshToken, cancellationToken);
 
-            public async Task<bool> Handle(IsRefreshTokenValidQuery request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
-
-                bool isRefreshTokenValid = await _repository.ExistsAsync<RefreshToken>(rt => rt.UserId == request.UserId && rt.Token == request.RefreshToken, cancellationToken);
-
-                return isRefreshTokenValid;
-            }
+            return isRefreshTokenValid;
         }
     }
 }

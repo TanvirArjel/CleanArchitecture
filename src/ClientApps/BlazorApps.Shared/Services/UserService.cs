@@ -11,133 +11,132 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.WebUtilities;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace BlazorApps.Shared.Services
+namespace BlazorApps.Shared.Services;
+
+[ScopedService]
+public class UserService
 {
-    [ScopedService]
-    public class UserService
+    private readonly HttpClient _httpClient;
+    private readonly ILocalStorageService _localStorage;
+
+    public UserService(IHttpClientFactory httpClientFactory, ILocalStorageService localStorage)
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILocalStorageService _localStorage;
+        _httpClient = httpClientFactory.CreateClient("IdentityApi");
+        _localStorage = localStorage;
+    }
 
-        public UserService(IHttpClientFactory httpClientFactory, ILocalStorageService localStorage)
+    public async Task<PaginatedList<UserModel>> GetListAsync(int pageIndex, int pageSize, UserSearchModel searchModel)
+    {
+        Dictionary<string, string> queryStrings = new Dictionary<string, string>()
         {
-            _httpClient = httpClientFactory.CreateClient("IdentityApi");
-            _localStorage = localStorage;
-        }
+            ["pageIndex"] = pageIndex <= 0 ? "1" : pageIndex.ToString(CultureInfo.InvariantCulture),
+            ["pageSize"] = pageSize <= 0 ? "10" : pageSize.ToString(CultureInfo.InvariantCulture),
+        };
 
-        public async Task<PaginatedList<UserModel>> GetListAsync(int pageIndex, int pageSize, UserSearchModel searchModel)
+        if (searchModel != null)
         {
-            Dictionary<string, string> queryStrings = new Dictionary<string, string>()
+            if (!string.IsNullOrWhiteSpace(searchModel.FullName))
             {
-                ["pageIndex"] = pageIndex <= 0 ? "1" : pageIndex.ToString(CultureInfo.InvariantCulture),
-                ["pageSize"] = pageSize <= 0 ? "10" : pageSize.ToString(CultureInfo.InvariantCulture),
-            };
-
-            if (searchModel != null)
-            {
-                if (!string.IsNullOrWhiteSpace(searchModel.FullName))
-                {
-                    queryStrings["fullName"] = searchModel.FullName;
-                }
-
-                if (!string.IsNullOrWhiteSpace(searchModel.UserName))
-                {
-                    queryStrings["userName"] = searchModel.UserName;
-                }
-
-                if (!string.IsNullOrWhiteSpace(searchModel.Email))
-                {
-                    queryStrings["email"] = searchModel.Email;
-                }
-
-                if (!string.IsNullOrWhiteSpace(searchModel.IsActive))
-                {
-                    queryStrings["status"] = searchModel.IsActive;
-                }
+                queryStrings["fullName"] = searchModel.FullName;
             }
 
-            string uriWithQueryStrings = QueryHelpers.AddQueryString("users", queryStrings);
-
-            PaginatedList<UserModel> lists = await _httpClient.GetFromJsonAsync<PaginatedList<UserModel>>(uriWithQueryStrings);
-            return lists;
-        }
-
-        public async Task<UserDetailsModel> GetDetailsByIdAsync(int userId)
-        {
-            if (userId <= 0)
+            if (!string.IsNullOrWhiteSpace(searchModel.UserName))
             {
-                throw new ArgumentOutOfRangeException(nameof(userId));
+                queryStrings["userName"] = searchModel.UserName;
             }
 
-            UserDetailsModel userDetailsModel = await _httpClient.GetFromJsonAsync<UserDetailsModel>($"users/{userId}");
-
-            return userDetailsModel;
-        }
-
-        public async Task<HttpResponseMessage> UpdateAsync(EditUserModel editUserModel)
-        {
-            if (editUserModel == null)
+            if (!string.IsNullOrWhiteSpace(searchModel.Email))
             {
-                throw new ArgumentNullException(nameof(editUserModel));
+                queryStrings["email"] = searchModel.Email;
             }
 
-            HttpResponseMessage httpResponseMessage = await _httpClient.PutAsJsonAsync($"users/{editUserModel.Id}", editUserModel);
-
-            return httpResponseMessage;
-        }
-
-        public async Task<HttpResponseMessage> SetPasswordAsync(SetUserPasswordModel setUserPasswordModel)
-        {
-            if (setUserPasswordModel == null)
+            if (!string.IsNullOrWhiteSpace(searchModel.IsActive))
             {
-                throw new ArgumentNullException(nameof(setUserPasswordModel));
+                queryStrings["status"] = searchModel.IsActive;
             }
-
-            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync($"users/{setUserPasswordModel.UserId}/set-password", setUserPasswordModel);
-
-            return httpResponseMessage;
         }
 
-        public async Task<HttpResponseMessage> ChangePasswordAsync(ChangePasswordModel changePasswordModel)
+        string uriWithQueryStrings = QueryHelpers.AddQueryString("users", queryStrings);
+
+        PaginatedList<UserModel> lists = await _httpClient.GetFromJsonAsync<PaginatedList<UserModel>>(uriWithQueryStrings);
+        return lists;
+    }
+
+    public async Task<UserDetailsModel> GetDetailsByIdAsync(int userId)
+    {
+        if (userId <= 0)
         {
-            if (changePasswordModel == null)
-            {
-                throw new ArgumentNullException(nameof(changePasswordModel));
-            }
-
-            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync($"users/{changePasswordModel.UserId}/change-password", changePasswordModel);
-
-            return httpResponseMessage;
+            throw new ArgumentOutOfRangeException(nameof(userId));
         }
 
-        public async Task<HttpResponseMessage> RegisterAsync(RegistrationModel registerModel)
+        UserDetailsModel userDetailsModel = await _httpClient.GetFromJsonAsync<UserDetailsModel>($"users/{userId}");
+
+        return userDetailsModel;
+    }
+
+    public async Task<HttpResponseMessage> UpdateAsync(EditUserModel editUserModel)
+    {
+        if (editUserModel == null)
         {
-            if (registerModel == null)
-            {
-                throw new ArgumentNullException(nameof(registerModel));
-            }
-
-            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/registration", registerModel);
-
-            return httpResponseMessage;
+            throw new ArgumentNullException(nameof(editUserModel));
         }
 
-        public async Task<HttpResponseMessage> LoginAsync(LoginModel loginModel)
+        HttpResponseMessage httpResponseMessage = await _httpClient.PutAsJsonAsync($"users/{editUserModel.Id}", editUserModel);
+
+        return httpResponseMessage;
+    }
+
+    public async Task<HttpResponseMessage> SetPasswordAsync(SetUserPasswordModel setUserPasswordModel)
+    {
+        if (setUserPasswordModel == null)
         {
-            if (loginModel == null)
-            {
-                throw new ArgumentNullException(nameof(loginModel));
-            }
-
-            HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/login", loginModel);
-
-            return httpResponseMessage;
+            throw new ArgumentNullException(nameof(setUserPasswordModel));
         }
 
-        private async Task<string> GetAccessTokenAsync()
+        HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync($"users/{setUserPasswordModel.UserId}/set-password", setUserPasswordModel);
+
+        return httpResponseMessage;
+    }
+
+    public async Task<HttpResponseMessage> ChangePasswordAsync(ChangePasswordModel changePasswordModel)
+    {
+        if (changePasswordModel == null)
         {
-            LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.Jwt);
-            return loggedInUserInfo?.AccessToken;
+            throw new ArgumentNullException(nameof(changePasswordModel));
         }
+
+        HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync($"users/{changePasswordModel.UserId}/change-password", changePasswordModel);
+
+        return httpResponseMessage;
+    }
+
+    public async Task<HttpResponseMessage> RegisterAsync(RegistrationModel registerModel)
+    {
+        if (registerModel == null)
+        {
+            throw new ArgumentNullException(nameof(registerModel));
+        }
+
+        HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/registration", registerModel);
+
+        return httpResponseMessage;
+    }
+
+    public async Task<HttpResponseMessage> LoginAsync(LoginModel loginModel)
+    {
+        if (loginModel == null)
+        {
+            throw new ArgumentNullException(nameof(loginModel));
+        }
+
+        HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/login", loginModel);
+
+        return httpResponseMessage;
+    }
+
+    private async Task<string> GetAccessTokenAsync()
+    {
+        LoggedInUserInfo loggedInUserInfo = await _localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.Jwt);
+        return loggedInUserInfo?.AccessToken;
     }
 }

@@ -1,56 +1,60 @@
-using System;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using Serilog;
 
-namespace EmployeeManagement.Api
+namespace EmployeeManagement.Api;
+
+public static class Program
 {
-    public static class Program
+    ////private static readonly IConfiguration _configuration = new ConfigurationBuilder()
+    ////        .SetBasePath(Directory.GetCurrentDirectory())
+    ////        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    ////        .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true).Build();
+
+    public static void Main(string[] args)
     {
-        ////private static readonly IConfiguration _configuration = new ConfigurationBuilder()
-        ////        .SetBasePath(Directory.GetCurrentDirectory())
-        ////        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        ////        .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true).Build();
-
-        public static void Main(string[] args)
+        try
         {
-            try
+            ////Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(_configuration).CreateLogger();
+
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            builder.WebHost.CaptureStartupErrors(true);
+
+            // Add Serilog
+            builder.Host.UseSerilog((context, configuration) =>
             {
-                ////Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(_configuration).CreateLogger();
+                configuration.MinimumLevel.Information() // Set the minimun log level
+                    .WriteTo.Map(evt => evt.Level, (level, wt) => wt.File($"Logs\\{level}-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7))
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console();
+            });
 
-                Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information() // Set the minimun log level
-                .WriteTo.Map(evt => evt.Level, (level, wt) => wt.File($"Logs\\{level}-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7))
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .CreateLogger();
+            // Configure  application services
+            builder.ConfigureServices();
 
-                Log.Information("Starting web host");
+            // Build the web application.
+            WebApplication webApp = builder.Build();
 
-                IHostBuilder hostBuilder = Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.CaptureStartupErrors(true);
-                    webBuilder.UseStartup<Startup>();
-                    webBuilder.UseSerilog();
-                });
+            // Add middlewares to the web application.
+            webApp.ConfigureMiddlewares();
 
-                IHost host = hostBuilder.Build();
-                host.Run();
-            }
-            catch (Exception ex)
+            // Run the web application.
+            Log.Information("Starting web host");
+
+            webApp.Run();
+
+            Log.Information("Application started........");
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Host terminated unexpectedly");
+            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (environment == Environments.Development)
             {
-                Log.Fatal(ex, "Host terminated unexpectedly");
-                string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-                if (environment == Environments.Development)
-                {
-                    throw;
-                }
+                throw;
             }
-            finally
-            {
-                Log.CloseAndFlush();
-            }
+        }
+        finally
+        {
+            Log.CloseAndFlush();
         }
     }
 }

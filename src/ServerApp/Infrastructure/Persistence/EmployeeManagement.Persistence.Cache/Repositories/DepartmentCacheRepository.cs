@@ -10,82 +10,81 @@ using Microsoft.Extensions.Caching.Distributed;
 using TanvirArjel.EFCore.GenericRepository;
 using TanvirArjel.Extensions.Microsoft.Caching;
 
-namespace EmployeeManagement.Persistence.Cache.Repositories
+namespace EmployeeManagement.Persistence.Cache.Repositories;
+
+internal class DepartmentCacheRepository : IDepartmentCacheRepository
 {
-    internal class DepartmentCacheRepository : IDepartmentCacheRepository
+    private readonly IDistributedCache _distributedCache;
+    private readonly IQueryRepository _repository;
+
+    public DepartmentCacheRepository(IDistributedCache distributedCache, IQueryRepository repository)
     {
-        private readonly IDistributedCache _distributedCache;
-        private readonly IQueryRepository _repository;
+        _distributedCache = distributedCache;
+        _repository = repository;
+    }
 
-        public DepartmentCacheRepository(IDistributedCache distributedCache, IQueryRepository repository)
+    public async Task<List<DepartmentDto>> GetListAsync()
+    {
+        string cacheKey = DepartmentCacheKeys.ListKey;
+        List<DepartmentDto> departmentList = await _distributedCache.GetAsync<List<DepartmentDto>>(cacheKey);
+
+        if (departmentList == null)
         {
-            _distributedCache = distributedCache;
-            _repository = repository;
-        }
-
-        public async Task<List<DepartmentDto>> GetListAsync()
-        {
-            string cacheKey = DepartmentCacheKeys.ListKey;
-            List<DepartmentDto> departmentList = await _distributedCache.GetAsync<List<DepartmentDto>>(cacheKey);
-
-            if (departmentList == null)
+            Expression<Func<Department, DepartmentDto>> selectExp = d => new DepartmentDto
             {
-                Expression<Func<Department, DepartmentDto>> selectExp = d => new DepartmentDto
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Description = d.Description,
-                    IsActive = d.IsActive,
-                    CreatedAtUtc = d.CreatedAtUtc,
-                    LastModifiedAtUtc = d.LastModifiedAtUtc
-                };
+                Id = d.Id,
+                Name = d.Name,
+                Description = d.Description,
+                IsActive = d.IsActive,
+                CreatedAtUtc = d.CreatedAtUtc,
+                LastModifiedAtUtc = d.LastModifiedAtUtc
+            };
 
-                departmentList = await _repository.GetListAsync(selectExp);
+            departmentList = await _repository.GetListAsync(selectExp);
 
-                await _distributedCache.SetAsync(cacheKey, departmentList);
-            }
-
-            return departmentList;
+            await _distributedCache.SetAsync(cacheKey, departmentList);
         }
 
-        public async Task<Department> GetByIdAsync(Guid departmentId)
+        return departmentList;
+    }
+
+    public async Task<Department> GetByIdAsync(Guid departmentId)
+    {
+        string cacheKey = DepartmentCacheKeys.GetKey(departmentId);
+        Department department = await _distributedCache.GetAsync<Department>(cacheKey);
+
+        if (department == null)
         {
-            string cacheKey = DepartmentCacheKeys.GetKey(departmentId);
-            Department department = await _distributedCache.GetAsync<Department>(cacheKey);
+            department = await _repository.GetByIdAsync<Department>(departmentId);
 
-            if (department == null)
-            {
-                department = await _repository.GetByIdAsync<Department>(departmentId);
-
-                await _distributedCache.SetAsync(cacheKey, department);
-            }
-
-            return department;
+            await _distributedCache.SetAsync(cacheKey, department);
         }
 
-        public async Task<DepartmentDetailsDto> GetDetailsByIdAsync(Guid departmentId)
+        return department;
+    }
+
+    public async Task<DepartmentDetailsDto> GetDetailsByIdAsync(Guid departmentId)
+    {
+        string cacheKey = DepartmentCacheKeys.GetDetailsKey(departmentId);
+        DepartmentDetailsDto department = await _distributedCache.GetAsync<DepartmentDetailsDto>(cacheKey);
+
+        if (department == null)
         {
-            string cacheKey = DepartmentCacheKeys.GetDetailsKey(departmentId);
-            DepartmentDetailsDto department = await _distributedCache.GetAsync<DepartmentDetailsDto>(cacheKey);
-
-            if (department == null)
+            Expression<Func<Department, DepartmentDetailsDto>> selectExp = d => new DepartmentDetailsDto
             {
-                Expression<Func<Department, DepartmentDetailsDto>> selectExp = d => new DepartmentDetailsDto
-                {
-                    Id = d.Id,
-                    Name = d.Name,
-                    Description = d.Description,
-                    IsActive = d.IsActive,
-                    CreatedAtUtc = d.CreatedAtUtc,
-                    LastModifiedAtUtc = d.LastModifiedAtUtc
-                };
+                Id = d.Id,
+                Name = d.Name,
+                Description = d.Description,
+                IsActive = d.IsActive,
+                CreatedAtUtc = d.CreatedAtUtc,
+                LastModifiedAtUtc = d.LastModifiedAtUtc
+            };
 
-                department = await _repository.GetByIdAsync(departmentId, selectExp);
+            department = await _repository.GetByIdAsync(departmentId, selectExp);
 
-                await _distributedCache.SetAsync(cacheKey, department);
-            }
-
-            return department;
+            await _distributedCache.SetAsync(cacheKey, department);
         }
+
+        return department;
     }
 }

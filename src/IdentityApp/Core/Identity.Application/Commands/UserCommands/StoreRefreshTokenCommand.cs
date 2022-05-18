@@ -6,44 +6,43 @@ using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace Identity.Application.Commands.UserCommands
+namespace Identity.Application.Commands.UserCommands;
+
+public class StoreRefreshTokenCommand : IRequest<RefreshToken>
 {
-    public class StoreRefreshTokenCommand : IRequest<RefreshToken>
+    public StoreRefreshTokenCommand(Guid userId, string token)
     {
-        public StoreRefreshTokenCommand(Guid userId, string token)
+        UserId = userId.ThrowIfEmpty(nameof(userId));
+        Token = token.ThrowIfNullOrEmpty(nameof(token));
+    }
+
+    public Guid UserId { get; }
+
+    public string Token { get; }
+
+    private class StoreRefreshTokenCommandHandler : IRequestHandler<StoreRefreshTokenCommand, RefreshToken>
+    {
+        private readonly IRepository _repository;
+
+        public StoreRefreshTokenCommandHandler(IRepository repository)
         {
-            UserId = userId.ThrowIfEmpty(nameof(userId));
-            Token = token.ThrowIfNullOrEmpty(nameof(token));
+            _repository = repository;
         }
 
-        public Guid UserId { get; }
-
-        public string Token { get; }
-
-        private class StoreRefreshTokenCommandHandler : IRequestHandler<StoreRefreshTokenCommand, RefreshToken>
+        public async Task<RefreshToken> Handle(StoreRefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            private readonly IRepository _repository;
+            request.ThrowIfNull(nameof(request));
 
-            public StoreRefreshTokenCommandHandler(IRepository repository)
+            RefreshToken refreshToken = new RefreshToken()
             {
-                _repository = repository;
-            }
+                UserId = request.UserId,
+                Token = request.Token,
+                CreatedAtUtc = DateTime.UtcNow,
+                ExpireAtUtc = DateTime.UtcNow.AddDays(30)
+            };
 
-            public async Task<RefreshToken> Handle(StoreRefreshTokenCommand request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
-
-                RefreshToken refreshToken = new RefreshToken()
-                {
-                    UserId = request.UserId,
-                    Token = request.Token,
-                    CreatedAtUtc = DateTime.UtcNow,
-                    ExpireAtUtc = DateTime.UtcNow.AddDays(30)
-                };
-
-                await _repository.InsertAsync(refreshToken, cancellationToken);
-                return refreshToken;
-            }
+            await _repository.InsertAsync(refreshToken, cancellationToken);
+            return refreshToken;
         }
     }
 }

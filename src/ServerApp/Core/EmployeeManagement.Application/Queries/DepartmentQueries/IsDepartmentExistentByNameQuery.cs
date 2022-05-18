@@ -1,36 +1,33 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+﻿using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
-namespace EmployeeManagement.Application.Queries.DepartmentQueries
+namespace EmployeeManagement.Application.Queries.DepartmentQueries;
+
+public class IsDepartmentExistentByNameQuery : IRequest<bool>
 {
-    public class IsDepartmentExistentByNameQuery : IRequest<bool>
+    public IsDepartmentExistentByNameQuery(string name)
     {
-        public IsDepartmentExistentByNameQuery(string name)
+        Name = name.ThrowIfNullOrEmpty(nameof(name));
+    }
+
+    public string Name { get; set; }
+
+    private class IsDepartmentExistentByNameQueryHandler : IRequestHandler<IsDepartmentExistentByNameQuery, bool>
+    {
+        private readonly IQueryRepository _repository;
+
+        public IsDepartmentExistentByNameQueryHandler(IQueryRepository repository)
         {
-            Name = name.ThrowIfNullOrEmpty(nameof(name));
+            _repository = repository;
         }
 
-        public string Name { get; set; }
-
-        private class IsDepartmentExistentByNameQueryHandler : IRequestHandler<IsDepartmentExistentByNameQuery, bool>
+        public async Task<bool> Handle(IsDepartmentExistentByNameQuery request, CancellationToken cancellationToken)
         {
-            private readonly IQueryRepository _repository;
-
-            public IsDepartmentExistentByNameQueryHandler(IQueryRepository repository)
-            {
-                _repository = repository;
-            }
-
-            public async Task<bool> Handle(IsDepartmentExistentByNameQuery request, CancellationToken cancellationToken)
-            {
-                request.ThrowIfNull(nameof(request));
-                bool isExists = await _repository.ExistsAsync<Department>(d => d.Name == request.Name, cancellationToken);
-                return isExists;
-            }
+            request.ThrowIfNull(nameof(request));
+            bool isExists = await _repository.ExistsAsync<Department>(d => d.Name == request.Name, cancellationToken);
+            return isExists;
         }
     }
 }

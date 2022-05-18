@@ -3,36 +3,35 @@ using System.Threading.Tasks;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate
+namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+
+[ScopedService]
+public class DepartmentManipulator
 {
-    [ScopedService]
-    public class DepartmentManipulator
+    private readonly IDepartmentRepository _departmentRepository;
+
+    public DepartmentManipulator(IDepartmentRepository departmentRepository)
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        _departmentRepository = departmentRepository;
+    }
 
-        public DepartmentManipulator(IDepartmentRepository departmentRepository)
+    public async Task<Department> SetNameAsync(Department department, string name)
+    {
+        department.ThrowIfNull(nameof(department));
+
+        if (department.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
         {
-            _departmentRepository = departmentRepository;
-        }
-
-        public async Task<Department> SetNameAsync(Department department, string name)
-        {
-            department.ThrowIfNull(nameof(department));
-
-            if (department.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
-            {
-                return department;
-            }
-
-            bool isNameExistent = await _departmentRepository.ExistsAsync(d => d.Name == name);
-
-            if (isNameExistent)
-            {
-                throw new InvalidOperationException("A department already exists with the name.");
-            }
-
-            department.SetName(name);
             return department;
         }
+
+        bool isNameExistent = await _departmentRepository.ExistsAsync(d => d.Name == name);
+
+        if (isNameExistent)
+        {
+            throw new InvalidOperationException("A department already exists with the name.");
+        }
+
+        department.SetName(name);
+        return department;
     }
 }
