@@ -9,35 +9,26 @@ using Identity.Infrastructure.Services;
 using Identity.Persistence.RelationalDB;
 using Identity.Persistence.RelationalDB.Extensions;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace Identity.Api;
 
-public class Startup
+public static class Startup
 {
-    private readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
-    public Startup(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
+    private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
     // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.ThrowIfNull(nameof(builder));
+
+        IServiceCollection services = builder.Services;
         ////services.AddCors(options =>
         ////{
         ////    options.AddPolicy(
@@ -54,7 +45,7 @@ public class Startup
 
         services.AddCors(options =>
         {
-            options.AddPolicy(myAllowSpecificOrigins, builder =>
+            options.AddPolicy(MyAllowSpecificOrigins, builder =>
             {
                 builder
                 .AllowAnyHeader()
@@ -91,14 +82,14 @@ public class Startup
             options.Level = CompressionLevel.Fastest;
         });
 
-        services.AddIdentityDbContext(Configuration.GetConnectionString("IdentityDbConnection"));
+        services.AddIdentityDbContext(builder.Configuration.GetConnectionString("IdentityDbConnection"));
 
         JwtConfig jwtConfig = new JwtConfig("SampleIdentity.com", "SampleIdentitySecretKey", 86400);
         services.AddJwtAuthentication(jwtConfig);
 
         services.AddJwtTokenGenerator(jwtConfig);
 
-        services.AddExternalLogins(Configuration);
+        services.AddExternalLogins(builder.Configuration);
 
         string sendGridApiKey = "yourSendGridKey";
         services.AddSendGrid(sendGridApiKey);
@@ -111,8 +102,10 @@ public class Startup
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+    public static void ConfigureMiddlewares(this WebApplication app)
     {
+        app.ThrowIfNull(nameof(app));
+
         app.ApplyDatabaseMigrations();
 
         app.Use((context, next) =>
@@ -121,7 +114,7 @@ public class Startup
             return next();
         });
 
-        if (env.IsDevelopment())
+        if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
@@ -133,6 +126,8 @@ public class Startup
         app.UseSwaggerUI(options =>
         {
             options.DocExpansion(DocExpansion.None);
+
+            IApiVersionDescriptionProvider provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
             foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
             {
@@ -147,7 +142,7 @@ public class Startup
 
         app.UseRouting();
 
-        app.UseCors(myAllowSpecificOrigins);
+        app.UseCors(MyAllowSpecificOrigins);
 
         app.UseAuthentication();
         app.UseAuthorization();

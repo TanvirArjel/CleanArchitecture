@@ -1,8 +1,5 @@
-﻿using System.Text;
-using Identity.Api.Configs;
+﻿using Identity.Api.Configs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TanvirArjel.ArgumentChecker;
 

@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BlazorApps.Shared.Models;
 using BlazorApps.Shared.Models.EmployeeModels;
+using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace BlazorApps.Shared.Services;
@@ -17,6 +18,8 @@ public class EmployeeService
 
     public EmployeeService(IHttpClientFactory httpClientFactory)
     {
+        httpClientFactory.ThrowIfNull(nameof(httpClientFactory));
+
         _httpClient = httpClientFactory.CreateClient("EmployeeManagementApi");
     }
 

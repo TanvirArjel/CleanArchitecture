@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using Identity.Api.Helpers;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;

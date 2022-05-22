@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
 using EmployeeManagement.Api.Extensions;
 using EmployeeManagement.Api.Filters;
@@ -20,7 +19,7 @@ namespace EmployeeManagement.Api;
 
 public static class Startup
 {
-    private static readonly string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+    private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public static void ConfigureServices(this WebApplicationBuilder builder)
@@ -35,7 +34,7 @@ public static class Startup
         services.AddCors(options =>
         {
             options.AddPolicy(
-                name: myAllowSpecificOrigins,
+                name: MyAllowSpecificOrigins,
                 builder =>
                 {
                     builder.WithOrigins("https://localhost:44364")
@@ -89,8 +88,6 @@ public static class Startup
         services.AddJwtAuthentication();
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Not appplicable here")]
     public static void ConfigureMiddlewares(this WebApplication app)
     {
         if (app == null)
@@ -129,7 +126,7 @@ public static class Startup
 
         app.UseRouting();
 
-        app.UseCors(myAllowSpecificOrigins);
+        app.UseCors(MyAllowSpecificOrigins);
 
         app.UseAuthentication();
         app.UseAuthorization();

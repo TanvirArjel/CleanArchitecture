@@ -9,6 +9,7 @@ using BlazorApps.Shared.Models;
 using BlazorApps.Shared.Models.IdentityModels;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.WebUtilities;
+using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace BlazorApps.Shared.Services;
@@ -21,6 +22,8 @@ public class UserService
 
     public UserService(IHttpClientFactory httpClientFactory, ILocalStorageService localStorage)
     {
+        httpClientFactory.ThrowIfNull(nameof(httpClientFactory));
+
         _httpClient = httpClientFactory.CreateClient("IdentityApi");
         _localStorage = localStorage;
     }

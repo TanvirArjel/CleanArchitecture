@@ -1,18 +1,18 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-
 namespace Identity.Api;
 
 public static class Program
 {
     public static void Main(string[] args)
     {
-        IHostBuilder hostBuilder = Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        builder.WebHost.CaptureStartupErrors(true);
 
-        hostBuilder.Build().Run();
+        builder.ConfigureServices();
+
+        WebApplication webApp = builder.Build();
+
+        webApp.ConfigureMiddlewares();
+
+        webApp.Run();
     }
 }
