@@ -39,8 +39,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Core\EmployeeManagement.Application\EmployeeManagement.Application.csproj" />
 	  <ProjectReference Include="..\..\Infrastructure\EmployeeManagement.Infrastructure.Services\EmployeeManagement.Infrastructure.Services.csproj" />
-	  <ProjectReference Include="..\..\Infrastructure\Persistence\EmployeeManagement.Persistence.Cache\EmployeeManagement.Persistence.Cache.csproj" />
-	  <ProjectReference Include="..\..\Infrastructure\Persistence\EmployeeManagement.Persistence.RelationalDB\EmployeeManagement.Persistence.RelationalDB.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\EmployeeManagement.Persistence.Cache\EmployeeManagement.Persistence.Cache.csproj" />
+	  <ProjectReference Include="..\..\Infrastructure\EmployeeManagement.Persistence.RelationalDB\EmployeeManagement.Persistence.RelationalDB.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
