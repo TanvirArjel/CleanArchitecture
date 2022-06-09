@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.OpenApi.Models;
 
-namespace Identity.Api.Swagger;
+namespace CityOSVideoStorage.Api.Extensions;
 
-public static class SwaggerGenerationExtensions
+public static class SwaggerGenerationServicesExtensions
 {
     public static void AddSwaggerGeneration(this IServiceCollection services)
     {
@@ -18,8 +18,8 @@ public static class SwaggerGenerationExtensions
 
         services.AddApiVersioning(config =>
         {
-            // Specify the default API Version as 0.0
-            config.DefaultApiVersion = new ApiVersion(0, 0);
+            // Specify the default API Version as 1.0
+            config.DefaultApiVersion = new ApiVersion(1, 0);
 
             // If the client hasn't specified the API version in the request, use the default API version number
             config.AssumeDefaultVersionWhenUnspecified = true;
@@ -41,7 +41,8 @@ public static class SwaggerGenerationExtensions
 
         services.AddSwaggerGen(options =>
         {
-            // JWT secutiry definition for swagger
+            options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
             {
                 Name = "Authorization",
@@ -52,23 +53,38 @@ public static class SwaggerGenerationExtensions
                 Scheme = "Bearer"
             });
 
-            // Adding Bearer as default.
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                  {
-                     new OpenApiSecurityScheme
-                     {
-                       Reference = new OpenApiReference
-                       {
-                         Type = ReferenceType.SecurityScheme,
-                         Id = "Bearer"
-                       }
-                     },
-                     Array.Empty<string>()
-                  }
+                      {
+                         new OpenApiSecurityScheme
+                         {
+                           Reference = new OpenApiReference
+                           {
+                             Type = ReferenceType.SecurityScheme,
+                             Id = "Bearer"
+                           }
+                         },
+                         Array.Empty<string>()
+                      }
             });
 
-            // Grouping endopings by version and ApiExplorer group name.
+            options.TagActionsBy(api =>
+            {
+                if (api.GroupName != null)
+                {
+                    return new[] { api.GroupName };
+                }
+
+                ControllerActionDescriptor controllerActionDescriptor = api.ActionDescriptor as ControllerActionDescriptor;
+                if (controllerActionDescriptor != null)
+                {
+                    return new[] { controllerActionDescriptor.ControllerName };
+                }
+
+                throw new InvalidOperationException("Unable to determine tag for endpoint.");
+            });
+
+            // Grouping endpoints by version and ApiExplorer group name.
             options.DocInclusionPredicate((documentName, apiDescription) =>
             {
                 ApiVersionModel actionApiVersionModel = apiDescription.ActionDescriptor
@@ -95,34 +111,17 @@ public static class SwaggerGenerationExtensions
                 return actionApiVersionModel.ImplementedApiVersions.Any(v => $"v{v.MajorVersion}" == documentName);
             });
 
-            // Grouping endpoings by ApiExplorer GroupName.
-            options.TagActionsBy(api =>
-            {
-                if (api.GroupName != null)
-                {
-                    return new[] { api.GroupName };
-                }
-
-                ControllerActionDescriptor controllerActionDescriptor = api.ActionDescriptor as ControllerActionDescriptor;
-                if (controllerActionDescriptor != null)
-                {
-                    return new[] { controllerActionDescriptor.ControllerName };
-                }
-
-                throw new InvalidOperationException("Unable to determine tag for endpoint.");
-            });
-
             // Adding all the available versions.
             IApiVersionDescriptionProvider apiVersionDescriptionProvider = services.BuildServiceProvider()
-            .GetService<IApiVersionDescriptionProvider>();
+        .GetService<IApiVersionDescriptionProvider>();
 
             foreach (ApiVersionDescription description in apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
                 OpenApiInfo openApiInfo = new OpenApiInfo()
                 {
-                    Title = $"Identity {description.GroupName} API",
+                    Title = $"Employee Management {description.GroupName.ToUpperInvariant()} API Endpoints",
                     Version = description.ApiVersion.ToString(),
-                    Description = $"Identity {description.GroupName} API description."
+                    Description = $"Employee Management {description.GroupName} API endpoints descriptions."
                 };
 
                 if (description.IsDeprecated)
@@ -133,10 +132,11 @@ public static class SwaggerGenerationExtensions
                 options.SwaggerDoc(description.GroupName, openApiInfo);
             }
 
-            // Adding swagger data annotation support.
             options.EnableAnnotations();
-            string xmlCommentFilePath = Path.Combine(AppContext.BaseDirectory, "Identity.Api.xml");
+            string xmlCommentFilePath = Path.Combine(AppContext.BaseDirectory, "EmployeeManagement.Api.xml");
             options.IncludeXmlComments(xmlCommentFilePath);
+
+            ////options.OperationFilter<AddRequiredHeaderParameters>();
         });
     }
 }

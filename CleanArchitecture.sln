@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{73DD776E-B397-4372-867D-EDAF28C8608F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ClientApps", "ClientApps", "{81EB72CF-8A3B-4C39-A1C6-65893F8DEB13}"
+	ProjectSection(SolutionItems) = preProject
+		src\ClientApps\docker-compose.yml = src\ClientApps\docker-compose.yml
+		src\ClientApps\Dockerfile = src\ClientApps\Dockerfile
+		src\ClientApps\nginx.conf = src\ClientApps\nginx.conf
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServerApp", "ServerApp", "{98EABEDD-28DB-4E2B-8167-03CE601C73BF}"
 EndProject
@@ -53,6 +58,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Persistence.Cache", "src\ServerApp\Infrastructure\EmployeeManagement.Persistence.Cache\EmployeeManagement.Persistence.Cache.csproj", "{AA027632-8CB5-4226-9B71-B6C94C872EEF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Persistence.RelationalDB", "src\ServerApp\Infrastructure\EmployeeManagement.Persistence.RelationalDB\EmployeeManagement.Persistence.RelationalDB.csproj", "{DEF541F0-BBFE-4520-A69F-683486958FF8}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +119,10 @@ Global
 		{DEF541F0-BBFE-4520-A69F-683486958FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEF541F0-BBFE-4520-A69F-683486958FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEF541F0-BBFE-4520-A69F-683486958FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

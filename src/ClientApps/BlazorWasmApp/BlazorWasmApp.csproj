@@ -6,6 +6,7 @@
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+		<UserSecretsId>e3055905-8d05-4650-845d-cb9e1e9082a0</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>

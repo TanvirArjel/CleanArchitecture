@@ -7,11 +7,11 @@ namespace EmployeeManagement.Persistence.RelationalDB.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
-    public static void ApplyDatabaseMigrations(this IApplicationBuilder app)
+    public static void ApplyDatabaseMigrations(this WebApplication app)
     {
         app.ThrowIfNull(nameof(app));
 
-        using IServiceScope serviceScope = app.ApplicationServices.CreateScope();
+        using IServiceScope serviceScope = app.Services.CreateScope();
         EmployeeManagementDbContext dbContext = serviceScope.ServiceProvider.GetRequiredService<EmployeeManagementDbContext>();
 
         dbContext.Database.Migrate();

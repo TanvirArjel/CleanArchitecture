@@ -1,0 +1,9 @@
+﻿version: '3.9'
+
+services:
+  blazorwasmapp:
+    image: blazorwasmapp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: ["7300:80"]

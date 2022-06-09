@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+       SA_PASSWORD: "MyPass@word"
+       ACCEPT_EULA: "Y"
+       MSSQL_PID: 'Express'
+    ports: ["1440:1433"]
+    
+  employeemanagement.api:
+    image: ${DOCKER_REGISTRY-}employeemanagementapi
+    build:
+      context: .
+      dockerfile: src/ServerApp/Presentation/EmployeeManagement.Api/Dockerfile
+    ports: ["7100:80","7101:443"]
+    depends_on: ["sqlserver"]
+    
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: src/IdentityApp/Presentation/Identity.Api/Dockerfile
+    ports: ["7200:80","7201:443"]
+    depends_on: ["sqlserver"]
+
+  #blazorwasmapp:
+  #  image: ${DOCKER_REGISTRY-}blazorwasmapp
+  #  build:
+  #    context: .
+  #    dockerfile: src/ClientApps/BlazorWasmApp/Dockerfile
+  #  ports: ["7300:80","7301:443"]
+

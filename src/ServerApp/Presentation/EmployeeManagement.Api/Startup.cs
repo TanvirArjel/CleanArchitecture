@@ -1,14 +1,13 @@
 using System.IO.Compression;
+using CityOSVideoStorage.Api.Extensions;
 using EmployeeManagement.Api.Extensions;
 using EmployeeManagement.Api.Filters;
-using EmployeeManagement.Api.Swagger;
 using EmployeeManagement.Api.Utilities;
 using EmployeeManagement.Application.Commands.DepartmentCommands;
 using EmployeeManagement.Infrastructure.Services;
 using EmployeeManagement.Persistence.Cache;
 using EmployeeManagement.Persistence.RelationalDB.Extensions;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -20,6 +19,8 @@ namespace EmployeeManagement.Api;
 public static class Startup
 {
     private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+    private static bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public static void ConfigureServices(this WebApplicationBuilder builder)
@@ -37,7 +38,7 @@ public static class Startup
                 name: MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("https://localhost:44364")
+                    builder.WithOrigins("https://localhost:44364", "http://localhost:7300")
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 });
@@ -58,8 +59,17 @@ public static class Startup
             options.Level = CompressionLevel.Fastest;
         });
 
-        string connectionName = builder.Environment.IsDevelopment() ? "EmployeeDbConnection" : "EmployeeDbConnection";
-        string connectionString = builder.Configuration.GetConnectionString(connectionName);
+        string connectionString = string.Empty;
+
+        if (InDocker)
+        {
+            connectionString = builder.Configuration.GetConnectionString("DockerDbConnection");
+        }
+        else
+        {
+            string connectionName = builder.Environment.IsDevelopment() ? "EmployeeDbConnection" : "EmployeeDbConnection";
+            connectionString = builder.Configuration.GetConnectionString(connectionName);
+        }
 
         services.AddRelationalDbContext(connectionString);
 
@@ -73,14 +83,9 @@ public static class Startup
         services.AddServicesOfAllTypes("EmployeeManagement");
         services.AddControllers(options =>
         {
+            options.Filters.Add(typeof(BadRequestResultFilter));
             options.Filters.Add(typeof(ExceptionHandlerFilter));
             options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
-        }).ConfigureApiBehaviorOptions(options =>
-        {
-            options.InvalidModelStateResponseFactory = context =>
-            {
-                return new BadRequestObjectResult(context.ModelState);
-            };
         });
 
         services.AddSwaggerGeneration();
