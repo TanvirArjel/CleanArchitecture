@@ -15,6 +15,7 @@ public class GetDepartmentByIdQuery : IRequest<DepartmentDetailsDto>
 
     public Guid Id { get; }
 
+    // Handler
     private class GetDepartmentByIdQueryHandler : IRequestHandler<GetDepartmentByIdQuery, DepartmentDetailsDto>
     {
         private readonly IQueryRepository _repository;

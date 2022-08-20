@@ -22,9 +22,9 @@ public static class Program
             builder.Host.UseSerilog((context, configuration) =>
             {
                 configuration.MinimumLevel.Information() // Set the minimun log level
-                    .WriteTo.Map(evt => evt.Level, (level, wt) => wt.File($"Logs//{level}-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7))
+                    .WriteTo.Map(evt => evt.Level, (level, wt) => wt.File($"Logs//{level}-.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7, formatProvider: null))
                     .Enrich.FromLogContext()
-                    .WriteTo.Console();
+                    .WriteTo.Console(formatProvider: null);
             });
 
             // Configure  application services
