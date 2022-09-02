@@ -19,16 +19,13 @@ public class CreateDepratmentCommand : IRequest<Guid>
 
     private class CreateDepratmentCommandHandler : IRequestHandler<CreateDepratmentCommand, Guid>
     {
-        private readonly DepartmentFactory _departmentFactory;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IDepartmentCacheHandler _departmentCacheHandler;
 
         public CreateDepratmentCommandHandler(
-            DepartmentFactory departmentFactory,
             IDepartmentRepository departmentRepository,
             IDepartmentCacheHandler departmentCacheHandler)
         {
-            _departmentFactory = departmentFactory;
             _departmentRepository = departmentRepository;
             _departmentCacheHandler = departmentCacheHandler;
         }
@@ -37,7 +34,7 @@ public class CreateDepratmentCommand : IRequest<Guid>
         {
             request.ThrowIfNull(nameof(request));
 
-            Department department = await _departmentFactory.CreateAsync(request.Name, request.Description);
+            Department department = await Department.CreateAsync(_departmentRepository, request.Name, request.Description);
 
             // Persist to the database
             await _departmentRepository.InsertAsync(department);

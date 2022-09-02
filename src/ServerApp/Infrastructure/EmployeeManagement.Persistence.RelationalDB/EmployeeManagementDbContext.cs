@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DomainEntities;
-using EmployeeManagement.Persistence.RelationalDB.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Persistence.RelationalDB;
@@ -16,13 +15,13 @@ internal class EmployeeManagementDbContext : DbContext
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        ChangeTracker.ApplyValueGenerationOnUpdate();
+        ////ChangeTracker.ApplyValueGenerationOnUpdate();
         return base.SaveChangesAsync(cancellationToken);
     }
 
     public override int SaveChanges()
     {
-        ChangeTracker.ApplyValueGenerationOnUpdate();
+        ////ChangeTracker.ApplyValueGenerationOnUpdate();
         return base.SaveChanges();
     }
 
@@ -35,6 +34,6 @@ internal class EmployeeManagementDbContext : DbContext
 
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(EmployeeConfiguration).Assembly);
-        modelBuilder.ApplyBaseEntityConfiguration(); // This should be called after calling the derived entity configurations
+        ////modelBuilder.ApplyBaseEntityConfiguration(); // This should be called after calling the derived entity configurations
     }
 }

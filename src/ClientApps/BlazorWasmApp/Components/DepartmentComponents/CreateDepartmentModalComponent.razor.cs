@@ -60,6 +60,11 @@ public partial class CreateDepartmentModalComponent
 
             await CustomValidationMessages.AddAndDisplayAsync(httpResponseMessage);
         }
+        catch (HttpRequestException exception)
+        {
+            CustomValidationMessages.AddAndDisplay(ErrorMessages.ServerDownOrCorsErrorMessage);
+            await _exceptionLogger.LogAsync(exception);
+        }
         catch (Exception exception)
         {
             CustomValidationMessages.AddAndDisplay(ErrorMessages.ClientErrorMessage);

@@ -44,7 +44,7 @@ public class CreateEmployeeCommand : IRequest<Guid>
         public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
-            Employee employee = await _employeeFactory.CreateAsync(
+            Employee employee = _employeeFactory.Create(
                 request.Name,
                 request.DepartmentId,
                 request.DateOfBirth,

@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
-using EmployeeManagement.Domain.Entities;
+using EmployeeManagement.Domain.Exceptions;
+using EmployeeManagement.Domain.Primitives;
 using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 
-public class Employee : BaseEntity
+public sealed class Employee : Entity
 {
     internal Employee(
+        IDepartmentRepository departmentRepository,
+        IEmployeeRepository employeeRepository,
         string name,
         Guid departmentId,
         DateTime dateOfBirth,
@@ -16,10 +20,10 @@ public class Employee : BaseEntity
     {
         Id = Guid.NewGuid();
         SetName(name);
-        SetDeparment(departmentId);
+        SetDepartmentId(departmentRepository, departmentId);
         SetDateOfBirth(dateOfBirth);
-        SetEmail(email);
-        SetPhoneNumber(phoneNumber);
+        SetEmail(employeeRepository, email);
+        SetPhoneNumber(employeeRepository, phoneNumber);
         CreatedAtUtc = DateTime.UtcNow;
     }
 
@@ -38,8 +42,16 @@ public class Employee : BaseEntity
 
     public string PhoneNumber { get; private set; }
 
+    public bool IsActive { get; set; }
+
+    public DateTime CreatedAtUtc { get; }
+
+    public DateTime? LastModifiedAtUtc { get; private set; }
+
+    // Navigation Properties
     public Department Department { get; private set; }
 
+    // Public methods
     public void SetName(string name)
     {
         Name = name.ThrowIfNullOrEmpty(nameof(name))
@@ -56,19 +68,81 @@ public class Employee : BaseEntity
         DateOfBirth = dateOfBirth;
     }
 
-    internal void SetDeparment(Guid departmentId)
+    public async Task SetDepartmentAsync(IDepartmentRepository repository, Guid departmentId)
     {
-        DepartmentId = departmentId.ThrowIfEmpty(nameof(departmentId));
+        repository.ThrowIfNull(nameof(repository));
+
+        departmentId.ThrowIfEmpty(nameof(departmentId));
+
+        if (DepartmentId != Guid.Empty && DepartmentId.Equals(departmentId))
+        {
+            return;
+        }
+
+        bool isDepartmentExistent = await repository.ExistsAsync(d => d.Id == departmentId);
+
+        if (isDepartmentExistent == false)
+        {
+            throw new EntityNotFoundException(typeof(Department), departmentId);
+        }
+
+        DepartmentId = departmentId;
     }
 
-    internal void SetEmail(string email)
+    public async Task SetEmailAsync(IEmployeeRepository repository, string email)
     {
-        Email = email.ThrowIfNullOrEmpty(nameof(email))
+        repository.ThrowIfNull(nameof(repository));
+
+        email.ThrowIfNullOrEmpty(nameof(email))
                      .ThrowIfNotValidEmail(nameof(email));
+
+        if (Email != null && Email.Equals(email, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        bool isPhoneNumberExistent = await repository.ExistsAsync(d => d.Email == email);
+
+        if (isPhoneNumberExistent)
+        {
+            throw new DomainValidationException("An employee already exists with the provided email.");
+        }
+
+        Email = email;
     }
 
-    internal void SetPhoneNumber(string phoneNumber)
+    public async Task SetPhoneNumberAsync(IEmployeeRepository repository, string phoneNumber)
     {
-        PhoneNumber = phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
+        repository.ThrowIfNull(nameof(repository));
+        phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
+
+        if (PhoneNumber != null && PhoneNumber.Equals(phoneNumber, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        bool isPhoneNumberExistent = await repository.ExistsAsync(d => d.PhoneNumber == phoneNumber);
+
+        if (isPhoneNumberExistent)
+        {
+            throw new DomainValidationException("An employee already exists with the provided phone number.");
+        }
+
+        PhoneNumber = phoneNumber;
+    }
+
+    private void SetDepartmentId(IDepartmentRepository repository, Guid departmentId)
+    {
+        SetDepartmentAsync(repository, departmentId).GetAwaiter().GetResult();
+    }
+
+    private void SetEmail(IEmployeeRepository repository, string email)
+    {
+        SetEmailAsync(repository, email).GetAwaiter().GetResult();
+    }
+
+    private void SetPhoneNumber(IEmployeeRepository employeeRepository, string phoneNumber)
+    {
+        SetPhoneNumberAsync(employeeRepository, phoneNumber).GetAwaiter().GetResult();
     }
 }

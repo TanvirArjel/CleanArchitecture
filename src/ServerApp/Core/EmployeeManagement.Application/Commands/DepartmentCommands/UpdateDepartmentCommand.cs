@@ -30,16 +30,13 @@ public class UpdateDepartmentCommand : IRequest
 
     private class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand>
     {
-        private readonly DepartmentManipulator _departmentManipulator;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly IDepartmentCacheHandler _departmentCacheHandler;
 
         public UpdateDepartmentCommandHandler(
-            DepartmentManipulator departmentManipulator,
             IDepartmentRepository departmentRepository,
             IDepartmentCacheHandler departmentCacheHandler)
         {
-            _departmentManipulator = departmentManipulator;
             _departmentRepository = departmentRepository;
             _departmentCacheHandler = departmentCacheHandler;
         }
@@ -55,10 +52,10 @@ public class UpdateDepartmentCommand : IRequest
                 throw new EntityNotFoundException(typeof(Department), request.Id);
             }
 
-            await _departmentManipulator.SetNameAsync(departmentToBeUpdated, request.Name);
-
+            await departmentToBeUpdated.SetNameAsync(_departmentRepository, request.Name);
             departmentToBeUpdated.SetDescription(request.Description);
             departmentToBeUpdated.IsActive = request.IsActive;
+
             await _departmentRepository.UpdateAsync(departmentToBeUpdated);
 
             await _departmentCacheHandler.RemoveListAsync();

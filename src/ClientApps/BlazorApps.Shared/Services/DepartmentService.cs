@@ -22,10 +22,10 @@ public class DepartmentService
         _httpClient = httpClientFactory.CreateClient("EmployeeManagementApi");
     }
 
-    public async Task<List<DepartmentDetailsModel>> GetListAsync()
+    public async Task<HttpResponseMessage> GetListAsync()
     {
-        List<DepartmentDetailsModel> departments = await _httpClient.GetFromJsonAsync<List<DepartmentDetailsModel>>("v1/departments");
-        return departments;
+        HttpResponseMessage httpResponse = await _httpClient.GetAsync("v1/departments");
+        return httpResponse;
     }
 
     public async Task<List<SelectListItem>> GetSelectListAsync(Guid? selectedDepartment = null)

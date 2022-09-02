@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BlazorApps.Shared.Common;
 using BlazorApps.Shared.Models.DepartmentModels;
@@ -34,36 +35,7 @@ public partial class DepartmentListComponent
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            await LoadDepartmentsAsync();
-        }
-        catch (HttpRequestException httpException)
-        {
-            if ((int)httpException.StatusCode == 401)
-            {
-                ErrorMessage = ErrorMessages.Http401ErrorMessage;
-            }
-            else if ((int)httpException.StatusCode == 403)
-            {
-                ErrorMessage = ErrorMessages.Http403ErrorMessage;
-            }
-            else if ((int)httpException.StatusCode == 500)
-            {
-                ErrorMessage = ErrorMessages.Http500ErrorMessage;
-            }
-            else
-            {
-                ErrorMessage = ErrorMessages.ServerDownOrCorsErrorMessage;
-            }
-
-            await _exceptionLogger.LogAsync(httpException);
-        }
-        catch (Exception exception)
-        {
-            await _exceptionLogger.LogAsync(exception);
-            ErrorMessage = ErrorMessages.ClientErrorMessage;
-        }
+        await LoadDepartmentsAsync();
     }
 
     // EventHandler which will be called whenvever ItemUpdated event is published.
@@ -75,7 +47,46 @@ public partial class DepartmentListComponent
 
     private async Task LoadDepartmentsAsync()
     {
-        Departments = await _departmentService.GetListAsync();
+        try
+        {
+            HttpResponseMessage httpResponse = await _departmentService.GetListAsync();
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                Departments = await httpResponse.Content.ReadFromJsonAsync<List<DepartmentDetailsModel>>();
+            }
+            else
+            {
+                if ((int)httpResponse.StatusCode == 401)
+                {
+                    ErrorMessage = ErrorMessages.Http401ErrorMessage;
+                }
+                else if ((int)httpResponse.StatusCode == 403)
+                {
+                    ErrorMessage = ErrorMessages.Http403ErrorMessage;
+                }
+                else if ((int)httpResponse.StatusCode == 500)
+                {
+                    ErrorMessage = ErrorMessages.Http500ErrorMessage;
+                }
+                else
+                {
+                    ErrorMessage = ErrorMessages.ServerDownOrCorsErrorMessage;
+                }
+            }
+        }
+        catch (HttpRequestException exception)
+        {
+            ErrorMessage = ErrorMessages.ServerDownOrCorsErrorMessage;
+            await _exceptionLogger.LogAsync(exception);
+        }
+        catch (Exception exception)
+        {
+            await _exceptionLogger.LogAsync(exception);
+            ErrorMessage = ErrorMessages.ClientErrorMessage;
+        }
+
+        StateHasChanged();
     }
 
     private void ShowCreateModal()

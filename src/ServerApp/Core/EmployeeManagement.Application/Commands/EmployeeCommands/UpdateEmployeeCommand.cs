@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Application.Caching.Handlers;
+using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 using EmployeeManagement.Domain.Exceptions;
 using MediatR;
@@ -39,17 +40,17 @@ public class UpdateEmployeeCommand : IRequest
     private class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand>
     {
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly EmployeeManipulator _employeeManipulator;
+        private readonly IDepartmentRepository _departmentRepository;
         private readonly IEmployeeCacheHandler _employeeCacheHandler;
 
         public UpdateEmployeeCommandHandler(
             IEmployeeRepository employeeRepository,
-            EmployeeManipulator employeeManipulator,
-            IEmployeeCacheHandler employeeCacheHandler)
+            IEmployeeCacheHandler employeeCacheHandler,
+            IDepartmentRepository departmentRepository)
         {
             _employeeRepository = employeeRepository;
-            _employeeManipulator = employeeManipulator;
             _employeeCacheHandler = employeeCacheHandler;
+            _departmentRepository = departmentRepository;
         }
 
         public async Task<Unit> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
@@ -66,9 +67,9 @@ public class UpdateEmployeeCommand : IRequest
             employeeeToBeUpdated.SetName(request.Name);
             employeeeToBeUpdated.SetDateOfBirth(request.DateOfBirth);
 
-            await _employeeManipulator.SetDepartmentAsync(employeeeToBeUpdated, request.DepartmentId);
-            await _employeeManipulator.SetEmailAsync(employeeeToBeUpdated, request.Email);
-            await _employeeManipulator.SetPhoneNumberAsync(employeeeToBeUpdated, request.PhoneNumber);
+            await employeeeToBeUpdated.SetDepartmentAsync(_departmentRepository, request.DepartmentId);
+            await employeeeToBeUpdated.SetEmailAsync(_employeeRepository, request.Email);
+            await employeeeToBeUpdated.SetPhoneNumberAsync(_employeeRepository, request.PhoneNumber);
 
             await _employeeRepository.UpdateAsync(employeeeToBeUpdated);
 
