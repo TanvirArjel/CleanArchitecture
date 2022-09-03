@@ -17,6 +17,7 @@ public class GetEmployeeDetailsByIdEndpoint : EmployeeEndpointBase
     // GET: api/employees/5
     [HttpGet("{employeeId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesDefaultResponseType]
     [SwaggerOperation(Summary = "Get details of an employee by employee id.")]
@@ -24,7 +25,8 @@ public class GetEmployeeDetailsByIdEndpoint : EmployeeEndpointBase
     {
         if (employeeId == Guid.Empty)
         {
-            return BadRequest($"The value of {nameof(employeeId)} can't be empty.");
+            ModelState.AddModelError(nameof(employeeId), $"The value of {nameof(employeeId)} can't be empty.");
+            return ValidationProblem(ModelState);
         }
 
         GetEmployeeByIdQuery getEmployeeByIdQuery = new GetEmployeeByIdQuery(employeeId);

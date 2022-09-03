@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using EmployeeManagement.Application.Commands.DepartmentCommands;
-using EmployeeManagement.Application.Queries.DepartmentQueries;
+using EmployeeManagement.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,42 +18,41 @@ public class UpdateDepartmentEndpoint : DepartmentEndpointBase
 
     [HttpPut("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
     [SwaggerOperation(Summary = "Update an existing employee by employee id and posting updated data.")]
     public async Task<ActionResult> Put(Guid departmentId, UpdateDepartmentModel model)
     {
-        if (departmentId != model.Id)
+        try
         {
-            ModelState.AddModelError(nameof(model.Id), "The DepartmentId does not match with route value.");
-            return BadRequest(ModelState);
+            if (departmentId != model.Id)
+            {
+                ModelState.AddModelError(nameof(model.Id), "The DepartmentId does not match with route value.");
+                return ValidationProblem(ModelState);
+            }
+
+            UpdateDepartmentCommand command = new UpdateDepartmentCommand(departmentId, model.Name, model.Description, true);
+
+            await _mediator.Send(command);
+            return Ok();
         }
-
-        IsDepartmentExistentByIdQuery isExistentQuery = new IsDepartmentExistentByIdQuery(departmentId);
-
-        bool isExistent = await _mediator.Send(isExistentQuery);
-
-        if (!isExistent)
+        catch (Exception exception)
         {
-            ModelState.AddModelError(nameof(model.Id), "The Department does not exist.");
-            return BadRequest(ModelState);
+            if (exception is EntityNotFoundException)
+            {
+                ModelState.AddModelError(nameof(model.Id), "The Department does not exist.");
+                return ValidationProblem(ModelState);
+            }
+
+            if (exception is DomainValidationException)
+            {
+                ModelState.AddModelError(string.Empty, exception.Message);
+                return ValidationProblem(ModelState);
+            }
+
+            throw;
         }
-
-        IsDepartmentNameUniqueQuery uniqueQuery = new IsDepartmentNameUniqueQuery(departmentId, model.Name);
-
-        bool isUnique = await _mediator.Send(uniqueQuery);
-
-        if (isUnique == false)
-        {
-            ModelState.AddModelError(nameof(model.Name), "The Name already exists.");
-            return BadRequest(ModelState);
-        }
-
-        UpdateDepartmentCommand command = new UpdateDepartmentCommand(departmentId, model.Name, model.Description, true);
-
-        await _mediator.Send(command);
-        return Ok();
     }
 }
 

@@ -16,6 +16,7 @@ public class GetDepartmentByIdEndpoint : DepartmentEndpointBase
 
     [HttpGet("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
     [SwaggerOperation(Summary = "Get the details of a department by department id.")]
@@ -23,7 +24,8 @@ public class GetDepartmentByIdEndpoint : DepartmentEndpointBase
     {
         if (departmentId == Guid.Empty)
         {
-            return BadRequest($"The value of {nameof(departmentId)} can't be empty.");
+            ModelState.AddModelError(nameof(departmentId), $"The value of {nameof(departmentId)} can't be empty.");
+            return ValidationProblem(ModelState);
         }
 
         GetDepartmentByIdQuery query = new GetDepartmentByIdQuery(departmentId);

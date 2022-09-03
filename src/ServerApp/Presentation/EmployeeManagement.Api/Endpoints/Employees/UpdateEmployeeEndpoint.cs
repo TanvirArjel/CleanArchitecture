@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using EmployeeManagement.Application.Commands.EmployeeCommands;
-using EmployeeManagement.Application.Queries.DepartmentQueries;
+using EmployeeManagement.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -19,32 +19,47 @@ public class UpdateEmployeeEndpoint : EmployeeEndpointBase
     // PUT: api/v1/employees/{Guid}
     [HttpPut("{employeeId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesDefaultResponseType]
     [SwaggerOperation(Summary = "Update an existing employee by employee id and posting the updated data.")]
     public async Task<ActionResult> Put(Guid employeeId, UpdateEmployeeModel model)
     {
-        IsDepartmentExistentByIdQuery isDepartmentExistentById = new IsDepartmentExistentByIdQuery(model.DepartmentId);
-
-        bool isExistent = await _mediator.Send(isDepartmentExistentById);
-
-        if (!isExistent)
+        try
         {
-            ModelState.AddModelError(nameof(model.DepartmentId), "The Department does not exist.");
-            return BadRequest(ModelState);
+            if (employeeId == Guid.Empty)
+            {
+                ModelState.AddModelError("employeeId", "The employeeId cannot be empty guid.");
+                return ValidationProblem(ModelState);
+            }
+
+            UpdateEmployeeCommand command = new UpdateEmployeeCommand(
+                employeeId,
+                model.Name,
+                model.DepartmentId,
+                model.DateOfBirth,
+                model.Email,
+                model.PhoneNumber);
+
+            await _mediator.Send(command);
+            return Ok();
         }
+        catch (Exception exception)
+        {
+            if (exception is EntityNotFoundException)
+            {
+                ModelState.AddModelError(nameof(model.DepartmentId), "The Department does not exist.");
+                return ValidationProblem(ModelState);
+            }
 
-        UpdateEmployeeCommand command = new UpdateEmployeeCommand(
-            employeeId,
-            model.Name,
-            model.DepartmentId,
-            model.DateOfBirth,
-            model.Email,
-            model.PhoneNumber);
+            if (exception is DomainValidationException)
+            {
+                ModelState.AddModelError(string.Empty, exception.Message);
+                return ValidationProblem(ModelState);
+            }
 
-        await _mediator.Send(command);
-        return Ok();
+            throw;
+        }
     }
 }
 

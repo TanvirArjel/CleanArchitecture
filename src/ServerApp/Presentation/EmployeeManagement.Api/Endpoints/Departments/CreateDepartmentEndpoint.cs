@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using EmployeeManagement.Application.Commands.DepartmentCommands;
-using EmployeeManagement.Application.Queries.DepartmentQueries;
+using EmployeeManagement.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,25 +18,29 @@ public class CreateDepartmentEndpoint : DepartmentEndpointBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesDefaultResponseType]
     [SwaggerOperation(Summary = "Create a new department by posting the required data.")]
     public async Task<ActionResult> Post(CreateDepartmentModel model)
     {
-        IsDepartmentExistentByNameQuery query = new IsDepartmentExistentByNameQuery(model.Name);
-        bool isNameAlreadyExistent = await _mediator.Send(query);
-
-        if (isNameAlreadyExistent)
+        try
         {
-            ModelState.AddModelError(nameof(model.Name), "The Name already exists.");
-            return BadRequest(ModelState);
+            CreateDepratmentCommand command = new CreateDepratmentCommand(model.Name, model.Description);
+
+            Guid departmentId = await _mediator.Send(command);
+            return Created($"/api/v1/departments/{departmentId}", model);
         }
+        catch (Exception exception)
+        {
+            if (exception is DomainValidationException)
+            {
+                ModelState.AddModelError(string.Empty, exception.Message);
+                return ValidationProblem(ModelState);
+            }
 
-        CreateDepratmentCommand command = new CreateDepratmentCommand(model.Name, model.Description);
-
-        Guid departmentId = await _mediator.Send(command);
-        return Created($"/api/v1/departments/{departmentId}", model);
+            throw;
+        }
     }
 }
 

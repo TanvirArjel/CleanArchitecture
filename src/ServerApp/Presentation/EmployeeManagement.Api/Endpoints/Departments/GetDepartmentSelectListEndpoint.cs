@@ -17,7 +17,7 @@ public class GetDepartmentSelectListEndpoint : DepartmentEndpointBase
 
     [HttpGet("select-list")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesDefaultResponseType]
     [SwaggerOperation(Summary = "Get the department select list.")]
@@ -25,7 +25,8 @@ public class GetDepartmentSelectListEndpoint : DepartmentEndpointBase
     {
         if (selectedDepartment == Guid.Empty)
         {
-            return BadRequest($"The value of {nameof(selectedDepartment)} can't be empty.");
+            ModelState.AddModelError(nameof(selectedDepartment), $"The value of {nameof(selectedDepartment)} can't be empty.");
+            return ValidationProblem(ModelState);
         }
 
         GetDepartmentListQuery departmentListQuery = new GetDepartmentListQuery();

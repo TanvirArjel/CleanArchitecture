@@ -18,7 +18,7 @@ public class GetEmployeeListEndpoint : EmployeeEndpointBase
     // GET: api/employees
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesDefaultResponseType]
     [SwaggerOperation(Summary = "Get the employee paginated list by page number and page size.")]
@@ -26,12 +26,14 @@ public class GetEmployeeListEndpoint : EmployeeEndpointBase
     {
         if (pageNumber < 1)
         {
-            return BadRequest($"The {nameof(pageNumber)} must be greater than 0.");
+            ModelState.AddModelError(nameof(pageNumber), $"The {nameof(pageNumber)} must be greater than 0.");
+            return ValidationProblem(ModelState);
         }
 
         if (pageSize < 1 || pageSize > 50)
         {
-            return BadRequest($"The {nameof(pageSize)} must be in between 1 and 50.");
+            ModelState.AddModelError(nameof(pageSize), $"The {nameof(pageSize)} must be in between 1 and 50.");
+            return ValidationProblem(ModelState);
         }
 
         GetEmployeeListQuery getEmployeeListQuery = new GetEmployeeListQuery(pageNumber, pageSize);
