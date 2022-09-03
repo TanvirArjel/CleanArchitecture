@@ -34,12 +34,12 @@ public class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
             Expression<Func<Employee, EmployeeDto>> selectExpression = e => new EmployeeDto
             {
                 Id = e.Id,
-                Name = e.Name,
+                Name = e.Name.FirstName + " " + e.Name.LastName,
                 DepartmentId = e.DepartmentId,
-                DepartmentName = e.Department.Name,
-                DateOfBirth = e.DateOfBirth,
-                Email = e.Email,
-                PhoneNumber = e.PhoneNumber,
+                DepartmentName = e.Department.Name.Value,
+                DateOfBirth = e.DateOfBirth.Value,
+                Email = e.Email.Value,
+                PhoneNumber = e.PhoneNumber.Value,
                 IsActive = e.IsActive,
                 CreatedAtUtc = e.CreatedAtUtc,
                 LastModifiedAtUtc = e.LastModifiedAtUtc

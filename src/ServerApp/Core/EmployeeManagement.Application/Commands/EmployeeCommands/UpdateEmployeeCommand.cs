@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
+using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using EmployeeManagement.Domain.Exceptions;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
@@ -64,12 +65,12 @@ public class UpdateEmployeeCommand : IRequest
                 throw new EntityNotFoundException(typeof(Employee), request.Id);
             }
 
-            employeeeToBeUpdated.SetName(request.Name);
-            employeeeToBeUpdated.SetDateOfBirth(request.DateOfBirth);
+            employeeeToBeUpdated.SetName(new Name(request.Name, request.Name));
+            employeeeToBeUpdated.SetDateOfBirth(new DateOfBirth(request.DateOfBirth));
 
             await employeeeToBeUpdated.SetDepartmentAsync(_departmentRepository, request.DepartmentId);
-            await employeeeToBeUpdated.SetEmailAsync(_employeeRepository, request.Email);
-            await employeeeToBeUpdated.SetPhoneNumberAsync(_employeeRepository, request.PhoneNumber);
+            await employeeeToBeUpdated.SetEmailAsync(_employeeRepository, new Email(request.Email));
+            await employeeeToBeUpdated.SetPhoneNumberAsync(_employeeRepository, new PhoneNumber(request.PhoneNumber));
 
             await _employeeRepository.UpdateAsync(employeeeToBeUpdated);
 

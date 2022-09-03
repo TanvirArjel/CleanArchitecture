@@ -1,5 +1,6 @@
 ﻿using System;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
@@ -17,11 +18,11 @@ public class EmployeeFactory
     }
 
     public Employee Create(
-       string name,
+       Name name,
        Guid departmentId,
-       DateTime dateOfBirth,
-       string email,
-       string phoneNumber)
+       DateOfBirth dateOfBirth,
+       Email email,
+       PhoneNumber phoneNumber)
     {
         Employee employee = new Employee(_departmentRepository, _employeeRepository, name, departmentId, dateOfBirth, email, phoneNumber);
 

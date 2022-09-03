@@ -33,7 +33,7 @@ internal class DepartmentCacheRepository : IDepartmentCacheRepository
             Expression<Func<Department, DepartmentDto>> selectExp = d => new DepartmentDto
             {
                 Id = d.Id,
-                Name = d.Name,
+                Name = d.Name.Value,
                 Description = d.Description,
                 IsActive = d.IsActive,
                 CreatedAtUtc = d.CreatedAtUtc,
@@ -73,7 +73,7 @@ internal class DepartmentCacheRepository : IDepartmentCacheRepository
             Expression<Func<Department, DepartmentDetailsDto>> selectExp = d => new DepartmentDetailsDto
             {
                 Id = d.Id,
-                Name = d.Name,
+                Name = d.Name.Value,
                 Description = d.Description,
                 IsActive = d.IsActive,
                 CreatedAtUtc = d.CreatedAtUtc,

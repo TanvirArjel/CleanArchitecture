@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
@@ -34,7 +35,9 @@ public class CreateDepratmentCommand : IRequest<Guid>
         {
             request.ThrowIfNull(nameof(request));
 
-            Department department = await Department.CreateAsync(_departmentRepository, request.Name, request.Description);
+            DepartmentName departmentName = new DepartmentName(request.Name);
+
+            Department department = await Department.CreateAsync(_departmentRepository, departmentName, request.Description);
 
             // Persist to the database
             await _departmentRepository.InsertAsync(department);

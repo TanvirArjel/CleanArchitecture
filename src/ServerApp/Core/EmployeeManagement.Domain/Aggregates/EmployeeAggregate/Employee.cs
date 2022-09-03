@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using EmployeeManagement.Domain.Exceptions;
 using EmployeeManagement.Domain.Primitives;
-using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 
@@ -12,11 +12,11 @@ public sealed class Employee : Entity
     internal Employee(
         IDepartmentRepository departmentRepository,
         IEmployeeRepository employeeRepository,
-        string name,
+        Name name,
         Guid departmentId,
-        DateTime dateOfBirth,
-        string email,
-        string phoneNumber)
+        DateOfBirth dateOfBirth,
+        Email email,
+        PhoneNumber phoneNumber)
     {
         Id = Guid.NewGuid();
         SetName(name);
@@ -32,15 +32,15 @@ public sealed class Employee : Entity
     {
     }
 
-    public string Name { get; private set; }
+    public Name Name { get; private set; }
 
     public Guid DepartmentId { get; private set; }
 
-    public DateTime DateOfBirth { get; private set; }
+    public DateOfBirth DateOfBirth { get; private set; }
 
-    public string Email { get; private set; }
+    public Email Email { get; private set; }
 
-    public string PhoneNumber { get; private set; }
+    public PhoneNumber PhoneNumber { get; private set; }
 
     public bool IsActive { get; set; }
 
@@ -52,27 +52,27 @@ public sealed class Employee : Entity
     public Department Department { get; private set; }
 
     // Public methods
-    public void SetName(string name)
+    public void SetName(Name name)
     {
-        Name = name.ThrowIfNullOrEmpty(nameof(name))
-                   .ThrowIfOutOfLength(2, 50, nameof(name));
+        Name = name ?? throw new DomainValidationException("The name cannot be null.");
     }
 
-    public void SetDateOfBirth(DateTime dateOfBirth)
+    public void SetDateOfBirth(DateOfBirth dateOfBirth)
     {
-        DateTime minDateOfBirth = DateTime.UtcNow.AddYears(-115);
-        DateTime maxDateOfBirth = DateTime.UtcNow.AddYears(-15);
-
-        // Validate the minimum age.
-        dateOfBirth.ThrowIfOutOfRange(minDateOfBirth, maxDateOfBirth, nameof(dateOfBirth), "The minimum age has to be 15 years.");
         DateOfBirth = dateOfBirth;
     }
 
     public async Task SetDepartmentAsync(IDepartmentRepository repository, Guid departmentId)
     {
-        repository.ThrowIfNull(nameof(repository));
+        if (repository is null)
+        {
+            throw new ArgumentNullException(nameof(repository));
+        }
 
-        departmentId.ThrowIfEmpty(nameof(departmentId));
+        if (departmentId == Guid.Empty)
+        {
+            throw new DomainValidationException("The departmentId cannot be empty guid.");
+        }
 
         if (DepartmentId != Guid.Empty && DepartmentId.Equals(departmentId))
         {
@@ -83,20 +83,25 @@ public sealed class Employee : Entity
 
         if (isDepartmentExistent == false)
         {
-            throw new EntityNotFoundException(typeof(Department), departmentId);
+            throw new DomainValidationException($"The Department does not exist with the id value: {departmentId}");
         }
 
         DepartmentId = departmentId;
     }
 
-    public async Task SetEmailAsync(IEmployeeRepository repository, string email)
+    public async Task SetEmailAsync(IEmployeeRepository repository, Email email)
     {
-        repository.ThrowIfNull(nameof(repository));
+        if (repository is null)
+        {
+            throw new ArgumentNullException(nameof(repository));
+        }
 
-        email.ThrowIfNullOrEmpty(nameof(email))
-                     .ThrowIfNotValidEmail(nameof(email));
+        if (email == null)
+        {
+            throw new DomainValidationException("The email cannot be null.");
+        }
 
-        if (Email != null && Email.Equals(email, StringComparison.OrdinalIgnoreCase))
+        if (Email != null && Email.Value.Equals(email.Value, StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
@@ -111,12 +116,19 @@ public sealed class Employee : Entity
         Email = email;
     }
 
-    public async Task SetPhoneNumberAsync(IEmployeeRepository repository, string phoneNumber)
+    public async Task SetPhoneNumberAsync(IEmployeeRepository repository, PhoneNumber phoneNumber)
     {
-        repository.ThrowIfNull(nameof(repository));
-        phoneNumber.ThrowIfNullOrEmpty(nameof(phoneNumber));
+        if (repository is null)
+        {
+            throw new ArgumentNullException(nameof(repository));
+        }
 
-        if (PhoneNumber != null && PhoneNumber.Equals(phoneNumber, StringComparison.OrdinalIgnoreCase))
+        if (phoneNumber == null)
+        {
+            throw new DomainValidationException("The phoneNumber cannot be null.");
+        }
+
+        if (PhoneNumber != null && PhoneNumber.Value.Equals(phoneNumber.Value, StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
@@ -136,12 +148,12 @@ public sealed class Employee : Entity
         SetDepartmentAsync(repository, departmentId).GetAwaiter().GetResult();
     }
 
-    private void SetEmail(IEmployeeRepository repository, string email)
+    private void SetEmail(IEmployeeRepository repository, Email email)
     {
         SetEmailAsync(repository, email).GetAwaiter().GetResult();
     }
 
-    private void SetPhoneNumber(IEmployeeRepository employeeRepository, string phoneNumber)
+    private void SetPhoneNumber(IEmployeeRepository employeeRepository, PhoneNumber phoneNumber)
     {
         SetPhoneNumberAsync(employeeRepository, phoneNumber).GetAwaiter().GetResult();
     }

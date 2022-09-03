@@ -1,5 +1,4 @@
 using System.IO.Compression;
-using CityOSVideoStorage.Api.Extensions;
 using EmployeeManagement.Api.Extensions;
 using EmployeeManagement.Api.Filters;
 using EmployeeManagement.Api.Utilities;

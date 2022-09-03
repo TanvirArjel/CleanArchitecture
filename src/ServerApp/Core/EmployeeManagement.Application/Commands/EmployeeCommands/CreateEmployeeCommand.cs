@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
+using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
@@ -7,20 +8,24 @@ namespace EmployeeManagement.Application.Commands.EmployeeCommands;
 public class CreateEmployeeCommand : IRequest<Guid>
 {
     public CreateEmployeeCommand(
-        string name,
+        string firstName,
+        string lastName,
         Guid departmentId,
         DateTime dateOfBirth,
         string email,
         string phoneNumber)
     {
-        Name = name;
+        FirstName = firstName;
+        LastName = lastName;
         DepartmentId = departmentId;
         DateOfBirth = dateOfBirth;
         Email = email;
         PhoneNumber = phoneNumber;
     }
 
-    public string Name { get; }
+    public string FirstName { get; }
+
+    public string LastName { get; }
 
     public Guid DepartmentId { get; }
 
@@ -44,12 +49,12 @@ public class CreateEmployeeCommand : IRequest<Guid>
         public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
-            Employee employee = _employeeFactory.Create(
-                request.Name,
-                request.DepartmentId,
-                request.DateOfBirth,
-                request.Email,
-                request.PhoneNumber);
+            Name name = new Name(request.FirstName, request.LastName);
+            DateOfBirth dateOfBirth = new DateOfBirth(request.DateOfBirth);
+            Email email = new Email(request.Email);
+            PhoneNumber phoneNumber = new PhoneNumber(request.PhoneNumber);
+
+            Employee employee = _employeeFactory.Create(name, request.DepartmentId, dateOfBirth, email, phoneNumber);
 
             await _employeeRepository.InsertAsync(employee);
             return employee.Id;

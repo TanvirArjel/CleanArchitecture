@@ -37,6 +37,7 @@ public class CreateEmployeeEndpoint : EmployeeEndpointBase
 
         CreateEmployeeCommand createEmployeeCommand = new CreateEmployeeCommand(
             model.Name,
+            model.Name,
             model.DepartmentId,
             model.DateOfBirth,
             model.Email,

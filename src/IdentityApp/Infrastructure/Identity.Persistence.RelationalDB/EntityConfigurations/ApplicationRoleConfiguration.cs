@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EmployeeManagement.Persistence.Indentity.EntityConfigurations;
+namespace Identity.Persistence.RelationalDB.EntityConfigurations;
 
 internal class ApplicationRoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
 {

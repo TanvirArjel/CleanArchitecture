@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.OpenApi.Models;
 
-namespace CityOSVideoStorage.Api.Extensions;
+namespace EmployeeManagement.Api.Extensions;
 
 public static class SwaggerGenerationServicesExtensions
 {

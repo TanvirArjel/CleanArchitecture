@@ -30,7 +30,7 @@ public class IsDepartmentNameUniqueQuery : IRequest<bool>
         {
             request.ThrowIfNull(nameof(request));
 
-            bool isExistent = await _repository.ExistsAsync<Department>(d => d.Id != request.Id && d.Name == request.Name, cancellationToken);
+            bool isExistent = await _repository.ExistsAsync<Department>(d => d.Id != request.Id && d.Name.Value == request.Name, cancellationToken);
             return !isExistent;
         }
     }

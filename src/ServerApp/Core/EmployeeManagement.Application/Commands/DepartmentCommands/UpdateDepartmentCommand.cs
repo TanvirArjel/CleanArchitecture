@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
+using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using EmployeeManagement.Domain.Exceptions;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
@@ -52,7 +53,9 @@ public class UpdateDepartmentCommand : IRequest
                 throw new EntityNotFoundException(typeof(Department), request.Id);
             }
 
-            await departmentToBeUpdated.SetNameAsync(_departmentRepository, request.Name);
+            DepartmentName departmentName = new DepartmentName(request.Name);
+
+            await departmentToBeUpdated.SetNameAsync(_departmentRepository, departmentName);
             departmentToBeUpdated.SetDescription(request.Description);
             departmentToBeUpdated.IsActive = request.IsActive;
 

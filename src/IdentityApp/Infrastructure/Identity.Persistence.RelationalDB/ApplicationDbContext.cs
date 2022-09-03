@@ -1,6 +1,6 @@
 ﻿using System;
-using EmployeeManagement.Persistence.Indentity.EntityConfigurations;
 using Identity.Domain.Entities;
+using Identity.Persistence.RelationalDB.EntityConfigurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

@@ -32,7 +32,7 @@ public class GetDepartmentByIdQuery : IRequest<DepartmentDetailsDto>
             Expression<Func<Department, DepartmentDetailsDto>> selectExp = d => new DepartmentDetailsDto
             {
                 Id = d.Id,
-                Name = d.Name,
+                Name = d.Name.Value,
                 Description = d.Description,
                 IsActive = d.IsActive,
                 CreatedAtUtc = d.CreatedAtUtc,

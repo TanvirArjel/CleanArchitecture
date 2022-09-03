@@ -16,9 +16,15 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 
         builder.ToTable("Departments");
         builder.HasKey(d => d.Id);
-        builder.Property(d => d.Name).HasMaxLength(50).IsRequired();
-        builder.Property(d => d.Description).HasMaxLength(200).IsRequired();
 
-        builder.HasIndex(d => d.Name).IsUnique();
+        builder.OwnsOne(d => d.Name, navBuilder =>
+        {
+            navBuilder.Property(n => n.Value).HasMaxLength(50).HasColumnName("Name").IsRequired();
+            navBuilder.HasIndex(n => n.Value).IsUnique();
+        });
+
+        builder.Navigation(d => d.Name).IsRequired();
+
+        builder.Property(d => d.Description).HasMaxLength(200).IsRequired();
     }
 }
