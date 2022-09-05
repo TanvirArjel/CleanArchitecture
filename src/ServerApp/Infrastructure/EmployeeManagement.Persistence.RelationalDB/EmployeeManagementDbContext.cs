@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DomainEntities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManagement.Persistence.RelationalDB;
 
-internal class EmployeeManagementDbContext : DbContext
+internal class EmployeeManagementDbContext : IdentityDbContext<User, ApplicationRole, Guid>
 {
     public EmployeeManagementDbContext(DbContextOptions<EmployeeManagementDbContext> options)
         : base(options)

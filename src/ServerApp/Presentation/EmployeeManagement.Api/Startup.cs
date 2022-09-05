@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using EmployeeManagement.Api.Configs;
 using EmployeeManagement.Api.Extensions;
 using EmployeeManagement.Api.Filters;
 using EmployeeManagement.Api.Utilities;
@@ -10,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
+using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
@@ -80,16 +82,21 @@ public static class Startup
         services.AddMediatR(typeof(CreateDepratmentCommand));
 
         services.AddServicesOfAllTypes("EmployeeManagement");
-        services.AddControllers(options =>
+        services.AddControllersWithViews(options =>
         {
             options.Filters.Add(typeof(BadRequestResultFilter));
             options.Filters.Add(typeof(ExceptionHandlerFilter));
             options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
         });
 
-        services.AddSwaggerGeneration();
+        services.AddSwaggerGeneration("Employee Management", "EmployeeManagement.Api");
 
-        services.AddJwtAuthentication();
+        JwtConfig jwtConfig = new JwtConfig("SampleIdentity.com", "SampleIdentitySecretKey", 86400);
+        services.AddJwtAuthentication(jwtConfig);
+
+        services.AddJwtTokenGenerator(jwtConfig);
+
+        services.AddExternalLogins(builder.Configuration);
     }
 
     public static void ConfigureMiddlewares(this WebApplication app)
@@ -106,6 +113,8 @@ public static class Startup
             context.Request.EnableBuffering();
             return next();
         });
+
+        app.UseSerilogRequestLogging();
 
         // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
         // specifying the Swagger JSON endpoint.

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorApps.Shared.Common;
-using BlazorApps.Shared.Extensions;
-using BlazorApps.Shared.Models.DepartmentModels;
-using BlazorApps.Shared.Services;
+using BlazorWasmApp.Common;
+using BlazorWasmApp.Extensions;
+using BlazorWasmApp.Models.DepartmentModels;
+using BlazorWasmApp.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor.Components;

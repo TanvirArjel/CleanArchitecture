@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorApps.Shared.Common;
-using BlazorApps.Shared.Models.DepartmentModels;
-using BlazorApps.Shared.Services;
+using BlazorWasmApp.Common;
+using BlazorWasmApp.Models.DepartmentModels;
+using BlazorWasmApp.Services;
 using TanvirArjel.Blazor.Utilities;
 
 namespace BlazorWasmApp.Components.DepartmentComponents;

@@ -2,9 +2,9 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using BlazorApps.Shared.Common;
-using BlazorApps.Shared.Models.IdentityModels;
-using BlazorApps.Shared.Services;
+using BlazorWasmApp.Common;
+using BlazorWasmApp.Models.IdentityModels;
+using BlazorWasmApp.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TanvirArjel.Blazor.Components;

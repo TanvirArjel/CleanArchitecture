@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.8" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="2.1.0" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
 			<PrivateAssets>all</PrivateAssets>

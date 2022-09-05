@@ -16,19 +16,4 @@ services:
       dockerfile: src/ServerApp/Presentation/EmployeeManagement.Api/Dockerfile
     ports: ["7100:80","7101:443"]
     depends_on: ["sqlserver"]
-    
-  identity.api:
-    image: ${DOCKER_REGISTRY-}identityapi
-    build:
-      context: .
-      dockerfile: src/IdentityApp/Presentation/Identity.Api/Dockerfile
-    ports: ["7200:80","7201:443"]
-    depends_on: ["sqlserver"]
-
-  #blazorwasmapp:
-  #  image: ${DOCKER_REGISTRY-}blazorwasmapp
-  #  build:
-  #    context: .
-  #    dockerfile: src/ClientApps/BlazorWasmApp/Dockerfile
-  #  ports: ["7300:80","7301:443"]
 

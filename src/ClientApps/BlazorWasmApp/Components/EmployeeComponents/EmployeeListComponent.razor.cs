@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorApps.Shared.Common;
-using BlazorApps.Shared.Models.EmployeeModels;
-using BlazorApps.Shared.Services;
+using BlazorWasmApp.Common;
+using BlazorWasmApp.Models.EmployeeModels;
+using BlazorWasmApp.Services;
 
 namespace BlazorWasmApp.Components.EmployeeComponents;
 

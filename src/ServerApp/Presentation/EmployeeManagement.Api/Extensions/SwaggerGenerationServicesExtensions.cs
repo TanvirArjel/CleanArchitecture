@@ -1,15 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.IO;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace EmployeeManagement.Api.Extensions;
 
 public static class SwaggerGenerationServicesExtensions
 {
-    public static void AddSwaggerGeneration(this IServiceCollection services)
+    public static void AddSwaggerGeneration(
+        this IServiceCollection services,
+        string apiName,
+        string apiAssemblyName)
     {
         if (services == null)
         {
@@ -119,9 +126,9 @@ public static class SwaggerGenerationServicesExtensions
             {
                 OpenApiInfo openApiInfo = new OpenApiInfo()
                 {
-                    Title = $"Employee Management {description.GroupName.ToUpperInvariant()} API Endpoints",
+                    Title = $"{apiName} {description.GroupName.ToUpperInvariant()} API Endpoints",
                     Version = description.ApiVersion.ToString(),
-                    Description = $"Employee Management {description.GroupName} API endpoints descriptions."
+                    Description = $"{apiName} {description.GroupName} API endpoints descriptions."
                 };
 
                 if (description.IsDeprecated)
@@ -133,7 +140,7 @@ public static class SwaggerGenerationServicesExtensions
             }
 
             options.EnableAnnotations();
-            string xmlCommentFilePath = Path.Combine(AppContext.BaseDirectory, "EmployeeManagement.Api.xml");
+            string xmlCommentFilePath = Path.Combine(AppContext.BaseDirectory, $"{apiAssemblyName}.xml");
             options.IncludeXmlComments(xmlCommentFilePath);
 
             ////options.OperationFilter<AddRequiredHeaderParameters>();

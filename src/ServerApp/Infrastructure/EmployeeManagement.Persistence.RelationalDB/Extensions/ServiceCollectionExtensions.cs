@@ -1,7 +1,9 @@
 ﻿using System;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
+using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using EmployeeManagement.Persistence.RelationalDB.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -42,9 +44,33 @@ public static class ServiceCollectionExtensions
             });
         });
 
+        services.AddIdentity<User, ApplicationRole>(options =>
+        {
+            // Password settings.
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequiredLength = 6;
+            options.Password.RequiredUniqueChars = 1;
+
+            // Lockout settings.
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+
+            // User settings.
+            options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.@";
+            options.User.RequireUniqueEmail = true;
+        })
+        .AddEntityFrameworkStores<EmployeeManagementDbContext>()
+        .AddDefaultTokenProviders();
+
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
+        services.AddGenericRepository<EmployeeManagementDbContext>();
         services.AddQueryRepository<EmployeeManagementDbContext>();
     }
 }

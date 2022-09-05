@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using BlazorApps.Shared.Extensions;
+using BlazorWasmApp.Extensions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TanvirArjel.Blazor.DependencyInjection;
@@ -16,7 +16,7 @@ public static class Program
 
         builder.Services.AddComponents();
 
-        builder.Services.AddSharedServices();
+        builder.Services.AddDependencyServices();
 
         await builder.Build().RunAsync();
     }

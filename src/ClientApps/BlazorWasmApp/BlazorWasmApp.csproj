@@ -11,6 +11,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
+		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+		<PackageReference Include="TanvirArjel.CustomValidation" Version="1.2.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.8" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
@@ -18,16 +23,10 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
 		<PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.4.0" />
 		<PackageReference Include="TanvirArjel.Blazor" Version="1.6.0" />
-		<PackageReference Include="TanvirArjel.CustomValidation" Version="1.2.2" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="2.1.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\BlazorApps.Shared\BlazorApps.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
