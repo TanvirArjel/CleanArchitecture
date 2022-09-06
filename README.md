@@ -7,7 +7,7 @@
 # 🏃‍♂️ How to Run the Project
   1. First make sure that you have **.NET 6.0** and **Visual Studio 2022** are installed.
   2. Now open the solution with VS 2022 and build the solution to make sure that there is no error.
-  3. Now make **`Identity.Api`, `EmployeeManagement.Api` and `BlazorWasmApp`** projects as startup projects and then run it. On startup necessary databases will be created in **MSSQLLocalDB**
+  3. Now make **`EmployeeManagement.Api` and `BlazorWasmApp`** projects as startup projects and then run it. On startup necessary databases will be created in **MSSQLLocalDB**
 
 # Clean Architecture in ASP.NET Core
 This repository contains the implementation of Domain Driven Design and Clear Architecture in ASP.NET Core.
@@ -32,14 +32,14 @@ This repository contains the implementation of Domain Driven Design and Clear Ar
   ![tempsnip](https://user-images.githubusercontent.com/14342773/188484945-2b5bb4a8-37e0-416b-93e7-87a56fb9f20d.png)
 
 ### 📂 src/ServerApp/Core:
-  Core folder contains the projects related to the application core funcationalities like Domain Logic and Application Logic. This folder is the heart of the server app.
+  Core folder contains the projects related to the application's core funcationalities like Domain Logic and Application Logic. This folder is called the heart of the server app.
   
   ![tempsnip](https://user-images.githubusercontent.com/14342773/188485084-9b67457b-aeed-4003-9e6f-d0d1e1865073.png)
 
   
 #### 📝 EmployeeManagement.Domain Project: 
   This is application's **Domain Layer** which will contain:
-   1. Domain entities which will be mapped to database table
+   1. Domain entities and aggregate roots which will be mapped to database table
    2. Domain logic,
    3. Domain repositories
    4. Value objects.
@@ -69,7 +69,7 @@ This will not depend on any other project. This is fully independent.
 
   
 ### 📂 src/ServerApp/Presentation:
-  This folder will contain all the REST API projects which is the **PresentationLayer** of the project.
+  This folder will contain the REST API projects which is the **PresentationLayer** of the project.
   
   ![tempsnip](https://user-images.githubusercontent.com/14342773/188486653-289f5002-66ed-4641-9e13-f9a8e162fd57.png)
 
