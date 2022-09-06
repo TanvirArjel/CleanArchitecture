@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 
-public class User : IdentityUser<Guid>
+public class ApplicationUser : IdentityUser<Guid>
 {
     public string FullName { get; set; }
 

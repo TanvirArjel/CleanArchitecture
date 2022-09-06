@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations;
 
-internal class ApplicationUserConfiguration : IEntityTypeConfiguration<User>
+internal class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
         ////builder.Property<int>("IdentityKey").ValueGeneratedOnAdd();
 

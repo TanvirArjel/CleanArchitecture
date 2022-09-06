@@ -44,7 +44,7 @@ public static class ServiceCollectionExtensions
             });
         });
 
-        services.AddIdentity<User, ApplicationRole>(options =>
+        services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
         {
             // Password settings.
             options.Password.RequireDigit = false;

@@ -33,7 +33,7 @@ public class UpdateLanguageCultureCommand : IRequest
         {
             request.ThrowIfNull(nameof(request));
 
-            User userToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
+            ApplicationUser userToBeUpdated = await _repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
 
             if (userToBeUpdated == null)
             {

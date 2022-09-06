@@ -11,22 +11,22 @@ namespace EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
 
 public class StoreUserPasswordCommand : IRequest
 {
-    public StoreUserPasswordCommand(User user, string password)
+    public StoreUserPasswordCommand(ApplicationUser user, string password)
     {
         User = user.ThrowIfNull(nameof(user));
         Password = password.ThrowIfNullOrEmpty(nameof(password));
     }
 
-    public User User { get; }
+    public ApplicationUser User { get; }
 
     public string Password { get; }
 
     private class StoreUserPasswordCommandHandler : IRequestHandler<StoreUserPasswordCommand>
     {
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly IRepository _repository;
 
-        public StoreUserPasswordCommandHandler(IPasswordHasher<User> passwordHasher, IRepository repository)
+        public StoreUserPasswordCommandHandler(IPasswordHasher<ApplicationUser> passwordHasher, IRepository repository)
         {
             _passwordHasher = passwordHasher;
             _repository = repository;

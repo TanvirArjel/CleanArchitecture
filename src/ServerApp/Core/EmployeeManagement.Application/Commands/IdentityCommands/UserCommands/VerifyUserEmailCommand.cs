@@ -53,7 +53,7 @@ public class VerifyUserEmailCommand : IRequest
                     throw new InvalidOperationException("The code is expired.");
                 }
 
-                User applicationUser = await _repository.GetAsync<User>(au => au.Email == request.Email, cancellationToken);
+                ApplicationUser applicationUser = await _repository.GetAsync<ApplicationUser>(au => au.Email == request.Email, cancellationToken);
 
                 if (applicationUser == null)
                 {

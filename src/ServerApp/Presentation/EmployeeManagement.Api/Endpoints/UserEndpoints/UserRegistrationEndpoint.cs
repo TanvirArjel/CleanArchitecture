@@ -11,10 +11,10 @@ namespace EmployeeManagement.Api.Endpoints.UserEndpoints;
 [ApiVersion("1.0")]
 public class UserRegistrationEndpoint : UserEndpointBase
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IExceptionLogger _exceptionLogger;
 
-    public UserRegistrationEndpoint(UserManager<User> userManager, IExceptionLogger exceptionLogger)
+    public UserRegistrationEndpoint(UserManager<ApplicationUser> userManager, IExceptionLogger exceptionLogger)
     {
         _userManager = userManager;
         _exceptionLogger = exceptionLogger;
@@ -31,7 +31,7 @@ public class UserRegistrationEndpoint : UserEndpointBase
     {
         try
         {
-            User applicationUser = new User
+            ApplicationUser applicationUser = new ApplicationUser
             {
                 FullName = model.FirstName + " " + model.LastName,
                 UserName = model.Email,

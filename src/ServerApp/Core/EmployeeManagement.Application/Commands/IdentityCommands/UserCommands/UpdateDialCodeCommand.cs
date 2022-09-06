@@ -33,7 +33,7 @@ public class UpdateDialCodeCommand : IRequest
         {
             request.ThrowIfNull(nameof(request));
 
-            User applicationUserToBeUpdated = await _repository.GetByIdAsync<User>(request.UserId, cancellationToken);
+            ApplicationUser applicationUserToBeUpdated = await _repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
 
             if (applicationUserToBeUpdated == null)
             {

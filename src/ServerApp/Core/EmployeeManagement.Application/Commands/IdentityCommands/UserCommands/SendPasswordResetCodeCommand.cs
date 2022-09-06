@@ -38,7 +38,7 @@ public class SendPasswordResetCodeCommand : IRequest
         {
             request.ThrowIfNull(nameof(request));
 
-            bool isExistent = await _repository.ExistsAsync<User>(u => u.Email == request.Email, cancellationToken);
+            bool isExistent = await _repository.ExistsAsync<ApplicationUser>(u => u.Email == request.Email, cancellationToken);
 
             if (isExistent == false)
             {

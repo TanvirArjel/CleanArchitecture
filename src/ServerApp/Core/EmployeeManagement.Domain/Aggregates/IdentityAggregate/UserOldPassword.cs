@@ -12,5 +12,5 @@ public class UserOldPassword
 
     public DateTime SetAtUtc { get; set; }
 
-    public User User { get; set; }
+    public ApplicationUser User { get; set; }
 }

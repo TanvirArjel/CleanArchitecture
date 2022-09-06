@@ -13,22 +13,22 @@ namespace EmployeeManagement.Application.Queries.IdentityQueries.UserQueries;
 
 public class CheckIfOldPasswordQuery : IRequest<bool>
 {
-    public CheckIfOldPasswordQuery(User user, string password)
+    public CheckIfOldPasswordQuery(ApplicationUser user, string password)
     {
         User = user.ThrowIfNull(nameof(user));
         Password = password.ThrowIfNullOrEmpty(nameof(password));
     }
 
-    public User User { get; }
+    public ApplicationUser User { get; }
 
     public string Password { get; }
 
     private class CheckIfOldPasswordQueryHandler : IRequestHandler<CheckIfOldPasswordQuery, bool>
     {
         private readonly IRepository _repository;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
-        public CheckIfOldPasswordQueryHandler(IRepository repository, IPasswordHasher<User> passwordHasher)
+        public CheckIfOldPasswordQueryHandler(IRepository repository, IPasswordHasher<ApplicationUser> passwordHasher)
         {
             _repository = repository;
             _passwordHasher = passwordHasher;

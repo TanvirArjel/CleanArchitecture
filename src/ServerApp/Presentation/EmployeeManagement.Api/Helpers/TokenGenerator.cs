@@ -18,13 +18,13 @@ namespace EmployeeManagement.Api.Helpers;
 [ScopedService]
 public class TokenManager
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMediator _mediator;
     private readonly JwtConfig _jwtConfig;
 
     public TokenManager(
         JwtConfig jwtConfig,
-        UserManager<User> userManager,
+        UserManager<ApplicationUser> userManager,
         IMediator mediator)
     {
         _jwtConfig = jwtConfig;
@@ -32,7 +32,7 @@ public class TokenManager
         _mediator = mediator;
     }
 
-    public async Task<string> GetJwtTokenAsync(User user)
+    public async Task<string> GetJwtTokenAsync(ApplicationUser user)
     {
         user.ThrowIfNull(nameof(user));
 

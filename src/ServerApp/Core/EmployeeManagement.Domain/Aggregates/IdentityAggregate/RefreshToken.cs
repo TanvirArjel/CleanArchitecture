@@ -12,5 +12,5 @@ public class RefreshToken
 
     public DateTime ExpireAtUtc { get; set; }
 
-    public User ApplicationUser { get; set; }
+    public ApplicationUser ApplicationUser { get; set; }
 }

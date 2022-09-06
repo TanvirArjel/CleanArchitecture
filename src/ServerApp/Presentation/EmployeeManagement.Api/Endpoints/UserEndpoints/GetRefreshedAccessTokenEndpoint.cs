@@ -14,12 +14,12 @@ namespace EmployeeManagement.Api.Endpoints.UserEndpoints;
 [ApiVersion("1.0")]
 public class GetRefreshedAccessTokenEndpoint : UserEndpointBase
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly TokenManager _tokenManager;
     private readonly IMediator _mediator;
 
     public GetRefreshedAccessTokenEndpoint(
-        UserManager<User> userManager,
+        UserManager<ApplicationUser> userManager,
         TokenManager tokenManager,
         IMediator mediator)
     {
@@ -66,7 +66,7 @@ public class GetRefreshedAccessTokenEndpoint : UserEndpointBase
             return BadRequest(ModelState);
         }
 
-        User applicationUser = await _userManager.FindByIdAsync(userId);
+        ApplicationUser applicationUser = await _userManager.FindByIdAsync(userId);
         string jsonWebToken = await _tokenManager.GetJwtTokenAsync(applicationUser);
 
         return Ok(jsonWebToken);

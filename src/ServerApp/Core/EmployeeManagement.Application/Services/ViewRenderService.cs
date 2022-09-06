@@ -26,14 +26,14 @@ public class ViewRenderService
     private readonly IRazorViewEngine _razorViewEngine;
     private readonly ITempDataProvider _tempDataProvider;
     private readonly IServiceProvider _serviceProvider;
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IExceptionLogger _exceptionLogger;
 
     public ViewRenderService(
         IRazorViewEngine razorViewEngine,
         ITempDataProvider tempDataProvider,
         IServiceProvider serviceProvider,
-        UserManager<User> userManager,
+        UserManager<ApplicationUser> userManager,
         IExceptionLogger exceptionLogger)
     {
         _razorViewEngine = razorViewEngine;

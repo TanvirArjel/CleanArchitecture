@@ -8,9 +8,9 @@ namespace EmployeeManagement.Api.Endpoints.ExternalLoginEndpoints;
 [ApiVersion("1.0")]
 public class ExternalLoginSignUpEndpoint : ExternalLoginEndpointBase
 {
-    private readonly SignInManager<User> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public ExternalLoginSignUpEndpoint(SignInManager<User> signInManager)
+    public ExternalLoginSignUpEndpoint(SignInManager<ApplicationUser> signInManager)
     {
         _signInManager = signInManager;
     }

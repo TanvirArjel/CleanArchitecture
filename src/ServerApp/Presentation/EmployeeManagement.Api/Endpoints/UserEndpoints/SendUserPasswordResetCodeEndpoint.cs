@@ -13,11 +13,11 @@ namespace EmployeeManagement.Api.Endpoints.UserEndpoints;
 [ApiVersion("1.0")]
 public class SendUserPasswordResetCodeEndpoint : UserEndpointBase
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMediator _mediator;
 
     public SendUserPasswordResetCodeEndpoint(
-        UserManager<User> userManager,
+        UserManager<ApplicationUser> userManager,
         IMediator mediator)
     {
         _userManager = userManager;

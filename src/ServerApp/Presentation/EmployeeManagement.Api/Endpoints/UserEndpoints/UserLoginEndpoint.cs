@@ -12,14 +12,14 @@ namespace EmployeeManagement.Api.Endpoints.UserEndpoints;
 [ApiVersion("1.0")]
 public class UserLoginEndpoint : UserEndpointBase
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly TokenManager _tokenManager;
     private readonly IExceptionLogger _exceptionLogger;
 
     public UserLoginEndpoint(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
         IExceptionLogger exceptionLogger,
         TokenManager tokenManager)
     {
@@ -40,7 +40,7 @@ public class UserLoginEndpoint : UserEndpointBase
     {
         try
         {
-            User applicationUser = await _userManager.FindByEmailAsync(loginModel.EmailOrUserName);
+            ApplicationUser applicationUser = await _userManager.FindByEmailAsync(loginModel.EmailOrUserName);
 
             if (applicationUser == null)
             {

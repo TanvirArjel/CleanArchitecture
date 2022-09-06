@@ -28,12 +28,7 @@ public abstract class Entity : IEquatable<Entity>
 
     public bool Equals(Entity other)
     {
-        if (other is null)
-        {
-            return false;
-        }
-
-        if (other.GetType() != GetType())
+        if (other is null || other.GetType() != GetType())
         {
             return false;
         }
@@ -43,13 +38,8 @@ public abstract class Entity : IEquatable<Entity>
 
     public override bool Equals(object obj)
     {
-        if (obj is null)
-        {
-            return false;
-        }
-
         // Chekc if the two have same type.
-        if (obj.GetType() != GetType())
+        if (obj is null || obj.GetType() != GetType())
         {
             return false;
         }

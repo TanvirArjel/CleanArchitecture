@@ -29,9 +29,9 @@ public class ResetPasswordCommand : IRequest
     private class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand>
     {
         private readonly IRepository _repository;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
-        public ResetPasswordCommandHandler(IRepository repository, IPasswordHasher<User> passwordHasher)
+        public ResetPasswordCommandHandler(IRepository repository, IPasswordHasher<ApplicationUser> passwordHasher)
         {
             _repository = repository;
             _passwordHasher = passwordHasher;
@@ -59,7 +59,7 @@ public class ResetPasswordCommand : IRequest
                     throw new InvalidOperationException("The code is expired.");
                 }
 
-                User applicationUser = await _repository.GetAsync<User>(au => au.Email == request.Email, cancellationToken);
+                ApplicationUser applicationUser = await _repository.GetAsync<ApplicationUser>(au => au.Email == request.Email, cancellationToken);
 
                 if (applicationUser == null)
                 {

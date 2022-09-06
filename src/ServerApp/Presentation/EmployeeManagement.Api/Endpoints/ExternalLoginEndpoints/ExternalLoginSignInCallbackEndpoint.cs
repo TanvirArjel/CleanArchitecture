@@ -13,14 +13,14 @@ namespace EmployeeManagement.Api.Endpoints.ExternalLoginEndpoints;
 [ApiVersion("1.0")]
 public class ExternalLoginSignInCallbackEndpoint : ExternalLoginEndpointBase
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly TokenManager _tokenManager;
     private readonly ILogger<ExternalLoginSignInCallbackEndpoint> _logger;
 
     public ExternalLoginSignInCallbackEndpoint(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
         ILogger<ExternalLoginSignInCallbackEndpoint> logger,
         TokenManager tokenGenerator)
     {
@@ -53,7 +53,7 @@ public class ExternalLoginSignInCallbackEndpoint : ExternalLoginEndpointBase
             return RedirectWithError(ErrorMessage);
         }
 
-        User applicationUser = await _userManager.FindByLoginAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey);
+        ApplicationUser applicationUser = await _userManager.FindByLoginAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey);
 
         if (applicationUser == null)
         {

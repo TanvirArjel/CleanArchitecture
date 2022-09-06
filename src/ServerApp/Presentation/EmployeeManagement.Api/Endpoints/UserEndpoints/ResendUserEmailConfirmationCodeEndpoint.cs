@@ -13,11 +13,11 @@ namespace EmployeeManagement.Api.Endpoints.UserEndpoints;
 [ApiVersion("1.0")]
 public class ResendUserEmailConfirmationCodeEndpoint : UserEndpointBase
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMediator _mediator;
 
     public ResendUserEmailConfirmationCodeEndpoint(
-        UserManager<User> userManager,
+        UserManager<ApplicationUser> userManager,
         IMediator mediator)
     {
         _userManager = userManager;
@@ -33,7 +33,7 @@ public class ResendUserEmailConfirmationCodeEndpoint : UserEndpointBase
     [SwaggerOperation(Summary = "Resend email confiramtion code to the newly registered user's email.")]
     public async Task<ActionResult> Post(ResendEmailConfirmationCodeModel model)
     {
-        User applicationUser = await _userManager.FindByEmailAsync(model.Email);
+        ApplicationUser applicationUser = await _userManager.FindByEmailAsync(model.Email);
 
         if (applicationUser == null)
         {

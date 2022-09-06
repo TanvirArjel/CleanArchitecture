@@ -12,7 +12,7 @@ public sealed class Email : ValueObject
         SetValue(value);
     }
 
-    public string Value { get; set; }
+    public string Value { get; private set; }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
