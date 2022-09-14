@@ -21,7 +21,7 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace EmployeeManagement.Application.Services;
 
 [ScopedService]
-public class ViewRenderService
+public sealed class ViewRenderService
 {
     private readonly IRazorViewEngine _razorViewEngine;
     private readonly ITempDataProvider _tempDataProvider;

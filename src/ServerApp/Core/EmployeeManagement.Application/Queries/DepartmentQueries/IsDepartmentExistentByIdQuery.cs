@@ -5,7 +5,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.DepartmentQueries;
 
-public class IsDepartmentExistentByIdQuery : IRequest<bool>
+public sealed class IsDepartmentExistentByIdQuery : IRequest<bool>
 {
     public IsDepartmentExistentByIdQuery(Guid departmetnId)
     {

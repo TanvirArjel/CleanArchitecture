@@ -2,12 +2,12 @@
 using EmployeeManagement.Domain.Exceptions;
 using EmployeeManagement.Domain.Primitives;
 
-namespace EmployeeManagement.Domain.Aggregates.ValueObjects;
+namespace EmployeeManagement.Domain.ValueObjects;
 
 public sealed class PhoneNumber : ValueObject
 {
-    public const int MinLength = 10;
-    public const int MaxLength = 20;
+    private const int _minLength = 10;
+    private const int _maxLength = 20;
 
     public PhoneNumber(string value)
     {
@@ -28,9 +28,9 @@ public sealed class PhoneNumber : ValueObject
             throw new DomainValidationException("The PhoneNumber value cannot be null or empty.");
         }
 
-        if (value.Length < MinLength || value.Length > MaxLength)
+        if (value.Length < _minLength || value.Length > _maxLength)
         {
-            throw new DomainValidationException($"The PhoneNumber value must be in between {MinLength} && {MaxLength} characters.");
+            throw new DomainValidationException($"The PhoneNumber value must be in between {_minLength} && {_maxLength} characters.");
         }
 
         Value = value;

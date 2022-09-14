@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -10,7 +7,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
 
-public class VerifyUserEmailCommand : IRequest
+public sealed class VerifyUserEmailCommand : IRequest
 {
     public VerifyUserEmailCommand(string email, string code)
     {

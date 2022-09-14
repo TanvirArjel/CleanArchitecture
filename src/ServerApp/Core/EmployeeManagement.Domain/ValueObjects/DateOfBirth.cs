@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using EmployeeManagement.Domain.Exceptions;
 using EmployeeManagement.Domain.Primitives;
 
-namespace EmployeeManagement.Domain.Aggregates.ValueObjects;
+namespace EmployeeManagement.Domain.ValueObjects;
 
 public sealed class DateOfBirth : ValueObject
 {

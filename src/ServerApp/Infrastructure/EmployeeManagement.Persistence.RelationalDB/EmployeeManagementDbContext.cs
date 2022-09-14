@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
-using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DomainEntities;
+using EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.EmployeeAggregate;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

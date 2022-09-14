@@ -1,14 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
+﻿using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.IdentityQueries.UserQueries;
 
-public class IsRefreshTokenValidQuery : IRequest<bool>
+public sealed class IsRefreshTokenValidQuery : IRequest<bool>
 {
     public IsRefreshTokenValidQuery(Guid userId, string refreshToken)
     {

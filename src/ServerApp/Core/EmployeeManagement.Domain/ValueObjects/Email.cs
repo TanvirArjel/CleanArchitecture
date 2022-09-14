@@ -3,10 +3,12 @@ using System.Text.RegularExpressions;
 using EmployeeManagement.Domain.Exceptions;
 using EmployeeManagement.Domain.Primitives;
 
-namespace EmployeeManagement.Domain.Aggregates.ValueObjects;
+namespace EmployeeManagement.Domain.ValueObjects;
 
 public sealed class Email : ValueObject
 {
+    private const int _maxLength = 50;
+
     public Email(string value)
     {
         SetValue(value);
@@ -23,7 +25,12 @@ public sealed class Email : ValueObject
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new DomainValidationException("The Email value cannot be null or empty.");
+            throw new DomainValidationException("The Email cannot be null or empty.");
+        }
+
+        if (value.Length > _maxLength)
+        {
+            throw new DomainValidationException($"The Email length must be less than {_maxLength + 1} characters.");
         }
 
         Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");

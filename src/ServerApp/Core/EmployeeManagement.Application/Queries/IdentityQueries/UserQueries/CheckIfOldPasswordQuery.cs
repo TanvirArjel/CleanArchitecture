@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +8,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.IdentityQueries.UserQueries;
 
-public class CheckIfOldPasswordQuery : IRequest<bool>
+public sealed class CheckIfOldPasswordQuery : IRequest<bool>
 {
     public CheckIfOldPasswordQuery(ApplicationUser user, string password)
     {

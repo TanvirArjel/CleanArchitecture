@@ -2,12 +2,13 @@
 using EmployeeManagement.Domain.Exceptions;
 using EmployeeManagement.Domain.Primitives;
 
-namespace EmployeeManagement.Domain.Aggregates.ValueObjects;
+namespace EmployeeManagement.Domain.ValueObjects;
 
 public sealed class DepartmentName : ValueObject
 {
-    public const int MinLength = 5;
-    public const int MaxLength = 50;
+    private const int _minLength = 5;
+
+    private const int _maxLength = 50;
 
     public DepartmentName(string value)
     {
@@ -28,9 +29,9 @@ public sealed class DepartmentName : ValueObject
             throw new DomainValidationException("The DepartmentName value cannot be null or empty.");
         }
 
-        if (value.Length < MinLength || value.Length > MaxLength)
+        if (value.Length < _minLength || value.Length > _maxLength)
         {
-            throw new DomainValidationException($"The DepartmentName value must be in between {MinLength} && {MaxLength} characters.");
+            throw new DomainValidationException($"The DepartmentName value must be in between {_minLength} to {_maxLength} characters.");
         }
 
         Value = value;

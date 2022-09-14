@@ -1,11 +1,11 @@
 ﻿using EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
-using EmployeeManagement.Domain.Aggregates.ValueObjects;
+using EmployeeManagement.Domain.ValueObjects;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Application.Commands.EmployeeCommands;
 
-public class CreateEmployeeCommand : IRequest<Guid>
+public sealed class CreateEmployeeCommand : IRequest<Guid>
 {
     public CreateEmployeeCommand(
         string firstName,
@@ -49,6 +49,7 @@ public class CreateEmployeeCommand : IRequest<Guid>
         public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
+
             Name name = new Name(request.FirstName, request.LastName);
             DateOfBirth dateOfBirth = new DateOfBirth(request.DateOfBirth);
             Email email = new Email(request.Email);

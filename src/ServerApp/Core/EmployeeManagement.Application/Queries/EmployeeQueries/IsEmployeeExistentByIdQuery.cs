@@ -4,7 +4,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Application.Queries.EmployeeQueries;
 
-public class IsEmployeeExistentByIdQuery : IRequest<bool>
+public sealed class IsEmployeeExistentByIdQuery : IRequest<bool>
 {
     public IsEmployeeExistentByIdQuery(Guid employeeId)
     {

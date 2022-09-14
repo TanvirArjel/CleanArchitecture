@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
-using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using EmployeeManagement.Domain.Exceptions;
 using EmployeeManagement.Domain.Primitives;
+using EmployeeManagement.Domain.ValueObjects;
 
 namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 
-public sealed class Employee : Entity
+public sealed class Employee : AggregateRoot
 {
     internal Employee(
         IDepartmentRepository departmentRepository,
@@ -27,7 +27,7 @@ public sealed class Employee : Entity
         CreatedAtUtc = DateTime.UtcNow;
     }
 
-    // This is needed for EF core query mapping.
+    // This is needed for EF core query mapping and serialization.
     private Employee()
     {
     }

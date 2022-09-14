@@ -6,7 +6,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.DepartmentQueries;
 
-public class GetDepartmentByIdQuery : IRequest<DepartmentDetailsDto>
+public sealed class GetDepartmentByIdQuery : IRequest<DepartmentDetailsDto>
 {
     public GetDepartmentByIdQuery(Guid id)
     {

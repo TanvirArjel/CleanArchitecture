@@ -5,7 +5,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Application.Commands.EmployeeCommands;
 
-public class DeleteEmployeeCommand : IRequest
+public sealed class DeleteEmployeeCommand : IRequest
 {
     public DeleteEmployeeCommand(Guid employeeId)
     {

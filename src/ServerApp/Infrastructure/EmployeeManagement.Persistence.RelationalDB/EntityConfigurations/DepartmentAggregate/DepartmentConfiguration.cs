@@ -3,7 +3,7 @@ using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DomainEntities;
+namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DepartmentAggregate;
 
 public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 {

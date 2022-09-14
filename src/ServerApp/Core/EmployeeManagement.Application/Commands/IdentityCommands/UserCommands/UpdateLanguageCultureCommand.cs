@@ -1,14 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
+﻿using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
 
-public class UpdateLanguageCultureCommand : IRequest
+public sealed class UpdateLanguageCultureCommand : IRequest
 {
     public UpdateLanguageCultureCommand(Guid userId, string languageCulture)
     {

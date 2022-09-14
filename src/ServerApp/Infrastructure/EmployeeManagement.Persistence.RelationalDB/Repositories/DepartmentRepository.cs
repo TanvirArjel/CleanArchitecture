@@ -9,7 +9,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Persistence.RelationalDB.Repositories;
 
-internal class DepartmentRepository : IDepartmentRepository
+internal sealed class DepartmentRepository : IDepartmentRepository
 {
     private readonly EmployeeManagementDbContext _dbContext;
 

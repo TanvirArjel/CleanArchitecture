@@ -4,7 +4,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Application.Queries.DepartmentQueries;
 
-public class GetDepartmentListQuery : IRequest<List<DepartmentDto>>
+public sealed class GetDepartmentListQuery : IRequest<List<DepartmentDto>>
 {
     private class GetDepartmentListQueryHandler : IRequestHandler<GetDepartmentListQuery, List<DepartmentDto>>
     {

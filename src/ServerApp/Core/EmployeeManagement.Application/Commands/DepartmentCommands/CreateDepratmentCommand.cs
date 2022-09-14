@@ -1,12 +1,12 @@
 ﻿using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
-using EmployeeManagement.Domain.Aggregates.ValueObjects;
+using EmployeeManagement.Domain.ValueObjects;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Application.Commands.DepartmentCommands;
 
-public class CreateDepratmentCommand : IRequest<Guid>
+public sealed class CreateDepratmentCommand : IRequest<Guid>
 {
     public CreateDepratmentCommand(string name, string description)
     {

@@ -1,13 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
+﻿using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.IdentityQueries.UserQueries;
 
-public class GetPasswordResetCodeQuery : IRequest<PasswordResetCode>
+public sealed class GetPasswordResetCodeQuery : IRequest<PasswordResetCode>
 {
     public GetPasswordResetCodeQuery(string email, string code)
     {

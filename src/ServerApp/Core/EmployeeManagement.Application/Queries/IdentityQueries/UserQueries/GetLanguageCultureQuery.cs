@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +7,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.IdentityQueries.UserQueries;
 
-public class GetLanguageCultureQuery : IRequest<string>
+public sealed class GetLanguageCultureQuery : IRequest<string>
 {
     public GetLanguageCultureQuery(Guid userId)
     {

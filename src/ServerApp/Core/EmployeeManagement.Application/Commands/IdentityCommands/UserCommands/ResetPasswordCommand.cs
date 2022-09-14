@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +8,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
 
-public class ResetPasswordCommand : IRequest
+public sealed class ResetPasswordCommand : IRequest
 {
     public ResetPasswordCommand(string email, string code, string newPassword)
     {

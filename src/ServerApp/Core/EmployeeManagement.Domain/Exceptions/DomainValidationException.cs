@@ -4,12 +4,8 @@ using System.Runtime.Serialization;
 namespace EmployeeManagement.Domain.Exceptions;
 
 [Serializable]
-public class DomainValidationException : Exception
+public sealed class DomainValidationException : Exception
 {
-    public DomainValidationException()
-    {
-    }
-
     public DomainValidationException(string message)
         : base(message)
     {
@@ -20,7 +16,11 @@ public class DomainValidationException : Exception
     {
     }
 
-    protected DomainValidationException(SerializationInfo serializationInfo, StreamingContext streamingContext)
+    private DomainValidationException()
+    {
+    }
+
+    private DomainValidationException(SerializationInfo serializationInfo, StreamingContext streamingContext)
         : base(serializationInfo, streamingContext)
     {
     }

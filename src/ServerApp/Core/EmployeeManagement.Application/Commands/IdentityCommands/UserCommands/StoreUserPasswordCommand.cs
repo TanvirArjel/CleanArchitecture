@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
+﻿using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using TanvirArjel.ArgumentChecker;
@@ -9,7 +6,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
 
-public class StoreUserPasswordCommand : IRequest
+public sealed class StoreUserPasswordCommand : IRequest
 {
     public StoreUserPasswordCommand(ApplicationUser user, string password)
     {

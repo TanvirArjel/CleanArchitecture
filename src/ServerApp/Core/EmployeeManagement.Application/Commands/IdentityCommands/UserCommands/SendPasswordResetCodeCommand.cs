@@ -9,7 +9,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
 
-public class SendPasswordResetCodeCommand : IRequest
+public sealed class SendPasswordResetCodeCommand : IRequest
 {
     public SendPasswordResetCodeCommand(string email)
     {
@@ -61,7 +61,7 @@ public class SendPasswordResetCodeCommand : IRequest
             string subject = "Reset Password";
             string senderEmail = "noreply@yourapp.com";
             string emailBody = await _viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);
-            EmailObject emailObject = new EmailObject(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
+            EmailMessage emailObject = new EmailMessage(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
             await _emailSender.SendAsync(emailObject);
 
             return Unit.Value;

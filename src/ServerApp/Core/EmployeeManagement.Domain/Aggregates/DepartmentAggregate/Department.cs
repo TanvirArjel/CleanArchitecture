@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using EmployeeManagement.Domain.Exceptions;
 using EmployeeManagement.Domain.Primitives;
+using EmployeeManagement.Domain.ValueObjects;
 
 namespace EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 
-public sealed class Department : Entity, ITimeFields
+public sealed class Department : AggregateRoot, ITimeFields
 {
     private Department(Guid id)
     {

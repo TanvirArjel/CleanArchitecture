@@ -5,7 +5,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.DepartmentQueries;
 
-public class IsDepartmentExistentByNameQuery : IRequest<bool>
+public sealed class IsDepartmentExistentByNameQuery : IRequest<bool>
 {
     public IsDepartmentExistentByNameQuery(string name)
     {

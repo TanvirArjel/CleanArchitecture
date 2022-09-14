@@ -9,7 +9,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
 
-public class SendEmailVerificationCodeCommand : IRequest
+public sealed class SendEmailVerificationCodeCommand : IRequest
 {
     public SendEmailVerificationCodeCommand(string email)
     {
@@ -56,7 +56,7 @@ public class SendEmailVerificationCodeCommand : IRequest
             string senderEmail = "noreply@yourapp.com";
             string subject = "User Registration";
 
-            EmailObject emailObject = new EmailObject(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
+            EmailMessage emailObject = new EmailMessage(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
 
             await _emailSender.SendAsync(emailObject);
 

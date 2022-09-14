@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.DomainEntities;
+namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.EmployeeAggregate;
 
 public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {

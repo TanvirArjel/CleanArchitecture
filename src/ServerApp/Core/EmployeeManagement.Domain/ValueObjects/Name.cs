@@ -2,11 +2,12 @@
 using EmployeeManagement.Domain.Exceptions;
 using EmployeeManagement.Domain.Primitives;
 
-namespace EmployeeManagement.Domain.Aggregates.ValueObjects;
+namespace EmployeeManagement.Domain.ValueObjects;
+
 public sealed class Name : ValueObject
 {
-    public const int MinLength = 2;
-    public const int MaxLength = 50;
+    private const int _minLength = 2;
+    private const int _maxLength = 50;
 
     public Name(string firstName, string lastName)
     {
@@ -31,9 +32,9 @@ public sealed class Name : ValueObject
             throw new DomainValidationException("The FirstName cannot be null or empty.");
         }
 
-        if (firstName.Length < MinLength || firstName.Length > MaxLength)
+        if (firstName.Length < _minLength || firstName.Length > _maxLength)
         {
-            throw new DomainValidationException($"The FirstName must be in between {MinLength} && {MaxLength} characters.");
+            throw new DomainValidationException($"The FirstName must be in between {_minLength} to {_maxLength} characters.");
         }
 
         FirstName = firstName;
@@ -46,9 +47,9 @@ public sealed class Name : ValueObject
             throw new DomainValidationException("The LastName cannot be null or empty.");
         }
 
-        if (lastName.Length < MinLength || lastName.Length > MaxLength)
+        if (lastName.Length < _minLength || lastName.Length > _maxLength)
         {
-            throw new DomainValidationException($"The LastName must be in between {MinLength} && {MaxLength} characters.");
+            throw new DomainValidationException($"The LastName must be in between {_minLength} to {_maxLength} characters.");
         }
 
         LastName = lastName;

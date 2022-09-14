@@ -4,13 +4,8 @@ using System.Runtime.Serialization;
 namespace EmployeeManagement.Domain.Exceptions;
 
 [Serializable]
-public class EntityNotFoundException : Exception
+public sealed class EntityNotFoundException : Exception
 {
-    public EntityNotFoundException()
-        : base()
-    {
-    }
-
     public EntityNotFoundException(string message)
         : base(message)
     {
@@ -31,8 +26,13 @@ public class EntityNotFoundException : Exception
     {
     }
 
+    private EntityNotFoundException()
+       : base()
+    {
+    }
+
     // A constructor is needed for serialization when an exception propagates from a remoting server to the client.
-    protected EntityNotFoundException(SerializationInfo info, StreamingContext context)
+    private EntityNotFoundException(SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
     }

@@ -6,27 +6,22 @@ namespace EmployeeManagement.Application.Infrastrucures;
 [SingletonService]
 public interface IEmailSender
 {
-    Task SendAsync(EmailObject emailObject);
+    Task SendAsync(EmailMessage emailMessage);
 }
 
-public class EmailObject
+public sealed class EmailMessage
 {
-    public EmailObject(string receiverEmail, string subject, string mailBody)
+    public EmailMessage(string receiverEmail, string subject, string mailBody)
+        : this(receiverEmail, receiverName: null, subject, mailBody)
     {
-        ReceiverEmail = receiverEmail.ThrowIfNullOrEmpty(nameof(receiverEmail));
-        Subject = subject.ThrowIfNullOrEmpty(nameof(subject));
-        MailBody = mailBody.ThrowIfNullOrEmpty(nameof(mailBody));
     }
 
-    public EmailObject(string receiverEmail, string receiverName, string subject, string mailBody)
+    public EmailMessage(string receiverEmail, string receiverName, string subject, string mailBody)
+        : this(receiverEmail, receiverName, senderEmail: null, senderName: null, subject, mailBody)
     {
-        ReceiverEmail = receiverEmail.ThrowIfNullOrEmpty(nameof(receiverEmail));
-        ReceiverName = receiverName.ThrowIfNullOrEmpty(nameof(receiverName));
-        Subject = subject.ThrowIfNullOrEmpty(nameof(subject));
-        MailBody = mailBody.ThrowIfNullOrEmpty(nameof(mailBody));
     }
 
-    public EmailObject(
+    public EmailMessage(
         string receiverEmail,
         string receiverName,
         string senderEmail,
@@ -35,9 +30,9 @@ public class EmailObject
         string mailBody)
     {
         ReceiverEmail = receiverEmail.ThrowIfNullOrEmpty(nameof(receiverEmail));
-        ReceiverName = receiverName.ThrowIfNullOrEmpty(nameof(receiverName));
-        SenderEmail = senderEmail.ThrowIfNullOrEmpty(nameof(senderEmail));
-        SenderName = senderName.ThrowIfNullOrEmpty(nameof(senderName));
+        ReceiverName = receiverName;
+        SenderEmail = senderEmail != null ? senderEmail.ThrowIfNotValidEmail(nameof(senderEmail)) : senderEmail;
+        SenderName = senderName;
         Subject = subject.ThrowIfNullOrEmpty(nameof(subject));
         MailBody = mailBody.ThrowIfNullOrEmpty(nameof(mailBody));
     }

@@ -4,7 +4,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Application.Queries.EmployeeQueries;
 
-public class GetEmployeeByIdQuery : IRequest<EmployeeDetailsDto>
+public sealed class GetEmployeeByIdQuery : IRequest<EmployeeDetailsDto>
 {
     public GetEmployeeByIdQuery(Guid employeeId)
     {

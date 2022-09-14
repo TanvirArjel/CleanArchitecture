@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations;
+namespace EmployeeManagement.Persistence.RelationalDB.EntityConfigurations.IdentityAggregate;
 
 public class PasswordResetCodeConfiguration : IEntityTypeConfiguration<PasswordResetCode>
 {

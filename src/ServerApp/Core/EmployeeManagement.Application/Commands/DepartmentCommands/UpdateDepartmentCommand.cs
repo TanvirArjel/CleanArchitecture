@@ -1,13 +1,13 @@
 ﻿using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
-using EmployeeManagement.Domain.Aggregates.ValueObjects;
 using EmployeeManagement.Domain.Exceptions;
+using EmployeeManagement.Domain.ValueObjects;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Application.Commands.DepartmentCommands;
 
-public class UpdateDepartmentCommand : IRequest
+public sealed class UpdateDepartmentCommand : IRequest
 {
     public UpdateDepartmentCommand(
         Guid id,

@@ -6,7 +6,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace EmployeeManagement.Application.Commands.DepartmentCommands;
 
-public class DeleteDepartmentCommand : IRequest
+public sealed class DeleteDepartmentCommand : IRequest
 {
     public DeleteDepartmentCommand(Guid departmentId)
     {

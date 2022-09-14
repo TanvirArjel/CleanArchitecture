@@ -5,7 +5,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.DepartmentQueries;
 
-public class IsDepartmentNameUniqueQuery : IRequest<bool>
+public sealed class IsDepartmentNameUniqueQuery : IRequest<bool>
 {
     public IsDepartmentNameUniqueQuery(Guid departmentId, string name)
     {

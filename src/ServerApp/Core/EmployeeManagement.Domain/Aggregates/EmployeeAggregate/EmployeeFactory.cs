@@ -1,12 +1,12 @@
 ﻿using System;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
-using EmployeeManagement.Domain.Aggregates.ValueObjects;
+using EmployeeManagement.Domain.ValueObjects;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace EmployeeManagement.Domain.Aggregates.EmployeeAggregate;
 
 [ScopedService]
-public class EmployeeFactory
+public sealed class EmployeeFactory
 {
     private readonly IDepartmentRepository _departmentRepository;
     private readonly IEmployeeRepository _employeeRepository;

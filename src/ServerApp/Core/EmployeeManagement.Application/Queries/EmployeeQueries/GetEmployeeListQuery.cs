@@ -6,7 +6,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Queries.EmployeeQueries;
 
-public class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
+public sealed class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
 {
     public GetEmployeeListQuery(int pageIndex, int pageSize)
     {

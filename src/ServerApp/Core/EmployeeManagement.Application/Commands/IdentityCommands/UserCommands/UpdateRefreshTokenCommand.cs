@@ -1,14 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
+﻿using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
 
-public class UpdateRefreshTokenCommand : IRequest<RefreshToken>
+public sealed class UpdateRefreshTokenCommand : IRequest<RefreshToken>
 {
     public UpdateRefreshTokenCommand(Guid userId, string token)
     {
