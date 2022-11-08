@@ -42,7 +42,8 @@ public sealed class StoreUserPasswordCommand : IRequest
                 SetAtUtc = DateTime.UtcNow
             };
 
-            await _repository.InsertAsync(userOldPassword, cancellationToken);
+            _repository.Add(userOldPassword);
+            await _repository.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

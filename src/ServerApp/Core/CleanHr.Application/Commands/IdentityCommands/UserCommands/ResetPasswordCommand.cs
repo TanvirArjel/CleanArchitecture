@@ -65,10 +65,10 @@ public sealed class ResetPasswordCommand : IRequest
 
                 string newHashedPassword = _passwordHasher.HashPassword(applicationUser, request.NewPassword);
                 applicationUser.PasswordHash = newHashedPassword;
-                await _repository.UpdateAsync(applicationUser, cancellationToken);
+                _repository.Update(applicationUser);
 
                 passwordResetCode.UsedAtUtc = DateTime.UtcNow;
-                await _repository.UpdateAsync(passwordResetCode, cancellationToken);
+                _repository.Update(passwordResetCode);
 
                 await dbContextTransaction.CommitAsync(cancellationToken);
 

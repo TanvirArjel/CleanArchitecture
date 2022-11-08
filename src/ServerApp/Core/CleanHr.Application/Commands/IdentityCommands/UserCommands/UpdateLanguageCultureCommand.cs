@@ -38,7 +38,9 @@ public sealed class UpdateLanguageCultureCommand : IRequest
             }
 
             userToBeUpdated.LanguageCulture = request.LanguageCulture;
-            await _repository.UpdateAsync(userToBeUpdated, cancellationToken);
+
+            _repository.Update(userToBeUpdated);
+            await _repository.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

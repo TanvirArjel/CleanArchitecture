@@ -55,7 +55,8 @@ public sealed class SendPasswordResetCodeCommand : IRequest
                 SentAtUtc = DateTime.UtcNow
             };
 
-            await _repository.InsertAsync(emailVerificationCode, cancellationToken);
+            await _repository.AddAsync(emailVerificationCode, cancellationToken);
+            await _repository.SaveChangesAsync(cancellationToken);
 
             (string Email, string VerificationCode) model = (request.Email, verificationCode);
             string subject = "Reset Password";

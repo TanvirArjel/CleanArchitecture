@@ -3,6 +3,7 @@
         "appsettings",
         "Arjel",
         "Blazor",
+        "Hasher",
         "Mediat",
         "Middlewares",
         "Serilog",

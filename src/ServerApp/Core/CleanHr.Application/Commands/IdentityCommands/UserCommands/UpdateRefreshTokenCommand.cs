@@ -41,7 +41,8 @@ public sealed class UpdateRefreshTokenCommand : IRequest<RefreshToken>
             refreshTokenToBeUpdated.ExpireAtUtc = DateTime.UtcNow;
             refreshTokenToBeUpdated.CreatedAtUtc = DateTime.UtcNow.AddDays(10);
 
-            await _repository.UpdateAsync(refreshTokenToBeUpdated, cancellationToken);
+            _repository.Update(refreshTokenToBeUpdated);
+            await _repository.SaveChangesAsync(cancellationToken);
 
             return refreshTokenToBeUpdated;
         }

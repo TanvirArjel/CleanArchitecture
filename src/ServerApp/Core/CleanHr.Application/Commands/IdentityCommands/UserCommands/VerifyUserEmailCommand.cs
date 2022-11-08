@@ -58,10 +58,10 @@ public sealed class VerifyUserEmailCommand : IRequest
                 }
 
                 applicationUser.EmailConfirmed = true;
-                await _repository.UpdateAsync(applicationUser, cancellationToken);
+                _repository.Update(applicationUser);
 
                 emailVerificationCode.UsedAtUtc = DateTime.UtcNow;
-                await _repository.UpdateAsync(emailVerificationCode, cancellationToken);
+                _repository.Update(emailVerificationCode);
 
                 await dbContextTransaction.CommitAsync(cancellationToken);
 

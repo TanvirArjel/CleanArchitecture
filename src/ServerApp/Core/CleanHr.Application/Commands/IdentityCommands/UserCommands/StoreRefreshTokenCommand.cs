@@ -38,7 +38,8 @@ public sealed class StoreRefreshTokenCommand : IRequest<RefreshToken>
                 ExpireAtUtc = DateTime.UtcNow.AddDays(30)
             };
 
-            await _repository.InsertAsync(refreshToken, cancellationToken);
+            _repository.Add(refreshToken);
+            await _repository.SaveChangesAsync(cancellationToken);
             return refreshToken;
         }
     }

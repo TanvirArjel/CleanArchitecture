@@ -80,7 +80,7 @@ public class TokenManager
         {
             foreach (string item in roles)
             {
-                claims.Add(new(ClaimTypes.Role, item));
+                claims.Add(new Claim(ClaimTypes.Role, item));
             }
         }
 

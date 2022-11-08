@@ -38,7 +38,8 @@ public sealed class UpdateDialCodeCommand : IRequest
             }
 
             applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
-            await _repository.UpdateAsync(applicationUserToBeUpdated, cancellationToken);
+            _repository.Update(applicationUserToBeUpdated);
+            await _repository.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
