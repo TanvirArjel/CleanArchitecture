@@ -79,7 +79,7 @@ public static class Startup
 
         services.AddCaching();
 
-        services.AddMediatR(typeof(CreateDepratmentCommand));
+        services.AddMediatR(typeof(CreateDepartmentCommand));
 
         services.AddServicesOfAllTypes("EmployeeManagement");
         services.AddControllersWithViews(options =>

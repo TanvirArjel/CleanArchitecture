@@ -30,7 +30,7 @@ public static class ServiceCollectionExtensions
 
         services.AddHttpClient("EmployeeManagementApi", c =>
         {
-            c.BaseAddress = new Uri("https://localhost:44381/api/");
+            c.BaseAddress = new Uri("http://localhost:5101/api/");
             c.DefaultRequestHeaders.Add("Accept", "application/json");
             c.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
         }).AddHttpMessageHandler<AuthorizationDelegatingHandler>();

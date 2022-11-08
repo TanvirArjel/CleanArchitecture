@@ -31,8 +31,8 @@ public class DeleteDepartmentEndpoint : DepartmentEndpointBase
                 return ValidationProblem(ModelState);
             }
 
-            DeleteDepartmentCommand comand = new DeleteDepartmentCommand(departmentId);
-            await _mediator.Send(comand);
+            DeleteDepartmentCommand command = new DeleteDepartmentCommand(departmentId);
+            await _mediator.Send(command);
 
             return NoContent();
         }

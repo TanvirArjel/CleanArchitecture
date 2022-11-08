@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Application.Caching.Handlers;
+﻿using System;
+using EmployeeManagement.Application.Caching.Handlers;
 using EmployeeManagement.Domain.Aggregates.DepartmentAggregate;
 using EmployeeManagement.Domain.Exceptions;
 using MediatR;
@@ -28,7 +29,7 @@ public sealed class DeleteDepartmentCommand : IRequest
 
         public async Task<Unit> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
         {
-            request.ThrowIfNull(nameof(request));
+            _ = request.ThrowIfNull(nameof(request));
 
             Department department = await _departmentRepository.GetByIdAsync(request.Id);
 
