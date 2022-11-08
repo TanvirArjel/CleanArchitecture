@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using EmployeeManagement.Application.Infrastrucures;
+using EmployeeManagement.Application.Infrastructures;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

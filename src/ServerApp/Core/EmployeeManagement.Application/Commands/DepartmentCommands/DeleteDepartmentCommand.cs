@@ -15,33 +15,33 @@ public sealed class DeleteDepartmentCommand : IRequest
     }
 
     public Guid Id { get; }
+}
 
-    private class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartmentCommand>
+internal class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartmentCommand>
+{
+    private readonly IDepartmentRepository _departmentRepository;
+    private readonly IDepartmentCacheHandler _departmentCacheHandler;
+
+    public DeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IDepartmentCacheHandler departmentCacheHandler)
     {
-        private readonly IDepartmentRepository _departmentRepository;
-        private readonly IDepartmentCacheHandler _departmentCacheHandler;
+        _departmentRepository = departmentRepository;
+        _departmentCacheHandler = departmentCacheHandler;
+    }
 
-        public DeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IDepartmentCacheHandler departmentCacheHandler)
+    public async Task<Unit> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
+    {
+        _ = request.ThrowIfNull(nameof(request));
+
+        Department department = await _departmentRepository.GetByIdAsync(request.Id);
+
+        if (department == null)
         {
-            _departmentRepository = departmentRepository;
-            _departmentCacheHandler = departmentCacheHandler;
+            throw new EntityNotFoundException(typeof(Department), request.Id);
         }
 
-        public async Task<Unit> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
-        {
-            _ = request.ThrowIfNull(nameof(request));
+        await _departmentRepository.DeleteAsync(department);
+        await _departmentCacheHandler.RemoveListAsync();
 
-            Department department = await _departmentRepository.GetByIdAsync(request.Id);
-
-            if (department == null)
-            {
-                throw new EntityNotFoundException(typeof(Department), request.Id);
-            }
-
-            await _departmentRepository.DeleteAsync(department);
-            await _departmentCacheHandler.RemoveListAsync();
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

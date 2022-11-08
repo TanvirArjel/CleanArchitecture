@@ -39,7 +39,7 @@ public static class Startup
                 name: MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("https://localhost:44364", "http://localhost:7300")
+                    builder.WithOrigins("https://localhost:44364", "http://localhost:7300", "http://localhost:5201")
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 });

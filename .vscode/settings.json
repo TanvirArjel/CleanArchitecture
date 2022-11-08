@@ -1,7 +1,12 @@
 {
     "cSpell.words": [
+        "appsettings",
         "Arjel",
         "Blazor",
-        "Mediat"
-    ]
+        "Mediat",
+        "Middlewares",
+        "Serilog",
+        "Swashbuckle"
+    ],
+    "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"
 }

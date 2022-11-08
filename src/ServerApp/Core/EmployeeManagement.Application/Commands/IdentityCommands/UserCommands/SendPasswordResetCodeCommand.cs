@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Security.Cryptography;
-using EmployeeManagement.Application.Infrastrucures;
+using EmployeeManagement.Application.Infrastructures;
 using EmployeeManagement.Application.Services;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;

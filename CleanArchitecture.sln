@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31512.422
@@ -41,6 +41,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Api", "src\ServerApp\Presentation\EmployeeManagement.Api\EmployeeManagement.Api.csproj", "{EA4DEAB8-832D-43AE-8BBC-DBCBBFB013CA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B0744579-6E37-4733-A0D4-1BE465640343}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanHr.Application.Tests", "test\CleanHr.Application.Tests\CleanHr.Application.Tests.csproj", "{AA0E71C3-0DB4-4A18-BE5D-A1709112477B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,11 +83,16 @@ Global
 		{EA4DEAB8-832D-43AE-8BBC-DBCBBFB013CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA4DEAB8-832D-43AE-8BBC-DBCBBFB013CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA4DEAB8-832D-43AE-8BBC-DBCBBFB013CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA0E71C3-0DB4-4A18-BE5D-A1709112477B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA0E71C3-0DB4-4A18-BE5D-A1709112477B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA0E71C3-0DB4-4A18-BE5D-A1709112477B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA0E71C3-0DB4-4A18-BE5D-A1709112477B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{AA0E71C3-0DB4-4A18-BE5D-A1709112477B} = {B0744579-6E37-4733-A0D4-1BE465640343}
 		{81EB72CF-8A3B-4C39-A1C6-65893F8DEB13} = {73DD776E-B397-4372-867D-EDAF28C8608F}
 		{CB9B310C-37C2-4DAD-AEC3-1ED529190AA9} = {C1C5E94D-8251-43E4-ABD0-521E2DE77313}
 		{7E02466D-9055-484A-AFD1-33AD5CA46437} = {C1C5E94D-8251-43E4-ABD0-521E2DE77313}

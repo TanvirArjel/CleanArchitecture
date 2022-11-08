@@ -28,42 +28,42 @@ public sealed class UpdateDepartmentCommand : IRequest
     public string Description { get; }
 
     public bool IsActive { get; }
+}
 
-    private class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand>
+internal class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand>
+{
+    private readonly IDepartmentRepository _departmentRepository;
+    private readonly IDepartmentCacheHandler _departmentCacheHandler;
+
+    public UpdateDepartmentCommandHandler(
+        IDepartmentRepository departmentRepository,
+        IDepartmentCacheHandler departmentCacheHandler)
     {
-        private readonly IDepartmentRepository _departmentRepository;
-        private readonly IDepartmentCacheHandler _departmentCacheHandler;
+        _departmentRepository = departmentRepository;
+        _departmentCacheHandler = departmentCacheHandler;
+    }
 
-        public UpdateDepartmentCommandHandler(
-            IDepartmentRepository departmentRepository,
-            IDepartmentCacheHandler departmentCacheHandler)
+    public async Task<Unit> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
+    {
+        request.ThrowIfNull(nameof(request));
+
+        Department departmentToBeUpdated = await _departmentRepository.GetByIdAsync(request.Id);
+
+        if (departmentToBeUpdated == null)
         {
-            _departmentRepository = departmentRepository;
-            _departmentCacheHandler = departmentCacheHandler;
+            throw new EntityNotFoundException(typeof(Department), request.Id);
         }
 
-        public async Task<Unit> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
+        DepartmentName departmentName = new DepartmentName(request.Name);
 
-            Department departmentToBeUpdated = await _departmentRepository.GetByIdAsync(request.Id);
+        await departmentToBeUpdated.SetNameAsync(_departmentRepository, departmentName);
+        departmentToBeUpdated.SetDescription(request.Description);
+        departmentToBeUpdated.IsActive = request.IsActive;
 
-            if (departmentToBeUpdated == null)
-            {
-                throw new EntityNotFoundException(typeof(Department), request.Id);
-            }
+        await _departmentRepository.UpdateAsync(departmentToBeUpdated);
 
-            DepartmentName departmentName = new DepartmentName(request.Name);
+        await _departmentCacheHandler.RemoveListAsync();
 
-            await departmentToBeUpdated.SetNameAsync(_departmentRepository, departmentName);
-            departmentToBeUpdated.SetDescription(request.Description);
-            departmentToBeUpdated.IsActive = request.IsActive;
-
-            await _departmentRepository.UpdateAsync(departmentToBeUpdated);
-
-            await _departmentCacheHandler.RemoveListAsync();
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

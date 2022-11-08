@@ -34,31 +34,31 @@ public sealed class CreateEmployeeCommand : IRequest<Guid>
     public string Email { get; }
 
     public string PhoneNumber { get; }
+}
 
-    private class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Guid>
+internal class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Guid>
+{
+    private readonly EmployeeFactory _employeeFactory;
+    private readonly IEmployeeRepository _employeeRepository;
+
+    public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository, EmployeeFactory employeeFactory)
     {
-        private readonly EmployeeFactory _employeeFactory;
-        private readonly IEmployeeRepository _employeeRepository;
+        _employeeRepository = employeeRepository;
+        _employeeFactory = employeeFactory;
+    }
 
-        public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository, EmployeeFactory employeeFactory)
-        {
-            _employeeRepository = employeeRepository;
-            _employeeFactory = employeeFactory;
-        }
+    public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+    {
+        request.ThrowIfNull(nameof(request));
 
-        public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
+        Name name = new Name(request.FirstName, request.LastName);
+        DateOfBirth dateOfBirth = new DateOfBirth(request.DateOfBirth);
+        Email email = new Email(request.Email);
+        PhoneNumber phoneNumber = new PhoneNumber(request.PhoneNumber);
 
-            Name name = new Name(request.FirstName, request.LastName);
-            DateOfBirth dateOfBirth = new DateOfBirth(request.DateOfBirth);
-            Email email = new Email(request.Email);
-            PhoneNumber phoneNumber = new PhoneNumber(request.PhoneNumber);
+        Employee employee = _employeeFactory.Create(name, request.DepartmentId, dateOfBirth, email, phoneNumber);
 
-            Employee employee = _employeeFactory.Create(name, request.DepartmentId, dateOfBirth, email, phoneNumber);
-
-            await _employeeRepository.InsertAsync(employee);
-            return employee.Id;
-        }
+        await _employeeRepository.InsertAsync(employee);
+        return employee.Id;
     }
 }

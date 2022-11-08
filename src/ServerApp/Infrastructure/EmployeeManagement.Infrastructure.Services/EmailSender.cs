@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using EmployeeManagement.Application.Infrastrucures;
+using EmployeeManagement.Application.Infrastructures;
 using EmployeeManagement.Infrastructure.Services.Configs;
 using SendGrid;
 using SendGrid.Helpers.Mail;

@@ -13,30 +13,30 @@ public sealed class DeleteEmployeeCommand : IRequest
     }
 
     public Guid EmployeeId { get; }
+}
 
-    private class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand>
+internal class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand>
+{
+    private readonly IEmployeeRepository _employeeRepository;
+
+    public DeleteEmployeeCommandHandler(IEmployeeRepository employeeRepository)
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        _employeeRepository = employeeRepository;
+    }
 
-        public DeleteEmployeeCommandHandler(IEmployeeRepository employeeRepository)
+    public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+    {
+        request.ThrowIfNull(nameof(request));
+
+        Employee employeeToBeDeleted = await _employeeRepository.GetByIdAsync(request.EmployeeId);
+
+        if (employeeToBeDeleted == null)
         {
-            _employeeRepository = employeeRepository;
+            throw new EntityNotFoundException(typeof(Employee), request.EmployeeId);
         }
 
-        public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
+        await _employeeRepository.DeleteAsync(employeeToBeDeleted);
 
-            Employee employeeToBeDeleted = await _employeeRepository.GetByIdAsync(request.EmployeeId);
-
-            if (employeeToBeDeleted == null)
-            {
-                throw new EntityNotFoundException(typeof(Employee), request.EmployeeId);
-            }
-
-            await _employeeRepository.DeleteAsync(employeeToBeDeleted);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

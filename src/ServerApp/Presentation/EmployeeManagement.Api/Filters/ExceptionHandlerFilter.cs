@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using EmployeeManagement.Application.Infrastrucures;
+using EmployeeManagement.Application.Infrastructures;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

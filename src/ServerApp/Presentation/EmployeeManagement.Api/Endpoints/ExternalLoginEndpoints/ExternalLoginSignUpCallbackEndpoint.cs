@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using EmployeeManagement.Api.Helpers;
-using EmployeeManagement.Application.Infrastrucures;
+using EmployeeManagement.Application.Infrastructures;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

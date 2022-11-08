@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using EmployeeManagement.Application.Infrastrucures;
+using EmployeeManagement.Application.Infrastructures;
 using Microsoft.Extensions.Logging;
 
 namespace EmployeeManagement.Infrastructure.Services;
@@ -20,7 +20,7 @@ internal class ExceptionLogger : IExceptionLogger
         await LogAsync(exception, null);
     }
 
-    public async Task LogAsync(Exception exception, object paramters)
+    public async Task LogAsync(Exception exception, object parameters)
     {
         try
         {
@@ -29,8 +29,8 @@ internal class ExceptionLogger : IExceptionLogger
                 throw new ArgumentNullException(nameof(exception));
             }
 
-            string jsonParamters = paramters != null ? JsonSerializer.Serialize(paramters) : "No paratmer.";
-            _logger.LogCritical(exception, "Paramters: {P1}", jsonParamters);
+            string jsonParameters = parameters != null ? JsonSerializer.Serialize(parameters) : "No parameter.";
+            _logger.LogCritical(exception, "Parameters: {P1}", jsonParameters);
 
             await Task.CompletedTask;
         }

@@ -1,7 +1,7 @@
 ﻿using TanvirArjel.ArgumentChecker;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
-namespace EmployeeManagement.Application.Infrastrucures;
+namespace EmployeeManagement.Application.Infrastructures;
 
 [SingletonService]
 public interface IEmailSender

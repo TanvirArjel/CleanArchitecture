@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using EmployeeManagement.Application.Commands.IdentityCommands.UserCommands;
-using EmployeeManagement.Application.Infrastrucures;
+using EmployeeManagement.Application.Infrastructures;
 using EmployeeManagement.Application.Queries.IdentityQueries.UserQueries;
 using EmployeeManagement.Domain.Aggregates.IdentityAggregate;
 using MediatR;
