@@ -4,6 +4,11 @@
 **Currently, .NET MAUI is in preview, and setting up the environment for the .NET MAUI is quite tricky and challenging. So if you would like to ignore/skip .NET MAUI for now then, simply remove the `MauiBlazorApp` and `MauiBlazorApp.WinUI` projects from the solution and build the solution. Now everything should work fine!**
 -->
 
+# ❤️ Become a Patron
+**If you want to encourage me to contribute to this repository more frequently, then please become a patron on here: https://www.patreon.com/TanvirArjel**
+
+Thanks in advance.
+
 # 🏃‍♂️ How to Run the Project
   1. First make sure that you have **.NET 6.0** and **Visual Studio 2022** are installed.
   2. Now open the solution with VS 2022 and build the solution to make sure that there is no error.
