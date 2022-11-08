@@ -29,17 +29,17 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServerApp", "ServerApp", "{C1C5E94D-8251-43E4-ABD0-521E2DE77313}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Domain", "src\ServerApp\Core\EmployeeManagement.Domain\EmployeeManagement.Domain.csproj", "{C32E6BDA-BA62-4B3A-8B20-EF18E7708A26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Domain", "src\ServerApp\Core\CleanHr.Domain\CleanHr.Domain.csproj", "{C32E6BDA-BA62-4B3A-8B20-EF18E7708A26}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Application", "src\ServerApp\Core\EmployeeManagement.Application\EmployeeManagement.Application.csproj", "{96C316C8-21A1-4A50-991A-CAD794FF15BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Application", "src\ServerApp\Core\CleanHr.Application\CleanHr.Application.csproj", "{96C316C8-21A1-4A50-991A-CAD794FF15BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Persistence.RelationalDB", "src\ServerApp\Infrastructure\EmployeeManagement.Persistence.RelationalDB\EmployeeManagement.Persistence.RelationalDB.csproj", "{8057D91F-40EF-4473-B556-B5A0DEC50B4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Persistence.RelationalDB", "src\ServerApp\Infrastructure\CleanHr.Persistence.RelationalDB\CleanHr.Persistence.RelationalDB.csproj", "{8057D91F-40EF-4473-B556-B5A0DEC50B4C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Persistence.Cache", "src\ServerApp\Infrastructure\EmployeeManagement.Persistence.Cache\EmployeeManagement.Persistence.Cache.csproj", "{D75A6E81-9B27-4694-A50B-E64B58DD6DB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Persistence.Cache", "src\ServerApp\Infrastructure\CleanHr.Persistence.Cache\CleanHr.Persistence.Cache.csproj", "{D75A6E81-9B27-4694-A50B-E64B58DD6DB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Infrastructure.Services", "src\ServerApp\Infrastructure\EmployeeManagement.Infrastructure.Services\EmployeeManagement.Infrastructure.Services.csproj", "{A61843B0-55EA-432A-9F6F-53CE5BFD9ECF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Infrastructure.Services", "src\ServerApp\Infrastructure\CleanHr.Infrastructure.Services\CleanHr.Infrastructure.Services.csproj", "{A61843B0-55EA-432A-9F6F-53CE5BFD9ECF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Api", "src\ServerApp\Presentation\EmployeeManagement.Api\EmployeeManagement.Api.csproj", "{EA4DEAB8-832D-43AE-8BBC-DBCBBFB013CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Api", "src\ServerApp\Presentation\CleanHr.Api\CleanHr.Api.csproj", "{EA4DEAB8-832D-43AE-8BBC-DBCBBFB013CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B0744579-6E37-4733-A0D4-1BE465640343}"
 EndProject

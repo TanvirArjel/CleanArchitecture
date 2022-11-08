@@ -10,10 +10,10 @@ services:
     ports: ["1440:1433"]
     
   employeemanagement.api:
-    image: ${DOCKER_REGISTRY-}employeemanagementapi
+    image: ${DOCKER_REGISTRY-}cleanhrapi
     build:
       context: .
-      dockerfile: src/ServerApp/Presentation/EmployeeManagement.Api/Dockerfile
+      dockerfile: src/ServerApp/Presentation/CleanHr.Api/Dockerfile
     ports: ["7100:80","7101:443"]
     depends_on: ["sqlserver"]
 
