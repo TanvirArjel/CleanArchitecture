@@ -124,7 +124,7 @@ public class ExternalLoginSignUpCallbackEndpoint : ExternalLoginEndpointBase
             }
             else
             {
-                ErrorMessage = "The provied external login info is not valid.";
+                ErrorMessage = "The provided external login info is not valid.";
             }
 
             return RedirectWithError(ErrorMessage);
