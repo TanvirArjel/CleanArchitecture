@@ -37,6 +37,7 @@ public class SendUserPasswordResetCodeEndpoint : UserEndpointBase
         if (!isExistent)
         {
             ModelState.AddModelError(nameof(model.Email), "The email does not belong to any user.");
+            return ValidationProblem(ModelState);
         }
 
         SendPasswordResetCodeCommand command = new SendPasswordResetCodeCommand(model.Email);

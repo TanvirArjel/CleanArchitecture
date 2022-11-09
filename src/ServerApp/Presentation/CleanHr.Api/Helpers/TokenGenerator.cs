@@ -115,9 +115,8 @@ public class TokenManager
 
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
         ClaimsPrincipal principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken securityToken);
-        JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
 
-        if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
+        if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
         {
             throw new SecurityTokenException("Invalid access token.");
         }

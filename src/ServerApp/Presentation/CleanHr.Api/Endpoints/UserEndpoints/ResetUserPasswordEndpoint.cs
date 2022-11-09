@@ -41,13 +41,13 @@ public class ResetUserPasswordEndpoint : UserEndpointBase
             if (passwordResetCode == null)
             {
                 ModelState.AddModelError(string.Empty, "Either email or password reset code is incorrect");
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
 
             if (DateTime.UtcNow > passwordResetCode.SentAtUtc.AddMinutes(5))
             {
                 ModelState.AddModelError(nameof(model.Code), "The code is expired.");
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
 
             ResetPasswordCommand resetPasswordCommand = new ResetPasswordCommand(model.Email, model.Code, model.Password);

@@ -66,7 +66,7 @@ public class JwtTokenParser
 
     public ClaimsPrincipal Parse(string token)
     {
-        TokenValidationParameters validationParameters = new TokenValidationParameters
+        TokenValidationParameters validationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = false,
             ValidIssuer = "SampleApp",
@@ -88,9 +88,8 @@ public class JwtTokenParser
             ValidateLifetime = true,
 
             ClockSkew = TimeSpan.Zero,
+            RequireSignedTokens = false
         };
-
-        validationParameters.RequireSignedTokens = false;
 
         _jwtSecurityTokenHandler.InboundClaimTypeMap[JwtRegisteredClaimNames.Name] = ClaimTypes.Name;
 

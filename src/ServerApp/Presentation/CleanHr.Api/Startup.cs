@@ -19,7 +19,7 @@ namespace CleanHr.Api;
 
 public static class Startup
 {
-    private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+    private const string _myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
     private static bool InDocker => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
@@ -36,7 +36,7 @@ public static class Startup
         services.AddCors(options =>
         {
             options.AddPolicy(
-                name: MyAllowSpecificOrigins,
+                name: _myAllowSpecificOrigins,
                 builder =>
                 {
                     builder.WithOrigins("http://localhost:5200", "https://localhost:5201")
@@ -142,15 +142,13 @@ public static class Startup
 
         app.UseRouting();
 
-        app.UseCors(MyAllowSpecificOrigins);
+        app.UseCors(_myAllowSpecificOrigins);
         ////app.UseCors(options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllers();
-        });
+        // Add controller routes
+        app.MapControllers();
     }
 }

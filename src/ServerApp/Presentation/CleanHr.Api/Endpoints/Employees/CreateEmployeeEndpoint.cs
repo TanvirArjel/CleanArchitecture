@@ -44,7 +44,7 @@ public class CreateEmployeeEndpoint : EmployeeEndpointBase
             if (exception is DomainValidationException)
             {
                 ModelState.AddModelError(string.Empty, exception.Message);
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
 
             throw;

@@ -38,13 +38,13 @@ public class ResendUserEmailConfirmationCodeEndpoint : UserEndpointBase
         if (applicationUser == null)
         {
             ModelState.AddModelError(nameof(model.Email), "Provided email is not related to any account.");
-            return BadRequest(ModelState);
+            return ValidationProblem(ModelState);
         }
 
         if (applicationUser.EmailConfirmed)
         {
             ModelState.AddModelError(nameof(model.Email), "Email is already confirmed.");
-            return BadRequest(ModelState);
+            return ValidationProblem(ModelState);
         }
 
         HasUserActiveEmailVerificationCodeQuery query = new HasUserActiveEmailVerificationCodeQuery(model.Email);
@@ -54,7 +54,7 @@ public class ResendUserEmailConfirmationCodeEndpoint : UserEndpointBase
         if (isExists)
         {
             ModelState.AddModelError(nameof(model.Email), "You already have an active code. Please wait! You may receive the code in your email. If not, please try again after sometimes.");
-            return BadRequest(ModelState);
+            return ValidationProblem(ModelState);
         }
 
         SendEmailVerificationCodeCommand command = new SendEmailVerificationCodeCommand(model.Email);

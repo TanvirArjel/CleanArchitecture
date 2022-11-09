@@ -82,8 +82,7 @@ public static class SwaggerGenerationServicesExtensions
                     return new[] { api.GroupName };
                 }
 
-                ControllerActionDescriptor controllerActionDescriptor = api.ActionDescriptor as ControllerActionDescriptor;
-                if (controllerActionDescriptor != null)
+                if (api.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
                 {
                     return new[] { controllerActionDescriptor.ControllerName };
                 }

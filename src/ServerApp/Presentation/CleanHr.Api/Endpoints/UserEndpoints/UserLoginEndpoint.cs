@@ -45,7 +45,7 @@ public class UserLoginEndpoint : UserEndpointBase
             if (applicationUser == null)
             {
                 ModelState.AddModelError(nameof(loginModel.EmailOrUserName), "The email does not exist.");
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
 
             Microsoft.AspNetCore.Identity.SignInResult signinResult = await _signInManager.PasswordSignInAsync(
@@ -65,32 +65,32 @@ public class UserLoginEndpoint : UserEndpointBase
                 if (!await _userManager.IsEmailConfirmedAsync(applicationUser))
                 {
                     ModelState.AddModelError(nameof(loginModel.EmailOrUserName), "The email is not confirmed yet.");
-                    return BadRequest(ModelState);
+                    return ValidationProblem(ModelState);
                 }
 
                 if (!await _userManager.IsPhoneNumberConfirmedAsync(applicationUser))
                 {
                     ModelState.AddModelError(string.Empty, "The phone number is not confirmed yet.");
-                    return BadRequest(ModelState);
+                    return ValidationProblem(ModelState);
                 }
             }
             else if (signinResult.IsLockedOut)
             {
                 ModelState.AddModelError(string.Empty, "The account is locked.");
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
             else if (signinResult.RequiresTwoFactor)
             {
                 ModelState.AddModelError(string.Empty, "Require two factor authentication.");
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
             else
             {
                 ModelState.AddModelError(nameof(loginModel.Password), "Password is incorrect.");
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
 
-            return BadRequest(ModelState);
+            return ValidationProblem(ModelState);
         }
         catch (Exception exception)
         {

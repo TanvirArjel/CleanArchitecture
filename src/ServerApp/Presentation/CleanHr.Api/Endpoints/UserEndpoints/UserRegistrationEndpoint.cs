@@ -47,7 +47,7 @@ public class UserRegistrationEndpoint : UserEndpointBase
                     ModelState.AddModelError(string.Empty, item.Description);
                 }
 
-                return BadRequest(ModelState);
+                return ValidationProblem(ModelState);
             }
 
             //// await _applicationUserService.SendEmailVerificationCodeAsync(applicationUser.Email);

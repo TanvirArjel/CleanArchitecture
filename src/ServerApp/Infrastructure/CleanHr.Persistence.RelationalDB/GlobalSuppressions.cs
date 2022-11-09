@@ -5,5 +5,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here", Scope = "namespaceanddescendants", Target = "CleanHr.Persistence.RelationalDB.Migrations")]
-[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here", Scope = "namespaceanddescendants", Target = "CleanHr.Persistence.RelationalDB.EntityConfigurations")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here", Scope = "namespaceanddescendants", Target = "~N:CleanHr.Persistence.RelationalDB.Migrations")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable here", Scope = "namespaceanddescendants", Target = "~N:CleanHr.Persistence.RelationalDB.EntityConfigurations")]

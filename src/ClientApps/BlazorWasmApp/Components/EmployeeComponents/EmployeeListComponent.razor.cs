@@ -44,7 +44,7 @@ public partial class EmployeeListComponent
         }
         catch (Exception exception)
         {
-            Console.WriteLine(exception);
+            await _exceptionLogger.LogAsync(exception);
             ErrorMessage = "There is some error.";
         }
     }

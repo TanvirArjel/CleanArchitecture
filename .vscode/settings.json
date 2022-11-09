@@ -3,11 +3,17 @@
         "appsettings",
         "Arjel",
         "Blazor",
+        "Brotli",
+        "datetime",
+        "datetimeoffset",
         "Hasher",
+        "Hmac",
         "Mediat",
         "Middlewares",
+        "nvarchar",
         "Serilog",
-        "Swashbuckle"
+        "Swashbuckle",
+        "uniqueidentifier"
     ],
     "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"
 }
