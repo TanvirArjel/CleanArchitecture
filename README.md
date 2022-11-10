@@ -7,7 +7,7 @@
 # 🏃‍♂️ How to Run the Project
   1. First make sure that you have **.NET 7.0** and **Visual Studio 2022** are installed.
   2. Now open the solution with VS 2022 and build the solution to make sure that there is no error.
-  3. Now make **`CleanHr.Api` and `BlazorWasmApp`** projects as startup projects and then run it. On startup necessary databases will be created in **MSSQLLocalDB**
+  3. Now make **`CleanHr.Api` and `ClearHr.Blazor`** projects as startup projects and then run it. On startup necessary databases will be created in **MSSQLLocalDB**
 
 # Clean Architecture in ASP.NET Core
 This repository contains the implementation of Domain Driven Design and Clear Architecture in ASP.NET Core.
