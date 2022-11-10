@@ -1,4 +1,3 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31512.422
@@ -23,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{E1D1A568-3BD0-429C-A717-18B329D75120}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWasmApp", "src\ClientApps\BlazorWasmApp\BlazorWasmApp.csproj", "{CF87FF06-EE73-4174-B0D4-20083CBB3C1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Blazor", "src\ClientApps\CleanHr.Blazor\CleanHr.Blazor.csproj", "{CF87FF06-EE73-4174-B0D4-20083CBB3C1E}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}"
 EndProject
@@ -43,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Api", "src\ServerAp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B0744579-6E37-4733-A0D4-1BE465640343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanHr.Application.Tests", "test\CleanHr.Application.Tests\CleanHr.Application.Tests.csproj", "{AA0E71C3-0DB4-4A18-BE5D-A1709112477B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Application.Tests", "test\CleanHr.Application.Tests\CleanHr.Application.Tests.csproj", "{AA0E71C3-0DB4-4A18-BE5D-A1709112477B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,7 +91,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{AA0E71C3-0DB4-4A18-BE5D-A1709112477B} = {B0744579-6E37-4733-A0D4-1BE465640343}
 		{81EB72CF-8A3B-4C39-A1C6-65893F8DEB13} = {73DD776E-B397-4372-867D-EDAF28C8608F}
 		{CB9B310C-37C2-4DAD-AEC3-1ED529190AA9} = {C1C5E94D-8251-43E4-ABD0-521E2DE77313}
 		{7E02466D-9055-484A-AFD1-33AD5CA46437} = {C1C5E94D-8251-43E4-ABD0-521E2DE77313}
@@ -105,6 +103,7 @@ Global
 		{D75A6E81-9B27-4694-A50B-E64B58DD6DB5} = {7E02466D-9055-484A-AFD1-33AD5CA46437}
 		{A61843B0-55EA-432A-9F6F-53CE5BFD9ECF} = {7E02466D-9055-484A-AFD1-33AD5CA46437}
 		{EA4DEAB8-832D-43AE-8BBC-DBCBBFB013CA} = {E1D1A568-3BD0-429C-A717-18B329D75120}
+		{AA0E71C3-0DB4-4A18-BE5D-A1709112477B} = {B0744579-6E37-4733-A0D4-1BE465640343}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C622411-9649-4977-93A0-2C624539C0EE}

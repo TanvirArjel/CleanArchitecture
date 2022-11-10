@@ -2,7 +2,7 @@
 
 services:
   blazorwasmapp:
-    image: blazorwasmapp
+    image: cleanhrblazor
     build:
       context: .
       dockerfile: Dockerfile
