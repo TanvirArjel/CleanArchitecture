@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
@@ -34,7 +35,15 @@ public static class Startup
 		}
 
 		IServiceCollection services = builder.Services;
-		services.AddHealthChecks().AddCheck<DbConnectionHealthCheck>("Database");
+
+		string connectionString = builder.GetDbConnectionString();
+
+		services.AddHealthChecks()
+				.AddTypeActivatedCheck<DbConnectionHealthCheck>(
+					"Database",
+					failureStatus: HealthStatus.Degraded,
+					tags: new[] { "Database" },
+					args: new object[] { connectionString });
 
 		services.AddCors(options =>
 		{
@@ -65,7 +74,6 @@ public static class Startup
 			options.Level = CompressionLevel.Fastest;
 		});
 
-		string connectionString = builder.GetDbConnectionString();
 		services.AddRelationalDbContext(connectionString);
 
 		string sendGridApiKey = "yourSendGridKey";
