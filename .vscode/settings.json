@@ -7,13 +7,16 @@
         "datetime",
         "datetimeoffset",
         "Hasher",
+        "healthz",
         "Hmac",
         "Mediat",
         "Middlewares",
         "nvarchar",
         "Serilog",
         "Swashbuckle",
+        "Tanvir",
         "uniqueidentifier"
     ],
-    "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)"
+    "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)",
+    "dotnet.defaultSolution": "CleanArchitecture.sln"
 }

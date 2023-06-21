@@ -33,6 +33,9 @@ dotnet_diagnostic.SA1649.severity = none
 # SA1633: File should have header
 dotnet_diagnostic.SA1633.severity = none
 
+# SA1633: File should have header
+dotnet_diagnostic.SA1027.severity = none
+
 # CA1724: Type name conflict with namespace
 dotnet_diagnostic.CA1724.severity = none
 

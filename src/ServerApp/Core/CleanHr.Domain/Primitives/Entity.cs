@@ -38,7 +38,7 @@ public abstract class Entity : IEquatable<Entity>
 
     public override bool Equals(object obj)
     {
-        // Chekc if the two have same type.
+        // Check if the two have same type.
         if (obj is null || obj.GetType() != GetType())
         {
             return false;
