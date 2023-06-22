@@ -64,7 +64,7 @@ public sealed class Department : AggregateRoot, ITimeFields
 
         if (description.Length < 20 || description.Length > 100)
         {
-            throw new DomainValidationException("The Department description cannot be null or empty.");
+            throw new DomainValidationException("The Department description must be in between 20 and 100 characters.");
         }
 
         Description = description;

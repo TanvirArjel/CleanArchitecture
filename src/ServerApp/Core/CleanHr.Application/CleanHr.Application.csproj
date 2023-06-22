@@ -26,4 +26,8 @@
 	  <ProjectReference Include="..\CleanHr.Domain\CleanHr.Domain.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+       <InternalsVisibleTo Include="CleanHr.Application.Tests" />
+    </ItemGroup>
+
 </Project>
