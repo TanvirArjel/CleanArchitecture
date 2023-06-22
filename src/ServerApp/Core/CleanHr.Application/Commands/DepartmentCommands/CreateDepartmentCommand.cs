@@ -19,7 +19,7 @@ public sealed class CreateDepartmentCommand : IRequest<Guid>
     public string Description { get; }
 }
 
-public class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, Guid>
+internal class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartmentCommand, Guid>
 {
     private readonly IDepartmentRepository _departmentRepository;
     private readonly IDepartmentCacheHandler _departmentCacheHandler;

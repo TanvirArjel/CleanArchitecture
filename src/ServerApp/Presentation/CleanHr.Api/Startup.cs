@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 using CleanHr.Api.Configs;
 using CleanHr.Api.Extensions;
 using CleanHr.Api.Filters;
@@ -42,8 +43,10 @@ public static class Startup
 				.AddTypeActivatedCheck<DbConnectionHealthCheck>(
 					"Database",
 					failureStatus: HealthStatus.Degraded,
-					tags: new[] { "Database" },
+					tags: new[] { "database" },
 					args: new object[] { connectionString });
+
+		services.AddHealthChecksUI().AddInMemoryStorage();
 
 		services.AddCors(options =>
 		{
@@ -144,6 +147,14 @@ public static class Startup
 		{
 			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 		});
+
+		app.MapHealthChecks("/healthz/database", new HealthCheckOptions()
+		{
+			Predicate = hc => hc.Tags.Contains("database"),
+			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+		});
+
+		app.MapHealthChecksUI();
 
 		app.UseRouting();
 
