@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CleanHr.Persistence.RelationalDB.EntityConfigurations.IdentityAggregate;
 
-internal class UserOldPasswordConfiguration : IEntityTypeConfiguration<UserOldPassword>
+internal sealed class UserOldPasswordConfiguration : IEntityTypeConfiguration<UserOldPassword>
 {
     public void Configure(EntityTypeBuilder<UserOldPassword> builder)
     {

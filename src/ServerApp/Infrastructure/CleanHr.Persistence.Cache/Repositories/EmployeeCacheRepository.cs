@@ -11,7 +11,7 @@ using TanvirArjel.Extensions.Microsoft.Caching;
 
 namespace CleanHr.Persistence.Cache.Repositories;
 
-internal class EmployeeCacheRepository : IEmployeeCacheRepository
+internal sealed class EmployeeCacheRepository : IEmployeeCacheRepository
 {
     private readonly IDistributedCache _distributedCache;
     private readonly IQueryRepository _repository;
