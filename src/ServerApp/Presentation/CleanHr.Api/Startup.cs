@@ -1,5 +1,4 @@
 using System.IO.Compression;
-using System.Runtime.CompilerServices;
 using CleanHr.Api.Configs;
 using CleanHr.Api.Extensions;
 using CleanHr.Api.Filters;
@@ -8,13 +7,10 @@ using CleanHr.Application.Commands.DepartmentCommands;
 using CleanHr.Infrastructure.Services;
 using CleanHr.Persistence.Cache;
 using CleanHr.Persistence.RelationalDB.Extensions;
-using HealthChecks.UI.Client;
 using MediatR;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
@@ -36,17 +32,10 @@ public static class Startup
 		}
 
 		IServiceCollection services = builder.Services;
-
 		string connectionString = builder.GetDbConnectionString();
 
-		services.AddHealthChecks()
-				.AddTypeActivatedCheck<DbConnectionHealthCheck>(
-					"Database",
-					failureStatus: HealthStatus.Degraded,
-					tags: new[] { "database" },
-					args: new object[] { connectionString });
-
-		services.AddHealthChecksUI().AddInMemoryStorage();
+		services.AddAllHealthChecks(connectionString);
+		services.AddHostedService<ConfigurationLoadingBackgroundService>();
 
 		services.AddCors(options =>
 		{
@@ -143,18 +132,7 @@ public static class Startup
 		// If you are using http url then don't enable https redirection.
 		////app.UseHttpsRedirection();
 
-		app.MapHealthChecks("/healthz", new HealthCheckOptions()
-		{
-			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-		});
-
-		app.MapHealthChecks("/healthz/database", new HealthCheckOptions()
-		{
-			Predicate = hc => hc.Tags.Contains("database"),
-			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-		});
-
-		app.MapHealthChecksUI();
+		app.AddHealthCheckEndpoints();
 
 		app.UseRouting();
 

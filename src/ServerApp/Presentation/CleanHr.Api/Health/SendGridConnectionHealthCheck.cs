@@ -6,7 +6,9 @@ namespace CleanHr.Api;
 
 public class SendGridConnectionHealthCheck : IHealthCheck
 {
-    public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
+    public Task<HealthCheckResult> CheckHealthAsync(
+        HealthCheckContext context,
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
