@@ -6,7 +6,7 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace CleanHr.Persistence.Cache.Handlers;
 
-internal class EmployeeCacheHandler : IEmployeeCacheHandler
+internal sealed class EmployeeCacheHandler : IEmployeeCacheHandler
 {
     private readonly IDistributedCache _distributedCache;
 

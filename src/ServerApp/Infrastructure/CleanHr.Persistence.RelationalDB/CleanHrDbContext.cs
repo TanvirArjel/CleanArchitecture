@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanHr.Persistence.RelationalDB;
 
-internal class CleanHrDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+internal sealed class CleanHrDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public CleanHrDbContext(DbContextOptions<CleanHrDbContext> options)
         : base(options)

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CleanHr.Persistence.RelationalDB.EntityConfigurations.IdentityAggregate;
 
-internal class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
+internal sealed class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {

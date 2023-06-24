@@ -12,7 +12,7 @@ using TanvirArjel.Extensions.Microsoft.Caching;
 
 namespace CleanHr.Persistence.Cache.Repositories;
 
-internal class DepartmentCacheRepository : IDepartmentCacheRepository
+internal sealed class DepartmentCacheRepository : IDepartmentCacheRepository
 {
     private readonly IDistributedCache _distributedCache;
     private readonly IQueryRepository _repository;

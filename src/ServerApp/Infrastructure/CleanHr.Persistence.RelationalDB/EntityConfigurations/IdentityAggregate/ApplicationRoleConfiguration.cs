@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CleanHr.Persistence.RelationalDB.EntityConfigurations.IdentityAggregate;
 
-internal class ApplicationRoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
+internal sealed class ApplicationRoleConfiguration : IEntityTypeConfiguration<ApplicationRole>
 {
     public void Configure(EntityTypeBuilder<ApplicationRole> builder)
     {
