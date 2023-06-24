@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 using CleanHr.Api.Configs;
 using CleanHr.Api.Extensions;
 using CleanHr.Api.Filters;
@@ -33,7 +34,7 @@ public static class Startup
 
 		IServiceCollection services = builder.Services;
 		string connectionString = builder.GetDbConnectionString();
-
+    
 		services.AddAllHealthChecks(connectionString);
 		services.AddHostedService<ConfigurationLoadingBackgroundService>();
 
@@ -133,6 +134,14 @@ public static class Startup
 		////app.UseHttpsRedirection();
 
 		app.AddHealthCheckEndpoints();
+
+		app.MapHealthChecks("/healthz/database", new HealthCheckOptions()
+		{
+			Predicate = hc => hc.Tags.Contains("database"),
+			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+		});
+
+		app.MapHealthChecksUI();
 
 		app.UseRouting();
 
