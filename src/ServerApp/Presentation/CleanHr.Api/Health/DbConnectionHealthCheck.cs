@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
@@ -37,7 +36,7 @@ public class DbConnectionHealthCheck : IHealthCheck
 		}
 		catch (Exception exception)
 		{
-			_logger.LogCritical(exception: exception, "The exception happened with connection string is: {ConnectionString}", _connectionString);
+			_logger.LogCritical(exception: exception, "The exception happened with connection string : {ConnectionString}", _connectionString);
 			return HealthCheckResult.Unhealthy(description: exception.Message);
 		}
 	}
