@@ -8,7 +8,9 @@ using CleanHr.Application.Commands.DepartmentCommands;
 using CleanHr.Infrastructure.Services;
 using CleanHr.Persistence.Cache;
 using CleanHr.Persistence.RelationalDB.Extensions;
+using HealthChecks.UI.Client;
 using MediatR;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -34,7 +36,7 @@ public static class Startup
 
 		IServiceCollection services = builder.Services;
 		string connectionString = builder.GetDbConnectionString();
-    
+
 		services.AddAllHealthChecks(connectionString);
 		services.AddHostedService<ConfigurationLoadingBackgroundService>();
 
@@ -134,14 +136,6 @@ public static class Startup
 		////app.UseHttpsRedirection();
 
 		app.AddHealthCheckEndpoints();
-
-		app.MapHealthChecks("/healthz/database", new HealthCheckOptions()
-		{
-			Predicate = hc => hc.Tags.Contains("database"),
-			ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-		});
-
-		app.MapHealthChecksUI();
 
 		app.UseRouting();
 
