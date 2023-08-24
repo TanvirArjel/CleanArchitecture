@@ -74,12 +74,12 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<ReadinessHealthCheck>();
 
 		services.AddHealthChecks()
-				.AddCheck<ReadinessHealthCheck>("Readiness", tags: new[] { "ready" })
 				.AddTypeActivatedCheck<DbConnectionHealthCheck>(
 					"Database",
-					failureStatus: HealthStatus.Degraded,
+					failureStatus: HealthStatus.Unhealthy,
 					tags: new[] { "database" },
-					args: new object[] { connectionString });
+					args: new object[] { connectionString })
+				.AddCheck<ReadinessHealthCheck>("Readiness", tags: new[] { "ready" });
 
 		services.AddHealthChecksUI().AddInMemoryStorage();
 	}
