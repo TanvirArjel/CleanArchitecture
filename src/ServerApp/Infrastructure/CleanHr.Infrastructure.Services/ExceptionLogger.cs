@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanHr.Infrastructure.Services;
 
-internal class ExceptionLogger : IExceptionLogger
+internal sealed class ExceptionLogger : IExceptionLogger
 {
     private readonly ILogger<ExceptionLogger> _logger;
 
