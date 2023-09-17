@@ -38,14 +38,14 @@ public class TokenManager
 
         IList<string> roles = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
 
-        GetRefreshTokenQuery getRefreshTokenQuery = new GetRefreshTokenQuery(user.Id);
+        GetRefreshTokenQuery getRefreshTokenQuery = new(user.Id);
 
         RefreshToken refreshToken = await _mediator.Send(getRefreshTokenQuery);
 
         if (refreshToken == null)
         {
             string token = GetRefreshToken();
-            StoreRefreshTokenCommand storeRefreshTokenCommand = new StoreRefreshTokenCommand(user.Id, token);
+            StoreRefreshTokenCommand storeRefreshTokenCommand = new(user.Id, token);
             refreshToken = await _mediator.Send(storeRefreshTokenCommand);
         }
         else
@@ -95,7 +95,7 @@ public class TokenManager
             audience: _jwtConfig.Issuer,
             issuer: _jwtConfig.Issuer);
 
-        JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler jwtSecurityTokenHandler = new();
         jwtSecurityTokenHandler.OutboundClaimTypeMap.Clear();
         string accessToken = jwtSecurityTokenHandler.WriteToken(jwt);
 
@@ -104,7 +104,7 @@ public class TokenManager
 
     public ClaimsPrincipal ParseExpiredToken(string accessToken)
     {
-        TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
+        TokenValidationParameters tokenValidationParameters = new()
         {
             ValidateAudience = true,
             ValidateIssuer = true,

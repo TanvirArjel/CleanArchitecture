@@ -24,7 +24,7 @@ internal class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeComm
         _employeeRepository = employeeRepository;
     }
 
-    public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -36,7 +36,5 @@ internal class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeComm
         }
 
         await _employeeRepository.DeleteAsync(employeeToBeDeleted);
-
-        return Unit.Value;
     }
 }

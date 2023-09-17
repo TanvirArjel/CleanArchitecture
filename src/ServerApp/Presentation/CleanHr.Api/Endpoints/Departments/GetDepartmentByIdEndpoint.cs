@@ -5,15 +5,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Endpoints.Departments;
 
-public class GetDepartmentByIdEndpoint : DepartmentEndpointBase
+public class GetDepartmentByIdEndpoint(IMediator mediator) : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public GetDepartmentByIdEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -30,7 +23,7 @@ public class GetDepartmentByIdEndpoint : DepartmentEndpointBase
 
         GetDepartmentByIdQuery query = new GetDepartmentByIdQuery(departmentId);
 
-        DepartmentDetailsDto departmentDetailsDto = await _mediator.Send(query);
+        DepartmentDetailsDto departmentDetailsDto = await mediator.Send(query);
         return departmentDetailsDto;
     }
 }

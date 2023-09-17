@@ -34,7 +34,7 @@ public sealed class ResetPasswordCommand : IRequest
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<Unit> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        public async Task Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
@@ -71,8 +71,6 @@ public sealed class ResetPasswordCommand : IRequest
                 _repository.Update(passwordResetCode);
 
                 await dbContextTransaction.CommitAsync(cancellationToken);
-
-                return Unit.Value;
             }
             catch (Exception)
             {

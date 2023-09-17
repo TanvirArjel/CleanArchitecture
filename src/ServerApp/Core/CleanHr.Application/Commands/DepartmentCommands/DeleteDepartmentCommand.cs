@@ -27,7 +27,7 @@ internal class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartment
         _departmentCacheHandler = departmentCacheHandler;
     }
 
-    public async Task<Unit> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
     {
         _ = request.ThrowIfNull(nameof(request));
 
@@ -40,7 +40,5 @@ internal class DeleteDepartmentCommandHandler : IRequestHandler<DeleteDepartment
 
         await _departmentRepository.DeleteAsync(department);
         await _departmentCacheHandler.RemoveListAsync();
-
-        return Unit.Value;
     }
 }

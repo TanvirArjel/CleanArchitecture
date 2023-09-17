@@ -28,7 +28,7 @@ public sealed class VerifyUserEmailCommand : IRequest
             _repository = repository;
         }
 
-        public async Task<Unit> Handle(VerifyUserEmailCommand request, CancellationToken cancellationToken)
+        public async Task Handle(VerifyUserEmailCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
@@ -64,8 +64,6 @@ public sealed class VerifyUserEmailCommand : IRequest
                 _repository.Update(emailVerificationCode);
 
                 await dbContextTransaction.CommitAsync(cancellationToken);
-
-                return Unit.Value;
             }
             catch (Exception)
             {

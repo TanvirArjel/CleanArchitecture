@@ -34,7 +34,7 @@ public sealed class SendEmailVerificationCodeCommand : IRequest
             _emailSender = emailSender;
         }
 
-        public async Task<Unit> Handle(SendEmailVerificationCodeCommand request, CancellationToken cancellationToken)
+        public async Task Handle(SendEmailVerificationCodeCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
@@ -60,8 +60,6 @@ public sealed class SendEmailVerificationCodeCommand : IRequest
             EmailMessage emailObject = new EmailMessage(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
 
             await _emailSender.SendAsync(emailObject);
-
-            return Unit.Value;
         }
     }
 }

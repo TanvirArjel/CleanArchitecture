@@ -43,7 +43,7 @@ internal class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartment
         _departmentCacheHandler = departmentCacheHandler;
     }
 
-    public async Task<Unit> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -63,7 +63,5 @@ internal class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartment
         await _departmentRepository.UpdateAsync(departmentToBeUpdated);
 
         await _departmentCacheHandler.RemoveListAsync();
-
-        return Unit.Value;
     }
 }

@@ -55,7 +55,7 @@ internal class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeComm
         _departmentRepository = departmentRepository;
     }
 
-    public async Task<Unit> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -77,7 +77,5 @@ internal class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeComm
 
         // Remove the cache for this employee
         await _employeeCacheHandler.RemoveDetailsByIdAsync(request.Id);
-
-        return Unit.Value;
     }
 }

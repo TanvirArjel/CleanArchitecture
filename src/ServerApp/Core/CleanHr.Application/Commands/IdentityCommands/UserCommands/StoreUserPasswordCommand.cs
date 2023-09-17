@@ -29,7 +29,7 @@ public sealed class StoreUserPasswordCommand : IRequest
             _repository = repository;
         }
 
-        public async Task<Unit> Handle(StoreUserPasswordCommand request, CancellationToken cancellationToken)
+        public async Task Handle(StoreUserPasswordCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
@@ -44,8 +44,6 @@ public sealed class StoreUserPasswordCommand : IRequest
 
             _repository.Add(userOldPassword);
             await _repository.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
         }
     }
 }

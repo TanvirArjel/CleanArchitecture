@@ -26,7 +26,7 @@ public sealed class UpdateLanguageCultureCommand : IRequest
             _repository = repository;
         }
 
-        public async Task<Unit> Handle(UpdateLanguageCultureCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateLanguageCultureCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
@@ -41,8 +41,6 @@ public sealed class UpdateLanguageCultureCommand : IRequest
 
             _repository.Update(userToBeUpdated);
             await _repository.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
         }
     }
 }
