@@ -24,10 +24,7 @@ internal sealed class ExceptionLogger : IExceptionLogger
     {
         try
         {
-            if (exception == null)
-            {
-                throw new ArgumentNullException(nameof(exception));
-            }
+            ArgumentNullException.ThrowIfNull(exception);
 
             string jsonParameters = parameters != null ? JsonSerializer.Serialize(parameters) : "No parameter.";
             _logger.LogCritical(exception, "Parameters: {P1}", jsonParameters);
@@ -40,14 +37,14 @@ internal sealed class ExceptionLogger : IExceptionLogger
         }
     }
 
-    public async Task LogAsync(Exception exception, string requestPath, string requestBody)
+    public async Task LogAsync(
+        Exception exception,
+        string requestPath,
+        string requestBody)
     {
         try
         {
-            if (exception == null)
-            {
-                throw new ArgumentNullException(nameof(exception));
-            }
+            ArgumentNullException.ThrowIfNull(exception);
 
             _logger.LogCritical(exception, "RequestedPath: {P1} and RequestBody: {P2}", requestPath, requestBody);
 

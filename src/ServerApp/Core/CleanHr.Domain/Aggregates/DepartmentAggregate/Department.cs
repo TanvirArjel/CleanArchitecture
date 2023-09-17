@@ -42,10 +42,7 @@ public sealed class Department : AggregateRoot, ITimeFields
         DepartmentName name,
         string description)
     {
-        if (repository is null)
-        {
-            throw new ArgumentNullException(nameof(repository));
-        }
+        ArgumentNullException.ThrowIfNull(repository);
 
         Department department = new Department(Guid.NewGuid());
         await department.SetNameAsync(repository, name);
@@ -72,10 +69,7 @@ public sealed class Department : AggregateRoot, ITimeFields
 
     public async Task SetNameAsync(IDepartmentRepository repository, DepartmentName name)
     {
-        if (repository is null)
-        {
-            throw new ArgumentNullException(nameof(repository));
-        }
+        ArgumentNullException.ThrowIfNull(repository);
 
         if (name == null)
         {

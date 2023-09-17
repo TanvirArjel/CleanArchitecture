@@ -7,15 +7,9 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Endpoints.Departments;
 
-public class UpdateDepartmentEndpoint : DepartmentEndpointBase
+public class UpdateDepartmentEndpoint(
+    IMediator mediator) : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public UpdateDepartmentEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpPut("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -34,7 +28,7 @@ public class UpdateDepartmentEndpoint : DepartmentEndpointBase
 
             UpdateDepartmentCommand command = new UpdateDepartmentCommand(departmentId, model.Name, model.Description, true);
 
-            await _mediator.Send(command);
+            await mediator.Send(command);
             return Ok();
         }
         catch (Exception exception)

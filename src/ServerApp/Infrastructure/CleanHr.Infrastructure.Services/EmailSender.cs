@@ -7,7 +7,7 @@ using SendGrid.Helpers.Mail;
 
 namespace CleanHr.Infrastructure.Services;
 
-public class EmailSender : IEmailSender
+public sealed class EmailSender : IEmailSender
 {
     private readonly SendGridConfig _sendGridConfig;
     private readonly IExceptionLogger _exceptionLogger;
@@ -24,12 +24,9 @@ public class EmailSender : IEmailSender
     {
         try
         {
-            if (emailMessage == null)
-            {
-                throw new ArgumentNullException(nameof(emailMessage));
-            }
+            ArgumentNullException.ThrowIfNull(emailMessage);
 
-            SendGridMessage message = new SendGridMessage()
+            SendGridMessage message = new()
             {
                 Subject = emailMessage.Subject,
                 HtmlContent = emailMessage.MailBody,

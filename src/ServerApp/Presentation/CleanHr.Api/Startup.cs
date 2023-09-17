@@ -76,7 +76,7 @@ public static class Startup
 
 		services.AddCaching();
 
-		services.AddMediatR(typeof(CreateDepartmentCommand));
+		services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateDepartmentCommand>());
 
 		services.AddServicesOfAllTypes("CleanHr");
 		services.AddControllersWithViews(options =>

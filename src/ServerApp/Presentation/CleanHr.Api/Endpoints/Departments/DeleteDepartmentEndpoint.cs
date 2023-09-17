@@ -6,15 +6,9 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Endpoints.Departments;
 
-public class DeleteDepartmentEndpoint : DepartmentEndpointBase
+public class DeleteDepartmentEndpoint(
+    IMediator mediator) : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public DeleteDepartmentEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpDelete("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -32,7 +26,7 @@ public class DeleteDepartmentEndpoint : DepartmentEndpointBase
             }
 
             DeleteDepartmentCommand command = new DeleteDepartmentCommand(departmentId);
-            await _mediator.Send(command);
+            await mediator.Send(command);
 
             return NoContent();
         }

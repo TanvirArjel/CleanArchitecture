@@ -26,7 +26,7 @@ public sealed class UpdateDialCodeCommand : IRequest
             _repository = repository;
         }
 
-        public async Task<Unit> Handle(UpdateDialCodeCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateDialCodeCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
@@ -40,8 +40,6 @@ public sealed class UpdateDialCodeCommand : IRequest
             applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
             _repository.Update(applicationUserToBeUpdated);
             await _repository.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
         }
     }
 }

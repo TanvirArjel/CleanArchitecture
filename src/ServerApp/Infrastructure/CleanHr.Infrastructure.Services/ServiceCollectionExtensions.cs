@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton(fact =>
         {
-            SendGridConfig sendGridConfig = new SendGridConfig(apiKey);
+            SendGridConfig sendGridConfig = new(apiKey);
             return sendGridConfig;
         });
     }

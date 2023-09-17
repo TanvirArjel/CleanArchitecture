@@ -31,10 +31,9 @@ public sealed class EntityNotFoundException : Exception
     {
     }
 
-    // A constructor is needed for serialization when an exception propagates from a remoting server to the client.
-    private EntityNotFoundException(SerializationInfo info, StreamingContext context)
-        : base(info, context)
+    private EntityNotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext)
     {
+        throw new NotImplementedException();
     }
 
     private static string GetExceptionMessage(Type entityType, object key)

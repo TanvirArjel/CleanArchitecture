@@ -34,7 +34,7 @@ public sealed class SendPasswordResetCodeCommand : IRequest
             _emailSender = emailSender;
         }
 
-        public async Task<Unit> Handle(SendPasswordResetCodeCommand request, CancellationToken cancellationToken)
+        public async Task Handle(SendPasswordResetCodeCommand request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
@@ -64,8 +64,6 @@ public sealed class SendPasswordResetCodeCommand : IRequest
             string emailBody = await _viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);
             EmailMessage emailObject = new EmailMessage(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
             await _emailSender.SendAsync(emailObject);
-
-            return Unit.Value;
         }
     }
 }

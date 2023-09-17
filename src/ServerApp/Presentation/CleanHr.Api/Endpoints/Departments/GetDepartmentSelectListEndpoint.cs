@@ -6,15 +6,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Endpoints.Departments;
 
-public class GetDepartmentSelectListEndpoint : DepartmentEndpointBase
+public class GetDepartmentSelectListEndpoint(IMediator mediator) : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public GetDepartmentSelectListEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet("select-list")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -30,7 +23,7 @@ public class GetDepartmentSelectListEndpoint : DepartmentEndpointBase
         }
 
         GetDepartmentListQuery departmentListQuery = new GetDepartmentListQuery();
-        List<DepartmentDto> departmentDtos = await _mediator.Send(departmentListQuery);
+        List<DepartmentDto> departmentDtos = await mediator.Send(departmentListQuery);
 
         SelectList selectList = new SelectList(departmentDtos, "Id", "Name", selectedDepartment);
         return selectList;

@@ -5,15 +5,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Endpoints.Departments;
 
-public class GetDepartmentListEndpoint : DepartmentEndpointBase
+public class GetDepartmentListEndpoint(IMediator mediator) : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public GetDepartmentListEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -22,7 +15,7 @@ public class GetDepartmentListEndpoint : DepartmentEndpointBase
     public async Task<ActionResult<List<DepartmentDto>>> Get()
     {
         GetDepartmentListQuery departmentListQuery = new GetDepartmentListQuery();
-        List<DepartmentDto> departmentDetailsDtos = await _mediator.Send(departmentListQuery);
+        List<DepartmentDto> departmentDetailsDtos = await mediator.Send(departmentListQuery);
         return departmentDetailsDtos;
     }
 }

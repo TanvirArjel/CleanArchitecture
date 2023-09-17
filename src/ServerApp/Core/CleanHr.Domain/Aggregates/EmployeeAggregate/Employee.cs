@@ -64,10 +64,7 @@ public sealed class Employee : AggregateRoot
 
     public async Task SetDepartmentAsync(IDepartmentRepository repository, Guid departmentId)
     {
-        if (repository is null)
-        {
-            throw new ArgumentNullException(nameof(repository));
-        }
+        ArgumentNullException.ThrowIfNull(repository);
 
         if (departmentId == Guid.Empty)
         {
@@ -91,10 +88,7 @@ public sealed class Employee : AggregateRoot
 
     public async Task SetEmailAsync(IEmployeeRepository repository, Email email)
     {
-        if (repository is null)
-        {
-            throw new ArgumentNullException(nameof(repository));
-        }
+        ArgumentNullException.ThrowIfNull(repository);
 
         if (email == null)
         {
@@ -118,10 +112,7 @@ public sealed class Employee : AggregateRoot
 
     public async Task SetPhoneNumberAsync(IEmployeeRepository repository, PhoneNumber phoneNumber)
     {
-        if (repository is null)
-        {
-            throw new ArgumentNullException(nameof(repository));
-        }
+        ArgumentNullException.ThrowIfNull(repository);
 
         if (phoneNumber == null)
         {
