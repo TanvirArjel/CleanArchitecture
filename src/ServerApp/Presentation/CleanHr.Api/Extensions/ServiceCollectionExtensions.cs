@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using CleanHr.Api.Configs;
+using CleanHr.Api.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
@@ -77,10 +78,11 @@ public static class ServiceCollectionExtensions
 				.AddTypeActivatedCheck<DbConnectionHealthCheck>(
 					"Database",
 					failureStatus: HealthStatus.Unhealthy,
-					tags: new[] { "database" },
-					args: new object[] { connectionString })
-				.AddCheck<ReadinessHealthCheck>("Readiness", tags: new[] { "ready" });
+                    tags: new[] { HealthCheckTags.Database },
+                    args: new object[] { connectionString })
+                .AddCheck<ReadinessHealthCheck>("Readiness", tags: new[] { HealthCheckTags.Ready });
 
-		services.AddHealthChecksUI().AddInMemoryStorage();
-	}
+        // This is has been disabled until add support for .NET 8.0 and EF Core 8.0
+        // services.AddHealthChecksUI().AddInMemoryStorage();
+    }
 }
