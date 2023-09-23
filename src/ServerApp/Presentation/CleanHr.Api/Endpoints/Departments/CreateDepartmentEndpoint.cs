@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CleanHr.Application.Commands.DepartmentCommands;
+﻿using CleanHr.Application.Commands.DepartmentCommands;
 using CleanHr.Domain.Exceptions;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -20,7 +20,7 @@ public class CreateDepartmentEndpoint(
     {
         try
         {
-            CreateDepartmentCommand command = new CreateDepartmentCommand(model.Name, model.Description);
+            CreateDepartmentCommand command = new(model.Name, model.Description);
 
             Guid departmentId = await mediator.Send(command);
             return Created($"/api/v1/departments/{departmentId}", model);
@@ -40,12 +40,23 @@ public class CreateDepartmentEndpoint(
 
 public class CreateDepartmentModel
 {
-    [Required]
-    [MaxLength(20, ErrorMessage = "The {0} can't be more than {1} characters.")]
-    [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters.")]
     public string Name { get; set; }
 
-    [MaxLength(200, ErrorMessage = "The {0} can't be more than {1} characters.")]
-    [MinLength(20, ErrorMessage = "The {0} must be at least {1} characters.")]
     public string Description { get; set; }
+}
+
+public class CreateDepartmentModelValidator : AbstractValidator<CreateDepartmentModel>
+{
+    public CreateDepartmentModelValidator()
+    {
+        RuleFor(d => d.Name)
+               .NotEmpty().WithMessage("The {PropertyName} is required.")
+               .MaximumLength(20).WithMessage("The {PropertyName} can't be more than {MaxLength} characters.")
+               .MinimumLength(2).WithMessage("The {PropertyName} must be at least {MinLength} characters.");
+
+        RuleFor(d => d.Description)
+               .NotEmpty().WithMessage("The {PropertyName} is required.")
+               .MaximumLength(200).WithMessage("The {PropertyName} can't be more than {MaxLength} characters.")
+               .MinimumLength(20).WithMessage("The {PropertyName} must be at least {MinLength} characters.");
+    }
 }

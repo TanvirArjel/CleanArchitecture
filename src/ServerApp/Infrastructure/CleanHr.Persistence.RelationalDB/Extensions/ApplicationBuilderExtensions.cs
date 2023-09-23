@@ -14,6 +14,7 @@ public static class ApplicationBuilderExtensions
         using IServiceScope serviceScope = app.Services.CreateScope();
         CleanHrDbContext dbContext = serviceScope.ServiceProvider.GetRequiredService<CleanHrDbContext>();
 
-        dbContext.Database.Migrate();
+        // TODO: Comment out this if you have SQL server installed on your machine.
+        // dbContext.Database.Migrate();
     }
 }
