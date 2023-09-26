@@ -4,9 +4,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CleanHr.Api.Endpoints.Departments;
+namespace CleanHr.Api.Features.Department.Endpoints;
 
-public class DeleteDepartmentEndpoint(
+public sealed class DeleteDepartmentEndpoint(
     IMediator mediator) : DepartmentEndpointBase
 {
     [HttpDelete("{departmentId}")]

@@ -3,9 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CleanHr.Api.Endpoints.Departments;
+namespace CleanHr.Api.Features.Department.Endpoints;
 
-public class GetDepartmentByIdEndpoint(IMediator mediator) : DepartmentEndpointBase
+public sealed class GetDepartmentByIdEndpoint(IMediator mediator) : DepartmentEndpointBase
 {
     [HttpGet("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

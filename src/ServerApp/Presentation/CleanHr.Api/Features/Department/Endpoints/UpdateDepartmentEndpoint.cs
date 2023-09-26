@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CleanHr.Api.Features.Department.Models;
 using CleanHr.Application.Commands.DepartmentCommands;
 using CleanHr.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CleanHr.Api.Endpoints.Departments;
+namespace CleanHr.Api.Features.Department.Endpoints;
 
-public class UpdateDepartmentEndpoint(
+public sealed class UpdateDepartmentEndpoint(
     IMediator mediator) : DepartmentEndpointBase
 {
     [HttpPut("{departmentId}")]
@@ -48,19 +48,4 @@ public class UpdateDepartmentEndpoint(
             throw;
         }
     }
-}
-
-public class UpdateDepartmentModel
-{
-    [Required]
-    public Guid Id { get; set; }
-
-    [Required]
-    [MaxLength(20, ErrorMessage = "The {0} can't be more than {1} characters.")]
-    [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters.")]
-    public string Name { get; set; }
-
-    [MaxLength(200, ErrorMessage = "The {0} can't be more than {1} characters.")]
-    [MinLength(20, ErrorMessage = "The {0} must be at least {1} characters.")]
-    public string Description { get; set; }
 }

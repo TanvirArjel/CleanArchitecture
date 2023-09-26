@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanHr.Api.Endpoints.Departments;
+namespace CleanHr.Api.Features.Department.Endpoints;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/departments")]
 [ApiController]
-[Authorize]
+////[Authorize]
 [ApiExplorerSettings(GroupName = "Department Endpoints")]
 public abstract class DepartmentEndpointBase : ControllerBase
 {

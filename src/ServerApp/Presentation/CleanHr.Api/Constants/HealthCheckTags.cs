@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CleanHr.Api.Constants;
+﻿namespace CleanHr.Api.Constants;
 
 public static class HealthCheckTags
 {
