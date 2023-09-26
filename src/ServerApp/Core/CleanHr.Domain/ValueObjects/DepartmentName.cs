@@ -26,12 +26,13 @@ public sealed class DepartmentName : ValueObject
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new DomainValidationException("The DepartmentName value cannot be null or empty.");
+            throw new DomainValidationException(DepartmentDomainErrors.NameNullOrEmpty);
         }
 
         if (value.Length < _minLength || value.Length > _maxLength)
         {
-            throw new DomainValidationException($"The DepartmentName value must be in between {_minLength} to {_maxLength} characters.");
+            string errorMessage = DepartmentDomainErrors.GetNameLengthOutOfRangeErrorMessage(_minLength, _maxLength);
+            throw new DomainValidationException(errorMessage);
         }
 
         Value = value;

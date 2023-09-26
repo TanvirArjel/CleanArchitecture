@@ -1,13 +1,13 @@
-﻿using CleanHr.Application.Commands.DepartmentCommands;
+﻿using CleanHr.Api.Features.Department.Models;
+using CleanHr.Application.Commands.DepartmentCommands;
 using CleanHr.Domain.Exceptions;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CleanHr.Api.Endpoints.Departments;
+namespace CleanHr.Api.Features.Department.Endpoints;
 
-public class CreateDepartmentEndpoint(
+public sealed class CreateDepartmentEndpoint(
     IMediator mediator) : DepartmentEndpointBase
 {
     [HttpPost]
@@ -35,28 +35,5 @@ public class CreateDepartmentEndpoint(
 
             throw;
         }
-    }
-}
-
-public class CreateDepartmentModel
-{
-    public string Name { get; set; }
-
-    public string Description { get; set; }
-}
-
-public class CreateDepartmentModelValidator : AbstractValidator<CreateDepartmentModel>
-{
-    public CreateDepartmentModelValidator()
-    {
-        RuleFor(d => d.Name)
-               .NotEmpty().WithMessage("The {PropertyName} is required.")
-               .MaximumLength(20).WithMessage("The {PropertyName} can't be more than {MaxLength} characters.")
-               .MinimumLength(2).WithMessage("The {PropertyName} must be at least {MinLength} characters.");
-
-        RuleFor(d => d.Description)
-               .NotEmpty().WithMessage("The {PropertyName} is required.")
-               .MaximumLength(200).WithMessage("The {PropertyName} can't be more than {MaxLength} characters.")
-               .MinimumLength(20).WithMessage("The {PropertyName} must be at least {MinLength} characters.");
     }
 }

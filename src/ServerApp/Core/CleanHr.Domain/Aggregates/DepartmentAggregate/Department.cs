@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CleanHr.Domain.Exceptions;
 using CleanHr.Domain.Primitives;
@@ -16,6 +17,7 @@ public sealed class Department : AggregateRoot, ITimeFields
     }
 
     // This is needed for EF Core query mapping or deserialization.
+    [JsonConstructor]
     private Department()
     {
     }
@@ -56,12 +58,12 @@ public sealed class Department : AggregateRoot, ITimeFields
     {
         if (string.IsNullOrWhiteSpace(description))
         {
-            throw new DomainValidationException("The Department description cannot be null or empty.");
+            throw new DomainValidationException(DepartmentDomainErrors.DescriptionNullOrEmpty);
         }
 
         if (description.Length < 20 || description.Length > 100)
         {
-            throw new DomainValidationException("The Department description must be in between 20 and 100 characters.");
+            throw new DomainValidationException(DepartmentDomainErrors.GetDescriptionLengthOutOfRangeMessage(20, 200));
         }
 
         Description = description;

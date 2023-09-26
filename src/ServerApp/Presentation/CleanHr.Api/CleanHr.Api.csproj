@@ -49,4 +49,11 @@
     <ProjectReference Include="..\..\Infrastructure\CleanHr.Persistence.Cache\CleanHr.Persistence.Cache.csproj" />
     <ProjectReference Include="..\..\Infrastructure\CleanHr.Persistence.RelationalDB\CleanHr.Persistence.RelationalDB.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features/" />
+    <Folder Include="Features/Department/" />
+    <Folder Include="Features/Department/Endpoints/" />
+    <Folder Include="Features/Department/Models/" />
+    <Folder Include="Features/Department/Validators/" />
+  </ItemGroup>
 </Project>

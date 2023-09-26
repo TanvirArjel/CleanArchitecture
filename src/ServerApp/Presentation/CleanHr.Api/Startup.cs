@@ -1,7 +1,7 @@
 using System.IO.Compression;
 using CleanHr.Api.Configs;
-using CleanHr.Api.Endpoints.Departments;
 using CleanHr.Api.Extensions;
+using CleanHr.Api.Features.Department.Validators;
 using CleanHr.Api.Filters;
 using CleanHr.Api.Utilities;
 using CleanHr.Application.Commands.DepartmentCommands;
@@ -98,7 +98,7 @@ public static class Startup
     {
         ArgumentNullException.ThrowIfNull(app);
 
-        app.ApplyDatabaseMigrations();
+        ////app.ApplyDatabaseMigrations();
 
         app.Use((context, next) =>
         {

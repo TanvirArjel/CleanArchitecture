@@ -7,47 +7,30 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Application.Commands.DepartmentCommands;
 
-public sealed class UpdateDepartmentCommand : IRequest
+public sealed class UpdateDepartmentCommand(
+    Guid id,
+    string name,
+    string description,
+    bool isActive) : IRequest
 {
-    public UpdateDepartmentCommand(
-        Guid id,
-        string name,
-        string description,
-        bool isActive)
-    {
-        Id = id;
-        Name = name;
-        Description = description;
-        IsActive = isActive;
-    }
+    public Guid Id { get; } = id;
 
-    public Guid Id { get; }
+    public string Name { get; } = name;
 
-    public string Name { get; }
+    public string Description { get; } = description;
 
-    public string Description { get; }
-
-    public bool IsActive { get; }
+    public bool IsActive { get; } = isActive;
 }
 
-internal class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCommand>
+internal class UpdateDepartmentCommandHandler(
+    IDepartmentRepository departmentRepository,
+    IDepartmentCacheHandler departmentCacheHandler) : IRequestHandler<UpdateDepartmentCommand>
 {
-    private readonly IDepartmentRepository _departmentRepository;
-    private readonly IDepartmentCacheHandler _departmentCacheHandler;
-
-    public UpdateDepartmentCommandHandler(
-        IDepartmentRepository departmentRepository,
-        IDepartmentCacheHandler departmentCacheHandler)
-    {
-        _departmentRepository = departmentRepository;
-        _departmentCacheHandler = departmentCacheHandler;
-    }
-
     public async Task Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        Department departmentToBeUpdated = await _departmentRepository.GetByIdAsync(request.Id);
+        Department departmentToBeUpdated = await departmentRepository.GetByIdAsync(request.Id);
 
         if (departmentToBeUpdated == null)
         {
@@ -56,12 +39,12 @@ internal class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartment
 
         DepartmentName departmentName = new DepartmentName(request.Name);
 
-        await departmentToBeUpdated.SetNameAsync(_departmentRepository, departmentName);
+        await departmentToBeUpdated.SetNameAsync(departmentRepository, departmentName);
         departmentToBeUpdated.SetDescription(request.Description);
         departmentToBeUpdated.IsActive = request.IsActive;
 
-        await _departmentRepository.UpdateAsync(departmentToBeUpdated);
+        await departmentRepository.UpdateAsync(departmentToBeUpdated);
 
-        await _departmentCacheHandler.RemoveListAsync();
+        await departmentCacheHandler.RemoveListAsync();
     }
 }

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CleanHr.Api.Endpoints.Departments;
+namespace CleanHr.Api.Features.Department.Endpoints;
 
-public class GetDepartmentSelectListEndpoint(IMediator mediator) : DepartmentEndpointBase
+public sealed class GetDepartmentSelectListEndpoint(IMediator mediator) : DepartmentEndpointBase
 {
     [HttpGet("select-list")]
     [ProducesResponseType(StatusCodes.Status200OK)]

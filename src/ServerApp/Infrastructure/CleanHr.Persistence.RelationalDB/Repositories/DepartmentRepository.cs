@@ -3,7 +3,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using CleanHr.Domain.Aggregates.DepartmentAggregate;
-using CleanHr.Persistence.RelationalDB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TanvirArjel.ArgumentChecker;

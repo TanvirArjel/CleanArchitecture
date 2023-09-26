@@ -36,7 +36,7 @@ internal class CreateDepartmentCommandHandler : IRequestHandler<CreateDepartment
     {
         _ = request.ThrowIfNull(nameof(request));
 
-        DepartmentName departmentName = new DepartmentName(request.Name);
+        DepartmentName departmentName = new(request.Name);
 
         Department department = await Department.CreateAsync(_departmentRepository, departmentName, request.Description);
 
