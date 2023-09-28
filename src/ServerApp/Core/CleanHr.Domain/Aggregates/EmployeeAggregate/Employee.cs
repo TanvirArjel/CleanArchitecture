@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CleanHr.Domain.Aggregates.DepartmentAggregate;
 using CleanHr.Domain.Exceptions;
@@ -12,7 +13,7 @@ public sealed class Employee : AggregateRoot
     internal Employee(
         IDepartmentRepository departmentRepository,
         IEmployeeRepository employeeRepository,
-        Name name,
+        EmployeeName name,
         Guid departmentId,
         DateOfBirth dateOfBirth,
         Email email,
@@ -28,11 +29,12 @@ public sealed class Employee : AggregateRoot
     }
 
     // This is needed for EF core query mapping and serialization.
+    [JsonConstructor]
     private Employee()
     {
     }
 
-    public Name Name { get; private set; }
+    public EmployeeName Name { get; private set; }
 
     public Guid DepartmentId { get; private set; }
 
@@ -52,7 +54,7 @@ public sealed class Employee : AggregateRoot
     public Department Department { get; private set; }
 
     // Public methods
-    public void SetName(Name name)
+    public void SetName(EmployeeName name)
     {
         Name = name ?? throw new DomainValidationException("The name cannot be null.");
     }

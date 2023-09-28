@@ -28,7 +28,7 @@ public sealed class UpdateDepartmentEndpoint(
 
             UpdateDepartmentCommand command = new UpdateDepartmentCommand(departmentId, model.Name, model.Description, true);
 
-            await mediator.Send(command);
+            await mediator.Send(command, HttpContext.RequestAborted);
             return Ok();
         }
         catch (Exception exception)

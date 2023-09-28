@@ -51,7 +51,7 @@ internal class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeComm
     {
         request.ThrowIfNull(nameof(request));
 
-        Name name = new Name(request.FirstName, request.LastName);
+        EmployeeName name = new EmployeeName(request.FirstName, request.LastName);
         DateOfBirth dateOfBirth = new DateOfBirth(request.DateOfBirth);
         Email email = new Email(request.Email);
         PhoneNumber phoneNumber = new PhoneNumber(request.PhoneNumber);

@@ -25,8 +25,8 @@ public sealed class DeleteDepartmentEndpoint(
                 return ValidationProblem(ModelState);
             }
 
-            DeleteDepartmentCommand command = new DeleteDepartmentCommand(departmentId);
-            await mediator.Send(command);
+            DeleteDepartmentCommand command = new(departmentId);
+            await mediator.Send(command, HttpContext.RequestAborted);
 
             return NoContent();
         }

@@ -35,7 +35,7 @@ public class CreateEmployeeEndpoint : EmployeeEndpointBase
                 model.Email,
                 model.PhoneNumber);
 
-            await _mediator.Send(createEmployeeCommand);
+            await _mediator.Send(createEmployeeCommand, HttpContext.RequestAborted);
             return StatusCode(StatusCodes.Status201Created);
         }
         catch (Exception exception)

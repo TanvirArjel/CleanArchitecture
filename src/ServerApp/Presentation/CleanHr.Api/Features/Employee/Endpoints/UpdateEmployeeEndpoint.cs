@@ -41,7 +41,7 @@ public class UpdateEmployeeEndpoint : EmployeeEndpointBase
                 model.Email,
                 model.PhoneNumber);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, HttpContext.RequestAborted);
             return Ok();
         }
         catch (Exception exception)
