@@ -23,7 +23,7 @@ public sealed class GetDepartmentByIdEndpoint(IMediator mediator) : DepartmentEn
 
         GetDepartmentByIdQuery query = new GetDepartmentByIdQuery(departmentId);
 
-        DepartmentDetailsDto departmentDetailsDto = await mediator.Send(query);
+        DepartmentDetailsDto departmentDetailsDto = await mediator.Send(query, HttpContext.RequestAborted);
         return departmentDetailsDto;
     }
 }

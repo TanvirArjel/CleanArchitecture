@@ -18,7 +18,7 @@ public sealed class EmployeeFactory
     }
 
     public Employee Create(
-       Name name,
+       EmployeeName name,
        Guid departmentId,
        DateOfBirth dateOfBirth,
        Email email,

@@ -22,7 +22,7 @@ public sealed class CreateDepartmentEndpoint(
         {
             CreateDepartmentCommand command = new(model.Name, model.Description);
 
-            Guid departmentId = await mediator.Send(command);
+            Guid departmentId = await mediator.Send(command, HttpContext.RequestAborted);
             return Created($"/api/v1/departments/{departmentId}", model);
         }
         catch (Exception exception)

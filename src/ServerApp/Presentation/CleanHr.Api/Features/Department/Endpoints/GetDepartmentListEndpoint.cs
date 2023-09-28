@@ -14,8 +14,8 @@ public sealed class GetDepartmentListEndpoint(IMediator mediator) : DepartmentEn
     [SwaggerOperation(Summary = "Get the list of all departments.")]
     public async Task<ActionResult<List<DepartmentDto>>> Get()
     {
-        GetDepartmentListQuery departmentListQuery = new GetDepartmentListQuery();
-        List<DepartmentDto> departmentDetailsDtos = await mediator.Send(departmentListQuery);
+        GetDepartmentListQuery departmentListQuery = new();
+        List<DepartmentDto> departmentDetailsDtos = await mediator.Send(departmentListQuery, HttpContext.RequestAborted);
         return departmentDetailsDtos;
     }
 }

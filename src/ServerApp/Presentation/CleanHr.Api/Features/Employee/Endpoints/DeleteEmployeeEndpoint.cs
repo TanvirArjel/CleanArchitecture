@@ -34,7 +34,7 @@ public class DeleteEmployeeEndpoint : EmployeeEndpointBase
 
             DeleteEmployeeCommand command = new DeleteEmployeeCommand(employeeId);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, HttpContext.RequestAborted);
             return NoContent();
         }
         catch (Exception exception)

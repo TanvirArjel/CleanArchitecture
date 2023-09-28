@@ -31,7 +31,7 @@ public class GetEmployeeDetailsByIdEndpoint : EmployeeEndpointBase
 
         GetEmployeeByIdQuery getEmployeeByIdQuery = new GetEmployeeByIdQuery(employeeId);
 
-        EmployeeDetailsDto employeeDetailsDto = await _mediator.Send(getEmployeeByIdQuery);
+        EmployeeDetailsDto employeeDetailsDto = await _mediator.Send(getEmployeeByIdQuery, HttpContext.RequestAborted);
         return employeeDetailsDto;
     }
 }

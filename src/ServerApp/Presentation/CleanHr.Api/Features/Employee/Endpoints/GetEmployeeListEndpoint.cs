@@ -37,7 +37,7 @@ public class GetEmployeeListEndpoint : EmployeeEndpointBase
         }
 
         GetEmployeeListQuery getEmployeeListQuery = new GetEmployeeListQuery(pageNumber, pageSize);
-        PaginatedList<EmployeeDto> employeeList = await _mediator.Send(getEmployeeListQuery);
+        PaginatedList<EmployeeDto> employeeList = await _mediator.Send(getEmployeeListQuery, HttpContext.RequestAborted);
         return employeeList;
     }
 }
