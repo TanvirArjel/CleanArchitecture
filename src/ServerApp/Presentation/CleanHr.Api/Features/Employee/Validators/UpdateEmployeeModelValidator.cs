@@ -1,8 +1,7 @@
 ﻿using CleanHr.Api.Features.Employee.Models;
-using CleanHr.Api.Features.Employee.Validators;
 
-namespace CleanHr.Api;
+namespace CleanHr.Api.Features.Employee.Validators;
 
-public class UpdateEmployeeModelValidator : EmployeeBaseModelValidator<UpdateEmployeeModel>
+public sealed class UpdateEmployeeModelValidator : EmployeeBaseModelValidator<UpdateEmployeeModel>
 {
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CleanHr.Api.Features.Department.Models;
+﻿namespace CleanHr.Api.Features.Department.Models;
 
 public sealed class CreateDepartmentModel : DepartmentBaseModel
 {

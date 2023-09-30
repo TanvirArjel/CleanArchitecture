@@ -7,15 +7,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Employee.Endpoints;
 
-public class CreateEmployeeEndpoint : EmployeeEndpointBase
+public class CreateEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public CreateEmployeeEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     // POST: api/employees
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -35,7 +28,7 @@ public class CreateEmployeeEndpoint : EmployeeEndpointBase
                 model.Email,
                 model.PhoneNumber);
 
-            await _mediator.Send(createEmployeeCommand, HttpContext.RequestAborted);
+            await mediator.Send(createEmployeeCommand, HttpContext.RequestAborted);
             return StatusCode(StatusCodes.Status201Created);
         }
         catch (Exception exception)

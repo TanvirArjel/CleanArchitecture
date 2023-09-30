@@ -49,6 +49,7 @@ public static class Startup
         });
 
         ////services.AddCors();
+        ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
         services.AddValidatorsFromAssemblyContaining<CreateDepartmentModelValidator>();
         services.AddFluentValidationAutoValidation();
 

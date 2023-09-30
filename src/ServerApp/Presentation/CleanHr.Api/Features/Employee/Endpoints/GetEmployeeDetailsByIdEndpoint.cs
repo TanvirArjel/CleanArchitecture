@@ -5,15 +5,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Employee.Endpoints;
 
-public class GetEmployeeDetailsByIdEndpoint : EmployeeEndpointBase
+public class GetEmployeeDetailsByIdEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public GetEmployeeDetailsByIdEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     // GET: api/employees/5
     [HttpGet("{employeeId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,7 +24,7 @@ public class GetEmployeeDetailsByIdEndpoint : EmployeeEndpointBase
 
         GetEmployeeByIdQuery getEmployeeByIdQuery = new GetEmployeeByIdQuery(employeeId);
 
-        EmployeeDetailsDto employeeDetailsDto = await _mediator.Send(getEmployeeByIdQuery, HttpContext.RequestAborted);
+        EmployeeDetailsDto employeeDetailsDto = await mediator.Send(getEmployeeByIdQuery, HttpContext.RequestAborted);
         return employeeDetailsDto;
     }
 }
