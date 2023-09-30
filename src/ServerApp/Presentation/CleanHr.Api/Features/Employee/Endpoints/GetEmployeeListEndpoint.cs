@@ -6,15 +6,8 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Api.Features.Employee.Endpoints;
 
-public class GetEmployeeListEndpoint : EmployeeEndpointBase
+public class GetEmployeeListEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public GetEmployeeListEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     // GET: api/employees
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -37,7 +30,7 @@ public class GetEmployeeListEndpoint : EmployeeEndpointBase
         }
 
         GetEmployeeListQuery getEmployeeListQuery = new GetEmployeeListQuery(pageNumber, pageSize);
-        PaginatedList<EmployeeDto> employeeList = await _mediator.Send(getEmployeeListQuery, HttpContext.RequestAborted);
+        PaginatedList<EmployeeDto> employeeList = await mediator.Send(getEmployeeListQuery, HttpContext.RequestAborted);
         return employeeList;
     }
 }

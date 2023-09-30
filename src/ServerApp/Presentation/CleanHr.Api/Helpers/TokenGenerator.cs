@@ -16,37 +16,35 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace CleanHr.Api.Helpers;
 
 [ScopedService]
-public class TokenManager
+public class TokenManager(
+    JwtConfig jwtConfig,
+    UserManager<ApplicationUser> userManager,
+    IMediator mediator)
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IMediator _mediator;
-    private readonly JwtConfig _jwtConfig;
-
-    public TokenManager(
-        JwtConfig jwtConfig,
-        UserManager<ApplicationUser> userManager,
-        IMediator mediator)
+    public async Task<string> GetJwtTokenAsync(string accessToken)
     {
-        _jwtConfig = jwtConfig;
-        _userManager = userManager;
-        _mediator = mediator;
+        accessToken.ThrowIfNull(nameof(accessToken));
+
+        ClaimsPrincipal claimsPrincipal = ParseExpiredToken(accessToken);
+        string userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        ApplicationUser user = await userManager.FindByIdAsync(userId);
+        return await GetJwtTokenAsync(user);
     }
 
     public async Task<string> GetJwtTokenAsync(ApplicationUser user)
     {
-        user.ThrowIfNull(nameof(user));
-
-        IList<string> roles = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+        IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
         GetRefreshTokenQuery getRefreshTokenQuery = new(user.Id);
 
-        RefreshToken refreshToken = await _mediator.Send(getRefreshTokenQuery);
+        RefreshToken refreshToken = await mediator.Send(getRefreshTokenQuery);
 
         if (refreshToken == null)
         {
             string token = GetRefreshToken();
             StoreRefreshTokenCommand storeRefreshTokenCommand = new(user.Id, token);
-            refreshToken = await _mediator.Send(storeRefreshTokenCommand);
+            refreshToken = await mediator.Send(storeRefreshTokenCommand);
         }
         else
         {
@@ -54,7 +52,7 @@ public class TokenManager
             {
                 string token = GetRefreshToken();
                 UpdateRefreshTokenCommand updateRefreshTokenCommand = new UpdateRefreshTokenCommand(user.Id, token);
-                refreshToken = await _mediator.Send(updateRefreshTokenCommand);
+                refreshToken = await mediator.Send(updateRefreshTokenCommand);
             }
         }
 
@@ -84,22 +82,22 @@ public class TokenManager
             }
         }
 
-        SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
+        SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key));
         SigningCredentials signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
         JwtSecurityToken jwt = new JwtSecurityToken(
             signingCredentials: signingCredentials,
             claims: claims,
             notBefore: utcNow,
-            expires: utcNow.AddSeconds(_jwtConfig.TokenLifeTime),
-            audience: _jwtConfig.Issuer,
-            issuer: _jwtConfig.Issuer);
+            expires: utcNow.AddSeconds(jwtConfig.TokenLifeTime),
+            audience: jwtConfig.Issuer,
+            issuer: jwtConfig.Issuer);
 
         JwtSecurityTokenHandler jwtSecurityTokenHandler = new();
         jwtSecurityTokenHandler.OutboundClaimTypeMap.Clear();
-        string accessToken = jwtSecurityTokenHandler.WriteToken(jwt);
+        string newAccessToken = jwtSecurityTokenHandler.WriteToken(jwt);
 
-        return accessToken;
+        return newAccessToken;
     }
 
     public ClaimsPrincipal ParseExpiredToken(string accessToken)
@@ -109,7 +107,7 @@ public class TokenManager
             ValidateAudience = true,
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key)),
             ValidateLifetime = false
         };
 

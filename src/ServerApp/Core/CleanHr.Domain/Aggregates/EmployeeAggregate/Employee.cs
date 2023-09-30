@@ -61,7 +61,7 @@ public sealed class Employee : AggregateRoot
 
     public void SetDateOfBirth(DateOfBirth dateOfBirth)
     {
-        DateOfBirth = dateOfBirth;
+        DateOfBirth = dateOfBirth ?? throw new DomainValidationException("The dateOfBirth cannot be null.");
     }
 
     public async Task SetDepartmentAsync(IDepartmentRepository repository, Guid departmentId)

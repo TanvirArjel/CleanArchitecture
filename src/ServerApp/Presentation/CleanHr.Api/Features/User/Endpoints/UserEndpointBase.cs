@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanHr.Api.Endpoints.UserEndpoints;
+namespace CleanHr.Api.Features.User.Endpoints;
 
 [Authorize]
 [Route("api/v{version:apiVersion}/user")]

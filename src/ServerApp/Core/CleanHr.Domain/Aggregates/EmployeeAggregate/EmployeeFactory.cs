@@ -24,7 +24,7 @@ public sealed class EmployeeFactory
        Email email,
        PhoneNumber phoneNumber)
     {
-        Employee employee = new Employee(_departmentRepository, _employeeRepository, name, departmentId, dateOfBirth, email, phoneNumber);
+        Employee employee = new(_departmentRepository, _employeeRepository, name, departmentId, dateOfBirth, email, phoneNumber);
 
         return employee;
     }

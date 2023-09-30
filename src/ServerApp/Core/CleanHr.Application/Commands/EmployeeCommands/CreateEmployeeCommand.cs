@@ -36,29 +36,22 @@ public sealed class CreateEmployeeCommand : IRequest<Guid>
     public string PhoneNumber { get; }
 }
 
-internal class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Guid>
+internal class CreateEmployeeCommandHandler(
+    IEmployeeRepository employeeRepository,
+    EmployeeFactory employeeFactory) : IRequestHandler<CreateEmployeeCommand, Guid>
 {
-    private readonly EmployeeFactory _employeeFactory;
-    private readonly IEmployeeRepository _employeeRepository;
-
-    public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository, EmployeeFactory employeeFactory)
-    {
-        _employeeRepository = employeeRepository;
-        _employeeFactory = employeeFactory;
-    }
-
     public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        EmployeeName name = new EmployeeName(request.FirstName, request.LastName);
-        DateOfBirth dateOfBirth = new DateOfBirth(request.DateOfBirth);
-        Email email = new Email(request.Email);
-        PhoneNumber phoneNumber = new PhoneNumber(request.PhoneNumber);
+        EmployeeName name = new(request.FirstName, request.LastName);
+        DateOfBirth dateOfBirth = new(request.DateOfBirth);
+        Email email = new(request.Email);
+        PhoneNumber phoneNumber = new(request.PhoneNumber);
 
-        Employee employee = _employeeFactory.Create(name, request.DepartmentId, dateOfBirth, email, phoneNumber);
+        Employee employee = employeeFactory.Create(name, request.DepartmentId, dateOfBirth, email, phoneNumber);
 
-        await _employeeRepository.InsertAsync(employee);
+        await employeeRepository.InsertAsync(employee);
         return employee.Id;
     }
 }

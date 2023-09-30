@@ -6,15 +6,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Employee.Endpoints;
 
-public class DeleteEmployeeEndpoint : EmployeeEndpointBase
+public class DeleteEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
-    private readonly IMediator _mediator;
-
-    public DeleteEmployeeEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     // DELETE: api/employees/5
     [HttpDelete("{employeeId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -34,7 +27,7 @@ public class DeleteEmployeeEndpoint : EmployeeEndpointBase
 
             DeleteEmployeeCommand command = new DeleteEmployeeCommand(employeeId);
 
-            await _mediator.Send(command, HttpContext.RequestAborted);
+            await mediator.Send(command, HttpContext.RequestAborted);
             return NoContent();
         }
         catch (Exception exception)

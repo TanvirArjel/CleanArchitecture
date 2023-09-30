@@ -2,10 +2,10 @@ using FluentValidation;
 
 namespace CleanHr.Api.Features.Employee.Validators;
 
-public class EmployeeBaseModelValidator<T> : AbstractValidator<T>
+public abstract class EmployeeBaseModelValidator<T> : AbstractValidator<T>
     where T : EmployeeBaseModel
 {
-    public EmployeeBaseModelValidator()
+    protected EmployeeBaseModelValidator()
     {
         RuleFor(e => e.Name).NotEmpty()
                             .MinimumLength(5).WithMessage("The Name must be at least 5 characters.")
