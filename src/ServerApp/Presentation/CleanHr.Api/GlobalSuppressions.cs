@@ -5,5 +5,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not Applicable here.", Scope = "namespaceanddescendants", Target = "~N:CleanHr.Api.Endpoints")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not Applicable here.", Scope = "namespaceanddescendants", Target = "~N:CleanHr.Api.Features.User.Endpoints")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not Applicable here.", Scope = "namespaceanddescendants", Target = "~N:CleanHr.Api.Features.Employee.Endpoints")]
+[assembly: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not Applicable here.", Scope = "namespaceanddescendants", Target = "~N:CleanHr.Api.Features.Department.Endpoints")]
 [assembly: SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "Not Applicable here.", Scope = "namespaceanddescendants", Target = "~N:CleanHr.Api.Endpoints")]

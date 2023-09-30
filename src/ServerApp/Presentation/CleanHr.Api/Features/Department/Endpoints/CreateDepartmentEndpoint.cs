@@ -1,6 +1,5 @@
 ﻿using CleanHr.Api.Features.Department.Models;
 using CleanHr.Application.Commands.DepartmentCommands;
-using CleanHr.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,22 +17,8 @@ public sealed class CreateDepartmentEndpoint(
     [SwaggerOperation(Summary = "Create a new department by posting the required data.")]
     public async Task<ActionResult> Post(CreateDepartmentModel model)
     {
-        try
-        {
-            CreateDepartmentCommand command = new(model.Name, model.Description);
-
-            Guid departmentId = await mediator.Send(command, HttpContext.RequestAborted);
-            return Created($"/api/v1/departments/{departmentId}", model);
-        }
-        catch (Exception exception)
-        {
-            if (exception is DomainValidationException)
-            {
-                ModelState.AddModelError(string.Empty, exception.Message);
-                return ValidationProblem(ModelState);
-            }
-
-            throw;
-        }
+        CreateDepartmentCommand command = new(model.Name, model.Description);
+        Guid departmentId = await mediator.Send(command, HttpContext.RequestAborted);
+        return Created($"/api/v1/departments/{departmentId}", model);
     }
 }

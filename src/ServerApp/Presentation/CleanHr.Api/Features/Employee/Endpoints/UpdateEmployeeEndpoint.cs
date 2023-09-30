@@ -1,6 +1,5 @@
 ﻿using CleanHr.Api.Features.Employee.Models;
 using CleanHr.Application.Commands.EmployeeCommands;
-using CleanHr.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,15 +17,13 @@ public class UpdateEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
     [SwaggerOperation(Summary = "Update an existing employee by employee id and posting the updated data.")]
     public async Task<ActionResult> Put(Guid employeeId, UpdateEmployeeModel model)
     {
-        try
+        if (employeeId == Guid.Empty)
         {
-            if (employeeId == Guid.Empty)
-            {
-                ModelState.AddModelError("employeeId", "The employeeId cannot be empty guid.");
-                return ValidationProblem(ModelState);
-            }
+            ModelState.AddModelError("employeeId", "The employeeId cannot be empty guid.");
+            return ValidationProblem(ModelState);
+        }
 
-            UpdateEmployeeCommand command = new UpdateEmployeeCommand(
+        UpdateEmployeeCommand command = new(
                 employeeId,
                 model.Name,
                 model.DepartmentId,
@@ -34,24 +31,7 @@ public class UpdateEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
                 model.Email,
                 model.PhoneNumber);
 
-            await mediator.Send(command, HttpContext.RequestAborted);
-            return Ok();
-        }
-        catch (Exception exception)
-        {
-            if (exception is EntityNotFoundException)
-            {
-                ModelState.AddModelError(nameof(model.DepartmentId), "The Department does not exist.");
-                return ValidationProblem(ModelState);
-            }
-
-            if (exception is DomainValidationException)
-            {
-                ModelState.AddModelError(string.Empty, exception.Message);
-                return ValidationProblem(ModelState);
-            }
-
-            throw;
-        }
+        await mediator.Send(command, HttpContext.RequestAborted);
+        return Ok();
     }
 }
