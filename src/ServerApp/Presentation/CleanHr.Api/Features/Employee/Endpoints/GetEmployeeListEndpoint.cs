@@ -29,7 +29,7 @@ public class GetEmployeeListEndpoint(IMediator mediator) : EmployeeEndpointBase
             return ValidationProblem(ModelState);
         }
 
-        GetEmployeeListQuery getEmployeeListQuery = new GetEmployeeListQuery(pageNumber, pageSize);
+        GetEmployeeListQuery getEmployeeListQuery = new(pageNumber, pageSize);
         PaginatedList<EmployeeDto> employeeList = await mediator.Send(getEmployeeListQuery, HttpContext.RequestAborted);
         return employeeList;
     }

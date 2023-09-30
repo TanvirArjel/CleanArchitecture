@@ -22,7 +22,7 @@ public class GetEmployeeDetailsByIdEndpoint(IMediator mediator) : EmployeeEndpoi
             return ValidationProblem(ModelState);
         }
 
-        GetEmployeeByIdQuery getEmployeeByIdQuery = new GetEmployeeByIdQuery(employeeId);
+        GetEmployeeByIdQuery getEmployeeByIdQuery = new(employeeId);
 
         EmployeeDetailsDto employeeDetailsDto = await mediator.Send(getEmployeeByIdQuery, HttpContext.RequestAborted);
         return employeeDetailsDto;

@@ -18,34 +18,15 @@ public sealed class UpdateDepartmentEndpoint(
     [SwaggerOperation(Summary = "Update an existing employee by employee id and posting updated data.")]
     public async Task<ActionResult> Put(Guid departmentId, UpdateDepartmentModel model)
     {
-        try
+        if (departmentId != model.Id)
         {
-            if (departmentId != model.Id)
-            {
-                ModelState.AddModelError(nameof(model.Id), "The DepartmentId does not match with route value.");
-                return ValidationProblem(ModelState);
-            }
-
-            UpdateDepartmentCommand command = new UpdateDepartmentCommand(departmentId, model.Name, model.Description, true);
-
-            await mediator.Send(command, HttpContext.RequestAborted);
-            return Ok();
+            ModelState.AddModelError(nameof(model.Id), "The DepartmentId does not match with route value.");
+            return ValidationProblem(ModelState);
         }
-        catch (Exception exception)
-        {
-            if (exception is EntityNotFoundException)
-            {
-                ModelState.AddModelError(nameof(model.Id), "The Department does not exist.");
-                return ValidationProblem(ModelState);
-            }
 
-            if (exception is DomainValidationException)
-            {
-                ModelState.AddModelError(string.Empty, exception.Message);
-                return ValidationProblem(ModelState);
-            }
+        UpdateDepartmentCommand command = new(departmentId, model.Name, model.Description, true);
 
-            throw;
-        }
+        await mediator.Send(command, HttpContext.RequestAborted);
+        return Ok();
     }
 }

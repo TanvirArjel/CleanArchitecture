@@ -22,7 +22,7 @@ public sealed class UpdateDepartmentCommand(
     public bool IsActive { get; } = isActive;
 }
 
-internal class UpdateDepartmentCommandHandler(
+internal sealed class UpdateDepartmentCommandHandler(
     IDepartmentRepository departmentRepository,
     IDepartmentCacheHandler departmentCacheHandler) : IRequestHandler<UpdateDepartmentCommand>
 {
@@ -37,7 +37,7 @@ internal class UpdateDepartmentCommandHandler(
             throw new EntityNotFoundException(typeof(Department), request.Id);
         }
 
-        DepartmentName departmentName = new DepartmentName(request.Name);
+        DepartmentName departmentName = new(request.Name);
 
         await departmentToBeUpdated.SetNameAsync(departmentRepository, departmentName);
         departmentToBeUpdated.SetDescription(request.Description);

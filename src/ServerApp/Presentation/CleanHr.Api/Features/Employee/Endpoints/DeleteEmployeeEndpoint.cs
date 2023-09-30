@@ -1,5 +1,4 @@
 ﻿using CleanHr.Application.Commands.EmployeeCommands;
-using CleanHr.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -17,28 +16,15 @@ public class DeleteEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
     [SwaggerOperation(Summary = "Delete an existing employee by employee id.")]
     public async Task<ActionResult> Delete(Guid employeeId)
     {
-        try
+        if (employeeId == Guid.Empty)
         {
-            if (employeeId == Guid.Empty)
-            {
-                ModelState.AddModelError(nameof(employeeId), $"The value of {nameof(employeeId)} can't be empty.");
-                return ValidationProblem(ModelState);
-            }
-
-            DeleteEmployeeCommand command = new DeleteEmployeeCommand(employeeId);
-
-            await mediator.Send(command, HttpContext.RequestAborted);
-            return NoContent();
+            ModelState.AddModelError(nameof(employeeId), $"The value of {nameof(employeeId)} can't be empty.");
+            return ValidationProblem(ModelState);
         }
-        catch (Exception exception)
-        {
-            if (exception is EntityNotFoundException)
-            {
-                ModelState.AddModelError(nameof(employeeId), "The Employee does not exist.");
-                return ValidationProblem(ModelState);
-            }
 
-            throw;
-        }
+        DeleteEmployeeCommand command = new DeleteEmployeeCommand(employeeId);
+
+        await mediator.Send(command, HttpContext.RequestAborted);
+        return NoContent();
     }
 }
