@@ -1,18 +1,25 @@
-﻿using System;
+﻿using System.Threading;
 using CleanHr.Api.Features.User.Models;
+using CleanHr.Domain.Aggregates.IdentityAggregate;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanHr.Api.Features.User.Validators;
 
 public sealed class LoginModelValidator : AbstractValidator<LoginModel>
 {
-    public LoginModelValidator()
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public LoginModelValidator(UserManager<ApplicationUser> userManager)
     {
+        _userManager = userManager;
+
         RuleFor(lm => lm.EmailOrUserName).NotEmpty()
                                          .WithMessage("The emailOrUserName is required.")
                                          .MinimumLength(5)
                                          .MaximumLength(50)
-                                         .Must(IsEmailOrUserNameExistent)
+                                         .MustAsync(IsEmailOrUserNameExistentAsync)
                                          .WithMessage("The emailOrUserName does not exist.");
 
         RuleFor(lm => lm.Password).NotEmpty()
@@ -21,8 +28,14 @@ public sealed class LoginModelValidator : AbstractValidator<LoginModel>
                                         .MaximumLength(50);
     }
 
-    private bool IsEmailOrUserNameExistent(string emailOrUserName)
+    private async Task<bool> IsEmailOrUserNameExistentAsync(
+        string emailOrUserName,
+        CancellationToken cancellationToken)
     {
-        return true;
+        string emailUpper = emailOrUserName.ToUpperInvariant();
+        var isExistent = await _userManager.Users
+                          .Where(u => u.NormalizedEmail == emailUpper || u.NormalizedUserName == emailUpper)
+                          .AnyAsync(cancellationToken);
+        return isExistent;
     }
 }

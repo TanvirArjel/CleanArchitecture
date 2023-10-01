@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading;
 using CleanHr.Api.Features.User.Models;
 using CleanHr.Application.Queries.IdentityQueries.UserQueries;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
@@ -23,13 +23,16 @@ public sealed class ResendEmailConfirmationCodeModelValidator : AbstractValidato
                                 .WithMessage("The email is required.")
                                 .EmailAddress()
                                 .WithMessage("The email is not a valid email.")
-                                .Custom(ValidateEmail);
+                                .CustomAsync(ValidateEmailAsync);
         _mediator = mediator;
     }
 
-    private void ValidateEmail(string email, ValidationContext<ResendEmailConfirmationCodeModel> context)
+    private async Task ValidateEmailAsync(
+        string email,
+        ValidationContext<ResendEmailConfirmationCodeModel> context,
+        CancellationToken cancellationToken)
     {
-        ApplicationUser applicationUser = _userManager.FindByEmailAsync(email).GetAwaiter().GetResult();
+        ApplicationUser applicationUser = await _userManager.FindByEmailAsync(email);
 
         if (applicationUser == null)
         {
@@ -45,7 +48,7 @@ public sealed class ResendEmailConfirmationCodeModelValidator : AbstractValidato
 
         HasUserActiveEmailVerificationCodeQuery query = new HasUserActiveEmailVerificationCodeQuery(email);
 
-        bool isExists = _mediator.Send(query).GetAwaiter().GetResult();
+        bool isExists = await _mediator.Send(query, cancellationToken);
 
         if (isExists)
         {

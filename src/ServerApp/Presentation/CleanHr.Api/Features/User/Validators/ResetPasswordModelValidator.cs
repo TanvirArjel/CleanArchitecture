@@ -1,4 +1,5 @@
-﻿using CleanHr.Api.Features.User.Models;
+﻿using System.Threading;
+using CleanHr.Api.Features.User.Models;
 using CleanHr.Application.Queries.IdentityQueries.UserQueries;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using FluentValidation;
@@ -38,13 +39,16 @@ public sealed class ResetPasswordModelValidator : AbstractValidator<ResetPasswor
                                  .Length(6)
                                  .WithMessage("The code should be exactly 6 characters long.");
 
-        RuleFor(rpm => rpm).Custom(ValidateCode);
+        RuleFor(rpm => rpm).CustomAsync(ValidateCodeAsync);
     }
 
-    private void ValidateCode(ResetPasswordModel model, ValidationContext<ResetPasswordModel> context)
+    private async Task ValidateCodeAsync(
+        ResetPasswordModel model,
+        ValidationContext<ResetPasswordModel> context,
+        CancellationToken cancellationToken)
     {
-        GetPasswordResetCodeQuery query = new GetPasswordResetCodeQuery(model.Email, model.Code);
-        PasswordResetCode passwordResetCode = _mediator.Send(query).GetAwaiter().GetResult();
+        GetPasswordResetCodeQuery query = new(model.Email, model.Code);
+        PasswordResetCode passwordResetCode = await _mediator.Send(query, cancellationToken);
 
         if (passwordResetCode == null)
         {

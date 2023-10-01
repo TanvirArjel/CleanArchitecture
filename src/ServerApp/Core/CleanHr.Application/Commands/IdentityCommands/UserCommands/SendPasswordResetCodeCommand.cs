@@ -17,53 +17,42 @@ public sealed class SendPasswordResetCodeCommand : IRequest
     }
 
     public string Email { get; }
+}
 
-    private class SendPasswordResetCodeCommandHandler : IRequestHandler<SendPasswordResetCodeCommand>
+internal class SendPasswordResetCodeCommandHandler(
+        IRepository repository,
+        ViewRenderService viewRenderService,
+        IEmailSender emailSender) : IRequestHandler<SendPasswordResetCodeCommand>
+{
+    public async Task Handle(SendPasswordResetCodeCommand request, CancellationToken cancellationToken)
     {
-        private readonly IRepository _repository;
-        private readonly ViewRenderService _viewRenderService;
-        private readonly IEmailSender _emailSender;
+        request.ThrowIfNull(nameof(request));
 
-        public SendPasswordResetCodeCommandHandler(
-            IRepository repository,
-            ViewRenderService viewRenderService,
-            IEmailSender emailSender)
+        bool isExistent = await repository.ExistsAsync<ApplicationUser>(u => u.Email == request.Email, cancellationToken);
+
+        if (isExistent == false)
         {
-            _repository = repository;
-            _viewRenderService = viewRenderService;
-            _emailSender = emailSender;
+            throw new InvalidOperationException("The user does not exist with the provided email.");
         }
 
-        public async Task Handle(SendPasswordResetCodeCommand request, CancellationToken cancellationToken)
+        int randomNumber = RandomNumberGenerator.GetInt32(0, 1000000);
+        string verificationCode = randomNumber.ToString("D6", CultureInfo.InvariantCulture);
+
+        PasswordResetCode emailVerificationCode = new PasswordResetCode()
         {
-            request.ThrowIfNull(nameof(request));
+            Code = verificationCode,
+            Email = request.Email,
+            SentAtUtc = DateTime.UtcNow
+        };
 
-            bool isExistent = await _repository.ExistsAsync<ApplicationUser>(u => u.Email == request.Email, cancellationToken);
+        await repository.AddAsync(emailVerificationCode, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
 
-            if (isExistent == false)
-            {
-                throw new InvalidOperationException("The user does not exist with the provided email.");
-            }
-
-            int randomNumber = RandomNumberGenerator.GetInt32(0, 1000000);
-            string verificationCode = randomNumber.ToString("D6", CultureInfo.InvariantCulture);
-
-            PasswordResetCode emailVerificationCode = new PasswordResetCode()
-            {
-                Code = verificationCode,
-                Email = request.Email,
-                SentAtUtc = DateTime.UtcNow
-            };
-
-            await _repository.AddAsync(emailVerificationCode, cancellationToken);
-            await _repository.SaveChangesAsync(cancellationToken);
-
-            (string Email, string VerificationCode) model = (request.Email, verificationCode);
-            string subject = "Reset Password";
-            string senderEmail = "noreply@yourapp.com";
-            string emailBody = await _viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);
-            EmailMessage emailObject = new EmailMessage(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
-            await _emailSender.SendAsync(emailObject);
-        }
+        (string Email, string VerificationCode) model = (request.Email, verificationCode);
+        string subject = "Reset Password";
+        string senderEmail = "noreply@yourapp.com";
+        string emailBody = await viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);
+        EmailMessage emailObject = new EmailMessage(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
+        await emailSender.SendAsync(emailObject);
     }
 }

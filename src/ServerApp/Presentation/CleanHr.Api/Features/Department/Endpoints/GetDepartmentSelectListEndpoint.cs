@@ -25,7 +25,7 @@ public sealed class GetDepartmentSelectListEndpoint(IMediator mediator) : Depart
         GetDepartmentListQuery departmentListQuery = new GetDepartmentListQuery();
         List<DepartmentDto> departmentDtos = await mediator.Send(departmentListQuery, HttpContext.RequestAborted);
 
-        SelectList selectList = new SelectList(departmentDtos, "Id", "Name", selectedDepartment);
+        SelectList selectList = new(departmentDtos, "Id", "Name", selectedDepartment);
         return selectList;
     }
 }

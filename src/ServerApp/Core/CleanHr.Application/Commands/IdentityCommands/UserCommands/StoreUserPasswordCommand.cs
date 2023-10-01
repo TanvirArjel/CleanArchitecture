@@ -6,44 +6,31 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class StoreUserPasswordCommand : IRequest
+public sealed class StoreUserPasswordCommand(ApplicationUser user, string password) : IRequest
 {
-    public StoreUserPasswordCommand(ApplicationUser user, string password)
+    public ApplicationUser User { get; } = user.ThrowIfNull(nameof(user));
+
+    public string Password { get; } = password.ThrowIfNullOrEmpty(nameof(password));
+}
+
+internal class StoreUserPasswordCommandHandler(
+        IPasswordHasher<ApplicationUser> passwordHasher,
+        IRepository repository) : IRequestHandler<StoreUserPasswordCommand>
+{
+    public async Task Handle(StoreUserPasswordCommand request, CancellationToken cancellationToken)
     {
-        User = user.ThrowIfNull(nameof(user));
-        Password = password.ThrowIfNullOrEmpty(nameof(password));
-    }
+        request.ThrowIfNull(nameof(request));
 
-    public ApplicationUser User { get; }
+        string passwordHash = passwordHasher.HashPassword(request.User, request.Password);
 
-    public string Password { get; }
-
-    private class StoreUserPasswordCommandHandler : IRequestHandler<StoreUserPasswordCommand>
-    {
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
-        private readonly IRepository _repository;
-
-        public StoreUserPasswordCommandHandler(IPasswordHasher<ApplicationUser> passwordHasher, IRepository repository)
+        UserOldPassword userOldPassword = new UserOldPassword()
         {
-            _passwordHasher = passwordHasher;
-            _repository = repository;
-        }
+            UserId = request.User.Id,
+            PasswordHash = passwordHash,
+            SetAtUtc = DateTime.UtcNow
+        };
 
-        public async Task Handle(StoreUserPasswordCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
-
-            string passwordHash = _passwordHasher.HashPassword(request.User, request.Password);
-
-            UserOldPassword userOldPassword = new UserOldPassword()
-            {
-                UserId = request.User.Id,
-                PasswordHash = passwordHash,
-                SetAtUtc = DateTime.UtcNow
-            };
-
-            _repository.Add(userOldPassword);
-            await _repository.SaveChangesAsync(cancellationToken);
-        }
+        repository.Add(userOldPassword);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 }

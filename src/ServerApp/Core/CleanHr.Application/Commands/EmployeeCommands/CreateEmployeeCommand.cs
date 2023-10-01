@@ -5,36 +5,13 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Application.Commands.EmployeeCommands;
 
-public sealed class CreateEmployeeCommand : IRequest<Guid>
-{
-    public CreateEmployeeCommand(
-        string firstName,
-        string lastName,
-        Guid departmentId,
-        DateTime dateOfBirth,
-        string email,
-        string phoneNumber)
-    {
-        FirstName = firstName;
-        LastName = lastName;
-        DepartmentId = departmentId;
-        DateOfBirth = dateOfBirth;
-        Email = email;
-        PhoneNumber = phoneNumber;
-    }
-
-    public string FirstName { get; }
-
-    public string LastName { get; }
-
-    public Guid DepartmentId { get; }
-
-    public DateTime DateOfBirth { get; }
-
-    public string Email { get; }
-
-    public string PhoneNumber { get; }
-}
+public record CreateEmployeeCommand(
+    string FirstName,
+    string LastName,
+    Guid DepartmentId,
+    DateTime DateOfBirth,
+    string Email,
+    string PhoneNumber) : IRequest<Guid>;
 
 internal class CreateEmployeeCommandHandler(
     IEmployeeRepository employeeRepository,

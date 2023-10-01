@@ -1,9 +1,11 @@
-﻿using CleanHr.Api.Features.User.Models;
+﻿using System.Threading;
+using CleanHr.Api.Features.User.Models;
 using CleanHr.Application.Queries.IdentityQueries.UserQueries;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanHr.Api.Features.User.Validators;
 
@@ -23,19 +25,26 @@ public sealed class EmailConfirmationModelValidator : AbstractValidator<EmailCon
                                  .WithMessage("The email is required.")
                                  .EmailAddress()
                                  .WithMessage("The email is not a valid email.")
-                                 .Must(IsEmailRelatedToAnyAccount)
-                                 .WithMessage("The provided email is not related to any account.");
-
-        RuleFor(ecm => ecm).Custom(ValidateCode);
+                                 .MustAsync(IsEmailRelatedToAnyAccountAsync)
+                                 .WithMessage("The provided email is not related to any account.")
+                                 .DependentRules(() =>
+                                 {
+                                     RuleFor(ecm => ecm).CustomAsync(ValidateCodeAsync);
+                                 });
     }
 
-    private bool IsEmailRelatedToAnyAccount(string email)
+    private async Task<bool> IsEmailRelatedToAnyAccountAsync(string email, CancellationToken cancellationToken)
     {
-        bool isExistent = _userManager.Users.Where(u => u.Email == email).Any();
+        bool isExistent = await _userManager.Users
+                                            .Where(u => u.Email == email)
+                                            .AnyAsync(cancellationToken);
         return isExistent;
     }
 
-    private void ValidateCode(EmailConfirmationModel model, ValidationContext<EmailConfirmationModel> context)
+    private async Task ValidateCodeAsync(
+        EmailConfirmationModel model,
+        ValidationContext<EmailConfirmationModel> context,
+        CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(model.Code))
         {
@@ -51,7 +60,7 @@ public sealed class EmailConfirmationModelValidator : AbstractValidator<EmailCon
 
         GetEmailVerificationCodeQuery query = new(model.Email, model.Code);
 
-        EmailVerificationCode emailVerificationCode = _mediator.Send(query).GetAwaiter().GetResult();
+        EmailVerificationCode emailVerificationCode = await _mediator.Send(query, cancellationToken);
 
         if (emailVerificationCode == null)
         {

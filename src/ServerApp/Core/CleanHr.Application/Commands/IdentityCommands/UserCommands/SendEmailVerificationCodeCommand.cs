@@ -17,49 +17,38 @@ public sealed class SendEmailVerificationCodeCommand : IRequest
     }
 
     public string Email { get; }
+}
 
-    private class SendEmailVerificationCodeCommandHanlder : IRequestHandler<SendEmailVerificationCodeCommand>
+internal class SendEmailVerificationCodeCommandHandler(
+    IRepository repository,
+    ViewRenderService viewRenderService,
+    IEmailSender emailSender) : IRequestHandler<SendEmailVerificationCodeCommand>
+{
+    public async Task Handle(SendEmailVerificationCodeCommand request, CancellationToken cancellationToken)
     {
-        private readonly IRepository _repository;
-        private readonly ViewRenderService _viewRenderService;
-        private readonly IEmailSender _emailSender;
+        request.ThrowIfNull(nameof(request));
 
-        public SendEmailVerificationCodeCommandHanlder(
-            IRepository repository,
-            ViewRenderService viewRenderService,
-            IEmailSender emailSender)
+        int randomNumber = RandomNumberGenerator.GetInt32(0, 1000000);
+        string verificationCode = randomNumber.ToString("D6", CultureInfo.InvariantCulture);
+
+        EmailVerificationCode emailVerificationCode = new EmailVerificationCode()
         {
-            _repository = repository;
-            _viewRenderService = viewRenderService;
-            _emailSender = emailSender;
-        }
+            Code = verificationCode,
+            Email = request.Email,
+            SentAtUtc = DateTime.UtcNow
+        };
 
-        public async Task Handle(SendEmailVerificationCodeCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
+        await repository.AddAsync(emailVerificationCode, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
 
-            int randomNumber = RandomNumberGenerator.GetInt32(0, 1000000);
-            string verificationCode = randomNumber.ToString("D6", CultureInfo.InvariantCulture);
+        (string Email, string VerificationCode) model = (request.Email, verificationCode);
+        string emailBody = await viewRenderService.RenderViewToStringAsync("EmailTemplates/ConfirmRegistrationCodeTemplate", model);
 
-            EmailVerificationCode emailVerificationCode = new EmailVerificationCode()
-            {
-                Code = verificationCode,
-                Email = request.Email,
-                SentAtUtc = DateTime.UtcNow
-            };
+        string senderEmail = "noreply@yourapp.com";
+        string subject = "User Registration";
 
-            await _repository.AddAsync(emailVerificationCode, cancellationToken);
-            await _repository.SaveChangesAsync(cancellationToken);
+        EmailMessage emailObject = new(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
 
-            (string Email, string VerificationCode) model = (request.Email, verificationCode);
-            string emailBody = await _viewRenderService.RenderViewToStringAsync("EmailTemplates/ConfirmRegistrationCodeTemplate", model);
-
-            string senderEmail = "noreply@yourapp.com";
-            string subject = "User Registration";
-
-            EmailMessage emailObject = new EmailMessage(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
-
-            await _emailSender.SendAsync(emailObject);
-        }
+        await emailSender.SendAsync(emailObject);
     }
 }

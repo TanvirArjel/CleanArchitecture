@@ -6,23 +6,6 @@ namespace CleanHr.Application.Queries.DepartmentQueries;
 
 public sealed class GetDepartmentListQuery : IRequest<List<DepartmentDto>>
 {
-    private class GetDepartmentListQueryHandler : IRequestHandler<GetDepartmentListQuery, List<DepartmentDto>>
-    {
-        private readonly IDepartmentCacheRepository _departmentCacheRepository;
-
-        public GetDepartmentListQueryHandler(IDepartmentCacheRepository departmentCacheRepository)
-        {
-            _departmentCacheRepository = departmentCacheRepository;
-        }
-
-        public async Task<List<DepartmentDto>> Handle(GetDepartmentListQuery request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
-
-            List<DepartmentDto> departmentDtos = await _departmentCacheRepository.GetListAsync();
-            return departmentDtos;
-        }
-    }
 }
 
 public class DepartmentDto
@@ -38,4 +21,15 @@ public class DepartmentDto
     public DateTime CreatedAtUtc { get; set; }
 
     public DateTime? LastModifiedAtUtc { get; set; }
+}
+
+internal class GetDepartmentListQueryHandler(IDepartmentCacheRepository departmentCacheRepository) : IRequestHandler<GetDepartmentListQuery, List<DepartmentDto>>
+{
+    public async Task<List<DepartmentDto>> Handle(GetDepartmentListQuery request, CancellationToken cancellationToken)
+    {
+        request.ThrowIfNull(nameof(request));
+
+        List<DepartmentDto> departmentDtos = await departmentCacheRepository.GetListAsync();
+        return departmentDtos;
+    }
 }

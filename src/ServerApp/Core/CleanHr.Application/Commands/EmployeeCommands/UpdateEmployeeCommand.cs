@@ -8,36 +8,13 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Application.Commands.EmployeeCommands;
 
-public sealed class UpdateEmployeeCommand : IRequest
-{
-    public UpdateEmployeeCommand(
-       Guid id,
-       string name,
-       Guid departmentId,
-       DateTime dateOfBirth,
-       string email,
-       string phoneNumber)
-    {
-        Id = id;
-        Name = name;
-        DepartmentId = departmentId;
-        DateOfBirth = dateOfBirth;
-        Email = email;
-        PhoneNumber = phoneNumber;
-    }
-
-    public Guid Id { get; }
-
-    public string Name { get; }
-
-    public Guid DepartmentId { get; }
-
-    public DateTime DateOfBirth { get; }
-
-    public string Email { get; }
-
-    public string PhoneNumber { get; }
-}
+public sealed record UpdateEmployeeCommand(
+   Guid Id,
+   string Name,
+   Guid DepartmentId,
+   DateTime DateOfBirth,
+   string Email,
+   string PhoneNumber) : IRequest;
 
 internal class UpdateEmployeeCommandHandler(
     IEmployeeRepository employeeRepository,

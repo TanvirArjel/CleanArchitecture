@@ -5,46 +5,33 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class UpdateRefreshTokenCommand : IRequest<RefreshToken>
+public sealed class UpdateRefreshTokenCommand(Guid userId, string token) : IRequest<RefreshToken>
 {
-    public UpdateRefreshTokenCommand(Guid userId, string token)
+    public Guid UserId { get; } = userId.ThrowIfEmpty(nameof(userId));
+
+    public string Token { get; } = token.ThrowIfNullOrEmpty(nameof(token));
+}
+
+internal class UpdateRefreshTokenCommandHandler(IRepository repository) : IRequestHandler<UpdateRefreshTokenCommand, RefreshToken>
+{
+    public async Task<RefreshToken> Handle(UpdateRefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        UserId = userId.ThrowIfEmpty(nameof(userId));
-        Token = token.ThrowIfNullOrEmpty(nameof(token));
-    }
+        request.ThrowIfNull(nameof(request));
 
-    public Guid UserId { get; }
+        RefreshToken refreshTokenToBeUpdated = await repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
 
-    public string Token { get; }
-
-    private class UpdateRefreshTokenCommandHandler : IRequestHandler<UpdateRefreshTokenCommand, RefreshToken>
-    {
-        private readonly IRepository _repository;
-
-        public UpdateRefreshTokenCommandHandler(IRepository repository)
+        if (refreshTokenToBeUpdated == null)
         {
-            _repository = repository;
+            throw new InvalidOperationException($"The RefreshToken does not exist with id value: {request.UserId}.");
         }
 
-        public async Task<RefreshToken> Handle(UpdateRefreshTokenCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
+        refreshTokenToBeUpdated.Token = request.Token;
+        refreshTokenToBeUpdated.ExpireAtUtc = DateTime.UtcNow;
+        refreshTokenToBeUpdated.CreatedAtUtc = DateTime.UtcNow.AddDays(10);
 
-            RefreshToken refreshTokenToBeUpdated = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
+        repository.Update(refreshTokenToBeUpdated);
+        await repository.SaveChangesAsync(cancellationToken);
 
-            if (refreshTokenToBeUpdated == null)
-            {
-                throw new InvalidOperationException($"The RefreshToken does not exist with id value: {request.UserId}.");
-            }
-
-            refreshTokenToBeUpdated.Token = request.Token;
-            refreshTokenToBeUpdated.ExpireAtUtc = DateTime.UtcNow;
-            refreshTokenToBeUpdated.CreatedAtUtc = DateTime.UtcNow.AddDays(10);
-
-            _repository.Update(refreshTokenToBeUpdated);
-            await _repository.SaveChangesAsync(cancellationToken);
-
-            return refreshTokenToBeUpdated;
-        }
+        return refreshTokenToBeUpdated;
     }
 }
