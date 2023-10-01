@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TanvirArjel.ArgumentChecker;
 
@@ -14,6 +15,6 @@ public static class ApplicationBuilderExtensions
         CleanHrDbContext dbContext = serviceScope.ServiceProvider.GetRequiredService<CleanHrDbContext>();
 
         // TODO: Comment out this if you have SQL server installed on your machine.
-        // dbContext.Database.Migrate();
+        dbContext.Database.Migrate();
     }
 }

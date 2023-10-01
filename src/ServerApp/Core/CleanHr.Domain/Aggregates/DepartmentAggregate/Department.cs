@@ -46,7 +46,7 @@ public sealed class Department : AggregateRoot, ITimeFields
     {
         ArgumentNullException.ThrowIfNull(repository);
 
-        Department department = new Department(Guid.NewGuid());
+        Department department = new(Guid.NewGuid());
         await department.SetNameAsync(repository, name);
         department.SetDescription(description);
 
