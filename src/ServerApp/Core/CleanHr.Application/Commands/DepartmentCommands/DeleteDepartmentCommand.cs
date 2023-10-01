@@ -11,7 +11,9 @@ public sealed class DeleteDepartmentCommand(Guid departmentId) : IRequest
     public Guid Id { get; } = departmentId.ThrowIfEmpty(nameof(departmentId));
 }
 
-internal class DeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IDepartmentCacheHandler departmentCacheHandler) : IRequestHandler<DeleteDepartmentCommand>
+internal class DeleteDepartmentCommandHandler(
+    IDepartmentRepository departmentRepository,
+    IDepartmentCacheHandler departmentCacheHandler) : IRequestHandler<DeleteDepartmentCommand>
 {
     public async Task Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
     {
