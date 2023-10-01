@@ -17,20 +17,16 @@ public sealed class GetEmailVerificationCodeQuery : IRequest<EmailVerificationCo
 
     public string Code { get; }
 
-    private class GetEmailVerificationCodeQueryHandler : IRequestHandler<GetEmailVerificationCodeQuery, EmailVerificationCode>
+    private class GetEmailVerificationCodeQueryHandler(
+        IRepository repository) : IRequestHandler<GetEmailVerificationCodeQuery, EmailVerificationCode>
     {
-        private readonly IRepository _repository;
-
-        public GetEmailVerificationCodeQueryHandler(IRepository repository)
-        {
-            _repository = repository;
-        }
-
-        public async Task<EmailVerificationCode> Handle(GetEmailVerificationCodeQuery request, CancellationToken cancellationToken)
+        public async Task<EmailVerificationCode> Handle(
+            GetEmailVerificationCodeQuery request,
+            CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
-            EmailVerificationCode emailVerificationCode = await _repository
+            EmailVerificationCode emailVerificationCode = await repository
             .GetAsync<EmailVerificationCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null, cancellationToken);
 
             return emailVerificationCode;

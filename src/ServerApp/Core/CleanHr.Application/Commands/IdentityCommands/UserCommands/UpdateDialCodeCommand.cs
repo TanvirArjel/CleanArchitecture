@@ -16,30 +16,23 @@ public sealed class UpdateDialCodeCommand : IRequest
     public Guid UserId { get; }
 
     public string DialCode { get; }
+}
 
-    private class UpdateDialCodeCommandHandler : IRequestHandler<UpdateDialCodeCommand>
+internal class UpdateDialCodeCommandHandler(IRepository repository) : IRequestHandler<UpdateDialCodeCommand>
+{
+    public async Task Handle(UpdateDialCodeCommand request, CancellationToken cancellationToken)
     {
-        private readonly IRepository _repository;
+        request.ThrowIfNull(nameof(request));
 
-        public UpdateDialCodeCommandHandler(IRepository repository)
+        ApplicationUser applicationUserToBeUpdated = await repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
+
+        if (applicationUserToBeUpdated == null)
         {
-            _repository = repository;
+            throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
         }
 
-        public async Task Handle(UpdateDialCodeCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
-
-            ApplicationUser applicationUserToBeUpdated = await _repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
-
-            if (applicationUserToBeUpdated == null)
-            {
-                throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
-            }
-
-            applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
-            _repository.Update(applicationUserToBeUpdated);
-            await _repository.SaveChangesAsync(cancellationToken);
-        }
+        applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
+        repository.Update(applicationUserToBeUpdated);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 }

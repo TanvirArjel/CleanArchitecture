@@ -6,17 +6,14 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Application.Commands.DepartmentCommands;
 
-public sealed class DeleteDepartmentCommand : IRequest
+public sealed class DeleteDepartmentCommand(Guid departmentId) : IRequest
 {
-    public DeleteDepartmentCommand(Guid departmentId)
-    {
-        Id = departmentId.ThrowIfEmpty(nameof(departmentId));
-    }
-
-    public Guid Id { get; }
+    public Guid Id { get; } = departmentId.ThrowIfEmpty(nameof(departmentId));
 }
 
-internal class DeleteDepartmentCommandHandler(IDepartmentRepository departmentRepository, IDepartmentCacheHandler departmentCacheHandler) : IRequestHandler<DeleteDepartmentCommand>
+internal class DeleteDepartmentCommandHandler(
+    IDepartmentRepository departmentRepository,
+    IDepartmentCacheHandler departmentCacheHandler) : IRequestHandler<DeleteDepartmentCommand>
 {
     public async Task Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
     {

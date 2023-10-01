@@ -1,5 +1,4 @@
-﻿using System;
-using CleanHr.Api.Features.User.Models;
+﻿using CleanHr.Api.Features.User.Models;
 using FluentValidation;
 
 namespace CleanHr.Api.Features.User.Validators;

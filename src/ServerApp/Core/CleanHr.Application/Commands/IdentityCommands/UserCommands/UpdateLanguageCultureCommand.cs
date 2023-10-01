@@ -5,42 +5,29 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class UpdateLanguageCultureCommand : IRequest
+public sealed class UpdateLanguageCultureCommand(Guid userId, string languageCulture) : IRequest
 {
-    public UpdateLanguageCultureCommand(Guid userId, string languageCulture)
+    public Guid UserId { get; } = userId.ThrowIfEmpty(nameof(userId));
+
+    public string LanguageCulture { get; } = languageCulture.ThrowIfNullOrEmpty(nameof(languageCulture));
+}
+
+internal class UpdateLanguageCultureCommandHandler(IRepository repository) : IRequestHandler<UpdateLanguageCultureCommand>
+{
+    public async Task Handle(UpdateLanguageCultureCommand request, CancellationToken cancellationToken)
     {
-        UserId = userId.ThrowIfEmpty(nameof(userId));
-        LanguageCulture = languageCulture.ThrowIfNullOrEmpty(nameof(languageCulture));
-    }
+        request.ThrowIfNull(nameof(request));
 
-    public Guid UserId { get; }
+        ApplicationUser userToBeUpdated = await repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
 
-    public string LanguageCulture { get; }
-
-    private class UpdateLanguageCultureCommandHandler : IRequestHandler<UpdateLanguageCultureCommand>
-    {
-        private readonly IRepository _repository;
-
-        public UpdateLanguageCultureCommandHandler(IRepository repository)
+        if (userToBeUpdated == null)
         {
-            _repository = repository;
+            throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
         }
 
-        public async Task Handle(UpdateLanguageCultureCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
+        userToBeUpdated.LanguageCulture = request.LanguageCulture;
 
-            ApplicationUser userToBeUpdated = await _repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
-
-            if (userToBeUpdated == null)
-            {
-                throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
-            }
-
-            userToBeUpdated.LanguageCulture = request.LanguageCulture;
-
-            _repository.Update(userToBeUpdated);
-            await _repository.SaveChangesAsync(cancellationToken);
-        }
+        repository.Update(userToBeUpdated);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 }

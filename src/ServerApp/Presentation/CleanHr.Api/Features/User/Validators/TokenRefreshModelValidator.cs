@@ -1,5 +1,5 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using System.Threading;
 using CleanHr.Api.Features.User.Models;
 using CleanHr.Api.Helpers;
 using CleanHr.Application.Queries.IdentityQueries.UserQueries;
@@ -26,12 +26,13 @@ public sealed class TokenRefreshModelValidator : AbstractValidator<TokenRefreshM
 
         RuleFor(trm => trm.RefreshToken).NotEmpty()
                                        .WithMessage("The refreshToken is required.")
-                                       .Must(IsRefreshTokenValid)
+                                       .MustAsync(IsRefreshTokenValidAsync)
                                        .WithMessage("The refreshToken is not valid.");
         _mediator = mediator;
     }
 
-    private bool IsAccessTokenValid(string accessToken)
+    private bool IsAccessTokenValid(
+        string accessToken)
     {
         ClaimsPrincipal claimsPrincipal;
 
@@ -49,11 +50,13 @@ public sealed class TokenRefreshModelValidator : AbstractValidator<TokenRefreshM
         return _userId != null;
     }
 
-    private bool IsRefreshTokenValid(string refreshToken)
+    private async Task<bool> IsRefreshTokenValidAsync(
+        string refreshToken,
+        CancellationToken cancellationToken)
     {
         IsRefreshTokenValidQuery isRefreshTokenValidQuery = new(Guid.Parse(_userId), refreshToken);
 
-        bool isValid = _mediator.Send(isRefreshTokenValidQuery).GetAwaiter().GetResult();
+        bool isValid = await _mediator.Send(isRefreshTokenValidQuery, cancellationToken);
 
         return isValid;
     }

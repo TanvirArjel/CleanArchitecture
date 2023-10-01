@@ -7,20 +7,11 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Application.Commands.DepartmentCommands;
 
-public sealed class UpdateDepartmentCommand(
-    Guid id,
-    string name,
-    string description,
-    bool isActive) : IRequest
-{
-    public Guid Id { get; } = id;
-
-    public string Name { get; } = name;
-
-    public string Description { get; } = description;
-
-    public bool IsActive { get; } = isActive;
-}
+public sealed record UpdateDepartmentCommand(
+    Guid Id,
+    string Name,
+    string Description,
+    bool IsActive) : IRequest;
 
 internal sealed class UpdateDepartmentCommandHandler(
     IDepartmentRepository departmentRepository,

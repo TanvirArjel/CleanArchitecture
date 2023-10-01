@@ -1,15 +1,12 @@
 using System.IO.Compression;
 using CleanHr.Api.Configs;
 using CleanHr.Api.Extensions;
-using CleanHr.Api.Features.Department.Validators;
 using CleanHr.Api.Filters;
 using CleanHr.Api.Utilities;
 using CleanHr.Application.Commands.DepartmentCommands;
 using CleanHr.Infrastructure.Services;
 using CleanHr.Persistence.Cache;
 using CleanHr.Persistence.RelationalDB.Extensions;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -49,9 +46,7 @@ public static class Startup
         });
 
         ////services.AddCors();
-        ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
-        services.AddValidatorsFromAssemblyContaining<CreateDepartmentModelValidator>();
-        services.AddFluentValidationAutoValidation();
+        services.AddFluentValidation();
 
         services.AddResponseCompression(options =>
         {
@@ -83,6 +78,9 @@ public static class Startup
             options.Filters.Add(typeof(BadRequestResultFilter));
             options.Filters.Add(typeof(ExceptionHandlerFilter));
             options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+        }).ConfigureApiBehaviorOptions(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
         });
 
         services.AddSwaggerGeneration("Clean HR", "CleanHr.Api");

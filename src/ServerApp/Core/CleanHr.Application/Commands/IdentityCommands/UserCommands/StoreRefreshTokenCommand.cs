@@ -5,42 +5,29 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class StoreRefreshTokenCommand : IRequest<RefreshToken>
+public sealed class StoreRefreshTokenCommand(Guid userId, string token) : IRequest<RefreshToken>
 {
-    public StoreRefreshTokenCommand(Guid userId, string token)
+    public Guid UserId { get; } = userId.ThrowIfEmpty(nameof(userId));
+
+    public string Token { get; } = token.ThrowIfNullOrEmpty(nameof(token));
+}
+
+internal class StoreRefreshTokenCommandHandler(IRepository repository) : IRequestHandler<StoreRefreshTokenCommand, RefreshToken>
+{
+    public async Task<RefreshToken> Handle(StoreRefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        UserId = userId.ThrowIfEmpty(nameof(userId));
-        Token = token.ThrowIfNullOrEmpty(nameof(token));
-    }
+        request.ThrowIfNull(nameof(request));
 
-    public Guid UserId { get; }
-
-    public string Token { get; }
-
-    private class StoreRefreshTokenCommandHandler : IRequestHandler<StoreRefreshTokenCommand, RefreshToken>
-    {
-        private readonly IRepository _repository;
-
-        public StoreRefreshTokenCommandHandler(IRepository repository)
+        RefreshToken refreshToken = new RefreshToken()
         {
-            _repository = repository;
-        }
+            UserId = request.UserId,
+            Token = request.Token,
+            CreatedAtUtc = DateTime.UtcNow,
+            ExpireAtUtc = DateTime.UtcNow.AddDays(30)
+        };
 
-        public async Task<RefreshToken> Handle(StoreRefreshTokenCommand request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
-
-            RefreshToken refreshToken = new RefreshToken()
-            {
-                UserId = request.UserId,
-                Token = request.Token,
-                CreatedAtUtc = DateTime.UtcNow,
-                ExpireAtUtc = DateTime.UtcNow.AddDays(30)
-            };
-
-            _repository.Add(refreshToken);
-            await _repository.SaveChangesAsync(cancellationToken);
-            return refreshToken;
-        }
+        repository.Add(refreshToken);
+        await repository.SaveChangesAsync(cancellationToken);
+        return refreshToken;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using CleanHr.Api.Features.Department.Models;
 using CleanHr.Application.Commands.DepartmentCommands;
-using CleanHr.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
