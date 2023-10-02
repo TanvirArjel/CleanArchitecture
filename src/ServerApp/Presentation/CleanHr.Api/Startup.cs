@@ -97,7 +97,7 @@ public static class Startup
     {
         ArgumentNullException.ThrowIfNull(app);
 
-        ////app.ApplyDatabaseMigrations();
+        app.ApplyDatabaseMigrations();
 
         app.Use((context, next) =>
         {

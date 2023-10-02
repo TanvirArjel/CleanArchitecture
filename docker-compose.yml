@@ -9,7 +9,7 @@ services:
        MSSQL_PID: 'Express'
     ports: ["1440:1433"]
     
-  employeemanagement.api:
+  cleanhr.api:
     image: ${DOCKER_REGISTRY-}cleanhrapi
     build:
       context: .
