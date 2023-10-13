@@ -18,7 +18,7 @@ internal class StoreRefreshTokenCommandHandler(IRepository repository) : IReques
     {
         request.ThrowIfNull(nameof(request));
 
-        RefreshToken refreshToken = new RefreshToken()
+        RefreshToken refreshToken = new()
         {
             UserId = request.UserId,
             Token = request.Token,

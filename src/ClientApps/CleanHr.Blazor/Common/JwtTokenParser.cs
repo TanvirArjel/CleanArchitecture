@@ -24,9 +24,9 @@ public class JwtTokenParser
     {
         token.ThrowIfNullOrEmpty(nameof(token));
 
-        JwtSecurityToken jwtToken = new JwtSecurityToken(token);
+        JwtSecurityToken jwtToken = new(token);
 
-        List<Claim> microsoftClaims = new List<Claim>();
+        List<Claim> microsoftClaims = new();
 
         foreach (Claim item in jwtToken.Claims)
         {
@@ -58,15 +58,15 @@ public class JwtTokenParser
             }
         }
 
-        ClaimsIdentity identity = new ClaimsIdentity(microsoftClaims, "ServerAuth");
-        ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
+        ClaimsIdentity identity = new(microsoftClaims, "ServerAuth");
+        ClaimsPrincipal claimsPrincipal = new(identity);
 
         return claimsPrincipal;
     }
 
     public ClaimsPrincipal Parse(string token)
     {
-        TokenValidationParameters validationParameters = new TokenValidationParameters()
+        TokenValidationParameters validationParameters = new()
         {
             ValidateIssuer = false,
             ValidIssuer = "SampleApp",
@@ -79,7 +79,7 @@ public class JwtTokenParser
             ////comment this and add this line to fool the validation logic
             SignatureValidator = (token, parameters) =>
             {
-                JwtSecurityToken jwt = new JwtSecurityToken(token);
+                JwtSecurityToken jwt = new(token);
 
                 return jwt;
             },

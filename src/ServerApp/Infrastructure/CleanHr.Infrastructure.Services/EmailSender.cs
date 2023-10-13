@@ -18,7 +18,7 @@ public sealed class EmailSender : IEmailSender
         _sendGridConfig = sendGridConfig;
     }
 
-    private SendGridClient SendGridClient => new SendGridClient(_sendGridConfig.ApiKey);
+    private SendGridClient SendGridClient => new(_sendGridConfig.ApiKey);
 
     public async Task SendAsync(EmailMessage emailMessage)
     {

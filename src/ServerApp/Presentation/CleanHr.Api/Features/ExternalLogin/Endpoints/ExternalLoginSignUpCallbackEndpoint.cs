@@ -124,7 +124,7 @@ public class ExternalLoginSignUpCallbackEndpoint(
         }
     }
 
-    private IActionResult RedirectWithError(string errorMessage)
+    private RedirectResult RedirectWithError(string errorMessage)
     {
         string redirectUrl = QueryHelpers.AddQueryString(ClientSignupUrl, "error", errorMessage);
         return Redirect(redirectUrl);

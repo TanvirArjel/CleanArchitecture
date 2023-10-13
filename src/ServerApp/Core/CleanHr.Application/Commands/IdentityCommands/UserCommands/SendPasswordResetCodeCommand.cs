@@ -38,7 +38,7 @@ internal class SendPasswordResetCodeCommandHandler(
         int randomNumber = RandomNumberGenerator.GetInt32(0, 1000000);
         string verificationCode = randomNumber.ToString("D6", CultureInfo.InvariantCulture);
 
-        PasswordResetCode emailVerificationCode = new PasswordResetCode()
+        PasswordResetCode emailVerificationCode = new()
         {
             Code = verificationCode,
             Email = request.Email,
@@ -52,7 +52,7 @@ internal class SendPasswordResetCodeCommandHandler(
         string subject = "Reset Password";
         string senderEmail = "noreply@yourapp.com";
         string emailBody = await viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);
-        EmailMessage emailObject = new EmailMessage(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
+        EmailMessage emailObject = new(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
         await emailSender.SendAsync(emailObject);
     }
 }

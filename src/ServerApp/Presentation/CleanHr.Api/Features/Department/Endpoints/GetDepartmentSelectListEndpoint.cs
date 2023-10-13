@@ -22,7 +22,7 @@ public sealed class GetDepartmentSelectListEndpoint(IMediator mediator) : Depart
             return ValidationProblem(ModelState);
         }
 
-        GetDepartmentListQuery departmentListQuery = new GetDepartmentListQuery();
+        GetDepartmentListQuery departmentListQuery = new();
         List<DepartmentDto> departmentDtos = await mediator.Send(departmentListQuery, HttpContext.RequestAborted);
 
         SelectList selectList = new(departmentDtos, "Id", "Name", selectedDepartment);

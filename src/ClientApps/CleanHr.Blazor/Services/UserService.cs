@@ -30,7 +30,7 @@ public class UserService
 
     public async Task<PaginatedList<UserModel>> GetListAsync(int pageIndex, int pageSize, UserSearchModel searchModel)
     {
-        Dictionary<string, string> queryStrings = new Dictionary<string, string>()
+        Dictionary<string, string> queryStrings = new()
         {
             ["pageIndex"] = pageIndex <= 0 ? "1" : pageIndex.ToString(CultureInfo.InvariantCulture),
             ["pageSize"] = pageSize <= 0 ? "10" : pageSize.ToString(CultureInfo.InvariantCulture),

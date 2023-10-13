@@ -18,10 +18,7 @@ public static class SwaggerGenerationServicesExtensions
         string apiName,
         string apiAssemblyName)
     {
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
+        ArgumentNullException.ThrowIfNull(services);
 
         services.AddApiVersioning(config =>
         {
@@ -123,7 +120,7 @@ public static class SwaggerGenerationServicesExtensions
 
             foreach (ApiVersionDescription description in apiVersionDescriptionProvider.ApiVersionDescriptions)
             {
-                OpenApiInfo openApiInfo = new OpenApiInfo()
+                OpenApiInfo openApiInfo = new()
                 {
                     Title = $"{apiName} {description.GroupName.ToUpperInvariant()} API Endpoints",
                     Version = description.ApiVersion.ToString(),

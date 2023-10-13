@@ -38,7 +38,7 @@ public class HostAuthStateProvider : AuthenticationStateProvider
 
             ClaimsPrincipal claimsPrincipal = _jwtTokenParser.Parse(jsonWebToken);
 
-            AuthenticationState authenticationState = new AuthenticationState(claimsPrincipal);
+            AuthenticationState authenticationState = new(claimsPrincipal);
             User = authenticationState.User;
 
             return authenticationState;
@@ -46,7 +46,7 @@ public class HostAuthStateProvider : AuthenticationStateProvider
         catch (Exception exception)
         {
             Console.WriteLine(exception.Message);
-            AuthenticationState authState = new AuthenticationState(new ClaimsPrincipal());
+            AuthenticationState authState = new(new ClaimsPrincipal());
             User = authState.User;
             return authState;
         }

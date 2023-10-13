@@ -22,7 +22,7 @@ public class DeleteEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
             return ValidationProblem(ModelState);
         }
 
-        DeleteEmployeeCommand command = new DeleteEmployeeCommand(employeeId);
+        DeleteEmployeeCommand command = new(employeeId);
 
         await mediator.Send(command, HttpContext.RequestAborted);
         return NoContent();
