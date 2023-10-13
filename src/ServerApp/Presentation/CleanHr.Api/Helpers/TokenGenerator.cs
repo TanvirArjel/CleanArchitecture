@@ -34,6 +34,8 @@ public class TokenManager(
 
     public async Task<string> GetJwtTokenAsync(ApplicationUser user)
     {
+        ArgumentNullException.ThrowIfNull(user);
+
         IList<string> roles = await userManager.GetRolesAsync(user).ConfigureAwait(false);
 
         GetRefreshTokenQuery getRefreshTokenQuery = new(user.Id);
@@ -51,7 +53,7 @@ public class TokenManager(
             if (refreshToken.ExpireAtUtc < DateTime.UtcNow)
             {
                 string token = GetRefreshToken();
-                UpdateRefreshTokenCommand updateRefreshTokenCommand = new UpdateRefreshTokenCommand(user.Id, token);
+                UpdateRefreshTokenCommand updateRefreshTokenCommand = new(user.Id, token);
                 refreshToken = await mediator.Send(updateRefreshTokenCommand);
             }
         }
@@ -60,8 +62,8 @@ public class TokenManager(
 
         string fullName = string.IsNullOrWhiteSpace(user.FullName) ? user.UserName : user.FullName;
 
-        List<Claim> claims = new List<Claim>
-        {
+        List<Claim> claims =
+        [
             new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Name, fullName),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
@@ -72,7 +74,7 @@ public class TokenManager(
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)),
             new Claim("rt", refreshToken.Token),
-        };
+        ];
 
         if (roles != null && roles.Any())
         {
@@ -82,10 +84,10 @@ public class TokenManager(
             }
         }
 
-        SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key));
-        SigningCredentials signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+        SymmetricSecurityKey signingKey = new(Encoding.UTF8.GetBytes(jwtConfig.Key));
+        SigningCredentials signingCredentials = new(signingKey, SecurityAlgorithms.HmacSha256);
 
-        JwtSecurityToken jwt = new JwtSecurityToken(
+        JwtSecurityToken jwt = new(
             signingCredentials: signingCredentials,
             claims: claims,
             notBefore: utcNow,
@@ -111,7 +113,7 @@ public class TokenManager(
             ValidateLifetime = false
         };
 
-        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+        JwtSecurityTokenHandler tokenHandler = new();
         ClaimsPrincipal principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken securityToken);
 
         if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))

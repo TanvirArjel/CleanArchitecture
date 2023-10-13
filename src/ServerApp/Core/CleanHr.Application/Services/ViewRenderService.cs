@@ -52,8 +52,8 @@ public sealed class ViewRenderService
                 throw new ArgumentNullException(nameof(viewNameOrPath));
             }
 
-            DefaultHttpContext httpContext = new DefaultHttpContext { RequestServices = _serviceProvider };
-            ActionContext actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
+            DefaultHttpContext httpContext = new() { RequestServices = _serviceProvider };
+            ActionContext actionContext = new(httpContext, new RouteData(), new ActionDescriptor());
 
             ViewEngineResult viewEngineResult = _razorViewEngine.FindView(actionContext, viewNameOrPath, false);
 
@@ -69,15 +69,15 @@ public sealed class ViewRenderService
 
             IView view = viewEngineResult.View;
 
-            using StringWriter stringWriter = new StringWriter();
-            ViewDataDictionary viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
+            using StringWriter stringWriter = new();
+            ViewDataDictionary viewDictionary = new(new EmptyModelMetadataProvider(), new ModelStateDictionary())
             {
                 Model = model
             };
 
-            TempDataDictionary tempData = new TempDataDictionary(actionContext.HttpContext, _tempDataProvider);
+            TempDataDictionary tempData = new(actionContext.HttpContext, _tempDataProvider);
 
-            ViewContext viewContext = new ViewContext(actionContext, view, viewDictionary, tempData, stringWriter, new HtmlHelperOptions());
+            ViewContext viewContext = new(actionContext, view, viewDictionary, tempData, stringWriter, new HtmlHelperOptions());
 
             await view.RenderAsync(viewContext);
 

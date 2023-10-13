@@ -46,7 +46,7 @@ public sealed class ResendEmailConfirmationCodeModelValidator : AbstractValidato
             return;
         }
 
-        HasUserActiveEmailVerificationCodeQuery query = new HasUserActiveEmailVerificationCodeQuery(email);
+        HasUserActiveEmailVerificationCodeQuery query = new(email);
 
         bool isExists = await _mediator.Send(query, cancellationToken);
 

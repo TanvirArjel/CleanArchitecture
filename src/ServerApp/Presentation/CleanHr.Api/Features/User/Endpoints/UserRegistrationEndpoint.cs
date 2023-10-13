@@ -24,7 +24,7 @@ public class UserRegistrationEndpoint(
     {
         try
         {
-            ApplicationUser applicationUser = new ApplicationUser
+            ApplicationUser applicationUser = new()
             {
                 FullName = model.FirstName + " " + model.LastName,
                 UserName = model.Email,

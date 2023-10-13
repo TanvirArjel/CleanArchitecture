@@ -85,7 +85,7 @@ public static class Startup
 
         services.AddSwaggerGeneration("Clean HR", "CleanHr.Api");
 
-        JwtConfig jwtConfig = new JwtConfig("SampleIdentity.com", "SampleIdentitySecretKey", 86400);
+        JwtConfig jwtConfig = new("SampleIdentity.com", "SampleIdentitySecretKey", 86400);
         services.AddJwtAuthentication(jwtConfig);
 
         services.AddJwtTokenGenerator(jwtConfig);

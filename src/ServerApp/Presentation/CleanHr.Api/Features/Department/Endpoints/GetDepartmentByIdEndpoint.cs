@@ -21,7 +21,7 @@ public sealed class GetDepartmentByIdEndpoint(IMediator mediator) : DepartmentEn
             return ValidationProblem(ModelState);
         }
 
-        GetDepartmentByIdQuery query = new GetDepartmentByIdQuery(departmentId);
+        GetDepartmentByIdQuery query = new(departmentId);
 
         DepartmentDetailsDto departmentDetailsDto = await mediator.Send(query, HttpContext.RequestAborted);
         return departmentDetailsDto;

@@ -75,9 +75,9 @@ public static class ServiceCollectionExtensions
 		services.AddSingleton<ReadinessHealthCheck>();
 
 		services.AddHealthChecks()
-				.AddTypeActivatedCheck<DbConnectionHealthCheck>(
-					"Database",
-					failureStatus: HealthStatus.Unhealthy,
+                .AddTypeActivatedCheck<DbConnectionHealthCheck>(
+                    "Database",
+                    failureStatus: HealthStatus.Unhealthy,
                     tags: new[] { HealthCheckTags.Database },
                     args: new object[] { connectionString })
                 .AddCheck<ReadinessHealthCheck>("Readiness", tags: new[] { HealthCheckTags.Ready });

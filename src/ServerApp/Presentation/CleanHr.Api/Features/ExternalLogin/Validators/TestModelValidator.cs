@@ -4,5 +4,4 @@ namespace CleanHr.Api;
 
 public class TestModelValidator
 {
-
 }

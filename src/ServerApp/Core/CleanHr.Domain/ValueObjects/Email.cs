@@ -33,7 +33,7 @@ public sealed class Email : ValueObject
             throw new DomainValidationException($"The Email length must be less than {_maxLength + 1} characters.");
         }
 
-        Regex emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+        Regex emailRegex = new(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
 
         Match match = emailRegex.Match(value);
 

@@ -31,7 +31,7 @@ internal class SendEmailVerificationCodeCommandHandler(
         int randomNumber = RandomNumberGenerator.GetInt32(0, 1000000);
         string verificationCode = randomNumber.ToString("D6", CultureInfo.InvariantCulture);
 
-        EmailVerificationCode emailVerificationCode = new EmailVerificationCode()
+        EmailVerificationCode emailVerificationCode = new()
         {
             Code = verificationCode,
             Email = request.Email,

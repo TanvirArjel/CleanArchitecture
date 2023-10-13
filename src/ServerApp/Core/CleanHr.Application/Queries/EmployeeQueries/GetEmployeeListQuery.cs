@@ -45,7 +45,8 @@ public sealed class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
                 LastModifiedAtUtc = e.LastModifiedAtUtc
             };
 
-            PaginationSpecification<Employee> paginationSpecification = new PaginationSpecification<Employee>
+            PaginationSpecification<Employee> paginationSpecification = new()
+
             {
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize

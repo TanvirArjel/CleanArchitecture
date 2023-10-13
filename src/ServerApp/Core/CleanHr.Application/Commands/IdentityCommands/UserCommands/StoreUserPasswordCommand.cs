@@ -23,7 +23,7 @@ internal class StoreUserPasswordCommandHandler(
 
         string passwordHash = passwordHasher.HashPassword(request.User, request.Password);
 
-        UserOldPassword userOldPassword = new UserOldPassword()
+        UserOldPassword userOldPassword = new()
         {
             UserId = request.User.Id,
             PasswordHash = passwordHash,

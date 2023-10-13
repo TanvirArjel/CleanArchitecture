@@ -8,19 +8,19 @@ namespace CleanHr.Application.Tests;
 
 public class CreateDepartmentCommandHandlerTests
 {
-	// Arrange
-	private readonly Mock<IDepartmentRepository> mockDepartmentRepository = new Mock<IDepartmentRepository>();
-	private readonly Mock<IDepartmentCacheHandler> mockDepartmentCacheHandler = new Mock<IDepartmentCacheHandler>();
+    // Arrange
+    private readonly Mock<IDepartmentRepository> mockDepartmentRepository = new();
+    private readonly Mock<IDepartmentCacheHandler> mockDepartmentCacheHandler = new();
 
-	[Fact]
+    [Fact]
 	public async Task Handle_WithValidCommand_ReturnsDepartmentId()
 	{
-		// Act
-		CreateDepartmentCommandHandler handler = new CreateDepartmentCommandHandler(
-			mockDepartmentRepository.Object, mockDepartmentCacheHandler.Object);
+        // Act
+        CreateDepartmentCommandHandler handler = new(
+            mockDepartmentRepository.Object, mockDepartmentCacheHandler.Object);
 
-		CreateDepartmentCommand createDepartmentRequest = new CreateDepartmentCommand("Human Resource", "This is human resource department.");
-		Guid departmentId = await handler.Handle(createDepartmentRequest, CancellationToken.None);
+        CreateDepartmentCommand createDepartmentRequest = new("Human Resource", "This is human resource department.");
+        Guid departmentId = await handler.Handle(createDepartmentRequest, CancellationToken.None);
 
 		// Assert
 		Assert.NotEqual(Guid.Empty, departmentId);
@@ -34,11 +34,11 @@ public class CreateDepartmentCommandHandlerTests
 	[InlineData(null, "This is human resource department.")]
 	public async Task Handle_WithInvalidCommand_ReturnsDepartmentId(string departmentName, string description)
 	{
-		// Act
-		CreateDepartmentCommandHandler handler = new CreateDepartmentCommandHandler(
-			mockDepartmentRepository.Object, mockDepartmentCacheHandler.Object);
+        // Act
+        CreateDepartmentCommandHandler handler = new(
+            mockDepartmentRepository.Object, mockDepartmentCacheHandler.Object);
 
-		CreateDepartmentCommand createDepartmentRequest = new CreateDepartmentCommand(departmentName, description);
-		await Assert.ThrowsAsync<DomainValidationException>(() => handler.Handle(createDepartmentRequest, CancellationToken.None));
+        CreateDepartmentCommand createDepartmentRequest = new(departmentName, description);
+        await Assert.ThrowsAsync<DomainValidationException>(() => handler.Handle(createDepartmentRequest, CancellationToken.None));
 	}
 }
