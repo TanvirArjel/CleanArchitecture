@@ -11,16 +11,12 @@ using TanvirArjel.Blazor.Utilities;
 
 namespace CleanHr.Blazor.Components.DepartmentComponents;
 
-public partial class DeleteDepartmentModalComponent
+public partial class DeleteDepartmentModalComponent(
+    DepartmentService departmentService,
+    ExceptionLogger exceptionLogger)
 {
-    private readonly DepartmentService _departmentService;
-    private readonly ExceptionLogger _exceptionLogger;
-
-    public DeleteDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
-    {
-        _departmentService = departmentService;
-        _exceptionLogger = exceptionLogger;
-    }
+    private readonly DepartmentService _departmentService = departmentService;
+    private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
 
     [Parameter]
     public EventCallback DepartmentDeleted { get; set; }

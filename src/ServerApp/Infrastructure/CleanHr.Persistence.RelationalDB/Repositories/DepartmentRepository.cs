@@ -9,18 +9,11 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Persistence.RelationalDB.Repositories;
 
-internal sealed class DepartmentRepository : IDepartmentRepository
+internal sealed class DepartmentRepository(CleanHrDbContext dbContext) : IDepartmentRepository
 {
-    private readonly CleanHrDbContext _dbContext;
-
-    public DepartmentRepository(CleanHrDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public Task<bool> ExistsAsync(Expression<Func<Department, bool>> condition)
     {
-        IQueryable<Department> queryable = _dbContext.Set<Department>();
+        IQueryable<Department> queryable = dbContext.Set<Department>();
 
         if (condition != null)
         {
@@ -34,7 +27,7 @@ internal sealed class DepartmentRepository : IDepartmentRepository
     {
         departmentId.ThrowIfEmpty(nameof(departmentId));
 
-        Department department = await _dbContext.Set<Department>().FindAsync(departmentId);
+        Department department = await dbContext.Set<Department>().FindAsync(departmentId);
         return department;
     }
 
@@ -42,30 +35,30 @@ internal sealed class DepartmentRepository : IDepartmentRepository
     {
         department.ThrowIfNull(nameof(department));
 
-        await _dbContext.AddAsync(department);
-        await _dbContext.SaveChangesAsync();
+        await dbContext.AddAsync(department);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Department department)
     {
         department.ThrowIfNull(nameof(department));
 
-        EntityEntry<Department> trackedEntity = _dbContext.ChangeTracker.Entries<Department>()
+        EntityEntry<Department> trackedEntity = dbContext.ChangeTracker.Entries<Department>()
             .FirstOrDefault(x => x.Entity == department);
 
         if (trackedEntity == null)
         {
-            _dbContext.Update(department);
+            dbContext.Update(department);
         }
 
-        await _dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Department department)
     {
         department.ThrowIfNull(nameof(department));
 
-        _dbContext.Remove(department);
-        await _dbContext.SaveChangesAsync();
+        dbContext.Remove(department);
+        await dbContext.SaveChangesAsync();
     }
 }

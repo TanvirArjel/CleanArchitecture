@@ -6,18 +6,11 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace CleanHr.Persistence.Cache.Handlers;
 
-internal sealed class EmployeeCacheHandler : IEmployeeCacheHandler
+internal sealed class EmployeeCacheHandler(IDistributedCache distributedCache) : IEmployeeCacheHandler
 {
-    private readonly IDistributedCache _distributedCache;
-
-    public EmployeeCacheHandler(IDistributedCache distributedCache)
-    {
-        _distributedCache = distributedCache;
-    }
-
     public async Task RemoveDetailsByIdAsync(Guid employeeId)
     {
         string detailsKey = EmployeeCacheKeys.GetDetailsKey(employeeId);
-        await _distributedCache.RemoveAsync(detailsKey);
+        await distributedCache.RemoveAsync(detailsKey);
     }
 }

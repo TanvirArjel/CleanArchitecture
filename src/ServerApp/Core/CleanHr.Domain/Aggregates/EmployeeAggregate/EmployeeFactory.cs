@@ -6,17 +6,8 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace CleanHr.Domain.Aggregates.EmployeeAggregate;
 
 [ScopedService]
-public sealed class EmployeeFactory
+public sealed class EmployeeFactory(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository)
 {
-    private readonly IDepartmentRepository _departmentRepository;
-    private readonly IEmployeeRepository _employeeRepository;
-
-    public EmployeeFactory(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository)
-    {
-        _departmentRepository = departmentRepository;
-        _employeeRepository = employeeRepository;
-    }
-
     public Employee Create(
        EmployeeName name,
        Guid departmentId,
@@ -24,7 +15,7 @@ public sealed class EmployeeFactory
        Email email,
        PhoneNumber phoneNumber)
     {
-        Employee employee = new(_departmentRepository, _employeeRepository, name, departmentId, dateOfBirth, email, phoneNumber);
+        Employee employee = new(departmentRepository, employeeRepository, name, departmentId, dateOfBirth, email, phoneNumber);
 
         return employee;
     }

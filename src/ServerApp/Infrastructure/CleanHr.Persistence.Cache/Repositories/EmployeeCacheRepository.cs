@@ -11,21 +11,12 @@ using TanvirArjel.Extensions.Microsoft.Caching;
 
 namespace CleanHr.Persistence.Cache.Repositories;
 
-internal sealed class EmployeeCacheRepository : IEmployeeCacheRepository
+internal sealed class EmployeeCacheRepository(IDistributedCache distributedCache, IQueryRepository repository) : IEmployeeCacheRepository
 {
-    private readonly IDistributedCache _distributedCache;
-    private readonly IQueryRepository _repository;
-
-    public EmployeeCacheRepository(IDistributedCache distributedCache, IQueryRepository repository)
-    {
-        _distributedCache = distributedCache;
-        _repository = repository;
-    }
-
     public async Task<EmployeeDetailsDto> GetDetailsByIdAsync(Guid employeeId)
     {
         string cacheKey = EmployeeCacheKeys.GetDetailsKey(employeeId);
-        EmployeeDetailsDto employeeDetails = await _distributedCache.GetAsync<EmployeeDetailsDto>(cacheKey);
+        EmployeeDetailsDto employeeDetails = await distributedCache.GetAsync<EmployeeDetailsDto>(cacheKey);
 
         if (employeeDetails == null)
         {
@@ -43,9 +34,9 @@ internal sealed class EmployeeCacheRepository : IEmployeeCacheRepository
                 LastModifiedAtUtc = e.LastModifiedAtUtc
             };
 
-            employeeDetails = await _repository.GetByIdAsync(employeeId, selectExp);
+            employeeDetails = await repository.GetByIdAsync(employeeId, selectExp);
 
-            await _distributedCache.SetAsync(cacheKey, employeeDetails);
+            await distributedCache.SetAsync(cacheKey, employeeDetails);
         }
 
         return employeeDetails;

@@ -12,17 +12,10 @@ using TanvirArjel.Blazor.Utilities;
 
 namespace CleanHr.Blazor.Components.DepartmentComponents;
 
-public partial class CreateDepartmentModalComponent
+public partial class CreateDepartmentModalComponent(
+    DepartmentService departmentService,
+    ExceptionLogger exceptionLogger)
 {
-    private readonly DepartmentService _departmentService;
-    private readonly ExceptionLogger _exceptionLogger;
-
-    public CreateDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
-    {
-        _departmentService = departmentService;
-        _exceptionLogger = exceptionLogger;
-    }
-
     [Parameter]
     public EventCallback DepartmentCreated { get; set; }
 
@@ -49,7 +42,7 @@ public partial class CreateDepartmentModalComponent
     {
         try
         {
-            HttpResponseMessage httpResponseMessage = await _departmentService.CreateAsync(CreateDepartmentModel);
+            HttpResponseMessage httpResponseMessage = await departmentService.CreateAsync(CreateDepartmentModel);
 
             if (httpResponseMessage.IsSuccessStatusCode)
             {
@@ -63,12 +56,12 @@ public partial class CreateDepartmentModalComponent
         catch (HttpRequestException exception)
         {
             CustomValidationMessages.AddAndDisplay(ErrorMessages.ServerDownOrCorsErrorMessage);
-            await _exceptionLogger.LogAsync(exception);
+            await exceptionLogger.LogAsync(exception);
         }
         catch (Exception exception)
         {
             CustomValidationMessages.AddAndDisplay(ErrorMessages.ClientErrorMessage);
-            await _exceptionLogger.LogAsync(exception);
+            await exceptionLogger.LogAsync(exception);
         }
     }
 

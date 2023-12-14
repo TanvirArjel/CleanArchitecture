@@ -5,29 +5,19 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Queries.IdentityQueries.UserQueries;
 
-public sealed class GetRefreshTokenQuery : IRequest<RefreshToken>
+public sealed class GetRefreshTokenQuery(Guid userId) : IRequest<RefreshToken>
 {
-    public GetRefreshTokenQuery(Guid userId)
+
+    public Guid UserId { get; } = userId.ThrowIfEmpty(nameof(userId));
+
+    private class GetRefreshTokenQueryHanlder(IRepository repository) : IRequestHandler<GetRefreshTokenQuery, RefreshToken>
     {
-        UserId = userId.ThrowIfEmpty(nameof(userId));
-    }
-
-    public Guid UserId { get; }
-
-    private class GetRefreshTokenQueryHanlder : IRequestHandler<GetRefreshTokenQuery, RefreshToken>
-    {
-        private readonly IRepository _repository;
-
-        public GetRefreshTokenQueryHanlder(IRepository repository)
-        {
-            _repository = repository;
-        }
 
         public async Task<RefreshToken> Handle(GetRefreshTokenQuery request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
-            RefreshToken refreshToken = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
+            RefreshToken refreshToken = await repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
 
             return refreshToken;
         }

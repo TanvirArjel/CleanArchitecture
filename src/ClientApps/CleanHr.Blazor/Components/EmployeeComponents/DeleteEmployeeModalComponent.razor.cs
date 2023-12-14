@@ -10,16 +10,12 @@ using TanvirArjel.Blazor.Utilities;
 
 namespace CleanHr.Blazor.Components.EmployeeComponents;
 
-public partial class DeleteEmployeeModalComponent
+public partial class DeleteEmployeeModalComponent(
+    EmployeeService employeeService,
+    ExceptionLogger exceptionLogger)
 {
-    private readonly EmployeeService _employeeService;
-    private readonly ExceptionLogger _exceptionLogger;
-
-    public DeleteEmployeeModalComponent(EmployeeService employeeService, ExceptionLogger exceptionLogger)
-    {
-        _employeeService = employeeService;
-        _exceptionLogger = exceptionLogger;
-    }
+    private readonly EmployeeService _employeeService = employeeService;
+    private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
 
     [Parameter]
     public EventCallback EmployeeDeleted { get; set; }

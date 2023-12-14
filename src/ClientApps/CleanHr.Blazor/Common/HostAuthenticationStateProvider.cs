@@ -7,21 +7,14 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace CleanHr.Blazor.Common;
 
-public class HostAuthStateProvider : AuthenticationStateProvider
+public class HostAuthStateProvider(
+    ILocalStorageService localStorage,
+    NavigationManager navigationManager,
+    JwtTokenParser jwtTokenParser) : AuthenticationStateProvider
 {
-    private readonly ILocalStorageService _localStorage;
-    private readonly NavigationManager _navigationManager;
-    private readonly JwtTokenParser _jwtTokenParser;
-
-    public HostAuthStateProvider(
-        ILocalStorageService localStorage,
-        NavigationManager navigationManager,
-        JwtTokenParser jwtTokenParser)
-    {
-        _localStorage = localStorage;
-        _navigationManager = navigationManager;
-        _jwtTokenParser = jwtTokenParser;
-    }
+    private readonly ILocalStorageService _localStorage = localStorage;
+    private readonly NavigationManager _navigationManager = navigationManager;
+    private readonly JwtTokenParser _jwtTokenParser = jwtTokenParser;
 
     public ClaimsPrincipal User { get; private set; }
 
@@ -54,10 +47,7 @@ public class HostAuthStateProvider : AuthenticationStateProvider
 
     public async Task LogInAsync(string jsonWebToken, string redirectTo = null)
     {
-        if (jsonWebToken == null)
-        {
-            throw new ArgumentNullException(nameof(jsonWebToken));
-        }
+        ArgumentNullException.ThrowIfNull(jsonWebToken);
 
         await _localStorage.SetItemAsync(LocalStorageKey.Jwt, jsonWebToken);
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());

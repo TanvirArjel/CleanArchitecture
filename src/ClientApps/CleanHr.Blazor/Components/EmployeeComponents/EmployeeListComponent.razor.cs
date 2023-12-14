@@ -8,16 +8,12 @@ using CleanHr.Blazor.Services;
 
 namespace CleanHr.Blazor.Components.EmployeeComponents;
 
-public partial class EmployeeListComponent
+public partial class EmployeeListComponent(
+    EmployeeService employeeService,
+    ExceptionLogger exceptionLogger)
 {
-    private readonly EmployeeService _employeeService;
-    private readonly ExceptionLogger _exceptionLogger;
-
-    public EmployeeListComponent(EmployeeService employeeService, ExceptionLogger exceptionLogger)
-    {
-        _employeeService = employeeService;
-        _exceptionLogger = exceptionLogger;
-    }
+    private readonly EmployeeService _employeeService = employeeService;
+    private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
 
     private List<EmployeeDetailsModel> Employees { get; set; }
 

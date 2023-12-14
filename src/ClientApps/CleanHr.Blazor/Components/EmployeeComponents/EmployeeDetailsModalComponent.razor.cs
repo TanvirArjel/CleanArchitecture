@@ -5,14 +5,9 @@ using CleanHr.Blazor.Services;
 
 namespace CleanHr.Blazor.Components.EmployeeComponents;
 
-public partial class EmployeeDetailsModalComponent
+public partial class EmployeeDetailsModalComponent(EmployeeService employeeService)
 {
-    private readonly EmployeeService _employeeService;
-
-    public EmployeeDetailsModalComponent(EmployeeService employeeService)
-    {
-        _employeeService = employeeService;
-    }
+    private readonly EmployeeService _employeeService = employeeService;
 
     private string ModalClass { get; set; } = string.Empty;
 

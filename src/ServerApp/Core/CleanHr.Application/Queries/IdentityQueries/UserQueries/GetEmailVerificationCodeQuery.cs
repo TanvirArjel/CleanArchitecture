@@ -5,17 +5,11 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Queries.IdentityQueries.UserQueries;
 
-public sealed class GetEmailVerificationCodeQuery : IRequest<EmailVerificationCode>
+public sealed class GetEmailVerificationCodeQuery(string email, string code) : IRequest<EmailVerificationCode>
 {
-    public GetEmailVerificationCodeQuery(string email, string code)
-    {
-        Email = email.ThrowIfNotValidEmail(nameof(email));
-        Code = code.ThrowIfNullOrEmpty(nameof(code));
-    }
+    public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
 
-    public string Email { get; }
-
-    public string Code { get; }
+    public string Code { get; } = code.ThrowIfNullOrEmpty(nameof(code));
 
     private class GetEmailVerificationCodeQueryHandler(
         IRepository repository) : IRequestHandler<GetEmailVerificationCodeQuery, EmailVerificationCode>

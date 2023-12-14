@@ -10,14 +10,9 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace CleanHr.Blazor.Common;
 
 [ScopedService]
-public class JwtTokenParser
+public class JwtTokenParser(JwtSecurityTokenHandler jwtSecurityTokenHandler)
 {
-    private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
-
-    public JwtTokenParser(JwtSecurityTokenHandler jwtSecurityTokenHandler)
-    {
-        _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
-    }
+    private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
 
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Not applicable here.")]
     public ClaimsPrincipal GetClaimsPrincipal(string token)

@@ -21,28 +21,13 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace CleanHr.Application.Services;
 
 [ScopedService]
-public sealed class ViewRenderService
+public sealed class ViewRenderService(
+    IRazorViewEngine razorViewEngine,
+    ITempDataProvider tempDataProvider,
+    IServiceProvider serviceProvider,
+    UserManager<ApplicationUser> userManager,
+    IExceptionLogger exceptionLogger)
 {
-    private readonly IRazorViewEngine _razorViewEngine;
-    private readonly ITempDataProvider _tempDataProvider;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IExceptionLogger _exceptionLogger;
-
-    public ViewRenderService(
-        IRazorViewEngine razorViewEngine,
-        ITempDataProvider tempDataProvider,
-        IServiceProvider serviceProvider,
-        UserManager<ApplicationUser> userManager,
-        IExceptionLogger exceptionLogger)
-    {
-        _razorViewEngine = razorViewEngine;
-        _tempDataProvider = tempDataProvider;
-        _serviceProvider = serviceProvider;
-        _userManager = userManager;
-        _exceptionLogger = exceptionLogger;
-    }
-
     public async Task<string> RenderViewToStringAsync(string viewNameOrPath, object model)
     {
         try
@@ -52,14 +37,14 @@ public sealed class ViewRenderService
                 throw new ArgumentNullException(nameof(viewNameOrPath));
             }
 
-            DefaultHttpContext httpContext = new() { RequestServices = _serviceProvider };
+            DefaultHttpContext httpContext = new() { RequestServices = serviceProvider };
             ActionContext actionContext = new(httpContext, new RouteData(), new ActionDescriptor());
 
-            ViewEngineResult viewEngineResult = _razorViewEngine.FindView(actionContext, viewNameOrPath, false);
+            ViewEngineResult viewEngineResult = razorViewEngine.FindView(actionContext, viewNameOrPath, false);
 
             if (!viewEngineResult.Success)
             {
-                viewEngineResult = _razorViewEngine.GetView(executingFilePath: viewNameOrPath, viewPath: viewNameOrPath, isMainPage: false);
+                viewEngineResult = razorViewEngine.GetView(executingFilePath: viewNameOrPath, viewPath: viewNameOrPath, isMainPage: false);
             }
 
             if (viewEngineResult.View == null || !viewEngineResult.Success)
@@ -75,7 +60,7 @@ public sealed class ViewRenderService
                 Model = model
             };
 
-            TempDataDictionary tempData = new(actionContext.HttpContext, _tempDataProvider);
+            TempDataDictionary tempData = new(actionContext.HttpContext, tempDataProvider);
 
             ViewContext viewContext = new(actionContext, view, viewDictionary, tempData, stringWriter, new HtmlHelperOptions());
 
@@ -86,7 +71,7 @@ public sealed class ViewRenderService
         catch (Exception exception)
         {
             var methodParameterObj = new { ViewName = viewNameOrPath, Model = model };
-            await _exceptionLogger.LogAsync(exception, methodParameterObj);
+            await exceptionLogger.LogAsync(exception, methodParameterObj);
             throw;
         }
     }
@@ -102,7 +87,7 @@ public sealed class ViewRenderService
 
             userId.ThrowIfEmpty(nameof(userId));
 
-            string userLanguageCulture = await _userManager.Users.Where(u => u.Id == userId)
+            string userLanguageCulture = await userManager.Users.Where(u => u.Id == userId)
                 .Select(u => u.LanguageCulture).FirstOrDefaultAsync();
 
             if (!string.IsNullOrWhiteSpace(userLanguageCulture))
@@ -117,7 +102,7 @@ public sealed class ViewRenderService
         catch (Exception exception)
         {
             var methodParameterObj = new { ViewName = viewNameOrPath, Model = model, UserId = userId };
-            await _exceptionLogger.LogAsync(exception, methodParameterObj);
+            await exceptionLogger.LogAsync(exception, methodParameterObj);
             throw;
         }
     }

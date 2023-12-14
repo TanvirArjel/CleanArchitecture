@@ -20,7 +20,9 @@ public class UserService
     private readonly HttpClient _httpClient;
     private readonly ILocalStorageService _localStorage;
 
-    public UserService(IHttpClientFactory httpClientFactory, ILocalStorageService localStorage)
+    public UserService(
+        IHttpClientFactory httpClientFactory,
+        ILocalStorageService localStorage)
     {
         httpClientFactory.ThrowIfNull(nameof(httpClientFactory));
 
@@ -79,10 +81,7 @@ public class UserService
 
     public async Task<HttpResponseMessage> UpdateAsync(EditUserModel editUserModel)
     {
-        if (editUserModel == null)
-        {
-            throw new ArgumentNullException(nameof(editUserModel));
-        }
+        ArgumentNullException.ThrowIfNull(editUserModel);
 
         HttpResponseMessage httpResponseMessage = await _httpClient.PutAsJsonAsync($"users/{editUserModel.Id}", editUserModel);
 
@@ -91,10 +90,7 @@ public class UserService
 
     public async Task<HttpResponseMessage> SetPasswordAsync(SetUserPasswordModel setUserPasswordModel)
     {
-        if (setUserPasswordModel == null)
-        {
-            throw new ArgumentNullException(nameof(setUserPasswordModel));
-        }
+        ArgumentNullException.ThrowIfNull(setUserPasswordModel);
 
         HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync($"users/{setUserPasswordModel.UserId}/set-password", setUserPasswordModel);
 
@@ -103,10 +99,7 @@ public class UserService
 
     public async Task<HttpResponseMessage> ChangePasswordAsync(ChangePasswordModel changePasswordModel)
     {
-        if (changePasswordModel == null)
-        {
-            throw new ArgumentNullException(nameof(changePasswordModel));
-        }
+        ArgumentNullException.ThrowIfNull(changePasswordModel);
 
         HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync($"users/{changePasswordModel.UserId}/change-password", changePasswordModel);
 
@@ -115,10 +108,7 @@ public class UserService
 
     public async Task<HttpResponseMessage> RegisterAsync(RegistrationModel registerModel)
     {
-        if (registerModel == null)
-        {
-            throw new ArgumentNullException(nameof(registerModel));
-        }
+        ArgumentNullException.ThrowIfNull(registerModel);
 
         HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/registration", registerModel);
 
@@ -127,10 +117,7 @@ public class UserService
 
     public async Task<HttpResponseMessage> LoginAsync(LoginModel loginModel)
     {
-        if (loginModel == null)
-        {
-            throw new ArgumentNullException(nameof(loginModel));
-        }
+        ArgumentNullException.ThrowIfNull(loginModel);
 
         HttpResponseMessage httpResponseMessage = await _httpClient.PostAsJsonAsync("v1/user/login", loginModel);
 

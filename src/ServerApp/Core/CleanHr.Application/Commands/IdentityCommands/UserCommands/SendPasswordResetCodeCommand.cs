@@ -9,14 +9,9 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class SendPasswordResetCodeCommand : IRequest
+public sealed class SendPasswordResetCodeCommand(string email) : IRequest
 {
-    public SendPasswordResetCodeCommand(string email)
-    {
-        Email = email.ThrowIfNotValidEmail(nameof(email));
-    }
-
-    public string Email { get; }
+    public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
 }
 
 internal class SendPasswordResetCodeCommandHandler(

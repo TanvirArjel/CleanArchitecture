@@ -4,29 +4,19 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Application.Queries.EmployeeQueries;
 
-public sealed class GetEmployeeByIdQuery : IRequest<EmployeeDetailsDto>
+public sealed class GetEmployeeByIdQuery(Guid employeeId) : IRequest<EmployeeDetailsDto>
 {
-    public GetEmployeeByIdQuery(Guid employeeId)
+
+    public Guid Id { get; } = employeeId.ThrowIfEmpty(nameof(employeeId));
+
+    private class GetEmployeeByIdQueryHandler(IEmployeeCacheRepository employeeCacheRepository) : IRequestHandler<GetEmployeeByIdQuery, EmployeeDetailsDto>
     {
-        Id = employeeId.ThrowIfEmpty(nameof(employeeId));
-    }
-
-    public Guid Id { get; }
-
-    private class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery, EmployeeDetailsDto>
-    {
-        private readonly IEmployeeCacheRepository _employeeCacheRepository;
-
-        public GetEmployeeByIdQueryHandler(IEmployeeCacheRepository employeeCacheRepository)
-        {
-            _employeeCacheRepository = employeeCacheRepository;
-        }
 
         public async Task<EmployeeDetailsDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
-            EmployeeDetailsDto employeeDetailsDto = await _employeeCacheRepository.GetDetailsByIdAsync(request.Id);
+            EmployeeDetailsDto employeeDetailsDto = await employeeCacheRepository.GetDetailsByIdAsync(request.Id);
             return employeeDetailsDto;
         }
     }

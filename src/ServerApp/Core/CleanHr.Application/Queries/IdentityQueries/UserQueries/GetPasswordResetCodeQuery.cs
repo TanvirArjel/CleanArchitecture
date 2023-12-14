@@ -5,32 +5,21 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Queries.IdentityQueries.UserQueries;
 
-public sealed class GetPasswordResetCodeQuery : IRequest<PasswordResetCode>
+public sealed class GetPasswordResetCodeQuery(string email, string code) : IRequest<PasswordResetCode>
 {
-    public GetPasswordResetCodeQuery(string email, string code)
+
+    public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
+
+    public string Code { get; } = code.ThrowIfNullOrEmpty(nameof(code));
+
+    private class GetPasswordResetCodeQueryHandler(IRepository repository) : IRequestHandler<GetPasswordResetCodeQuery, PasswordResetCode>
     {
-        Email = email.ThrowIfNotValidEmail(nameof(email));
-        Code = code.ThrowIfNullOrEmpty(nameof(code));
-    }
-
-    public string Email { get; }
-
-    public string Code { get; }
-
-    private class GetPasswordResetCodeQueryHandler : IRequestHandler<GetPasswordResetCodeQuery, PasswordResetCode>
-    {
-        private readonly IRepository _repository;
-
-        public GetPasswordResetCodeQueryHandler(IRepository repository)
-        {
-            _repository = repository;
-        }
 
         public async Task<PasswordResetCode> Handle(GetPasswordResetCodeQuery request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
 
-            PasswordResetCode passwordResetCode = await _repository
+            PasswordResetCode passwordResetCode = await repository
             .GetAsync<PasswordResetCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null, cancellationToken);
 
             return passwordResetCode;

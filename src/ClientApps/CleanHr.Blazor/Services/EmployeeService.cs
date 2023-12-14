@@ -38,10 +38,7 @@ public class EmployeeService
 
     public async Task<HttpResponseMessage> CreateAsync(CreateEmployeeModel createEmployeeViewModel)
     {
-        if (createEmployeeViewModel == null)
-        {
-            throw new ArgumentNullException(nameof(createEmployeeViewModel));
-        }
+        ArgumentNullException.ThrowIfNull(createEmployeeViewModel);
 
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync("v1/employees", createEmployeeViewModel);
         return response;
@@ -49,10 +46,7 @@ public class EmployeeService
 
     public async Task<HttpResponseMessage> UpdateAsync(UpdateEmployeeModel updateEmployeeViewModel)
     {
-        if (updateEmployeeViewModel == null)
-        {
-            throw new ArgumentNullException(nameof(updateEmployeeViewModel));
-        }
+        ArgumentNullException.ThrowIfNull(updateEmployeeViewModel);
 
         HttpResponseMessage response = await _httpClient
             .PutAsJsonAsync($"v1/employees/{updateEmployeeViewModel.Id}", updateEmployeeViewModel);

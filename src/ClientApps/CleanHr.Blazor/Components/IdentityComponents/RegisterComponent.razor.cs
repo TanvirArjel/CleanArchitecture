@@ -12,21 +12,14 @@ using TanvirArjel.Blazor.Utilities;
 
 namespace CleanHr.Blazor.Components.IdentityComponents;
 
-public partial class RegisterComponent
+public partial class RegisterComponent(
+    UserService userService,
+    NavigationManager navigationManager,
+    ExceptionLogger exceptionLogger)
 {
-    private readonly UserService _userService;
-    private readonly NavigationManager _navigationManager;
-    private readonly ExceptionLogger _exceptionLogger;
-
-    public RegisterComponent(
-        UserService userService,
-        NavigationManager navigationManager,
-        ExceptionLogger exceptionLogger)
-    {
-        _userService = userService;
-        _navigationManager = navigationManager;
-        _exceptionLogger = exceptionLogger;
-    }
+    private readonly UserService _userService = userService;
+    private readonly NavigationManager _navigationManager = navigationManager;
+    private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
 
     private EditContext FormContext { get; set; }
 

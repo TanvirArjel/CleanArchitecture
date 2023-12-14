@@ -8,13 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanHr.Persistence.RelationalDB;
 
-internal sealed class CleanHrDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+internal sealed class CleanHrDbContext(DbContextOptions<CleanHrDbContext> options) : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
 {
-    public CleanHrDbContext(DbContextOptions<CleanHrDbContext> options)
-        : base(options)
-    {
-    }
-
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ////ChangeTracker.ApplyValueGenerationOnUpdate();

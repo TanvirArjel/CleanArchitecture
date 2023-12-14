@@ -5,14 +5,9 @@ using CleanHr.Blazor.Services;
 
 namespace CleanHr.Blazor.Components.DepartmentComponents;
 
-public partial class DepartmentDetailsModalComponent
+public partial class DepartmentDetailsModalComponent(DepartmentService departmentService)
 {
-    private readonly DepartmentService _departmentService;
-
-    public DepartmentDetailsModalComponent(DepartmentService departmentService)
-    {
-        _departmentService = departmentService;
-    }
+    private readonly DepartmentService _departmentService = departmentService;
 
     private string ModalClass { get; set; } = string.Empty;
 

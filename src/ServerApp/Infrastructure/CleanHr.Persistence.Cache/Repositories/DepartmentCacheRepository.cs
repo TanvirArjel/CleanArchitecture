@@ -12,21 +12,12 @@ using TanvirArjel.Extensions.Microsoft.Caching;
 
 namespace CleanHr.Persistence.Cache.Repositories;
 
-internal sealed class DepartmentCacheRepository : IDepartmentCacheRepository
+internal sealed class DepartmentCacheRepository(IDistributedCache distributedCache, IQueryRepository repository) : IDepartmentCacheRepository
 {
-    private readonly IDistributedCache _distributedCache;
-    private readonly IQueryRepository _repository;
-
-    public DepartmentCacheRepository(IDistributedCache distributedCache, IQueryRepository repository)
-    {
-        _distributedCache = distributedCache;
-        _repository = repository;
-    }
-
     public async Task<List<DepartmentDto>> GetListAsync()
     {
         string cacheKey = DepartmentCacheKeys.ListKey;
-        List<DepartmentDto> departmentList = await _distributedCache.GetAsync<List<DepartmentDto>>(cacheKey);
+        List<DepartmentDto> departmentList = await distributedCache.GetAsync<List<DepartmentDto>>(cacheKey);
 
         if (departmentList == null)
         {
@@ -40,9 +31,9 @@ internal sealed class DepartmentCacheRepository : IDepartmentCacheRepository
                 LastModifiedAtUtc = d.LastModifiedAtUtc
             };
 
-            departmentList = await _repository.GetListAsync(selectExp);
+            departmentList = await repository.GetListAsync(selectExp);
 
-            await _distributedCache.SetAsync(cacheKey, departmentList);
+            await distributedCache.SetAsync(cacheKey, departmentList);
         }
 
         return departmentList;
@@ -51,13 +42,13 @@ internal sealed class DepartmentCacheRepository : IDepartmentCacheRepository
     public async Task<Department> GetByIdAsync(Guid departmentId)
     {
         string cacheKey = DepartmentCacheKeys.GetKey(departmentId);
-        Department department = await _distributedCache.GetAsync<Department>(cacheKey);
+        Department department = await distributedCache.GetAsync<Department>(cacheKey);
 
         if (department == null)
         {
-            department = await _repository.GetByIdAsync<Department>(departmentId);
+            department = await repository.GetByIdAsync<Department>(departmentId);
 
-            await _distributedCache.SetAsync(cacheKey, department);
+            await distributedCache.SetAsync(cacheKey, department);
         }
 
         return department;
@@ -66,7 +57,7 @@ internal sealed class DepartmentCacheRepository : IDepartmentCacheRepository
     public async Task<DepartmentDetailsDto> GetDetailsByIdAsync(Guid departmentId)
     {
         string cacheKey = DepartmentCacheKeys.GetDetailsKey(departmentId);
-        DepartmentDetailsDto department = await _distributedCache.GetAsync<DepartmentDetailsDto>(cacheKey);
+        DepartmentDetailsDto department = await distributedCache.GetAsync<DepartmentDetailsDto>(cacheKey);
 
         if (department == null)
         {
@@ -80,9 +71,9 @@ internal sealed class DepartmentCacheRepository : IDepartmentCacheRepository
                 LastModifiedAtUtc = d.LastModifiedAtUtc
             };
 
-            department = await _repository.GetByIdAsync(departmentId, selectExp);
+            department = await repository.GetByIdAsync(departmentId, selectExp);
 
-            await _distributedCache.SetAsync(cacheKey, department);
+            await distributedCache.SetAsync(cacheKey, department);
         }
 
         return department;

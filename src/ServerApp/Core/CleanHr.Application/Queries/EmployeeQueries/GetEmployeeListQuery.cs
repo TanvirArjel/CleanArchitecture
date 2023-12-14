@@ -6,27 +6,14 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Queries.EmployeeQueries;
 
-public sealed class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
+public sealed class GetEmployeeListQuery(int pageIndex, int pageSize) : IRequest<PaginatedList<EmployeeDto>>
 {
-    public GetEmployeeListQuery(int pageIndex, int pageSize)
+    public int PageIndex { get; } = pageIndex.ThrowIfZeroOrNegative(nameof(pageIndex));
+
+    public int PageSize { get; } = pageSize.ThrowIfOutOfRange(1, 50, nameof(pageSize));
+
+    private class GetEmployeeListQueryHandler(IQueryRepository repository) : IRequestHandler<GetEmployeeListQuery, PaginatedList<EmployeeDto>>
     {
-        PageIndex = pageIndex.ThrowIfZeroOrNegative(nameof(pageIndex));
-        PageSize = pageSize.ThrowIfOutOfRange(1, 50, nameof(pageSize));
-    }
-
-    public int PageIndex { get; }
-
-    public int PageSize { get; }
-
-    private class GetEmployeeListQueryHandler : IRequestHandler<GetEmployeeListQuery, PaginatedList<EmployeeDto>>
-    {
-        private readonly IQueryRepository _repository;
-
-        public GetEmployeeListQueryHandler(IQueryRepository repository)
-        {
-            _repository = repository;
-        }
-
         public async Task<PaginatedList<EmployeeDto>> Handle(GetEmployeeListQuery request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));
@@ -46,13 +33,12 @@ public sealed class GetEmployeeListQuery : IRequest<PaginatedList<EmployeeDto>>
             };
 
             PaginationSpecification<Employee> paginationSpecification = new()
-
             {
                 PageIndex = request.PageIndex,
                 PageSize = request.PageSize
             };
 
-            PaginatedList<EmployeeDto> employeeDetailsDtos = await _repository.GetListAsync(paginationSpecification, selectExpression, cancellationToken);
+            PaginatedList<EmployeeDto> employeeDetailsDtos = await repository.GetListAsync(paginationSpecification, selectExpression, cancellationToken);
 
             return employeeDetailsDtos;
         }

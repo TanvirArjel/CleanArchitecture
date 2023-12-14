@@ -12,21 +12,14 @@ using TanvirArjel.Blazor.Utilities;
 
 namespace CleanHr.Blazor.Components.EmployeeComponents;
 
-public partial class CreateEmployeeModalComponent
+public partial class CreateEmployeeModalComponent(
+    EmployeeService employeeService,
+    DepartmentService departmentService,
+    ExceptionLogger exceptionLogger)
 {
-    private readonly EmployeeService _employeeService;
-    private readonly DepartmentService _departmentService;
-    private readonly ExceptionLogger _exceptionLogger;
-
-    public CreateEmployeeModalComponent(
-        EmployeeService employeeService,
-        DepartmentService departmentService,
-        ExceptionLogger exceptionLogger)
-    {
-        _employeeService = employeeService;
-        _departmentService = departmentService;
-        _exceptionLogger = exceptionLogger;
-    }
+    private readonly EmployeeService _employeeService = employeeService;
+    private readonly DepartmentService _departmentService = departmentService;
+    private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
 
     [Parameter]
     public EventCallback EmployeeCreated { get; set; }

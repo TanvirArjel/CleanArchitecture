@@ -9,14 +9,9 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class SendEmailVerificationCodeCommand : IRequest
+public sealed class SendEmailVerificationCodeCommand(string email) : IRequest
 {
-    public SendEmailVerificationCodeCommand(string email)
-    {
-        Email = email.ThrowIfNotValidEmail(nameof(email));
-    }
-
-    public string Email { get; }
+    public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
 }
 
 internal class SendEmailVerificationCodeCommandHandler(

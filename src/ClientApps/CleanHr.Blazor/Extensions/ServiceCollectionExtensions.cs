@@ -12,10 +12,7 @@ public static class ServiceCollectionExtensions
 {
     public static void AddDependencyServices(this IServiceCollection services)
     {
-        if (services == null)
-        {
-            throw new ArgumentNullException(nameof(services));
-        }
+        ArgumentNullException.ThrowIfNull(services);
 
         services.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.WriteIndented = true);
 

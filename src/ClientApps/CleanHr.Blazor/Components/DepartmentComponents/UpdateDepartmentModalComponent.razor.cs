@@ -12,16 +12,12 @@ using TanvirArjel.Blazor.Utilities;
 
 namespace CleanHr.Blazor.Components.DepartmentComponents;
 
-public partial class UpdateDepartmentModalComponent
+public partial class UpdateDepartmentModalComponent(
+    DepartmentService departmentService,
+    ExceptionLogger exceptionLogger)
 {
-    private readonly DepartmentService _departmentService;
-    private readonly ExceptionLogger _exceptionLogger;
-
-    public UpdateDepartmentModalComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
-    {
-        _departmentService = departmentService;
-        _exceptionLogger = exceptionLogger;
-    }
+    private readonly DepartmentService _departmentService = departmentService;
+    private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
 
     [Parameter]
     public EventCallback DepartmentUpdated { get; set; }

@@ -2,12 +2,8 @@
 
 namespace CleanHr.Infrastructure.Services.Configs;
 
-public class SendGridConfig
+public class SendGridConfig(string apiKey)
 {
-    public SendGridConfig(string apiKey)
-    {
-        ApiKey = apiKey.ThrowIfNullOrEmpty(nameof(apiKey));
-    }
 
-    public string ApiKey { get; set; }
+    public string ApiKey { get; set; } = apiKey.ThrowIfNullOrEmpty(nameof(apiKey));
 }

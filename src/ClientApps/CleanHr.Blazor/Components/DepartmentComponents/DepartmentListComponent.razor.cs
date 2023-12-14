@@ -10,16 +10,12 @@ using TanvirArjel.Blazor.Utilities;
 
 namespace CleanHr.Blazor.Components.DepartmentComponents;
 
-public partial class DepartmentListComponent
+public partial class DepartmentListComponent(
+    DepartmentService departmentService,
+    ExceptionLogger exceptionLogger)
 {
-    private readonly DepartmentService _departmentService;
-    private readonly ExceptionLogger _exceptionLogger;
-
-    public DepartmentListComponent(DepartmentService departmentService, ExceptionLogger exceptionLogger)
-    {
-        _departmentService = departmentService;
-        _exceptionLogger = exceptionLogger;
-    }
+    private readonly DepartmentService _departmentService = departmentService;
+    private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
 
     private List<DepartmentDetailsModel> Departments { get; set; }
 

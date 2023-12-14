@@ -3,14 +3,9 @@ using CleanHr.Blazor.Common;
 
 namespace CleanHr.Blazor.Components.SharedComponents;
 
-public partial class MainLayoutComponent
+public partial class MainLayoutComponent(HostAuthStateProvider hostAuthStateProvider)
 {
-    private readonly HostAuthStateProvider _hostAuthStateProvider;
-
-    public MainLayoutComponent(HostAuthStateProvider hostAuthStateProvider)
-    {
-        _hostAuthStateProvider = hostAuthStateProvider;
-    }
+    private readonly HostAuthStateProvider _hostAuthStateProvider = hostAuthStateProvider;
 
     private async Task LogOutAsync()
     {

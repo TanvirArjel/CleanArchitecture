@@ -7,18 +7,9 @@ using SendGrid.Helpers.Mail;
 
 namespace CleanHr.Infrastructure.Services;
 
-public sealed class EmailSender : IEmailSender
+public sealed class EmailSender(SendGridConfig sendGridConfig, IExceptionLogger exceptionLogger) : IEmailSender
 {
-    private readonly SendGridConfig _sendGridConfig;
-    private readonly IExceptionLogger _exceptionLogger;
-
-    public EmailSender(SendGridConfig sendGridConfig, IExceptionLogger exceptionLogger)
-    {
-        _exceptionLogger = exceptionLogger;
-        _sendGridConfig = sendGridConfig;
-    }
-
-    private SendGridClient SendGridClient => new(_sendGridConfig.ApiKey);
+    private SendGridClient SendGridClient => new(sendGridConfig.ApiKey);
 
     public async Task SendAsync(EmailMessage emailMessage)
     {
@@ -44,7 +35,7 @@ public sealed class EmailSender : IEmailSender
         }
         catch (Exception exception)
         {
-            await _exceptionLogger.LogAsync(exception, emailMessage);
+            await exceptionLogger.LogAsync(exception, emailMessage);
         }
     }
 }

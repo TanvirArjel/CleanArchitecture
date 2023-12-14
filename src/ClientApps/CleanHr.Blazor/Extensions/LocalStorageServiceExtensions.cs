@@ -10,10 +10,7 @@ public static class LocalStorageServiceExtensions
 {
     public static async Task<LoggedInUserInfo> GetUserInfoAsync(this ILocalStorageService localStorage)
     {
-        if (localStorage == null)
-        {
-            throw new ArgumentNullException(nameof(localStorage));
-        }
+        ArgumentNullException.ThrowIfNull(localStorage);
 
         LoggedInUserInfo loggedInUserInfo = await localStorage.GetItemAsync<LoggedInUserInfo>(LocalStorageKey.Jwt);
 

@@ -13,24 +13,16 @@ using TanvirArjel.Blazor.Utilities;
 
 namespace CleanHr.Blazor.Components.IdentityComponents;
 
-public partial class LoginComponent
+public partial class LoginComponent(
+    UserService userService,
+    HostAuthStateProvider hostAuthStateProvider,
+    ExceptionLogger exceptionLogger,
+    NavigationManager navigationManager)
 {
-    private readonly UserService _userService;
-    private readonly HostAuthStateProvider _hostAuthStateProvider;
-    private readonly ExceptionLogger _exceptionLogger;
-    private readonly NavigationManager _navigationManager;
-
-    public LoginComponent(
-        UserService userService,
-        HostAuthStateProvider hostAuthStateProvider,
-        ExceptionLogger exceptionLogger,
-        NavigationManager navigationManager)
-    {
-        _userService = userService;
-        _hostAuthStateProvider = hostAuthStateProvider;
-        _exceptionLogger = exceptionLogger;
-        _navigationManager = navigationManager;
-    }
+    private readonly UserService _userService = userService;
+    private readonly HostAuthStateProvider _hostAuthStateProvider = hostAuthStateProvider;
+    private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
+    private readonly NavigationManager _navigationManager = navigationManager;
 
     private EditContext FormContext { get; set; }
 

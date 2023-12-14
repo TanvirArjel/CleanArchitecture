@@ -8,10 +8,7 @@ public class BootstrapValidationClassProvider : FieldCssClassProvider
 {
     public override string GetFieldCssClass(EditContext editContext, in FieldIdentifier fieldIdentifier)
     {
-        if (editContext == null)
-        {
-            throw new ArgumentNullException(nameof(editContext));
-        }
+        ArgumentNullException.ThrowIfNull(editContext);
 
         bool isValid = !editContext.GetValidationMessages(fieldIdentifier).Any();
 
