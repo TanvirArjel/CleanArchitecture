@@ -12,8 +12,15 @@ public sealed class StoreRefreshTokenCommand(Guid userId, string token) : IReque
     public string Token { get; } = token.ThrowIfNullOrEmpty(nameof(token));
 }
 
-internal class StoreRefreshTokenCommandHandler(IRepository repository) : IRequestHandler<StoreRefreshTokenCommand, RefreshToken>
+internal class StoreRefreshTokenCommandHandler : IRequestHandler<StoreRefreshTokenCommand, RefreshToken>
 {
+    private readonly IRepository _repository;
+
+    public StoreRefreshTokenCommandHandler(IRepository repository)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    }
+
     public async Task<RefreshToken> Handle(StoreRefreshTokenCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
@@ -26,8 +33,8 @@ internal class StoreRefreshTokenCommandHandler(IRepository repository) : IReques
             ExpireAtUtc = DateTime.UtcNow.AddDays(30)
         };
 
-        repository.Add(refreshToken);
-        await repository.SaveChangesAsync(cancellationToken);
+        _repository.Add(refreshToken);
+        await _repository.SaveChangesAsync(cancellationToken);
         return refreshToken;
     }
 }

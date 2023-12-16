@@ -7,6 +7,8 @@ namespace CleanHr.Api.Features.Department.Endpoints;
 
 public sealed class GetDepartmentByIdEndpoint(IMediator mediator) : DepartmentEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     [HttpGet("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -23,7 +25,7 @@ public sealed class GetDepartmentByIdEndpoint(IMediator mediator) : DepartmentEn
 
         GetDepartmentByIdQuery query = new(departmentId);
 
-        DepartmentDetailsDto departmentDetailsDto = await mediator.Send(query, HttpContext.RequestAborted);
+        DepartmentDetailsDto departmentDetailsDto = await _mediator.Send(query, HttpContext.RequestAborted);
         return departmentDetailsDto;
     }
 }

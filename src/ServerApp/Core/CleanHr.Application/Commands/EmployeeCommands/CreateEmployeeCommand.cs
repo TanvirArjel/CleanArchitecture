@@ -17,6 +17,9 @@ internal class CreateEmployeeCommandHandler(
     IEmployeeRepository employeeRepository,
     EmployeeFactory employeeFactory) : IRequestHandler<CreateEmployeeCommand, Guid>
 {
+    private readonly IEmployeeRepository _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
+    private readonly EmployeeFactory _employeeFactory = employeeFactory ?? throw new ArgumentNullException(nameof(employeeFactory));
+
     public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
@@ -26,9 +29,9 @@ internal class CreateEmployeeCommandHandler(
         Email email = new(request.Email);
         PhoneNumber phoneNumber = new(request.PhoneNumber);
 
-        Employee employee = employeeFactory.Create(name, request.DepartmentId, dateOfBirth, email, phoneNumber);
+        Employee employee = _employeeFactory.Create(name, request.DepartmentId, dateOfBirth, email, phoneNumber);
 
-        await employeeRepository.InsertAsync(employee);
+        await _employeeRepository.InsertAsync(employee);
         return employee.Id;
     }
 }

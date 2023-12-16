@@ -16,16 +16,18 @@ public sealed class VerifyUserEmailCommand(string email, string code) : IRequest
 
 internal class VerifyUserEmailCommandHandler(IRepository repository) : IRequestHandler<VerifyUserEmailCommand>
 {
+    private readonly IRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+
     public async Task Handle(VerifyUserEmailCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        IDbContextTransaction dbContextTransaction = await repository
+        IDbContextTransaction dbContextTransaction = await _repository
             .BeginTransactionAsync(IsolationLevel.Unspecified, cancellationToken);
 
         try
         {
-            EmailVerificationCode emailVerificationCode = await repository
+            EmailVerificationCode emailVerificationCode = await _repository
             .GetAsync<EmailVerificationCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null, cancellationToken);
 
             if (emailVerificationCode == null)
@@ -38,7 +40,7 @@ internal class VerifyUserEmailCommandHandler(IRepository repository) : IRequestH
                 throw new InvalidOperationException("The code is expired.");
             }
 
-            ApplicationUser applicationUser = await repository.GetAsync<ApplicationUser>(au => au.Email == request.Email, cancellationToken);
+            ApplicationUser applicationUser = await _repository.GetAsync<ApplicationUser>(au => au.Email == request.Email, cancellationToken);
 
             if (applicationUser == null)
             {
@@ -46,10 +48,10 @@ internal class VerifyUserEmailCommandHandler(IRepository repository) : IRequestH
             }
 
             applicationUser.EmailConfirmed = true;
-            repository.Update(applicationUser);
+            _repository.Update(applicationUser);
 
             emailVerificationCode.UsedAtUtc = DateTime.UtcNow;
-            repository.Update(emailVerificationCode);
+            _repository.Update(emailVerificationCode);
 
             await dbContextTransaction.CommitAsync(cancellationToken);
         }

@@ -69,10 +69,7 @@ public class UserService
 
     public async Task<UserDetailsModel> GetDetailsByIdAsync(int userId)
     {
-        if (userId <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(userId));
-        }
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(userId);
 
         UserDetailsModel userDetailsModel = await _httpClient.GetFromJsonAsync<UserDetailsModel>($"users/{userId}");
 

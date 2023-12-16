@@ -8,6 +8,8 @@ namespace CleanHr.Api.Features.Department.Endpoints;
 public sealed class DeleteDepartmentEndpoint(
     IMediator mediator) : DepartmentEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     [HttpDelete("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -23,7 +25,7 @@ public sealed class DeleteDepartmentEndpoint(
         }
 
         DeleteDepartmentCommand command = new(departmentId);
-        await mediator.Send(command, HttpContext.RequestAborted);
+        await _mediator.Send(command, HttpContext.RequestAborted);
 
         return NoContent();
     }

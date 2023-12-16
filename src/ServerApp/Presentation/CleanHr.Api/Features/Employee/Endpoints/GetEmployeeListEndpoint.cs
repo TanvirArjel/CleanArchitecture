@@ -8,6 +8,8 @@ namespace CleanHr.Api.Features.Employee.Endpoints;
 
 public class GetEmployeeListEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     // GET: api/employees
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -30,7 +32,7 @@ public class GetEmployeeListEndpoint(IMediator mediator) : EmployeeEndpointBase
         }
 
         GetEmployeeListQuery getEmployeeListQuery = new(pageNumber, pageSize);
-        PaginatedList<EmployeeDto> employeeList = await mediator.Send(getEmployeeListQuery, HttpContext.RequestAborted);
+        PaginatedList<EmployeeDto> employeeList = await _mediator.Send(getEmployeeListQuery, HttpContext.RequestAborted);
         return employeeList;
     }
 }

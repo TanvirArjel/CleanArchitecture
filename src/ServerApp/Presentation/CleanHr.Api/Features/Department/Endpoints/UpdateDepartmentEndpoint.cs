@@ -9,6 +9,8 @@ namespace CleanHr.Api.Features.Department.Endpoints;
 public sealed class UpdateDepartmentEndpoint(
     IMediator mediator) : DepartmentEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     [HttpPut("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -25,7 +27,7 @@ public sealed class UpdateDepartmentEndpoint(
 
         UpdateDepartmentCommand command = new(departmentId, model.Name, model.Description, true);
 
-        await mediator.Send(command, HttpContext.RequestAborted);
+        await _mediator.Send(command, HttpContext.RequestAborted);
         return Ok();
     }
 }

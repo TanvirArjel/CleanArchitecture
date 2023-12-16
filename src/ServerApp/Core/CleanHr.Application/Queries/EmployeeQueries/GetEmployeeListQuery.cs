@@ -11,37 +11,39 @@ public sealed class GetEmployeeListQuery(int pageIndex, int pageSize) : IRequest
     public int PageIndex { get; } = pageIndex.ThrowIfZeroOrNegative(nameof(pageIndex));
 
     public int PageSize { get; } = pageSize.ThrowIfOutOfRange(1, 50, nameof(pageSize));
+}
 
-    private class GetEmployeeListQueryHandler(IQueryRepository repository) : IRequestHandler<GetEmployeeListQuery, PaginatedList<EmployeeDto>>
+internal class GetEmployeeListQueryHandler(IQueryRepository repository) : IRequestHandler<GetEmployeeListQuery, PaginatedList<EmployeeDto>>
+{
+    private readonly IQueryRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+
+    public async Task<PaginatedList<EmployeeDto>> Handle(GetEmployeeListQuery request, CancellationToken cancellationToken)
     {
-        public async Task<PaginatedList<EmployeeDto>> Handle(GetEmployeeListQuery request, CancellationToken cancellationToken)
+        request.ThrowIfNull(nameof(request));
+
+        Expression<Func<Employee, EmployeeDto>> selectExpression = e => new EmployeeDto
         {
-            request.ThrowIfNull(nameof(request));
+            Id = e.Id,
+            Name = e.Name.FirstName + " " + e.Name.LastName,
+            DepartmentId = e.DepartmentId,
+            DepartmentName = e.Department.Name.Value,
+            DateOfBirth = e.DateOfBirth.Value,
+            Email = e.Email.Value,
+            PhoneNumber = e.PhoneNumber.Value,
+            IsActive = e.IsActive,
+            CreatedAtUtc = e.CreatedAtUtc,
+            LastModifiedAtUtc = e.LastModifiedAtUtc
+        };
 
-            Expression<Func<Employee, EmployeeDto>> selectExpression = e => new EmployeeDto
-            {
-                Id = e.Id,
-                Name = e.Name.FirstName + " " + e.Name.LastName,
-                DepartmentId = e.DepartmentId,
-                DepartmentName = e.Department.Name.Value,
-                DateOfBirth = e.DateOfBirth.Value,
-                Email = e.Email.Value,
-                PhoneNumber = e.PhoneNumber.Value,
-                IsActive = e.IsActive,
-                CreatedAtUtc = e.CreatedAtUtc,
-                LastModifiedAtUtc = e.LastModifiedAtUtc
-            };
+        PaginationSpecification<Employee> paginationSpecification = new()
+        {
+            PageIndex = request.PageIndex,
+            PageSize = request.PageSize
+        };
 
-            PaginationSpecification<Employee> paginationSpecification = new()
-            {
-                PageIndex = request.PageIndex,
-                PageSize = request.PageSize
-            };
+        PaginatedList<EmployeeDto> employeeDetailsDtos = await _repository.GetListAsync(paginationSpecification, selectExpression, cancellationToken);
 
-            PaginatedList<EmployeeDto> employeeDetailsDtos = await repository.GetListAsync(paginationSpecification, selectExpression, cancellationToken);
-
-            return employeeDetailsDtos;
-        }
+        return employeeDetailsDtos;
     }
 }
 

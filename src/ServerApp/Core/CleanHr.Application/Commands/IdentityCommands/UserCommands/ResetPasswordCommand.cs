@@ -10,20 +10,29 @@ namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
 public sealed record ResetPasswordCommand(string Email, string Code, string NewPassword) : IRequest;
 
-internal class ResetPasswordCommandHandler(
-    IRepository repository,
-    IPasswordHasher<ApplicationUser> passwordHasher) : IRequestHandler<ResetPasswordCommand>
+internal class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand>
 {
+    private readonly IRepository _repository;
+    private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+
+    public ResetPasswordCommandHandler(
+        IRepository repository,
+        IPasswordHasher<ApplicationUser> passwordHasher)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
+    }
+
     public async Task Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        IDbContextTransaction dbContextTransaction = await repository
+        IDbContextTransaction dbContextTransaction = await _repository
                 .BeginTransactionAsync(IsolationLevel.Unspecified, cancellationToken);
 
         try
         {
-            PasswordResetCode passwordResetCode = await repository
+            PasswordResetCode passwordResetCode = await _repository
                 .GetAsync<PasswordResetCode>(evc => evc.Email == request.Email && evc.Code == request.Code && evc.UsedAtUtc == null, cancellationToken);
 
             if (passwordResetCode == null)
@@ -36,19 +45,19 @@ internal class ResetPasswordCommandHandler(
                 throw new InvalidOperationException("The code is expired.");
             }
 
-            ApplicationUser applicationUser = await repository.GetAsync<ApplicationUser>(au => au.Email == request.Email, cancellationToken);
+            ApplicationUser applicationUser = await _repository.GetAsync<ApplicationUser>(au => au.Email == request.Email, cancellationToken);
 
             if (applicationUser == null)
             {
                 throw new InvalidOperationException("The provided email is not related to any account.");
             }
 
-            string newHashedPassword = passwordHasher.HashPassword(applicationUser, request.NewPassword);
+            string newHashedPassword = _passwordHasher.HashPassword(applicationUser, request.NewPassword);
             applicationUser.PasswordHash = newHashedPassword;
-            repository.Update(applicationUser);
+            _repository.Update(applicationUser);
 
             passwordResetCode.UsedAtUtc = DateTime.UtcNow;
-            repository.Update(passwordResetCode);
+            _repository.Update(passwordResetCode);
 
             await dbContextTransaction.CommitAsync(cancellationToken);
         }

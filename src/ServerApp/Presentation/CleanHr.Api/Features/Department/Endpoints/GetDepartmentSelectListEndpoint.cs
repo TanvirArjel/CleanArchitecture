@@ -8,6 +8,8 @@ namespace CleanHr.Api.Features.Department.Endpoints;
 
 public sealed class GetDepartmentSelectListEndpoint(IMediator mediator) : DepartmentEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     [HttpGet("select-list")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -23,7 +25,7 @@ public sealed class GetDepartmentSelectListEndpoint(IMediator mediator) : Depart
         }
 
         GetDepartmentListQuery departmentListQuery = new();
-        List<DepartmentDto> departmentDtos = await mediator.Send(departmentListQuery, HttpContext.RequestAborted);
+        List<DepartmentDto> departmentDtos = await _mediator.Send(departmentListQuery, HttpContext.RequestAborted);
 
         SelectList selectList = new(departmentDtos, "Id", "Name", selectedDepartment);
         return selectList;

@@ -8,6 +8,8 @@ namespace CleanHr.Api.Features.Employee.Endpoints;
 
 public class UpdateEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     // PUT: api/v1/employees/{Guid}
     [HttpPut("{employeeId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,7 +33,7 @@ public class UpdateEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
                 model.Email,
                 model.PhoneNumber);
 
-        await mediator.Send(command, HttpContext.RequestAborted);
+        await _mediator.Send(command, HttpContext.RequestAborted);
         return Ok();
     }
 }

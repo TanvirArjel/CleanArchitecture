@@ -18,13 +18,20 @@ public sealed class UpdateDialCodeCommand : IRequest
     public string DialCode { get; }
 }
 
-internal class UpdateDialCodeCommandHandler(IRepository repository) : IRequestHandler<UpdateDialCodeCommand>
+internal class UpdateDialCodeCommandHandler : IRequestHandler<UpdateDialCodeCommand>
 {
+    private readonly IRepository _repository;
+
+    public UpdateDialCodeCommandHandler(IRepository repository)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    }
+
     public async Task Handle(UpdateDialCodeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        ApplicationUser applicationUserToBeUpdated = await repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
+        ApplicationUser applicationUserToBeUpdated = await _repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
 
         if (applicationUserToBeUpdated == null)
         {
@@ -32,7 +39,7 @@ internal class UpdateDialCodeCommandHandler(IRepository repository) : IRequestHa
         }
 
         applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
-        repository.Update(applicationUserToBeUpdated);
-        await repository.SaveChangesAsync(cancellationToken);
+        _repository.Update(applicationUserToBeUpdated);
+        await _repository.SaveChangesAsync(cancellationToken);
     }
 }

@@ -14,16 +14,27 @@ public sealed class SendPasswordResetCodeCommand(string email) : IRequest
     public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
 }
 
-internal class SendPasswordResetCodeCommandHandler(
-        IRepository repository,
-        ViewRenderService viewRenderService,
-        IEmailSender emailSender) : IRequestHandler<SendPasswordResetCodeCommand>
+internal class SendPasswordResetCodeCommandHandler : IRequestHandler<SendPasswordResetCodeCommand>
 {
+    private readonly IRepository _repository;
+    private readonly ViewRenderService _viewRenderService;
+    private readonly IEmailSender _emailSender;
+
+    public SendPasswordResetCodeCommandHandler(
+            IRepository repository,
+            ViewRenderService viewRenderService,
+            IEmailSender emailSender)
+    {
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _viewRenderService = viewRenderService ?? throw new ArgumentNullException(nameof(viewRenderService));
+        _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+    }
+
     public async Task Handle(SendPasswordResetCodeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        bool isExistent = await repository.ExistsAsync<ApplicationUser>(u => u.Email == request.Email, cancellationToken);
+        bool isExistent = await _repository.ExistsAsync<ApplicationUser>(u => u.Email == request.Email, cancellationToken);
 
         if (isExistent == false)
         {
@@ -40,14 +51,14 @@ internal class SendPasswordResetCodeCommandHandler(
             SentAtUtc = DateTime.UtcNow
         };
 
-        await repository.AddAsync(emailVerificationCode, cancellationToken);
-        await repository.SaveChangesAsync(cancellationToken);
+        await _repository.AddAsync(emailVerificationCode, cancellationToken);
+        await _repository.SaveChangesAsync(cancellationToken);
 
         (string Email, string VerificationCode) model = (request.Email, verificationCode);
         string subject = "Reset Password";
         string senderEmail = "noreply@yourapp.com";
-        string emailBody = await viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);
+        string emailBody = await _viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);
         EmailMessage emailObject = new(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
-        await emailSender.SendAsync(emailObject);
+        await _emailSender.SendAsync(emailObject);
     }
 }

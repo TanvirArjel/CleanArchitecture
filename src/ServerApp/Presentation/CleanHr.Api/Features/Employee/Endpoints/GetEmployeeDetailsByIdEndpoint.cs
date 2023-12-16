@@ -7,6 +7,8 @@ namespace CleanHr.Api.Features.Employee.Endpoints;
 
 public class GetEmployeeDetailsByIdEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     // GET: api/employees/5
     [HttpGet("{employeeId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -24,7 +26,7 @@ public class GetEmployeeDetailsByIdEndpoint(IMediator mediator) : EmployeeEndpoi
 
         GetEmployeeByIdQuery getEmployeeByIdQuery = new(employeeId);
 
-        EmployeeDetailsDto employeeDetailsDto = await mediator.Send(getEmployeeByIdQuery, HttpContext.RequestAborted);
+        EmployeeDetailsDto employeeDetailsDto = await _mediator.Send(getEmployeeByIdQuery, HttpContext.RequestAborted);
         return employeeDetailsDto;
     }
 }

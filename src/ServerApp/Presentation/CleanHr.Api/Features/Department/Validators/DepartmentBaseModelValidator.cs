@@ -13,7 +13,7 @@ public abstract class DepartmentBaseModelValidator<T> : AbstractValidator<T>
 
     protected DepartmentBaseModelValidator(IMediator mediator)
     {
-        _mediator = mediator;
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
         RuleFor(d => d.Description)
                .NotEmpty()

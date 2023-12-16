@@ -13,15 +13,24 @@ public sealed class StoreUserPasswordCommand(ApplicationUser user, string passwo
     public string Password { get; } = password.ThrowIfNullOrEmpty(nameof(password));
 }
 
-internal class StoreUserPasswordCommandHandler(
-        IPasswordHasher<ApplicationUser> passwordHasher,
-        IRepository repository) : IRequestHandler<StoreUserPasswordCommand>
+internal class StoreUserPasswordCommandHandler : IRequestHandler<StoreUserPasswordCommand>
 {
+    private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+    private readonly IRepository _repository;
+
+    public StoreUserPasswordCommandHandler(
+            IPasswordHasher<ApplicationUser> passwordHasher,
+            IRepository repository)
+    {
+        _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    }
+
     public async Task Handle(StoreUserPasswordCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        string passwordHash = passwordHasher.HashPassword(request.User, request.Password);
+        string passwordHash = _passwordHasher.HashPassword(request.User, request.Password);
 
         UserOldPassword userOldPassword = new()
         {
@@ -30,7 +39,7 @@ internal class StoreUserPasswordCommandHandler(
             SetAtUtc = DateTime.UtcNow
         };
 
-        repository.Add(userOldPassword);
-        await repository.SaveChangesAsync(cancellationToken);
+        _repository.Add(userOldPassword);
+        await _repository.SaveChangesAsync(cancellationToken);
     }
 }

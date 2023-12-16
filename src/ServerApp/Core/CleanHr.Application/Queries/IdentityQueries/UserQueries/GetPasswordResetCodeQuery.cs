@@ -7,14 +7,12 @@ namespace CleanHr.Application.Queries.IdentityQueries.UserQueries;
 
 public sealed class GetPasswordResetCodeQuery(string email, string code) : IRequest<PasswordResetCode>
 {
-
     public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
 
     public string Code { get; } = code.ThrowIfNullOrEmpty(nameof(code));
 
     private class GetPasswordResetCodeQueryHandler(IRepository repository) : IRequestHandler<GetPasswordResetCodeQuery, PasswordResetCode>
     {
-
         public async Task<PasswordResetCode> Handle(GetPasswordResetCodeQuery request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));

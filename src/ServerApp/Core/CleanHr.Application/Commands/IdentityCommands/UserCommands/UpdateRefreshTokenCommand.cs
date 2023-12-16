@@ -14,11 +14,13 @@ public sealed class UpdateRefreshTokenCommand(Guid userId, string token) : IRequ
 
 internal class UpdateRefreshTokenCommandHandler(IRepository repository) : IRequestHandler<UpdateRefreshTokenCommand, RefreshToken>
 {
+    private readonly IRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+
     public async Task<RefreshToken> Handle(UpdateRefreshTokenCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        RefreshToken refreshTokenToBeUpdated = await repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
+        RefreshToken refreshTokenToBeUpdated = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
 
         if (refreshTokenToBeUpdated == null)
         {
@@ -29,8 +31,8 @@ internal class UpdateRefreshTokenCommandHandler(IRepository repository) : IReque
         refreshTokenToBeUpdated.ExpireAtUtc = DateTime.UtcNow;
         refreshTokenToBeUpdated.CreatedAtUtc = DateTime.UtcNow.AddDays(10);
 
-        repository.Update(refreshTokenToBeUpdated);
-        await repository.SaveChangesAsync(cancellationToken);
+        _repository.Update(refreshTokenToBeUpdated);
+        await _repository.SaveChangesAsync(cancellationToken);
 
         return refreshTokenToBeUpdated;
     }

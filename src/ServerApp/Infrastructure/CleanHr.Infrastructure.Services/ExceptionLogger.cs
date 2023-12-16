@@ -8,6 +8,8 @@ namespace CleanHr.Infrastructure.Services;
 
 internal sealed class ExceptionLogger(ILogger<ExceptionLogger> logger) : IExceptionLogger
 {
+    private readonly ILogger<ExceptionLogger> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
     public async Task LogAsync(Exception exception)
     {
         await LogAsync(exception, null);
@@ -20,13 +22,13 @@ internal sealed class ExceptionLogger(ILogger<ExceptionLogger> logger) : IExcept
             ArgumentNullException.ThrowIfNull(exception);
 
             string jsonParameters = parameters != null ? JsonSerializer.Serialize(parameters) : "No parameter.";
-            logger.LogCritical(exception, "Parameters: {P1}", jsonParameters);
+            _logger.LogCritical(exception, "Parameters: {P1}", jsonParameters);
 
             await Task.CompletedTask;
         }
         catch (Exception loggerException)
         {
-            logger.LogCritical(loggerException, "Exception thrown in exception logger.");
+            _logger.LogCritical(loggerException, "Exception thrown in exception logger.");
         }
     }
 
@@ -39,13 +41,13 @@ internal sealed class ExceptionLogger(ILogger<ExceptionLogger> logger) : IExcept
         {
             ArgumentNullException.ThrowIfNull(exception);
 
-            logger.LogCritical(exception, "RequestedPath: {P1} and RequestBody: {P2}", requestPath, requestBody);
+            _logger.LogCritical(exception, "RequestedPath: {P1} and RequestBody: {P2}", requestPath, requestBody);
 
             await Task.CompletedTask;
         }
         catch (Exception loggerException)
         {
-            logger.LogCritical(loggerException, "Exception thrown in exception logger.");
+            _logger.LogCritical(loggerException, "Exception thrown in exception logger.");
         }
     }
 }

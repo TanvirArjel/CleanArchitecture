@@ -6,19 +6,19 @@ namespace CleanHr.Application.Queries.EmployeeQueries;
 
 public sealed class GetEmployeeByIdQuery(Guid employeeId) : IRequest<EmployeeDetailsDto>
 {
-
     public Guid Id { get; } = employeeId.ThrowIfEmpty(nameof(employeeId));
+}
 
-    private class GetEmployeeByIdQueryHandler(IEmployeeCacheRepository employeeCacheRepository) : IRequestHandler<GetEmployeeByIdQuery, EmployeeDetailsDto>
+internal class GetEmployeeByIdQueryHandler(IEmployeeCacheRepository employeeCacheRepository) : IRequestHandler<GetEmployeeByIdQuery, EmployeeDetailsDto>
+{
+    private readonly IEmployeeCacheRepository _employeeCacheRepository = employeeCacheRepository ?? throw new ArgumentNullException(nameof(employeeCacheRepository));
+
+    public async Task<EmployeeDetailsDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
     {
+        request.ThrowIfNull(nameof(request));
 
-        public async Task<EmployeeDetailsDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
-
-            EmployeeDetailsDto employeeDetailsDto = await employeeCacheRepository.GetDetailsByIdAsync(request.Id);
-            return employeeDetailsDto;
-        }
+        EmployeeDetailsDto employeeDetailsDto = await _employeeCacheRepository.GetDetailsByIdAsync(request.Id);
+        return employeeDetailsDto;
     }
 }
 

@@ -9,7 +9,10 @@ namespace CleanHr.Infrastructure.Services;
 
 public sealed class EmailSender(SendGridConfig sendGridConfig, IExceptionLogger exceptionLogger) : IEmailSender
 {
-    private SendGridClient SendGridClient => new(sendGridConfig.ApiKey);
+    private readonly SendGridConfig _sendGridConfig = sendGridConfig ?? throw new ArgumentNullException(nameof(sendGridConfig));
+    private readonly IExceptionLogger _exceptionLogger = exceptionLogger ?? throw new ArgumentNullException(nameof(exceptionLogger));
+
+    private SendGridClient SendGridClient => new(_sendGridConfig.ApiKey);
 
     public async Task SendAsync(EmailMessage emailMessage)
     {
@@ -35,7 +38,7 @@ public sealed class EmailSender(SendGridConfig sendGridConfig, IExceptionLogger 
         }
         catch (Exception exception)
         {
-            await exceptionLogger.LogAsync(exception, emailMessage);
+            await _exceptionLogger.LogAsync(exception, emailMessage);
         }
     }
 }

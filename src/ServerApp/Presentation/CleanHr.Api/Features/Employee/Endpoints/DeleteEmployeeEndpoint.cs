@@ -7,6 +7,8 @@ namespace CleanHr.Api.Features.Employee.Endpoints;
 
 public class DeleteEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     // DELETE: api/employees/5
     [HttpDelete("{employeeId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -24,7 +26,7 @@ public class DeleteEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
 
         DeleteEmployeeCommand command = new(employeeId);
 
-        await mediator.Send(command, HttpContext.RequestAborted);
+        await _mediator.Send(command, HttpContext.RequestAborted);
         return NoContent();
     }
 }

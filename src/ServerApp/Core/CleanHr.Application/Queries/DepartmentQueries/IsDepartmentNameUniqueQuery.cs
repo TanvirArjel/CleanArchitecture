@@ -15,11 +15,13 @@ public sealed class IsDepartmentNameUniqueQuery(Guid departmentId, string name) 
 internal class IsDepartmentNameUniqueQueryHandler(
         IQueryRepository repository) : IRequestHandler<IsDepartmentNameUniqueQuery, bool>
 {
+    private readonly IQueryRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+
     public async Task<bool> Handle(IsDepartmentNameUniqueQuery request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        bool isExistent = await repository.ExistsAsync<Department>(d => d.Id != request.Id && d.Name.Value == request.Name, cancellationToken);
+        bool isExistent = await _repository.ExistsAsync<Department>(d => d.Id != request.Id && d.Name.Value == request.Name, cancellationToken);
         return !isExistent;
     }
 }

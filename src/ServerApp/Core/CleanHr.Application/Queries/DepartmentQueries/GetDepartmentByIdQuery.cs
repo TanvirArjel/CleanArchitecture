@@ -29,6 +29,8 @@ public class DepartmentDetailsDto
 // Handler
 internal class GetDepartmentByIdQueryHandler(IQueryRepository repository) : IRequestHandler<GetDepartmentByIdQuery, DepartmentDetailsDto>
 {
+    private readonly IQueryRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+
     public async Task<DepartmentDetailsDto> Handle(GetDepartmentByIdQuery request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
@@ -43,7 +45,7 @@ internal class GetDepartmentByIdQueryHandler(IQueryRepository repository) : IReq
             LastModifiedAtUtc = d.LastModifiedAtUtc
         };
 
-        DepartmentDetailsDto departmentDetailsDto = await repository.GetByIdAsync(request.Id, selectExp, cancellationToken);
+        DepartmentDetailsDto departmentDetailsDto = await _repository.GetByIdAsync(request.Id, selectExp, cancellationToken);
 
         return departmentDetailsDto;
     }

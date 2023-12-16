@@ -7,12 +7,10 @@ namespace CleanHr.Application.Queries.IdentityQueries.UserQueries;
 
 public sealed class HasUserActiveEmailVerificationCodeQuery(string email) : IRequest<bool>
 {
-
     public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
 
     private class HasUserActiveEmailVerificationCodeQueryHandler(IRepository repository) : IRequestHandler<HasUserActiveEmailVerificationCodeQuery, bool>
     {
-
         public async Task<bool> Handle(HasUserActiveEmailVerificationCodeQuery request, CancellationToken cancellationToken)
         {
             request.ThrowIfNull(nameof(request));

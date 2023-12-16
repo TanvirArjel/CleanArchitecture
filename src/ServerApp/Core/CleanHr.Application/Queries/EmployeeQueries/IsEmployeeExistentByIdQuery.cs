@@ -6,18 +6,18 @@ namespace CleanHr.Application.Queries.EmployeeQueries;
 
 public sealed class IsEmployeeExistentByIdQuery(Guid employeeId) : IRequest<bool>
 {
-
     public Guid Id { get; } = employeeId.ThrowIfEmpty(nameof(employeeId));
+}
 
-    private class IsEmployeeExistentByIdQueryHandler(IEmployeeRepository employeeRepository) : IRequestHandler<IsEmployeeExistentByIdQuery, bool>
+internal class IsEmployeeExistentByIdQueryHandler(IEmployeeRepository employeeRepository) : IRequestHandler<IsEmployeeExistentByIdQuery, bool>
+{
+    private readonly IEmployeeRepository _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
+
+    public async Task<bool> Handle(IsEmployeeExistentByIdQuery request, CancellationToken cancellationToken)
     {
+        request.ThrowIfNull(nameof(request));
 
-        public async Task<bool> Handle(IsEmployeeExistentByIdQuery request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
-
-            bool isExistent = await employeeRepository.ExistsAsync(e => e.Id == request.Id);
-            return isExistent;
-        }
+        bool isExistent = await _employeeRepository.ExistsAsync(e => e.Id == request.Id);
+        return isExistent;
     }
 }

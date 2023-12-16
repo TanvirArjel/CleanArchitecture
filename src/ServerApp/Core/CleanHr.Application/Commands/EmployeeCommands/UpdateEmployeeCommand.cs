@@ -21,11 +21,15 @@ internal class UpdateEmployeeCommandHandler(
     IEmployeeCacheHandler employeeCacheHandler,
     IDepartmentRepository departmentRepository) : IRequestHandler<UpdateEmployeeCommand>
 {
+    private readonly IEmployeeRepository _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
+    private readonly IEmployeeCacheHandler _employeeCacheHandler = employeeCacheHandler ?? throw new ArgumentNullException(nameof(employeeCacheHandler));
+    private readonly IDepartmentRepository _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
+
     public async Task Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        Employee employeeToBeUpdated = await employeeRepository.GetByIdAsync(request.Id);
+        Employee employeeToBeUpdated = await _employeeRepository.GetByIdAsync(request.Id);
 
         if (employeeToBeUpdated == null)
         {
@@ -35,13 +39,13 @@ internal class UpdateEmployeeCommandHandler(
         employeeToBeUpdated.SetName(new EmployeeName(request.Name, request.Name));
         employeeToBeUpdated.SetDateOfBirth(new DateOfBirth(request.DateOfBirth));
 
-        await employeeToBeUpdated.SetDepartmentAsync(departmentRepository, request.DepartmentId);
-        await employeeToBeUpdated.SetEmailAsync(employeeRepository, new Email(request.Email));
-        await employeeToBeUpdated.SetPhoneNumberAsync(employeeRepository, new PhoneNumber(request.PhoneNumber));
+        await employeeToBeUpdated.SetDepartmentAsync(_departmentRepository, request.DepartmentId);
+        await employeeToBeUpdated.SetEmailAsync(_employeeRepository, new Email(request.Email));
+        await employeeToBeUpdated.SetPhoneNumberAsync(_employeeRepository, new PhoneNumber(request.PhoneNumber));
 
-        await employeeRepository.UpdateAsync(employeeToBeUpdated);
+        await _employeeRepository.UpdateAsync(employeeToBeUpdated);
 
         // Remove the cache for this employee
-        await employeeCacheHandler.RemoveDetailsByIdAsync(request.Id);
+        await _employeeCacheHandler.RemoveDetailsByIdAsync(request.Id);
     }
 }

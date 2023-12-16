@@ -8,6 +8,8 @@ namespace CleanHr.Api.Features.Employee.Endpoints;
 
 public class CreateEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     // POST: api/employees
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -25,7 +27,7 @@ public class CreateEmployeeEndpoint(IMediator mediator) : EmployeeEndpointBase
                 model.Email,
                 model.PhoneNumber);
 
-        await mediator.Send(createEmployeeCommand, HttpContext.RequestAborted);
+        await _mediator.Send(createEmployeeCommand, HttpContext.RequestAborted);
         return StatusCode(StatusCodes.Status201Created);
     }
 }

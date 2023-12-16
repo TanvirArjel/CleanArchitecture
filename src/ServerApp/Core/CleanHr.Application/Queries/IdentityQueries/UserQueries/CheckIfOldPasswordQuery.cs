@@ -13,32 +13,36 @@ public sealed class CheckIfOldPasswordQuery(ApplicationUser user, string passwor
     public ApplicationUser User { get; } = user.ThrowIfNull(nameof(user));
 
     public string Password { get; } = password.ThrowIfNullOrEmpty(nameof(password));
+}
 
-    private class CheckIfOldPasswordQueryHandler(IRepository repository, IPasswordHasher<ApplicationUser> passwordHasher) : IRequestHandler<CheckIfOldPasswordQuery, bool>
+internal class CheckIfOldPasswordQueryHandler(
+    IRepository repository,
+    IPasswordHasher<ApplicationUser> passwordHasher) : IRequestHandler<CheckIfOldPasswordQuery, bool>
+{
+    private readonly IRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+    private readonly IPasswordHasher<ApplicationUser> _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
+
+    public async Task<bool> Handle(CheckIfOldPasswordQuery request, CancellationToken cancellationToken)
     {
+        request.ThrowIfNull(nameof(request));
 
-        public async Task<bool> Handle(CheckIfOldPasswordQuery request, CancellationToken cancellationToken)
+        List<UserOldPassword> userOldPasswords = await _repository.GetQueryable<UserOldPassword>()
+            .Where(uop => uop.UserId == request.User.Id).ToListAsync(cancellationToken);
+
+        if (userOldPasswords.Count == 0)
         {
-            request.ThrowIfNull(nameof(request));
-
-            List<UserOldPassword> userOldPasswords = await repository.GetQueryable<UserOldPassword>()
-                .Where(uop => uop.UserId == request.User.Id).ToListAsync(cancellationToken);
-
-            if (userOldPasswords.Count == 0)
-            {
-                return false;
-            }
-
-            foreach (UserOldPassword item in userOldPasswords)
-            {
-                PasswordVerificationResult passwordVerificationResult = passwordHasher.VerifyHashedPassword(request.User, item.PasswordHash, request.Password);
-                if (passwordVerificationResult == PasswordVerificationResult.Success)
-                {
-                    return true;
-                }
-            }
-
             return false;
         }
+
+        foreach (UserOldPassword item in userOldPasswords)
+        {
+            PasswordVerificationResult passwordVerificationResult = _passwordHasher.VerifyHashedPassword(request.User, item.PasswordHash, request.Password);
+            if (passwordVerificationResult == PasswordVerificationResult.Success)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

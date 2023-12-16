@@ -25,11 +25,13 @@ public class DepartmentDto
 
 internal class GetDepartmentListQueryHandler(IDepartmentCacheRepository departmentCacheRepository) : IRequestHandler<GetDepartmentListQuery, List<DepartmentDto>>
 {
+    private readonly IDepartmentCacheRepository _departmentCacheRepository = departmentCacheRepository ?? throw new ArgumentNullException(nameof(departmentCacheRepository));
+
     public async Task<List<DepartmentDto>> Handle(GetDepartmentListQuery request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        List<DepartmentDto> departmentDtos = await departmentCacheRepository.GetListAsync();
+        List<DepartmentDto> departmentDtos = await _departmentCacheRepository.GetListAsync();
         return departmentDtos;
     }
 }

@@ -7,6 +7,8 @@ namespace CleanHr.Api.Features.Department.Endpoints;
 
 public sealed class GetDepartmentListEndpoint(IMediator mediator) : DepartmentEndpointBase
 {
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -15,7 +17,7 @@ public sealed class GetDepartmentListEndpoint(IMediator mediator) : DepartmentEn
     public async Task<ActionResult<List<DepartmentDto>>> Get()
     {
         GetDepartmentListQuery departmentListQuery = new();
-        List<DepartmentDto> departmentDetailsDtos = await mediator.Send(departmentListQuery, HttpContext.RequestAborted);
+        List<DepartmentDto> departmentDetailsDtos = await _mediator.Send(departmentListQuery, HttpContext.RequestAborted);
         return departmentDetailsDtos;
     }
 }

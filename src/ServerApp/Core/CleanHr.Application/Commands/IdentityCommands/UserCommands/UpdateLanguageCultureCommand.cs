@@ -14,11 +14,13 @@ public sealed class UpdateLanguageCultureCommand(Guid userId, string languageCul
 
 internal class UpdateLanguageCultureCommandHandler(IRepository repository) : IRequestHandler<UpdateLanguageCultureCommand>
 {
+    private readonly IRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+
     public async Task Handle(UpdateLanguageCultureCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        ApplicationUser userToBeUpdated = await repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
+        ApplicationUser userToBeUpdated = await _repository.GetByIdAsync<ApplicationUser>(request.UserId, cancellationToken);
 
         if (userToBeUpdated == null)
         {
@@ -27,7 +29,7 @@ internal class UpdateLanguageCultureCommandHandler(IRepository repository) : IRe
 
         userToBeUpdated.LanguageCulture = request.LanguageCulture;
 
-        repository.Update(userToBeUpdated);
-        await repository.SaveChangesAsync(cancellationToken);
+        _repository.Update(userToBeUpdated);
+        await _repository.SaveChangesAsync(cancellationToken);
     }
 }

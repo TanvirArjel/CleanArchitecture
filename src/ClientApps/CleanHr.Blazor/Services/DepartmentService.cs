@@ -12,7 +12,6 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace CleanHr.Blazor.Services;
 
 [SingletonService]
-[method: SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Not applicable for constructor")]
 public class DepartmentService
 {
     private readonly HttpClient _httpClient;

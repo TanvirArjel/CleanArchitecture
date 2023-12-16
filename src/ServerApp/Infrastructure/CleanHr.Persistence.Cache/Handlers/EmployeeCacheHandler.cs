@@ -8,9 +8,11 @@ namespace CleanHr.Persistence.Cache.Handlers;
 
 internal sealed class EmployeeCacheHandler(IDistributedCache distributedCache) : IEmployeeCacheHandler
 {
+    private readonly IDistributedCache _distributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
+
     public async Task RemoveDetailsByIdAsync(Guid employeeId)
     {
         string detailsKey = EmployeeCacheKeys.GetDetailsKey(employeeId);
-        await distributedCache.RemoveAsync(detailsKey);
+        await _distributedCache.RemoveAsync(detailsKey);
     }
 }

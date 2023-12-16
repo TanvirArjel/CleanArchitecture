@@ -10,16 +10,18 @@ public sealed class IsRefreshTokenValidQuery(Guid userId, string refreshToken) :
     public Guid UserId { get; } = userId;
 
     public string RefreshToken { get; } = refreshToken;
+}
 
-    private class IsRefreshTokenValidQueryHandler(IRepository repository) : IRequestHandler<IsRefreshTokenValidQuery, bool>
+internal class IsRefreshTokenValidQueryHandler(IRepository repository) : IRequestHandler<IsRefreshTokenValidQuery, bool>
+{
+    private readonly IRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+
+    public async Task<bool> Handle(IsRefreshTokenValidQuery request, CancellationToken cancellationToken)
     {
-        public async Task<bool> Handle(IsRefreshTokenValidQuery request, CancellationToken cancellationToken)
-        {
-            request.ThrowIfNull(nameof(request));
+        request.ThrowIfNull(nameof(request));
 
-            bool isRefreshTokenValid = await repository.ExistsAsync<RefreshToken>(rt => rt.UserId == request.UserId && rt.Token == request.RefreshToken, cancellationToken);
+        bool isRefreshTokenValid = await _repository.ExistsAsync<RefreshToken>(rt => rt.UserId == request.UserId && rt.Token == request.RefreshToken, cancellationToken);
 
-            return isRefreshTokenValid;
-        }
+        return isRefreshTokenValid;
     }
 }
