@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace CleanHr.Api.Extensions;
 
-public static class SwaggerGenerationServicesExtensions
+internal static class SwaggerGenerationServicesExtensions
 {
     public static void AddSwaggerGeneration(
         this IServiceCollection services,
@@ -53,19 +53,9 @@ public static class SwaggerGenerationServicesExtensions
                 Scheme = "Bearer"
             });
 
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
-                      {
-                         new OpenApiSecurityScheme
-                         {
-                           Reference = new OpenApiReference
-                           {
-                             Type = ReferenceType.SecurityScheme,
-                             Id = "Bearer"
-                           }
-                         },
-                         Array.Empty<string>()
-                      }
+                [new OpenApiSecuritySchemeReference("Bearer", document)] = []
             });
 
             options.TagActionsBy(api =>
