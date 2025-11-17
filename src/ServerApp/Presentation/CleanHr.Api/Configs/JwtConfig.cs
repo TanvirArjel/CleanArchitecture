@@ -2,7 +2,7 @@
 
 namespace CleanHr.Api.Configs;
 
-public class JwtConfig(string issuer, string key, int tokenLifeTime)
+internal class JwtConfig(string issuer, string key, int tokenLifeTime)
 {
     public string Issuer { get; private set; } = issuer.ThrowIfNullOrEmpty(nameof(issuer));
 

@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
-public class UserLoginEndpoint(
+internal class UserLoginEndpoint(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,
     IExceptionLogger exceptionLogger,

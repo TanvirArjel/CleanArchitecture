@@ -6,7 +6,7 @@ using TanvirArjel.Blazor.DependencyInjection;
 
 namespace CleanHr.Blazor;
 
-public static class Program
+internal static class Program
 {
     public static async Task Main(string[] args)
     {

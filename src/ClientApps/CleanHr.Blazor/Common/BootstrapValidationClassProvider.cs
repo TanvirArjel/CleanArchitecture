@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace CleanHr.Blazor.Common;
 
-public class BootstrapValidationClassProvider : FieldCssClassProvider
+internal sealed class BootstrapValidationClassProvider : FieldCssClassProvider
 {
     public override string GetFieldCssClass(EditContext editContext, in FieldIdentifier fieldIdentifier)
     {

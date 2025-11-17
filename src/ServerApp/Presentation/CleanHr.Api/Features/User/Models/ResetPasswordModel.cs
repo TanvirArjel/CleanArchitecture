@@ -1,6 +1,6 @@
 ﻿namespace CleanHr.Api.Features.User.Models;
 
-public class ResetPasswordModel
+internal class ResetPasswordModel
 {
     public string Email { get; set; }
 

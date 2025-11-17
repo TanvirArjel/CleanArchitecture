@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace CleanHr.Api.Features.Employee.Validators;
 
-public abstract class EmployeeBaseModelValidator<T> : AbstractValidator<T>
+internal abstract class EmployeeBaseModelValidator<T> : AbstractValidator<T>
     where T : EmployeeBaseModel
 {
     protected EmployeeBaseModelValidator()

@@ -47,4 +47,9 @@
     <ProjectReference Include="..\..\Infrastructure\CleanHr.Persistence.Cache\CleanHr.Persistence.Cache.csproj" />
     <ProjectReference Include="..\..\Infrastructure\CleanHr.Persistence.RelationalDB\CleanHr.Persistence.RelationalDB.csproj" />
   </ItemGroup>
+   <ItemGroup>
+    <Content Update="@(Content)">
+      <Visible Condition="'%(NuGetItemType)' == 'Content'">false</Visible>
+    </Content>
+  </ItemGroup>
 </Project>

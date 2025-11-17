@@ -2,6 +2,6 @@
 
 namespace CleanHr.Api.Features.Employee.Validators;
 
-public sealed class UpdateEmployeeModelValidator : EmployeeBaseModelValidator<UpdateEmployeeModel>
+internal sealed class UpdateEmployeeModelValidator : EmployeeBaseModelValidator<UpdateEmployeeModel>
 {
 }

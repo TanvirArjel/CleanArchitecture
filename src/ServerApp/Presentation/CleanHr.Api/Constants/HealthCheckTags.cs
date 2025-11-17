@@ -1,6 +1,6 @@
 ﻿namespace CleanHr.Api.Constants;
 
-public static class HealthCheckTags
+internal static class HealthCheckTags
 {
     public static string Database => "database";
 

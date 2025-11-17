@@ -19,11 +19,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
-		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="System.Net.Http.Json" Version="10.0.0" />
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.4.0" />
 		<PackageReference Include="TanvirArjel.Blazor" Version="1.6.0" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="2.2.0" />

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace CleanHr.Api;
 
-public static class WebApplicationExtensions
+internal static class WebApplicationExtensions
 {
 	public static void AddHealthCheckEndpoints(this WebApplication app)
 	{

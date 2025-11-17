@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanHr.Api;
 
-public class DbConnectionHealthCheck(
+internal class DbConnectionHealthCheck(
     string connectionString,
     ILogger<DbConnectionHealthCheck> logger) : IHealthCheck
 {

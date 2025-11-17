@@ -8,7 +8,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Api.Extensions;
 
-public static class ServiceCollectionExtensions
+internal static class ServiceCollectionExtensions
 {
 	public static void AddJwtAuthentication(this IServiceCollection services, JwtConfig jwtConfig)
 	{

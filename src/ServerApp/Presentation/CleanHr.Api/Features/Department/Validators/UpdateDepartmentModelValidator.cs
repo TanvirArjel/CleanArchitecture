@@ -4,7 +4,7 @@ using MediatR;
 
 namespace CleanHr.Api.Features.Department.Validators;
 
-public sealed class UpdateDepartmentModelValidator : DepartmentBaseModelValidator<UpdateDepartmentModel>
+internal sealed class UpdateDepartmentModelValidator : DepartmentBaseModelValidator<UpdateDepartmentModel>
 {
     public UpdateDepartmentModelValidator(IMediator mediator)
         : base(mediator)

@@ -8,7 +8,7 @@ using MediatR;
 
 namespace CleanHr.Api.Features.User.Validators;
 
-public sealed class TokenRefreshModelValidator : AbstractValidator<TokenRefreshModel>
+internal sealed class TokenRefreshModelValidator : AbstractValidator<TokenRefreshModel>
 {
     private readonly TokenManager _tokenManager;
     private readonly IMediator _mediator;

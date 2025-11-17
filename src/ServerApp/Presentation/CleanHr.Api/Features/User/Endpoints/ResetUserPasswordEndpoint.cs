@@ -9,7 +9,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
-public class ResetUserPasswordEndpoint(
+internal class ResetUserPasswordEndpoint(
     IMediator mediator,
     IExceptionLogger exceptionLogger) : UserEndpointBase
 {

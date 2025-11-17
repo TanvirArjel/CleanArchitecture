@@ -4,7 +4,7 @@ using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace CleanHr.Api;
 
-public static class FluentValidationServiceCollectionExtensions
+internal static class FluentValidationServiceCollectionExtensions
 {
     public static void AddFluentValidation(this IServiceCollection services)
     {

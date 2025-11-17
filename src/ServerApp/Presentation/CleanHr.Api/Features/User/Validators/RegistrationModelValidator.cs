@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace CleanHr.Api.Features.User.Validators;
 
-public sealed class RegistrationModelValidator : AbstractValidator<RegistrationModel>
+internal sealed class RegistrationModelValidator : AbstractValidator<RegistrationModel>
 {
     public RegistrationModelValidator()
     {

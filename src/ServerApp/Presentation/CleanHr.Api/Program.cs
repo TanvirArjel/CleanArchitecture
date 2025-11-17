@@ -2,7 +2,7 @@ using Serilog;
 
 namespace CleanHr.Api;
 
-public static class Program
+internal static class Program
 {
     ////private static readonly IConfiguration _configuration = new ConfigurationBuilder()
     ////        .SetBasePath(Directory.GetCurrentDirectory())

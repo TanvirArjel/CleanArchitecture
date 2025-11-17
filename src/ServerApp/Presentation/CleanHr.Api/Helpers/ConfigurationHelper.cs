@@ -2,7 +2,7 @@
 
 namespace CleanHr.Api;
 
-public static class ConfigurationHelper
+internal static class ConfigurationHelper
 {
 	public static string GetDbConnectionString(this WebApplicationBuilder builder)
 	{

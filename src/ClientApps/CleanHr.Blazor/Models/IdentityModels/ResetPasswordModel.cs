@@ -2,7 +2,7 @@
 
 namespace CleanHr.Blazor.Models.IdentityModels;
 
-public class ResetPasswordModel
+internal class ResetPasswordModel
 {
     [Required]
     [EmailAddress]

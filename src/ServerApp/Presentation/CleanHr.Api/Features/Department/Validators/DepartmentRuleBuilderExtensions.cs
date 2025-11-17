@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace CleanHr.Api;
 
-public static class DepartmentRuleBuilderExtensions
+internal static class DepartmentRuleBuilderExtensions
 {
     public static IRuleBuilderOptions<T, string> ValidName<T>(
         this IRuleBuilder<T, string> rule)

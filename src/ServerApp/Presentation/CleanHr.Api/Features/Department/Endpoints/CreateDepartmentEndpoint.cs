@@ -6,7 +6,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Department.Endpoints;
 
-public sealed class CreateDepartmentEndpoint(
+internal sealed class CreateDepartmentEndpoint(
     IMediator mediator) : DepartmentEndpointBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));

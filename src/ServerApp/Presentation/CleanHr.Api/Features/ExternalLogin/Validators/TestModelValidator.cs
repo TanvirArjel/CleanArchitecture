@@ -2,6 +2,6 @@
 
 namespace CleanHr.Api;
 
-public class TestModelValidator
+internal class TestModelValidator
 {
 }

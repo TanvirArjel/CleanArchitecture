@@ -9,7 +9,7 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace CleanHr.Blazor.Common;
 
 [TransientService]
-public class AuthorizationDelegatingHandler(ILocalStorageService localStorage) : DelegatingHandler
+internal class AuthorizationDelegatingHandler(ILocalStorageService localStorage) : DelegatingHandler
 {
     private readonly ILocalStorageService _localStorage = localStorage;
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CleanHr.Api.Features.User.Validators;
 
-public sealed class ResendEmailConfirmationCodeModelValidator : AbstractValidator<ResendEmailConfirmationCodeModel>
+internal sealed class ResendEmailConfirmationCodeModelValidator : AbstractValidator<ResendEmailConfirmationCodeModel>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMediator _mediator;

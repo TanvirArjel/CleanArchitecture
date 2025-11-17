@@ -16,7 +16,7 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace CleanHr.Api;
 
-public static class Startup
+internal static class Startup
 {
 	private const string _myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

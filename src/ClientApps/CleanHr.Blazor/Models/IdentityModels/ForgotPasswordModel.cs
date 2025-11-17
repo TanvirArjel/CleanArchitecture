@@ -2,7 +2,7 @@
 
 namespace CleanHr.Blazor.Models.IdentityModels;
 
-public class ForgotPasswordModel
+internal class ForgotPasswordModel
 {
     [Required(ErrorMessage = "Please enter your email address.")]
     [EmailAddress]

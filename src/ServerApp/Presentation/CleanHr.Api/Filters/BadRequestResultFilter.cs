@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CleanHr.Api.Filters;
 
-public class BadRequestResultFilter : IResultFilter
+internal class BadRequestResultFilter : IResultFilter
 {
     public void OnResultExecuting(ResultExecutingContext context)
     {

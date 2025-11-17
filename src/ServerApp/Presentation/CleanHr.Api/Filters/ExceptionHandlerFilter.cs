@@ -8,7 +8,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Api.Filters;
 
-public class ExceptionHandlerFilter(IExceptionLogger exceptionLogger) : IAsyncExceptionFilter
+internal class ExceptionHandlerFilter(IExceptionLogger exceptionLogger) : IAsyncExceptionFilter
 {
     public async Task OnExceptionAsync(ExceptionContext context)
     {

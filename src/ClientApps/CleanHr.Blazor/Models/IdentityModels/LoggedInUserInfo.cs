@@ -2,7 +2,7 @@
 
 namespace CleanHr.Blazor.Models.IdentityModels;
 
-public class LoggedInUserInfo
+internal sealed class LoggedInUserInfo
 {
     public Guid UserId { get; set; }
 

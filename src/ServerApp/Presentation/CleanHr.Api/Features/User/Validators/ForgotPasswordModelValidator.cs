@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanHr.Api.Features.User.Validators;
 
-public sealed class ForgotPasswordModelValidator : AbstractValidator<ForgotPasswordModel>
+internal sealed class ForgotPasswordModelValidator : AbstractValidator<ForgotPasswordModel>
 {
     private readonly UserManager<ApplicationUser> _userManager;
 

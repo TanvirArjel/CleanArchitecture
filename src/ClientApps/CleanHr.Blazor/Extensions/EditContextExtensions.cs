@@ -4,7 +4,7 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Blazor.Extensions;
 
-public static class EditContextExtensions
+internal static class EditContextExtensions
 {
     public static void AddBootstrapValidationClassProvider(this EditContext editContext)
     {

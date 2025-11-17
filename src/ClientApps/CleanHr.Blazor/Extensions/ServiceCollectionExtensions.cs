@@ -8,7 +8,7 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace CleanHr.Blazor.Extensions;
 
-public static class ServiceCollectionExtensions
+internal static class ServiceCollectionExtensions
 {
     public static void AddDependencyServices(this IServiceCollection services)
     {

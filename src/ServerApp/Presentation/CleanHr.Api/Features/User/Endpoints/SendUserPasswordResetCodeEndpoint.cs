@@ -8,7 +8,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
-public class SendUserPasswordResetCodeEndpoint(
+internal class SendUserPasswordResetCodeEndpoint(
     IMediator mediator) : UserEndpointBase
 {
     [AllowAnonymous]

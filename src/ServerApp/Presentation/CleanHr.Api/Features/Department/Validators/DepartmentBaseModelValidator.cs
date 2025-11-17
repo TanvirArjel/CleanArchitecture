@@ -6,7 +6,7 @@ using MediatR;
 
 namespace CleanHr.Api.Features.Department.Validators;
 
-public abstract class DepartmentBaseModelValidator<T> : AbstractValidator<T>
+internal abstract class DepartmentBaseModelValidator<T> : AbstractValidator<T>
     where T : DepartmentBaseModel
 {
     private readonly IMediator _mediator;

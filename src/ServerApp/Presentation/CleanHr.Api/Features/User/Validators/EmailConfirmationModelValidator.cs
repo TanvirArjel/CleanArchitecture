@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanHr.Api.Features.User.Validators;
 
-public sealed class EmailConfirmationModelValidator : AbstractValidator<EmailConfirmationModel>
+internal sealed class EmailConfirmationModelValidator : AbstractValidator<EmailConfirmationModel>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMediator _mediator;

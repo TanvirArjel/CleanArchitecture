@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CleanHr.Api.Features.User.Validators;
 
-public sealed class ResetPasswordModelValidator : AbstractValidator<ResetPasswordModel>
+internal sealed class ResetPasswordModelValidator : AbstractValidator<ResetPasswordModel>
 {
     private readonly IMediator _mediator;
 

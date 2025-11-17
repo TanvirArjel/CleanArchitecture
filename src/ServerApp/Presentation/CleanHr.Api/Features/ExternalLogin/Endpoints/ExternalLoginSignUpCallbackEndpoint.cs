@@ -12,7 +12,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace CleanHr.Api.Features.ExternalLogin.Endpoints;
 
 [ApiVersion("1.0")]
-public class ExternalLoginSignUpCallbackEndpoint(
+internal class ExternalLoginSignUpCallbackEndpoint(
     SignInManager<ApplicationUser> signInManager,
     UserManager<ApplicationUser> userManager,
     TokenManager tokenManager,

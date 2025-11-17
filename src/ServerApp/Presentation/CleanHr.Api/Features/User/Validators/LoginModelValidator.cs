@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanHr.Api.Features.User.Validators;
 
-public sealed class LoginModelValidator : AbstractValidator<LoginModel>
+internal sealed class LoginModelValidator : AbstractValidator<LoginModel>
 {
     private readonly UserManager<ApplicationUser> _userManager;
 

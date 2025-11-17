@@ -4,7 +4,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CleanHr.Api;
 
-public class SendGridConnectionHealthCheck : IHealthCheck
+internal class SendGridConnectionHealthCheck : IHealthCheck
 {
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
