@@ -2,6 +2,6 @@
 
 namespace CleanHr.Api;
 
-internal class TestModel
+public class TestModel
 {
 }

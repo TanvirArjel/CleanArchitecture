@@ -5,7 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Employee.Endpoints;
 
-internal class GetEmployeeDetailsByIdEndpoint(IMediator mediator) : EmployeeEndpointBase
+public class GetEmployeeDetailsByIdEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 

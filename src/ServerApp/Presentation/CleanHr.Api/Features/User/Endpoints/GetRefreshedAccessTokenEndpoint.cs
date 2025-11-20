@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
-internal class GetRefreshedAccessTokenEndpoint(
+public class GetRefreshedAccessTokenEndpoint(
     TokenManager tokenManager) : UserEndpointBase
 {
     [HttpPost("refresh-token")]

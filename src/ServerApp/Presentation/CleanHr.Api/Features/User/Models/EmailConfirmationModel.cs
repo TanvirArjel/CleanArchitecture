@@ -1,6 +1,6 @@
 ﻿namespace CleanHr.Api.Features.User.Models;
 
-internal class EmailConfirmationModel
+public class EmailConfirmationModel
 {
     public string Email { get; set; }
 

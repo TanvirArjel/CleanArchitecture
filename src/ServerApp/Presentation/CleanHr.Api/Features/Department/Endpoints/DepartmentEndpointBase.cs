@@ -8,6 +8,6 @@ namespace CleanHr.Api.Features.Department.Endpoints;
 [ApiController]
 ////[Authorize]
 [ApiExplorerSettings(GroupName = "Department Endpoints")]
-internal abstract class DepartmentEndpointBase : ControllerBase
+public abstract class DepartmentEndpointBase : ControllerBase
 {
 }

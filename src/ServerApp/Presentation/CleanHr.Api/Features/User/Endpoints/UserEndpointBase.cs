@@ -7,6 +7,6 @@ namespace CleanHr.Api.Features.User.Endpoints;
 [Route("api/v{version:apiVersion}/user")]
 [ApiController]
 [ApiExplorerSettings(GroupName = "User Endpoints")]
-internal abstract class UserEndpointBase : ControllerBase
+public abstract class UserEndpointBase : ControllerBase
 {
 }

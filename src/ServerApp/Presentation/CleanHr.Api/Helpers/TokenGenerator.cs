@@ -16,7 +16,7 @@ using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 namespace CleanHr.Api.Helpers;
 
 [ScopedService]
-internal class TokenManager(
+public class TokenManager(
     JwtConfig jwtConfig,
     UserManager<ApplicationUser> userManager,
     IMediator mediator)

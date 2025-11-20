@@ -8,7 +8,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
-internal class ResendUserEmailConfirmationCodeEndpoint(
+public class ResendUserEmailConfirmationCodeEndpoint(
     IMediator mediator) : UserEndpointBase
 {
     [HttpPost("resend-email-confirmation-code")]

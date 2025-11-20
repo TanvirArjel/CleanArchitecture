@@ -8,6 +8,10 @@
   1. First make sure that you have **.NET 7.0** and **Visual Studio 2022** are installed.
   2. Now open the solution with VS 2022 and build the solution to make sure that there is no error.
   3. Now make **`CleanHr.Api` and `ClearHr.Blazor`** projects as startup projects and then run it. On startup necessary databases will be created in **MSSQLLocalDB**
+  4. (Optional) To enable distributed tracing with Grafana Tempo, run: `docker compose -f src/ServerApp/Presentation/CleanHr.Api/docker-compose.yml up -d`
+     - Access Grafana at: http://localhost:3000
+     - Traces will be automatically sent to Tempo and visualized in Grafana
+     - See `src/ServerApp/Presentation/CleanHr.Api/Observability/OBSERVABILITY.md` for detailed documentation
 
 # Clean Architecture in ASP.NET Core
 This repository contains the implementation of Domain Driven Design and Clear Architecture in ASP.NET Core.
@@ -19,7 +23,7 @@ This repository contains the implementation of Domain Driven Design and Clear Ar
 4. API Versioning
 5. Blazor Client (Web Assembly)
 6. Caching with InMemory and Redis
-7. Logging with Serilog
+7. Distributed Tracing with OpenTelemetry and Grafana Tempo
 8. EF Core Repository and Cache Repository
 9. Microsoft SQL Server
 10. Simple and clean admin template for starter

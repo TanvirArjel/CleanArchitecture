@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
-internal class UserLogoutEndpoint : UserEndpointBase
+public class UserLogoutEndpoint : UserEndpointBase
 {
     [HttpPost("logout")]
     public async Task<ActionResult> Post()

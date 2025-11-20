@@ -1,6 +1,6 @@
 ﻿namespace CleanHr.Api.Features.User.Models;
 
-internal class LoginModel
+public class LoginModel
 {
     public string EmailOrUserName { get; set; }
 

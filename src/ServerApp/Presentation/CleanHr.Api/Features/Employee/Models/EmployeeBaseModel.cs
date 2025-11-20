@@ -1,6 +1,6 @@
 ﻿namespace CleanHr.Api;
 
-internal abstract class EmployeeBaseModel
+public abstract class EmployeeBaseModel
 {
     public string Name { get; set; }
 

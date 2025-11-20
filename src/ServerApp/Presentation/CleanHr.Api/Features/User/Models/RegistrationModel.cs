@@ -1,6 +1,6 @@
 ﻿namespace CleanHr.Api.Features.User.Models;
 
-internal class RegistrationModel
+public class RegistrationModel
 {
     public string FirstName { get; set; }
 

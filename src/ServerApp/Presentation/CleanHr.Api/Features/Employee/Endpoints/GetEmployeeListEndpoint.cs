@@ -6,7 +6,7 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Api.Features.Employee.Endpoints;
 
-internal class GetEmployeeListEndpoint(IMediator mediator) : EmployeeEndpointBase
+public sealed class GetEmployeeListEndpoint(IMediator mediator) : EmployeeEndpointBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 

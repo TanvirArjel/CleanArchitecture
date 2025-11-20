@@ -1,6 +1,6 @@
 ﻿namespace CleanHr.Api.Features.Department.Models;
 
-internal abstract class DepartmentBaseModel
+public abstract class DepartmentBaseModel
 {
     public string Name { get; set; }
 

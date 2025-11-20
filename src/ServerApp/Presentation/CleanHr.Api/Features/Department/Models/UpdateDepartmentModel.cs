@@ -2,7 +2,7 @@
 
 namespace CleanHr.Api.Features.Department.Models;
 
-internal sealed class UpdateDepartmentModel : DepartmentBaseModel
+public sealed class UpdateDepartmentModel : DepartmentBaseModel
 {
     public Guid Id { get; set; }
 }

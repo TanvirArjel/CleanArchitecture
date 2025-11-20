@@ -4,6 +4,8 @@ using CleanHr.Api.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Api.Extensions;
@@ -48,24 +50,29 @@ internal static class ServiceCollectionExtensions
 		services.ThrowIfNull(nameof(services));
 		configuration.ThrowIfNull(nameof(configuration));
 
-		services.AddAuthentication()
-		.AddGoogle(googleOptions =>
+		var authBuilder = services.AddAuthentication();
+
+		string googleClientId = configuration.GetSection("ExternalLoginProviders:Google:ClientId").Value;
+		if (!string.IsNullOrWhiteSpace(googleClientId))
 		{
-			googleOptions.ClientId = configuration.GetSection("ExternalLoginProviders:Google:ClientId").Value;
-			googleOptions.ClientSecret = configuration.GetSection("ExternalLoginProviders:Google:ClientSecret").Value;
-			googleOptions.SaveTokens = true;
-		})
-		////.AddFacebook(facebookOptions =>
-		////{
-		////    facebookOptions.AppId = configuration.GetSection("ExternalLoginProviders:Facebook:AppId").Value;
-		////    facebookOptions.AppSecret = configuration.GetSection("ExternalLoginProviders:Facebook:AppSecret").Value;
-		////})
-		.AddTwitter(twitterOptions =>
+			authBuilder.AddGoogle(googleOptions =>
+			{
+				googleOptions.ClientId = googleClientId;
+				googleOptions.ClientSecret = configuration.GetSection("ExternalLoginProviders:Google:ClientSecret").Value;
+				googleOptions.SaveTokens = true;
+			});
+		}
+
+		string twitterConsumerKey = configuration.GetSection("ExternalLoginProviders:Twitter:ConsumerKey").Value;
+		if (!string.IsNullOrWhiteSpace(twitterConsumerKey))
 		{
-			twitterOptions.ConsumerKey = configuration.GetSection("ExternalLoginProviders:Twitter:ConsumerKey").Value;
-			twitterOptions.ConsumerSecret = configuration.GetSection("ExternalLoginProviders:Twitter:ConsumerSecret").Value;
-			twitterOptions.SaveTokens = true;
-		});
+			authBuilder.AddTwitter(twitterOptions =>
+			{
+				twitterOptions.ConsumerKey = twitterConsumerKey;
+				twitterOptions.ConsumerSecret = configuration.GetSection("ExternalLoginProviders:Twitter:ConsumerSecret").Value;
+				twitterOptions.SaveTokens = true;
+			});
+		}
 	}
 
 	public static void AddAllHealthChecks(this IServiceCollection services, string connectionString)
@@ -85,4 +92,40 @@ internal static class ServiceCollectionExtensions
         // This is has been disabled until add support for .NET 8.0 and EF Core 8.0
         // services.AddHealthChecksUI().AddInMemoryStorage();
     }
+
+	public static void AddOpenTelemetryTracing(this IServiceCollection services, IConfiguration configuration)
+	{
+		ArgumentNullException.ThrowIfNull(services);
+		ArgumentNullException.ThrowIfNull(configuration);
+
+		services.AddOpenTelemetry()
+			.ConfigureResource(resource => resource
+				.AddService(
+					serviceName: configuration.GetValue<string>("OpenTelemetry:ServiceName") ?? "CleanHrApi",
+					serviceVersion: typeof(ServiceCollectionExtensions).Assembly.GetName().Version?.ToString() ?? "1.0.0"))
+			.WithTracing(tracing => tracing
+				.AddAspNetCoreInstrumentation(options =>
+				{
+					options.RecordException = true;
+					options.Filter = (httpContext) =>
+					{
+						// Don't trace health check endpoints
+						return !httpContext.Request.Path.StartsWithSegments("/healthz", StringComparison.OrdinalIgnoreCase);
+					};
+				})
+				.AddHttpClientInstrumentation(options =>
+				{
+					options.RecordException = true;
+				})
+				.AddSqlClientInstrumentation(options =>
+				{
+					options.SetDbStatementForText = true;
+					options.RecordException = true;
+				})
+				.AddOtlpExporter(otlpOptions =>
+				{
+					otlpOptions.Endpoint = new Uri(configuration.GetValue<string>("OpenTelemetry:OtlpEndpoint") ?? "http://localhost:4317");
+				})
+				.AddConsoleExporter());
+	}
 }

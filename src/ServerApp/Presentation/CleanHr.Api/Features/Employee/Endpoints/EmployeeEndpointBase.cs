@@ -8,6 +8,6 @@ namespace CleanHr.Api.Features.Employee.Endpoints;
 [Route("api/v{version:apiVersion}/employees")]
 [Authorize]
 [ApiExplorerSettings(GroupName = "Employee Endpoints")]
-internal abstract class EmployeeEndpointBase : ControllerBase
+public abstract class EmployeeEndpointBase : ControllerBase
 {
 }

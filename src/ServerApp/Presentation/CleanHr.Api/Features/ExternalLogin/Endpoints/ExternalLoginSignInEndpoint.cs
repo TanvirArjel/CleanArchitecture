@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CleanHr.Api.Features.ExternalLogin.Endpoints;
 
 [ApiVersion("1.0")]
-internal class ExternalLoginSignInEndpoint(
+public class ExternalLoginSignInEndpoint(
     SignInManager<ApplicationUser> signInManager) : ExternalLoginEndpointBase
 {
     [HttpGet("sign-in")]

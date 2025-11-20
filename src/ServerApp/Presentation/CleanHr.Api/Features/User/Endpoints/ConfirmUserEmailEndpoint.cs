@@ -8,7 +8,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
-internal class ConfirmUserEmailEndpoint(
+public class ConfirmUserEmailEndpoint(
     IMediator mediator) : UserEndpointBase
 {
     [HttpPost("confirm-email")]

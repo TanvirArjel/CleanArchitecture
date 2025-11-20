@@ -1,6 +1,6 @@
 ﻿namespace CleanHr.Api.Features.User.Models;
 
-internal class TokenRefreshModel
+public class TokenRefreshModel
 {
     public string AccessToken { get; set; }
 

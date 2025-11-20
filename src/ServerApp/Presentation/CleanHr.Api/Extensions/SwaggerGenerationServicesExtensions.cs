@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.OpenApi;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace CleanHr.Api.Extensions;
 
@@ -53,9 +55,19 @@ internal static class SwaggerGenerationServicesExtensions
                 Scheme = "Bearer"
             });
 
-            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
             });
 
             options.TagActionsBy(api =>
@@ -84,14 +96,6 @@ internal static class SwaggerGenerationServicesExtensions
                     return true;
                 }
 
-                ApiExplorerSettingsAttribute apiExplorerSettingsAttribute = (ApiExplorerSettingsAttribute)apiDescription.ActionDescriptor
-                .EndpointMetadata.FirstOrDefault(x => x.GetType().Equals(typeof(ApiExplorerSettingsAttribute)));
-
-                if (apiExplorerSettingsAttribute == null)
-                {
-                    return true;
-                }
-
                 if (actionApiVersionModel.DeclaredApiVersions.Any())
                 {
                     return actionApiVersionModel.DeclaredApiVersions.Any(v => $"v{v.MajorVersion}" == documentName);
@@ -100,32 +104,44 @@ internal static class SwaggerGenerationServicesExtensions
                 return actionApiVersionModel.ImplementedApiVersions.Any(v => $"v{v.MajorVersion}" == documentName);
             });
 
-            // Adding all the available versions.
-            IApiVersionDescriptionProvider apiVersionDescriptionProvider = services.BuildServiceProvider()
-        .GetService<IApiVersionDescriptionProvider>();
-
-            foreach (ApiVersionDescription description in apiVersionDescriptionProvider.ApiVersionDescriptions)
-            {
-                OpenApiInfo openApiInfo = new()
-                {
-                    Title = $"{apiName} {description.GroupName.ToUpperInvariant()} API Endpoints",
-                    Version = description.ApiVersion.ToString(),
-                    Description = $"{apiName} {description.GroupName} API endpoints descriptions."
-                };
-
-                if (description.IsDeprecated)
-                {
-                    openApiInfo.Description += " This API version has been deprecated.";
-                }
-
-                options.SwaggerDoc(description.GroupName, openApiInfo);
-            }
-
             options.EnableAnnotations();
             string xmlCommentFilePath = Path.Combine(AppContext.BaseDirectory, $"{apiAssemblyName}.xml");
             options.IncludeXmlComments(xmlCommentFilePath);
-
-            ////options.OperationFilter<AddRequiredHeaderParameters>();
         });
+
+        // Adding all the available versions.
+        services.ConfigureOptions<ConfigureSwaggerOptions>();
+    }
+}
+
+internal class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+{
+    private readonly IApiVersionDescriptionProvider _provider;
+    private readonly string _apiName;
+
+    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
+    {
+        _provider = provider;
+        _apiName = "Clean HR";
+    }
+
+    public void Configure(SwaggerGenOptions options)
+    {
+        foreach (ApiVersionDescription description in _provider.ApiVersionDescriptions)
+        {
+            OpenApiInfo openApiInfo = new()
+            {
+                Title = $"{_apiName} {description.GroupName.ToUpperInvariant()} API Endpoints",
+                Version = description.ApiVersion.ToString(),
+                Description = $"{_apiName} {description.GroupName} API endpoints descriptions."
+            };
+
+            if (description.IsDeprecated)
+            {
+                openApiInfo.Description += " This API version has been deprecated.";
+            }
+
+            options.SwaggerDoc(description.GroupName, openApiInfo);
+        }
     }
 }

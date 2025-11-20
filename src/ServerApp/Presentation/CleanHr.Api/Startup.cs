@@ -10,7 +10,6 @@ using CleanHr.Persistence.RelationalDB.Extensions;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.ResponseCompression;
-using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
@@ -81,7 +80,10 @@ internal static class Startup
         }).ConfigureApiBehaviorOptions(options =>
         {
             options.SuppressModelStateInvalidFilter = true;
-        });
+        })
+        .AddApplicationPart(typeof(Startup).Assembly);
+
+        services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGeneration("Clean HR", "CleanHr.Api");
 
@@ -104,8 +106,6 @@ internal static class Startup
             context.Request.EnableBuffering();
             return next();
         });
-
-        app.UseSerilogRequestLogging();
 
         // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
         // specifying the Swagger JSON endpoint.
