@@ -114,7 +114,7 @@ internal static class SwaggerGenerationServicesExtensions
     }
 }
 
-internal class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
+internal sealed class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 {
     private readonly IApiVersionDescriptionProvider _provider;
     private readonly string _apiName;

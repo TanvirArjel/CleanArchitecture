@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using CleanHr.Api.Helpers;
+using CleanHr.Application.Extensions;
 using CleanHr.Application.Infrastructures;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using Microsoft.AspNetCore.Authorization;
@@ -12,13 +13,25 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace CleanHr.Api.Features.ExternalLogin.Endpoints;
 
 [ApiVersion("1.0")]
-public class ExternalLoginSignUpCallbackEndpoint(
-    SignInManager<ApplicationUser> signInManager,
-    UserManager<ApplicationUser> userManager,
-    TokenManager tokenManager,
-    ILogger<ExternalLoginSignUpCallbackEndpoint> logger,
-    IExceptionLogger exceptionLogger) : ExternalLoginEndpointBase
+public class ExternalLoginSignUpCallbackEndpoint : ExternalLoginEndpointBase
 {
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly TokenManager _tokenManager;
+    private readonly ILogger<ExternalLoginSignUpCallbackEndpoint> _logger;
+
+    public ExternalLoginSignUpCallbackEndpoint(
+        SignInManager<ApplicationUser> signInManager,
+        UserManager<ApplicationUser> userManager,
+        TokenManager tokenManager,
+        ILogger<ExternalLoginSignUpCallbackEndpoint> logger)
+    {
+        _signInManager = signInManager;
+        _userManager = userManager;
+        _tokenManager = tokenManager;
+        _logger = logger;
+    }
+
     private string ClientLoginUrl => "https://localhost:44364/identity/login";
 
     private string ClientSignupUrl => "https://localhost:44364/identity/registration";
@@ -40,7 +53,7 @@ public class ExternalLoginSignUpCallbackEndpoint(
                 return RedirectWithError(ErrorMessage);
             }
 
-            ExternalLoginInfo externalLoginInfo = await signInManager.GetExternalLoginInfoAsync();
+            ExternalLoginInfo externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
 
             if (externalLoginInfo == null)
             {
@@ -55,12 +68,12 @@ public class ExternalLoginSignUpCallbackEndpoint(
                 return RedirectToPage("/ExternalLoginConfirmationPage");
             }
 
-            ApplicationUser applicationUser = await userManager.FindByEmailAsync(email);
+            ApplicationUser applicationUser = await _userManager.FindByEmailAsync(email);
 
             if (applicationUser == null)
             {
                 applicationUser = new ApplicationUser { UserName = email, Email = email, EmailConfirmed = true };
-                IdentityResult userCreationResult = await userManager.CreateAsync(applicationUser);
+                IdentityResult userCreationResult = await _userManager.CreateAsync(applicationUser);
 
                 if (!userCreationResult.Succeeded)
                 {
@@ -68,15 +81,15 @@ public class ExternalLoginSignUpCallbackEndpoint(
                     return RedirectWithError(ErrorMessage);
                 }
 
-                applicationUser = await userManager.FindByEmailAsync(email);
+                applicationUser = await _userManager.FindByEmailAsync(email);
             }
 
-            IList<UserLoginInfo> externalLogins = await userManager.GetLoginsAsync(applicationUser);
+            IList<UserLoginInfo> externalLogins = await _userManager.GetLoginsAsync(applicationUser);
             bool isExistent = externalLogins.Any(el => el.LoginProvider == externalLoginInfo.LoginProvider && el.ProviderKey == externalLoginInfo.ProviderKey);
 
             if (isExistent == false)
             {
-                IdentityResult addExternalLoginResult = await userManager.AddLoginAsync(applicationUser, externalLoginInfo);
+                IdentityResult addExternalLoginResult = await _userManager.AddLoginAsync(applicationUser, externalLoginInfo);
 
                 if (!addExternalLoginResult.Succeeded)
                 {
@@ -86,16 +99,16 @@ public class ExternalLoginSignUpCallbackEndpoint(
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            SignInResult signInResult = await signInManager.ExternalLoginSignInAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey, isPersistent: false);
+            SignInResult signInResult = await _signInManager.ExternalLoginSignInAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey, isPersistent: false);
 
             if (signInResult.Succeeded)
             {
                 // Update any authentication tokens if login succeeded
-                await signInManager.UpdateExternalAuthenticationTokensAsync(externalLoginInfo);
+                await _signInManager.UpdateExternalAuthenticationTokensAsync(externalLoginInfo);
 
-                logger.LogInformation(5, "User logged in with {Name} provider.", externalLoginInfo.LoginProvider);
+                _logger.LogWithLevel(LogLevel.Information, $"User logged in with {externalLoginInfo.LoginProvider} provider.");
 
-                string jwt = await tokenManager.GetJwtTokenAsync(applicationUser);
+                string jwt = await _tokenManager.GetJwtTokenAsync(applicationUser);
 
                 string redirectUrl = QueryHelpers.AddQueryString(ClientLoginUrl, "jwt", jwt);
                 return Redirect(redirectUrl);
@@ -118,7 +131,12 @@ public class ExternalLoginSignUpCallbackEndpoint(
         }
         catch (Exception exception)
         {
-            await exceptionLogger.LogAsync(exception);
+            Dictionary<string, object> fields = new()
+            {
+                { "ReturnUrl", returnUrl },
+                { "RemoteError", remoteError }
+            };
+            _logger.LogException(exception, "An error occurred during external login sign-up callback.", fields);
             ErrorMessage = "There is a problem with service. Please try again. if the problem persists then contact with system admin.";
             return RedirectWithError(ErrorMessage);
         }

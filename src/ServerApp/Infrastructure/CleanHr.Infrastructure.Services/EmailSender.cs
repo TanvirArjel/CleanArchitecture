@@ -1,16 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using CleanHr.Application.Extensions;
 using CleanHr.Application.Infrastructures;
 using CleanHr.Infrastructure.Services.Configs;
+using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
 namespace CleanHr.Infrastructure.Services;
 
-public sealed class EmailSender(SendGridConfig sendGridConfig, IExceptionLogger exceptionLogger) : IEmailSender
+public sealed class EmailSender : IEmailSender
 {
-    private readonly SendGridConfig _sendGridConfig = sendGridConfig ?? throw new ArgumentNullException(nameof(sendGridConfig));
-    private readonly IExceptionLogger _exceptionLogger = exceptionLogger ?? throw new ArgumentNullException(nameof(exceptionLogger));
+    private readonly SendGridConfig _sendGridConfig;
+    private readonly ILogger<EmailSender> _logger;
+
+    public EmailSender(SendGridConfig sendGridConfig, ILogger<EmailSender> logger)
+    {
+        _sendGridConfig = sendGridConfig ?? throw new ArgumentNullException(nameof(sendGridConfig));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
     private SendGridClient SendGridClient => new(_sendGridConfig.ApiKey);
 
@@ -38,7 +47,13 @@ public sealed class EmailSender(SendGridConfig sendGridConfig, IExceptionLogger 
         }
         catch (Exception exception)
         {
-            await _exceptionLogger.LogAsync(exception, emailMessage);
+            Dictionary<string, object> fields = new()
+            {
+                { "ReceiverEmail", emailMessage?.ReceiverEmail },
+                { "ReceiverName", emailMessage?.ReceiverName },
+                { "Subject", emailMessage?.Subject }
+            };
+            _logger.LogException(exception, $"Error sending email to {emailMessage?.ReceiverEmail}", fields);
         }
     }
 }

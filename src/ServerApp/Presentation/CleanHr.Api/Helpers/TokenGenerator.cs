@@ -110,7 +110,7 @@ public class TokenManager(
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key)),
-            ValidateLifetime = false
+            ValidateLifetime = true
         };
 
         JwtSecurityTokenHandler tokenHandler = new();

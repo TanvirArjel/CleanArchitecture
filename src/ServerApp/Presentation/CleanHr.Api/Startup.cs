@@ -74,8 +74,8 @@ internal static class Startup
         services.AddServicesOfAllTypes("CleanHr");
         services.AddControllersWithViews(options =>
         {
-            options.Filters.Add(typeof(BadRequestResultFilter));
-            options.Filters.Add(typeof(ExceptionHandlerFilter));
+            options.Filters.Add<BadRequestResultFilter>();
+            options.Filters.Add<ExceptionHandlerFilter>();
             options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
         }).ConfigureApiBehaviorOptions(options =>
         {

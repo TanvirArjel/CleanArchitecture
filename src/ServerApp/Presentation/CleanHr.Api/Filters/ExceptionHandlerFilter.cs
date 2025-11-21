@@ -1,15 +1,25 @@
 ﻿using System.Text;
+using CleanHr.Application.Extensions;
 using CleanHr.Application.Infrastructures;
 using CleanHr.Domain.Exceptions;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Build.Framework;
+using Microsoft.Extensions.Logging;
 using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Api.Filters;
 
-internal sealed class ExceptionHandlerFilter(IExceptionLogger exceptionLogger) : IAsyncExceptionFilter
+internal sealed class ExceptionHandlerFilter : IAsyncExceptionFilter
 {
+    private readonly ILogger<ExceptionHandlerFilter> _exceptionLogger;
+
+    public ExceptionHandlerFilter(ILogger<ExceptionHandlerFilter> exceptionLogger)
+    {
+        _exceptionLogger = exceptionLogger ?? throw new ArgumentNullException(nameof(exceptionLogger));
+    }
+
     public async Task OnExceptionAsync(ExceptionContext context)
     {
         context.ThrowIfNull(nameof(context));
@@ -47,7 +57,13 @@ internal sealed class ExceptionHandlerFilter(IExceptionLogger exceptionLogger) :
         using StreamReader streamReader = new(httpRequest.Body, Encoding.UTF8);
         requestBoy = await streamReader.ReadToEndAsync();
 
-        await exceptionLogger.LogAsync(context.Exception, requestPath, requestBoy);
+        Dictionary<string, object> fields = new()
+        {
+            { "RequestPath", requestPath },
+            { "RequestBody", requestBoy }
+        };
+
+        _exceptionLogger.LogException(context.Exception, $"Error occurred while processing request to {requestPath}", fields);
 
         context.Result = new StatusCodeResult(500);
     }

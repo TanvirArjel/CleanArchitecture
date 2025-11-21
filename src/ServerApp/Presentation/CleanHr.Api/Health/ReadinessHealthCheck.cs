@@ -4,7 +4,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace CleanHr.Api;
 
-internal class ReadinessHealthCheck : IHealthCheck
+internal sealed class ReadinessHealthCheck : IHealthCheck
 {
 	public bool IsStartupCompleted { get; set; }
 

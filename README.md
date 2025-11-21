@@ -57,7 +57,7 @@ This will not depend on any other project. This is fully independent.
   This is application's **Application Layer** which will contain:
    1. Appplication Logic
    2. Infrastructure repositories' interfaces i.e Cache Repository interfaces.
-   3. Infrastructure services' interfaces i.e IEmailSender, ISmsSender, IExceptionLogger etc.
+   3. Infrastructure services' interfaces i.e IEmailSender, ISmsSender, IApplicationLogger etc.
    4. Data Transfer Objects (Dtos)
    5. Command and Queries
   

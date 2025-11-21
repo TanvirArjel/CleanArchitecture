@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using CleanHr.Api.Helpers;
+using CleanHr.Application.Extensions;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,12 +12,25 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 namespace CleanHr.Api.Features.ExternalLogin.Endpoints;
 
 [ApiVersion("1.0")]
-public class ExternalLoginSignInCallbackEndpoint(
-    UserManager<ApplicationUser> userManager,
-    SignInManager<ApplicationUser> signInManager,
-    ILogger<ExternalLoginSignInCallbackEndpoint> logger,
-    TokenManager tokenGenerator) : ExternalLoginEndpointBase
+public class ExternalLoginSignInCallbackEndpoint : ExternalLoginEndpointBase
 {
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly ILogger<ExternalLoginSignInCallbackEndpoint> _logger;
+    private readonly TokenManager _tokenGenerator;
+
+    public ExternalLoginSignInCallbackEndpoint(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
+        ILogger<ExternalLoginSignInCallbackEndpoint> logger,
+        TokenManager tokenGenerator)
+    {
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _logger = logger;
+        _tokenGenerator = tokenGenerator;
+    }
+
     public string ClientLoginUrl => "https://localhost:44364/identity/login";
 
     public string ErrorMessage { get; set; }
@@ -32,7 +46,7 @@ public class ExternalLoginSignInCallbackEndpoint(
             return RedirectWithError(ErrorMessage);
         }
 
-        ExternalLoginInfo externalLoginInfo = await signInManager.GetExternalLoginInfoAsync();
+        ExternalLoginInfo externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
 
         if (externalLoginInfo == null)
         {
@@ -40,7 +54,7 @@ public class ExternalLoginSignInCallbackEndpoint(
             return RedirectWithError(ErrorMessage);
         }
 
-        ApplicationUser applicationUser = await userManager.FindByLoginAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey);
+        ApplicationUser applicationUser = await _userManager.FindByLoginAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey);
 
         if (applicationUser == null)
         {
@@ -52,7 +66,7 @@ public class ExternalLoginSignInCallbackEndpoint(
                 return RedirectWithError(ErrorMessage);
             }
 
-            applicationUser = await userManager.FindByEmailAsync(email);
+            applicationUser = await _userManager.FindByEmailAsync(email);
 
             if (applicationUser == null)
             {
@@ -60,7 +74,7 @@ public class ExternalLoginSignInCallbackEndpoint(
                 return RedirectWithError(ErrorMessage);
             }
 
-            IdentityResult addExternalLoginResult = await userManager.AddLoginAsync(applicationUser, externalLoginInfo);
+            IdentityResult addExternalLoginResult = await _userManager.AddLoginAsync(applicationUser, externalLoginInfo);
 
             if (!addExternalLoginResult.Succeeded)
             {
@@ -70,17 +84,17 @@ public class ExternalLoginSignInCallbackEndpoint(
         }
 
         // Sign in the user with this external login provider if the user already has a login.
-        SignInResult signInResult = await signInManager
+        SignInResult signInResult = await _signInManager
              .ExternalLoginSignInAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey, isPersistent: false);
 
         if (signInResult.Succeeded)
         {
             // Update any authentication tokens if login succeeded
-            await signInManager.UpdateExternalAuthenticationTokensAsync(externalLoginInfo);
+            await _signInManager.UpdateExternalAuthenticationTokensAsync(externalLoginInfo);
 
-            logger.LogInformation(5, "User logged in with {Name} provider.", externalLoginInfo.LoginProvider);
+            _logger.LogWithLevel(LogLevel.Information, $"User logged in with {externalLoginInfo.LoginProvider} provider.");
 
-            string jwt = await tokenGenerator.GetJwtTokenAsync(applicationUser);
+            string jwt = await _tokenGenerator.GetJwtTokenAsync(applicationUser);
             string redirectUrl = QueryHelpers.AddQueryString(ClientLoginUrl, "jwt", jwt);
             return Redirect(redirectUrl);
         }

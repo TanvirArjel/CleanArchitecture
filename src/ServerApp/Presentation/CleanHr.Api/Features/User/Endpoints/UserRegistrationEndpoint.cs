@@ -1,18 +1,28 @@
 ﻿using CleanHr.Api.Features.User.Models;
-using CleanHr.Application.Infrastructures;
+using CleanHr.Application.Extensions;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
-public class UserRegistrationEndpoint(
-    UserManager<ApplicationUser> userManager,
-    IExceptionLogger exceptionLogger) : UserEndpointBase
+public class UserRegistrationEndpoint : UserEndpointBase
 {
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ILogger<UserRegistrationEndpoint> _logger;
+
+    public UserRegistrationEndpoint(
+        UserManager<ApplicationUser> userManager,
+        ILogger<UserRegistrationEndpoint> logger)
+    {
+        _userManager = userManager;
+        _logger = logger;
+    }
+
     [HttpPost("registration")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,7 +41,7 @@ public class UserRegistrationEndpoint(
                 Email = model.Email
             };
 
-            IdentityResult identityResult = await userManager.CreateAsync(applicationUser, model.Password);
+            IdentityResult identityResult = await _userManager.CreateAsync(applicationUser, model.Password);
 
             if (identityResult.Succeeded == false)
             {
@@ -50,7 +60,13 @@ public class UserRegistrationEndpoint(
         {
             model.Password = null;
             model.ConfirmPassword = null;
-            await exceptionLogger.LogAsync(exception, model);
+
+            Dictionary<string, object> fields = new()
+            {
+                { "RequestBody", model }
+            };
+
+            _logger.LogException(exception, "An error occurred during user registration.", fields);
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }

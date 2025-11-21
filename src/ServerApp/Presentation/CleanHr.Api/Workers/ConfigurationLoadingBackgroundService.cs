@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanHr.Api;
 
-internal class ConfigurationLoadingBackgroundService(
+internal sealed class ConfigurationLoadingBackgroundService(
 	ReadinessHealthCheck readinessHealthCheck,
 	ILogger<ConfigurationLoadingBackgroundService> logger) : BackgroundService
 {
