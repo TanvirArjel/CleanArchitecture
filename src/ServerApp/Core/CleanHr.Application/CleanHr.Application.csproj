@@ -15,10 +15,6 @@
 		<PackageReference Include="TanvirArjel.ArgumentChecker" Version="1.4.0" />
 		<PackageReference Include="TanvirArjel.EFCore.GenericRepository" Version="6.0.5" />
 		<PackageReference Include="TanvirArjel.Extensions.Microsoft.DependencyInjection" Version="2.2.0" />
-		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

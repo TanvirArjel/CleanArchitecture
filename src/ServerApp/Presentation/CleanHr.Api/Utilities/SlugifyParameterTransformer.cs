@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace CleanHr.Api.Utilities;
 
-internal partial class SlugifyParameterTransformer : IOutboundParameterTransformer
+internal sealed partial class SlugifyParameterTransformer : IOutboundParameterTransformer
 {
     public string TransformOutbound(object value)
     {
