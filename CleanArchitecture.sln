@@ -24,8 +24,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Blazor", "src\ClientApps\CleanHr.Blazor\CleanHr.Blazor.csproj", "{CF87FF06-EE73-4174-B0D4-20083CBB3C1E}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServerApp", "ServerApp", "{C1C5E94D-8251-43E4-ABD0-521E2DE77313}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanHr.Domain", "src\ServerApp\Core\CleanHr.Domain\CleanHr.Domain.csproj", "{C32E6BDA-BA62-4B3A-8B20-EF18E7708A26}"
@@ -54,10 +52,6 @@ Global
 		{CF87FF06-EE73-4174-B0D4-20083CBB3C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF87FF06-EE73-4174-B0D4-20083CBB3C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF87FF06-EE73-4174-B0D4-20083CBB3C1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FD9B922-AC6E-44F8-AE81-02D4107DC7F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C32E6BDA-BA62-4B3A-8B20-EF18E7708A26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C32E6BDA-BA62-4B3A-8B20-EF18E7708A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C32E6BDA-BA62-4B3A-8B20-EF18E7708A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
