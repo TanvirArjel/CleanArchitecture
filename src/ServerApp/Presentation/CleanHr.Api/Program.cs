@@ -5,14 +5,14 @@ namespace CleanHr.Api;
 
 internal static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         try
         {
             // Configure Serilog
             SerilogConfiguration.ConfigureSerilog();
 
-            Log.Information("Starting CleanHR API application");
+            Log.Information("Initializing CleanHR API application...");
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -21,24 +21,32 @@ internal static class Program
 
             builder.WebHost.CaptureStartupErrors(true);
 
+            Log.Information("Configuring OpenTelemetry tracing...");
             // Configure OpenTelemetry Tracing
             builder.Services.AddOpenTelemetryTracing(builder.Configuration);
 
+            Log.Information("Configuring application services...");
             // Configure  application services
             builder.ConfigureServices();
 
+            Log.Information("Building web application...");
             // Build the web application.
             WebApplication webApp = builder.Build();
 
+            Log.Information("Configuring middleware pipeline...");
             // Add middlewares to the web application.
-            webApp.ConfigureMiddlewares();
+            await webApp.ConfigureMiddlewaresAsync();
+
+            Log.Information("Starting web host...");
 
             // Run the web application.
-            webApp.Run();
+            await webApp.RunAsync();
+
+            Log.Information("CleanHR API application stopped gracefully");
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "Application terminated unexpectedly");
+            Log.Fatal(ex, "CleanHR API application failed to start");
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (environment == Environments.Development)
             {
@@ -47,7 +55,8 @@ internal static class Program
         }
         finally
         {
-            Log.CloseAndFlush();
+            Log.Information("Shutting down CleanHR API application...");
+            await Log.CloseAndFlushAsync();
         }
     }
 }

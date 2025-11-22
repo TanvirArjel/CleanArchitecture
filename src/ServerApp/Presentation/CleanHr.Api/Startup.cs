@@ -95,11 +95,13 @@ internal static class Startup
         services.AddExternalLogins(builder.Configuration);
     }
 
-    public static void ConfigureMiddlewares(this WebApplication app)
+    public static async Task ConfigureMiddlewaresAsync(this WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);
 
         app.ApplyDatabaseMigrations();
+
+        await app.SeedDatabaseAsync();
 
         app.Use((context, next) =>
         {

@@ -38,7 +38,7 @@ internal class GetDepartmentByIdQueryHandler(IQueryRepository repository) : IReq
         Expression<Func<Department, DepartmentDetailsDto>> selectExp = d => new DepartmentDetailsDto
         {
             Id = d.Id,
-            Name = d.Name.Value,
+            Name = d.Name,
             Description = d.Description,
             IsActive = d.IsActive,
             CreatedAtUtc = d.CreatedAtUtc,

@@ -1,5 +1,6 @@
 ﻿using CleanHr.Api.Features.Department.Models;
 using CleanHr.Application.Commands.DepartmentCommands;
+using CleanHr.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -27,7 +28,18 @@ public sealed class UpdateDepartmentEndpoint(
 
         UpdateDepartmentCommand command = new(departmentId, model.Name, model.Description, true);
 
-        await _mediator.Send(command, HttpContext.RequestAborted);
+        Result result = await _mediator.Send(command, HttpContext.RequestAborted);
+
+        if (result.IsSuccess == false)
+        {
+            foreach (KeyValuePair<string, string> error in result.Errors)
+            {
+                ModelState.AddModelError(error.Key, error.Value);
+            }
+
+            return ValidationProblem(ModelState);
+        }
+
         return Ok();
     }
 }

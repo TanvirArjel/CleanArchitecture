@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using CleanHr.Domain.Exceptions;
+using CleanHr.Domain.Aggregates.DepartmentAggregate.Validators;
 using CleanHr.Domain.Primitives;
-using CleanHr.Domain.ValueObjects;
+using FluentValidation.Results;
 
 namespace CleanHr.Domain.Aggregates.DepartmentAggregate;
 
@@ -22,7 +23,7 @@ public sealed class Department : AggregateRoot, ITimeFields
     {
     }
 
-    public DepartmentName Name { get; private set; }
+    public string Name { get; private set; }
 
     public string Description { get; private set; }
 
@@ -39,57 +40,83 @@ public sealed class Department : AggregateRoot, ITimeFields
     /// <param name="name">The name of the department.</param>
     /// <param name="description">The description for the department.</param>
     /// <returns>Returns <see cref="Task{TResult}"/>.</returns>
-    public static async Task<Department> CreateAsync(
+    public static async Task<Result<Department>> CreateAsync(
         IDepartmentRepository repository,
-        DepartmentName name,
+        string name,
         string description)
     {
         ArgumentNullException.ThrowIfNull(repository);
 
-        Department department = new(Guid.NewGuid());
-        await department.SetNameAsync(repository, name);
-        department.SetDescription(description);
+        DepartmentValidator validator = new();
+        UniqueDepartmentNameValidator uniqueNameValidator = new(repository);
 
-        return department;
+        Department department = new(Guid.NewGuid())
+        {
+            Name = name,
+            Description = description
+        };
+
+        ValidationResult validationResult = await validator.ValidateAsync(department);
+
+        if (validationResult.IsValid == false)
+        {
+            return Result<Department>.Failure(validationResult.ToDictionary());
+        }
+
+        ValidationResult uniqueNameResult = await uniqueNameValidator.ValidateAsync(department);
+
+        if (uniqueNameResult.IsValid == false)
+        {
+            return Result<Department>.Failure(uniqueNameResult.ToDictionary());
+        }
+
+        return Result<Department>.Success(department);
     }
 
     // Public methods
-    public void SetDescription(string description)
+    public Result SetDescription(string description)
     {
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            throw new DomainValidationException(DepartmentDomainErrors.DescriptionNullOrEmpty);
-        }
-
-        if (description.Length < 20 || description.Length > 100)
-        {
-            throw new DomainValidationException(DepartmentDomainErrors.GetDescriptionLengthOutOfRangeMessage(20, 200));
-        }
-
+        string originalDescription = Description;
         Description = description;
+
+        DepartmentValidator validator = new();
+        ValidationResult validationResult = validator.Validate(this);
+
+        if (validationResult.IsValid == false)
+        {
+            Description = originalDescription;
+            return Result.Failure(validationResult.ToDictionary());
+        }
+
+        return Result.Success();
     }
 
-    public async Task SetNameAsync(IDepartmentRepository repository, DepartmentName name)
+    public async Task<Result> SetNameAsync(IDepartmentRepository repository, string name)
     {
         ArgumentNullException.ThrowIfNull(repository);
 
-        if (name == null)
-        {
-            throw new DomainValidationException("The name cannot be null.");
-        }
-
-        if (Name != null && Name.Value.Equals(name.Value, StringComparison.OrdinalIgnoreCase))
-        {
-            return;
-        }
-
-        bool isNameExistent = await repository.ExistsAsync(d => d.Name.Value == name.Value);
-
-        if (isNameExistent)
-        {
-            throw new DomainValidationException("A department already exists with the name.");
-        }
-
+        string originalName = Name;
         Name = name;
+
+        DepartmentValidator validator = new();
+        UniqueDepartmentNameValidator uniqueNameValidator = new(repository);
+
+        ValidationResult result = await validator.ValidateAsync(this);
+
+        if (result.IsValid == false)
+        {
+            Name = originalName;
+            return Result.Failure(result.ToDictionary());
+        }
+
+        ValidationResult uniqueNameResult = await uniqueNameValidator.ValidateAsync(this);
+
+        if (uniqueNameResult.IsValid == false)
+        {
+            Name = originalName;
+            return Result.Failure(uniqueNameResult.ToDictionary());
+        }
+
+        return Result.Success();
     }
 }

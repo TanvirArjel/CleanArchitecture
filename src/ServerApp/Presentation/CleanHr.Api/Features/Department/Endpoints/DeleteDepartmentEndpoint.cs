@@ -5,10 +5,15 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Department.Endpoints;
 
-public sealed class DeleteDepartmentEndpoint(
-    IMediator mediator) : DepartmentEndpointBase
+public sealed class DeleteDepartmentEndpoint : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    private readonly IMediator _mediator;
+
+    public DeleteDepartmentEndpoint(
+        IMediator mediator)
+    {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
 
     [HttpDelete("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

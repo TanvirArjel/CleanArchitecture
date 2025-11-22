@@ -24,12 +24,12 @@ internal class GetEmployeeListQueryHandler(IQueryRepository repository) : IReque
         Expression<Func<Employee, EmployeeDto>> selectExpression = e => new EmployeeDto
         {
             Id = e.Id,
-            Name = e.Name.FirstName + " " + e.Name.LastName,
+            Name = e.FirstName + " " + e.LastName,
             DepartmentId = e.DepartmentId,
-            DepartmentName = e.Department.Name.Value,
-            DateOfBirth = e.DateOfBirth.Value,
-            Email = e.Email.Value,
-            PhoneNumber = e.PhoneNumber.Value,
+            DepartmentName = e.Department.Name,
+            DateOfBirth = e.DateOfBirth,
+            Email = e.Email,
+            PhoneNumber = e.PhoneNumber,
             IsActive = e.IsActive,
             CreatedAtUtc = e.CreatedAtUtc,
             LastModifiedAtUtc = e.LastModifiedAtUtc

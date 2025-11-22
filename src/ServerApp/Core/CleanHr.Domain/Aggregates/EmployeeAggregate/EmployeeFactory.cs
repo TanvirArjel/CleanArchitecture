@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CleanHr.Domain.Aggregates.DepartmentAggregate;
-using CleanHr.Domain.ValueObjects;
+using CleanHr.Domain.Primitives;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace CleanHr.Domain.Aggregates.EmployeeAggregate;
@@ -8,15 +9,14 @@ namespace CleanHr.Domain.Aggregates.EmployeeAggregate;
 [ScopedService]
 public sealed class EmployeeFactory(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository)
 {
-    public Employee Create(
-       EmployeeName name,
+    public Task<Result<Employee>> CreateAsync(
+       string firstName,
+       string lastName,
        Guid departmentId,
-       DateOfBirth dateOfBirth,
-       Email email,
-       PhoneNumber phoneNumber)
+       DateTime dateOfBirth,
+       string email,
+       string phoneNumber)
     {
-        Employee employee = new(departmentRepository, employeeRepository, name, departmentId, dateOfBirth, email, phoneNumber);
-
-        return employee;
+        return Employee.CreateAsync(departmentRepository, employeeRepository, firstName, lastName, departmentId, dateOfBirth, email, phoneNumber);
     }
 }

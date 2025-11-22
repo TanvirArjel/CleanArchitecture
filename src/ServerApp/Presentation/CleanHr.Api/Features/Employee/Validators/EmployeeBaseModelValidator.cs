@@ -7,9 +7,13 @@ internal abstract class EmployeeBaseModelValidator<T> : AbstractValidator<T>
 {
     protected EmployeeBaseModelValidator()
     {
-        RuleFor(e => e.Name).NotEmpty()
-                            .MinimumLength(5).WithMessage("The Name must be at least 5 characters.")
-                            .MaximumLength(50).WithMessage("The Name can't be more than 50 characters.");
+        RuleFor(e => e.FirstName).NotEmpty()
+                            .MinimumLength(2).WithMessage("The FirstName must be at least 2 characters.")
+                            .MaximumLength(50).WithMessage("The FirstName can't be more than 50 characters.");
+
+        RuleFor(e => e.LastName).NotEmpty()
+                            .MinimumLength(2).WithMessage("The LastName must be at least 2 characters.")
+                            .MaximumLength(50).WithMessage("The LastName can't be more than 50 characters.");
 
         RuleFor(e => e.DepartmentId).NotEmpty();
 

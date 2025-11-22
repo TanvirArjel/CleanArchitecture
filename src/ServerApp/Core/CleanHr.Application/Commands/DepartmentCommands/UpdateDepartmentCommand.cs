@@ -1,7 +1,6 @@
 ﻿using CleanHr.Application.Caching.Handlers;
+using CleanHr.Domain;
 using CleanHr.Domain.Aggregates.DepartmentAggregate;
-using CleanHr.Domain.Exceptions;
-using CleanHr.Domain.ValueObjects;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
@@ -11,13 +10,13 @@ public sealed record UpdateDepartmentCommand(
     Guid Id,
     string Name,
     string Description,
-    bool IsActive) : IRequest;
+    bool IsActive) : IRequest<Result>;
 
 internal sealed class UpdateDepartmentCommandHandler(
     IDepartmentRepository departmentRepository,
-    IDepartmentCacheHandler departmentCacheHandler) : IRequestHandler<UpdateDepartmentCommand>
+    IDepartmentCacheHandler departmentCacheHandler) : IRequestHandler<UpdateDepartmentCommand, Result>
 {
-    public async Task Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -25,17 +24,26 @@ internal sealed class UpdateDepartmentCommandHandler(
 
         if (departmentToBeUpdated == null)
         {
-            throw new EntityNotFoundException(typeof(Department), request.Id);
+            return Result.Failure("DepartmentId", $"The department with id '{request.Id}' was not found.");
         }
 
-        DepartmentName departmentName = new(request.Name);
+        Result setNameResult = await departmentToBeUpdated.SetNameAsync(departmentRepository, request.Name);
+        if (setNameResult.IsSuccess == false)
+        {
+            return setNameResult;
+        }
 
-        await departmentToBeUpdated.SetNameAsync(departmentRepository, departmentName);
-        departmentToBeUpdated.SetDescription(request.Description);
+        Result setDescriptionResult = departmentToBeUpdated.SetDescription(request.Description);
+        if (setDescriptionResult.IsSuccess == false)
+        {
+            return setDescriptionResult;
+        }
+
         departmentToBeUpdated.IsActive = request.IsActive;
 
         await departmentRepository.UpdateAsync(departmentToBeUpdated);
 
         await departmentCacheHandler.RemoveListAsync();
+        return Result.Success();
     }
 }

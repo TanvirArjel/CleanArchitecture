@@ -20,10 +20,11 @@ public class CreateDepartmentCommandHandlerTests
             mockDepartmentRepository.Object, mockDepartmentCacheHandler.Object);
 
         CreateDepartmentCommand createDepartmentRequest = new("Human Resource", "This is human resource department.");
-        Guid departmentId = await handler.Handle(createDepartmentRequest, CancellationToken.None);
+        var result = await handler.Handle(createDepartmentRequest, CancellationToken.None);
+        Guid departmentId = result.Value;
 
-		// Assert
-		Assert.NotEqual(Guid.Empty, departmentId);
+        // Assert
+        Assert.NotEqual(Guid.Empty, departmentId);
 		mockDepartmentRepository.Verify(dr => dr.InsertAsync(It.IsAny<Department>()), Times.Once());
 		mockDepartmentCacheHandler.Verify(dr => dr.RemoveListAsync(), Times.Once());
 	}

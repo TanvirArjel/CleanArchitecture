@@ -1,5 +1,6 @@
-﻿using CleanHr.Domain.Aggregates.EmployeeAggregate;
-using CleanHr.Domain.ValueObjects;
+﻿using CleanHr.Application.Caching.Handlers;
+using CleanHr.Domain;
+using CleanHr.Domain.Aggregates.EmployeeAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
@@ -11,27 +12,37 @@ public record CreateEmployeeCommand(
     Guid DepartmentId,
     DateTime DateOfBirth,
     string Email,
-    string PhoneNumber) : IRequest<Guid>;
+    string PhoneNumber) : IRequest<Result<Guid>>;
 
 internal class CreateEmployeeCommandHandler(
     IEmployeeRepository employeeRepository,
-    EmployeeFactory employeeFactory) : IRequestHandler<CreateEmployeeCommand, Guid>
+    IEmployeeCacheHandler employeeCacheHandler,
+    EmployeeFactory employeeFactory) : IRequestHandler<CreateEmployeeCommand, Result<Guid>>
 {
     private readonly IEmployeeRepository _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
+    private readonly IEmployeeCacheHandler _employeeCacheHandler = employeeCacheHandler ?? throw new ArgumentNullException(nameof(employeeCacheHandler));
     private readonly EmployeeFactory _employeeFactory = employeeFactory ?? throw new ArgumentNullException(nameof(employeeFactory));
 
-    public async Task<Guid> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        EmployeeName name = new(request.FirstName, request.LastName);
-        DateOfBirth dateOfBirth = new(request.DateOfBirth);
-        Email email = new(request.Email);
-        PhoneNumber phoneNumber = new(request.PhoneNumber);
+        Result<Employee> result = await _employeeFactory.CreateAsync(
+            request.FirstName,
+            request.LastName,
+            request.DepartmentId,
+            request.DateOfBirth,
+            request.Email,
+            request.PhoneNumber);
 
-        Employee employee = _employeeFactory.Create(name, request.DepartmentId, dateOfBirth, email, phoneNumber);
+        if (result.IsSuccess == false)
+        {
+            return Result<Guid>.Failure(result.Errors);
+        }
 
-        await _employeeRepository.InsertAsync(employee);
-        return employee.Id;
+        // Persist to the database
+        await _employeeRepository.InsertAsync(result.Value);
+
+        return Result<Guid>.Success(result.Value.Id);
     }
 }

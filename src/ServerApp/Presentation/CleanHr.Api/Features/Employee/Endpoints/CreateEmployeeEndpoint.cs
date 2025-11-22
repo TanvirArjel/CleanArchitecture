@@ -1,5 +1,6 @@
 ﻿using CleanHr.Api.Features.Employee.Models;
 using CleanHr.Application.Commands.EmployeeCommands;
+using CleanHr.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -20,14 +21,25 @@ public sealed class CreateEmployeeEndpoint(IMediator mediator) : EmployeeEndpoin
     public async Task<ActionResult> Post([FromBody] CreateEmployeeModel model)
     {
         CreateEmployeeCommand createEmployeeCommand = new(
-                model.Name,
-                model.Name,
+                model.FirstName,
+                model.LastName,
                 model.DepartmentId,
                 model.DateOfBirth,
                 model.Email,
                 model.PhoneNumber);
 
-        await _mediator.Send(createEmployeeCommand, HttpContext.RequestAborted);
-        return StatusCode(StatusCodes.Status201Created);
+        Result<Guid> result = await _mediator.Send(createEmployeeCommand, HttpContext.RequestAborted);
+
+        if (result.IsSuccess == false)
+        {
+            foreach (KeyValuePair<string, string> error in result.Errors)
+            {
+                ModelState.AddModelError(error.Key, error.Value);
+            }
+
+            return ValidationProblem(ModelState);
+        }
+
+        return Created($"/api/v1/employees/{result.Value}", model);
     }
 }

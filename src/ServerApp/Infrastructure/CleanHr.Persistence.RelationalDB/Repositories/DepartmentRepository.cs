@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using CleanHr.Domain.Aggregates.DepartmentAggregate;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ namespace CleanHr.Persistence.RelationalDB.Repositories;
 
 internal sealed class DepartmentRepository(CleanHrDbContext dbContext) : IDepartmentRepository
 {
-    public Task<bool> ExistsAsync(Expression<Func<Department, bool>> condition)
+    public Task<bool> ExistsAsync(Expression<Func<Department, bool>> condition, CancellationToken cancellationToken = default)
     {
         IQueryable<Department> queryable = dbContext.Set<Department>();
 
@@ -20,7 +21,7 @@ internal sealed class DepartmentRepository(CleanHrDbContext dbContext) : IDepart
             queryable = queryable.Where(condition);
         }
 
-        return queryable.AnyAsync();
+        return queryable.AnyAsync(cancellationToken);
     }
 
     public async Task<Department> GetByIdAsync(Guid departmentId)

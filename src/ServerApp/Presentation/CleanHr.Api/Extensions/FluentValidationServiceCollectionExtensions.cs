@@ -9,7 +9,7 @@ internal static class FluentValidationServiceCollectionExtensions
     public static void AddFluentValidation(this IServiceCollection services)
     {
         ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
-        services.AddValidatorsFromAssemblyContaining<CreateDepartmentModelValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdateDepartmentModelValidator>();
 
         // Make sure this is from SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
         // Otherwise Async validation would not work.

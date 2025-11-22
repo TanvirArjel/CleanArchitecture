@@ -17,7 +17,7 @@ internal class IsDepartmentExistentByNameQueryHandler(IQueryRepository repositor
     public async Task<bool> Handle(IsDepartmentExistentByNameQuery request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
-        bool isExists = await _repository.ExistsAsync<Department>(d => d.Name.Value == request.Name, cancellationToken);
+        bool isExists = await _repository.ExistsAsync<Department>(d => d.Name == request.Name, cancellationToken);
         return isExists;
     }
 }
