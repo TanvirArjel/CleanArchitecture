@@ -1,5 +1,7 @@
 ﻿[*.cs]
 
+# Use primary constructor
+
 # SA1000 : The keyword 'new' should be followed by a space
 dotnet_diagnostic.SA1000.severity = none
 
@@ -132,6 +134,9 @@ csharp_style_expression_bodied_operators = false:silent
 csharp_style_expression_bodied_properties = true:silent
 csharp_style_expression_bodied_indexers = true:silent
 csharp_style_expression_bodied_accessors = true:silent
+
+# IDE0290: Use primary constructor
+dotnet_diagnostic.IDE0290.severity = none
 csharp_style_expression_bodied_lambdas = true:silent
 csharp_style_expression_bodied_local_functions = false:silent
 

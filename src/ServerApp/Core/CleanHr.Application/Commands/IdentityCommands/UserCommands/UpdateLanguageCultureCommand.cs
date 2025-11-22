@@ -27,7 +27,7 @@ internal class UpdateLanguageCultureCommandHandler(IRepository repository) : IRe
             throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
         }
 
-        userToBeUpdated.LanguageCulture = request.LanguageCulture;
+        userToBeUpdated.SetLanguageCulture(request.LanguageCulture);
 
         _repository.Update(userToBeUpdated);
         await _repository.SaveChangesAsync(cancellationToken);

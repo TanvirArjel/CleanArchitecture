@@ -5,9 +5,14 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Department.Endpoints;
 
-public sealed class GetDepartmentByIdEndpoint(IMediator mediator) : DepartmentEndpointBase
+public sealed class GetDepartmentByIdEndpoint : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    private readonly IMediator _mediator;
+
+    public GetDepartmentByIdEndpoint(IMediator mediator)
+    {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
 
     [HttpGet("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

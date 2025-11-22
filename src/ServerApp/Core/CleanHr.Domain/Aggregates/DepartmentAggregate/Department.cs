@@ -47,8 +47,21 @@ public sealed class Department : AggregateRoot, ITimeFields
     {
         ArgumentNullException.ThrowIfNull(repository);
 
-        DepartmentValidator validator = new();
-        UniqueDepartmentNameValidator uniqueNameValidator = new(repository);
+        DepartmentNameValidator nameValidator = new(repository, Guid.Empty);
+        ValidationResult nameValidationResult = await nameValidator.ValidateAsync(name);
+
+        if (nameValidationResult.IsValid == false)
+        {
+            return Result<Department>.Failure(nameValidationResult.ToDictionary());
+        }
+
+        DepartmentDescriptionValidator descriptionValidator = new();
+        ValidationResult validationResult = await descriptionValidator.ValidateAsync(description);
+
+        if (validationResult.IsValid == false)
+        {
+            return Result<Department>.Failure(validationResult.ToDictionary());
+        }
 
         Department department = new(Guid.NewGuid())
         {
@@ -56,37 +69,22 @@ public sealed class Department : AggregateRoot, ITimeFields
             Description = description
         };
 
-        ValidationResult validationResult = await validator.ValidateAsync(department);
-
-        if (validationResult.IsValid == false)
-        {
-            return Result<Department>.Failure(validationResult.ToDictionary());
-        }
-
-        ValidationResult uniqueNameResult = await uniqueNameValidator.ValidateAsync(department);
-
-        if (uniqueNameResult.IsValid == false)
-        {
-            return Result<Department>.Failure(uniqueNameResult.ToDictionary());
-        }
-
         return Result<Department>.Success(department);
     }
 
     // Public methods
     public Result SetDescription(string description)
     {
-        string originalDescription = Description;
-        Description = description;
-
-        DepartmentValidator validator = new();
-        ValidationResult validationResult = validator.Validate(this);
+        DepartmentDescriptionValidator validator = new();
+        ValidationResult validationResult = validator.Validate(description);
 
         if (validationResult.IsValid == false)
         {
-            Description = originalDescription;
             return Result.Failure(validationResult.ToDictionary());
         }
+
+        Description = description;
+        LastModifiedAtUtc = DateTime.UtcNow;
 
         return Result.Success();
     }
@@ -95,27 +93,17 @@ public sealed class Department : AggregateRoot, ITimeFields
     {
         ArgumentNullException.ThrowIfNull(repository);
 
-        string originalName = Name;
-        Name = name;
+        DepartmentNameValidator nameValidator = new(repository, this.Id);
 
-        DepartmentValidator validator = new();
-        UniqueDepartmentNameValidator uniqueNameValidator = new(repository);
-
-        ValidationResult result = await validator.ValidateAsync(this);
+        ValidationResult result = await nameValidator.ValidateAsync(name);
 
         if (result.IsValid == false)
         {
-            Name = originalName;
             return Result.Failure(result.ToDictionary());
         }
 
-        ValidationResult uniqueNameResult = await uniqueNameValidator.ValidateAsync(this);
-
-        if (uniqueNameResult.IsValid == false)
-        {
-            Name = originalName;
-            return Result.Failure(uniqueNameResult.ToDictionary());
-        }
+        Name = name;
+        LastModifiedAtUtc = DateTime.UtcNow;
 
         return Result.Success();
     }

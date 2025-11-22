@@ -1,22 +1,23 @@
-﻿using CleanHr.Domain.Aggregates.IdentityAggregate;
+﻿using CleanHr.Domain;
+using CleanHr.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class UpdateRefreshTokenCommand(Guid userId, string token) : IRequest<RefreshToken>
+public sealed class UpdateRefreshTokenCommand(Guid userId, string token) : IRequest<Result<RefreshToken>>
 {
     public Guid UserId { get; } = userId.ThrowIfEmpty(nameof(userId));
 
     public string Token { get; } = token.ThrowIfNullOrEmpty(nameof(token));
 }
 
-internal class UpdateRefreshTokenCommandHandler(IRepository repository) : IRequestHandler<UpdateRefreshTokenCommand, RefreshToken>
+internal class UpdateRefreshTokenCommandHandler(IRepository repository) : IRequestHandler<UpdateRefreshTokenCommand, Result<RefreshToken>>
 {
     private readonly IRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 
-    public async Task<RefreshToken> Handle(UpdateRefreshTokenCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RefreshToken>> Handle(UpdateRefreshTokenCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -24,16 +25,19 @@ internal class UpdateRefreshTokenCommandHandler(IRepository repository) : IReque
 
         if (refreshTokenToBeUpdated == null)
         {
-            throw new InvalidOperationException($"The RefreshToken does not exist with id value: {request.UserId}.");
+            return Result<RefreshToken>.Failure($"The RefreshToken does not exist with id value: {request.UserId}.");
         }
 
-        refreshTokenToBeUpdated.Token = request.Token;
-        refreshTokenToBeUpdated.ExpireAtUtc = DateTime.UtcNow;
-        refreshTokenToBeUpdated.CreatedAtUtc = DateTime.UtcNow.AddDays(10);
+        Result updateResult = refreshTokenToBeUpdated.UpdateToken(request.Token);
+
+        if (updateResult.IsSuccess == false)
+        {
+            return Result<RefreshToken>.Failure(updateResult.Errors);
+        }
 
         _repository.Update(refreshTokenToBeUpdated);
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return refreshTokenToBeUpdated;
+        return Result<RefreshToken>.Success(refreshTokenToBeUpdated);
     }
 }

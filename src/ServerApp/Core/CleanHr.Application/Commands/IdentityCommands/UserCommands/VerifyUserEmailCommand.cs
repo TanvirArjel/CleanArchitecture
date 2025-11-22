@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using CleanHr.Domain;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -7,18 +8,18 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class VerifyUserEmailCommand(string email, string code) : IRequest
+public sealed class VerifyUserEmailCommand(string email, string code) : IRequest<Result>
 {
     public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
 
     public string Code { get; } = code.ThrowIfNullOrEmpty(nameof(code));
 }
 
-internal class VerifyUserEmailCommandHandler(IRepository repository) : IRequestHandler<VerifyUserEmailCommand>
+internal class VerifyUserEmailCommandHandler(IRepository repository) : IRequestHandler<VerifyUserEmailCommand, Result>
 {
     private readonly IRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 
-    public async Task Handle(VerifyUserEmailCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(VerifyUserEmailCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -32,28 +33,32 @@ internal class VerifyUserEmailCommandHandler(IRepository repository) : IRequestH
 
             if (emailVerificationCode == null)
             {
-                throw new InvalidOperationException("Either email or password reset code is incorrect.");
+                await dbContextTransaction.RollbackAsync(cancellationToken);
+                return Result.Failure("Either email or password reset code is incorrect.");
             }
 
             if (DateTime.UtcNow > emailVerificationCode.SentAtUtc.AddMinutes(5))
             {
-                throw new InvalidOperationException("The code is expired.");
+                await dbContextTransaction.RollbackAsync(cancellationToken);
+                return Result.Failure("The code is expired.");
             }
 
             ApplicationUser applicationUser = await _repository.GetAsync<ApplicationUser>(au => au.Email == request.Email, cancellationToken);
 
             if (applicationUser == null)
             {
-                throw new InvalidOperationException("The provided email is not related to any account.");
+                await dbContextTransaction.RollbackAsync(cancellationToken);
+                return Result.Failure("The provided email is not related to any account.");
             }
 
             applicationUser.EmailConfirmed = true;
             _repository.Update(applicationUser);
 
-            emailVerificationCode.UsedAtUtc = DateTime.UtcNow;
+            emailVerificationCode.MarkAsUsed();
             _repository.Update(emailVerificationCode);
 
             await dbContextTransaction.CommitAsync(cancellationToken);
+            return Result.Success();
         }
         catch (Exception)
         {

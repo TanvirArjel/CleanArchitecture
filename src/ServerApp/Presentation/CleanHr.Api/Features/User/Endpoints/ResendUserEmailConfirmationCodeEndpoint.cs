@@ -1,5 +1,6 @@
 ﻿using CleanHr.Api.Features.User.Models;
 using CleanHr.Application.Commands.IdentityCommands.UserCommands;
+using CleanHr.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,13 @@ public class ResendUserEmailConfirmationCodeEndpoint(
     public async Task<ActionResult> Post(ResendEmailConfirmationCodeModel model)
     {
         SendEmailVerificationCodeCommand command = new(model.Email);
-        await mediator.Send(command);
+        Result result = await mediator.Send(command);
+
+        if (result.IsSuccess == false)
+        {
+            return BadRequest(result.Errors);
+        }
+
         return Ok();
     }
 }

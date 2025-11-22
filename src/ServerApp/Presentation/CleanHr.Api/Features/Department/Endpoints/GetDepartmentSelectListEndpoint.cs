@@ -6,9 +6,14 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Department.Endpoints;
 
-public sealed class GetDepartmentSelectListEndpoint(IMediator mediator) : DepartmentEndpointBase
+public sealed class GetDepartmentSelectListEndpoint : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    private readonly IMediator _mediator;
+
+    public GetDepartmentSelectListEndpoint(IMediator mediator)
+    {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
 
     [HttpGet("select-list")]
     [ProducesResponseType(StatusCodes.Status200OK)]

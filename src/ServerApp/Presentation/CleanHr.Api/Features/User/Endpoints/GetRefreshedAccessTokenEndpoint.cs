@@ -1,5 +1,5 @@
 ﻿using CleanHr.Api.Features.User.Models;
-using CleanHr.Api.Helpers;
+using CleanHr.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,7 +18,7 @@ public class GetRefreshedAccessTokenEndpoint(
     [SwaggerOperation(Summary = "Get a new access token for user by posting user's expired access token and refresh token.")]
     public async Task<ActionResult<string>> Post(TokenRefreshModel model)
     {
-        string jsonWebToken = await tokenManager.GetJwtTokenAsync(model.AccessToken);
+        string jsonWebToken = await tokenManager.GetJwtTokenAsync(model.AccessToken, model.RefreshToken);
         return Ok(jsonWebToken);
     }
 }

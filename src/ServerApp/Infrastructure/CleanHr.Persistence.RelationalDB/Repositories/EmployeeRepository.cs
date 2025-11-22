@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using CleanHr.Domain.Aggregates.EmployeeAggregate;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,9 @@ internal sealed class EmployeeRepository(CleanHrDbContext dbContext) : IEmployee
         return employee;
     }
 
-    public async Task<bool> ExistsAsync(Expression<Func<Employee, bool>> condition)
+    public async Task<bool> ExistsAsync(
+        Expression<Func<Employee, bool>> condition,
+        CancellationToken cancellationToken = default)
     {
         IQueryable<Employee> queryable = dbContext.Set<Employee>();
 
@@ -28,7 +31,7 @@ internal sealed class EmployeeRepository(CleanHrDbContext dbContext) : IEmployee
             queryable = queryable.Where(condition);
         }
 
-        return await queryable.AnyAsync();
+        return await queryable.AnyAsync(cancellationToken);
     }
 
     public async Task InsertAsync(Employee employee)

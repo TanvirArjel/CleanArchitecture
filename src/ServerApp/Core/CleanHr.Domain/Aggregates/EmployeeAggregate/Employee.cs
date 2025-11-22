@@ -70,19 +70,51 @@ public sealed class Employee : AggregateRoot
         ArgumentNullException.ThrowIfNull(departmentRepository);
         ArgumentNullException.ThrowIfNull(employeeRepository);
 
-        // Check if department exists
-        bool isDepartmentExistent = await departmentRepository.ExistsAsync(d => d.Id == departmentId);
-        if (isDepartmentExistent == false)
+        EmployeeNameValidator firstNameValidator = new("FirstName");
+        ValidationResult firstNameValidationResult = await firstNameValidator.ValidateAsync(firstName);
+
+        if (firstNameValidationResult.IsValid == false)
         {
-            return Result<Employee>.Failure(new Dictionary<string, string>
-            {
-                { nameof(departmentId), $"The Department does not exist with the id value: {departmentId}" }
-            });
+            return Result<Employee>.Failure(firstNameValidationResult.ToDictionary());
         }
 
-        EmployeeValidator validator = new();
-        UniqueEmployeeEmailValidator uniqueEmailValidator = new(employeeRepository);
-        UniqueEmployeePhoneNumberValidator uniquePhoneNumberValidator = new(employeeRepository);
+        EmployeeNameValidator lastNameValidator = new("LastName");
+        ValidationResult lastNameValidationResult = await lastNameValidator.ValidateAsync(lastName);
+        if (lastNameValidationResult.IsValid == false)
+        {
+            return Result<Employee>.Failure(lastNameValidationResult.ToDictionary());
+        }
+
+        EmployeeDepartmentValidator departmentValidator = new(departmentRepository);
+        ValidationResult departmentValidationResult = await departmentValidator.ValidateAsync(departmentId);
+        if (departmentValidationResult.IsValid == false)
+        {
+            return Result<Employee>.Failure(departmentValidationResult.ToDictionary());
+        }
+
+        EmployeeDateOfBirthValidator dateOfBirthValidator = new();
+        ValidationResult dateOfBirthValidationResult = await dateOfBirthValidator.ValidateAsync(dateOfBirth);
+        if (dateOfBirthValidationResult.IsValid == false)
+        {
+            return Result<Employee>.Failure(dateOfBirthValidationResult.ToDictionary());
+        }
+
+        EmployeeEmailValidator emailValidator = new(employeeRepository, Guid.Empty);
+        ValidationResult emailValidationResult = await emailValidator.ValidateAsync(email);
+
+        if (emailValidationResult.IsValid == false)
+        {
+            return Result<Employee>.Failure(emailValidationResult.ToDictionary());
+        }
+
+        PhoneNumberValidator phoneNumberValidator = new(employeeRepository, Guid.Empty);
+        ValidationResult phoneNumberValidationResult = await phoneNumberValidator.ValidateAsync(phoneNumber);
+
+        if (phoneNumberValidationResult.IsValid == false)
+        {
+            return Result<Employee>.Failure(phoneNumberValidationResult.ToDictionary());
+        }
+
 
         Employee employee = new(Guid.NewGuid())
         {
@@ -94,47 +126,31 @@ public sealed class Employee : AggregateRoot
             PhoneNumber = phoneNumber
         };
 
-        ValidationResult validationResult = await validator.ValidateAsync(employee);
-
-        if (validationResult.IsValid == false)
-        {
-            return Result<Employee>.Failure(validationResult.ToDictionary());
-        }
-
-        ValidationResult uniqueEmailResult = await uniqueEmailValidator.ValidateAsync(employee);
-
-        if (uniqueEmailResult.IsValid == false)
-        {
-            return Result<Employee>.Failure(uniqueEmailResult.ToDictionary());
-        }
-
-        ValidationResult uniquePhoneNumberResult = await uniquePhoneNumberValidator.ValidateAsync(employee);
-
-        if (uniquePhoneNumberResult.IsValid == false)
-        {
-            return Result<Employee>.Failure(uniquePhoneNumberResult.ToDictionary());
-        }
-
         return Result<Employee>.Success(employee);
     }
 
     // Public methods
     public Result SetName(string firstName, string lastName)
     {
-        string originalFirstName = FirstName;
-        string originalLastName = LastName;
+        EmployeeNameValidator firstNameValidator = new("FirstName");
+        ValidationResult firstNameValidationResult = firstNameValidator.Validate(firstName);
+
+
+        if (firstNameValidationResult.IsValid == false)
+        {
+            return Result.Failure(firstNameValidationResult.ToDictionary());
+        }
+
+        EmployeeNameValidator lastNameValidator = new("LastName");
+        ValidationResult lastNameValidationResult = lastNameValidator.Validate(lastName);
+
+        if (lastNameValidationResult.IsValid == false)
+        {
+            return Result.Failure(lastNameValidationResult.ToDictionary());
+        }
+
         FirstName = firstName;
         LastName = lastName;
-
-        EmployeeValidator validator = new();
-        ValidationResult validationResult = validator.Validate(this);
-
-        if (validationResult.IsValid == false)
-        {
-            FirstName = originalFirstName;
-            LastName = originalLastName;
-            return Result.Failure(validationResult.ToDictionary());
-        }
 
         return Result.Success();
     }
@@ -144,8 +160,8 @@ public sealed class Employee : AggregateRoot
         DateTime originalDateOfBirth = DateOfBirth;
         DateOfBirth = dateOfBirth;
 
-        EmployeeValidator validator = new();
-        ValidationResult validationResult = validator.Validate(this);
+        EmployeeDateOfBirthValidator validator = new();
+        ValidationResult validationResult = validator.Validate(dateOfBirth);
 
         if (validationResult.IsValid == false)
         {
@@ -160,27 +176,12 @@ public sealed class Employee : AggregateRoot
     {
         ArgumentNullException.ThrowIfNull(repository);
 
-        if (departmentId == Guid.Empty)
-        {
-            return Result.Failure(new Dictionary<string, string>
-            {
-                { nameof(departmentId), "The departmentId cannot be empty guid." }
-            });
-        }
+        EmployeeDepartmentValidator validator = new(repository);
+        ValidationResult validationResult = await validator.ValidateAsync(departmentId);
 
-        if (DepartmentId != Guid.Empty && DepartmentId.Equals(departmentId))
+        if (validationResult.IsValid == false)
         {
-            return Result.Success();
-        }
-
-        bool isDepartmentExistent = await repository.ExistsAsync(d => d.Id == departmentId);
-
-        if (isDepartmentExistent == false)
-        {
-            return Result.Failure(new Dictionary<string, string>
-            {
-                { nameof(departmentId), $"The Department does not exist with the id value: {departmentId}" }
-            });
+            return Result.Failure(validationResult.ToDictionary());
         }
 
         DepartmentId = departmentId;
@@ -191,28 +192,15 @@ public sealed class Employee : AggregateRoot
     {
         ArgumentNullException.ThrowIfNull(repository);
 
-        string originalEmail = Email;
-        Email = email;
-
-        EmployeeValidator validator = new();
-        UniqueEmployeeEmailValidator uniqueEmailValidator = new(repository);
-
-        ValidationResult validationResult = await validator.ValidateAsync(this);
+        EmployeeEmailValidator validator = new(repository, Id);
+        ValidationResult validationResult = await validator.ValidateAsync(email);
 
         if (validationResult.IsValid == false)
         {
-            Email = originalEmail;
             return Result.Failure(validationResult.ToDictionary());
         }
 
-        ValidationResult uniqueEmailResult = await uniqueEmailValidator.ValidateAsync(this);
-
-        if (uniqueEmailResult.IsValid == false)
-        {
-            Email = originalEmail;
-            return Result.Failure(uniqueEmailResult.ToDictionary());
-        }
-
+        Email = email;
         return Result.Success();
     }
 
@@ -220,28 +208,15 @@ public sealed class Employee : AggregateRoot
     {
         ArgumentNullException.ThrowIfNull(repository);
 
-        string originalPhoneNumber = PhoneNumber;
-        PhoneNumber = phoneNumber;
-
-        EmployeeValidator validator = new();
-        UniqueEmployeePhoneNumberValidator uniquePhoneNumberValidator = new(repository);
-
-        ValidationResult validationResult = await validator.ValidateAsync(this);
+        PhoneNumberValidator validator = new(repository, Id);
+        ValidationResult validationResult = await validator.ValidateAsync(phoneNumber);
 
         if (validationResult.IsValid == false)
         {
-            PhoneNumber = originalPhoneNumber;
             return Result.Failure(validationResult.ToDictionary());
         }
 
-        ValidationResult uniquePhoneNumberResult = await uniquePhoneNumberValidator.ValidateAsync(this);
-
-        if (uniquePhoneNumberResult.IsValid == false)
-        {
-            PhoneNumber = originalPhoneNumber;
-            return Result.Failure(uniquePhoneNumberResult.ToDictionary());
-        }
-
+        PhoneNumber = phoneNumber;
         return Result.Success();
     }
 }

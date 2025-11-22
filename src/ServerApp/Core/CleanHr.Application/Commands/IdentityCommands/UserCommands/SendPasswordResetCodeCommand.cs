@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using CleanHr.Application.Infrastructures;
 using CleanHr.Application.Services;
+using CleanHr.Domain;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
@@ -9,12 +10,12 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class SendPasswordResetCodeCommand(string email) : IRequest
+public sealed class SendPasswordResetCodeCommand(string email) : IRequest<Result>
 {
     public string Email { get; } = email.ThrowIfNotValidEmail(nameof(email));
 }
 
-internal class SendPasswordResetCodeCommandHandler : IRequestHandler<SendPasswordResetCodeCommand>
+internal class SendPasswordResetCodeCommandHandler : IRequestHandler<SendPasswordResetCodeCommand, Result>
 {
     private readonly IRepository _repository;
     private readonly ViewRenderService _viewRenderService;
@@ -30,7 +31,7 @@ internal class SendPasswordResetCodeCommandHandler : IRequestHandler<SendPasswor
         _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
     }
 
-    public async Task Handle(SendPasswordResetCodeCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(SendPasswordResetCodeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -38,20 +39,22 @@ internal class SendPasswordResetCodeCommandHandler : IRequestHandler<SendPasswor
 
         if (isExistent == false)
         {
-            throw new InvalidOperationException("The user does not exist with the provided email.");
+            return Result.Failure("The user does not exist with the provided email.");
         }
 
         int randomNumber = RandomNumberGenerator.GetInt32(0, 1000000);
         string verificationCode = randomNumber.ToString("D6", CultureInfo.InvariantCulture);
 
-        PasswordResetCode emailVerificationCode = new()
-        {
-            Code = verificationCode,
-            Email = request.Email,
-            SentAtUtc = DateTime.UtcNow
-        };
+        Result<PasswordResetCode> result = await PasswordResetCode.CreateAsync(request.Email, verificationCode);
 
-        await _repository.AddAsync(emailVerificationCode, cancellationToken);
+        if (result.IsSuccess == false)
+        {
+            return Result.Failure(result.Errors);
+        }
+
+        PasswordResetCode passwordResetCode = result.Value;
+
+        await _repository.AddAsync(passwordResetCode, cancellationToken);
         await _repository.SaveChangesAsync(cancellationToken);
 
         (string Email, string VerificationCode) model = (request.Email, verificationCode);
@@ -60,5 +63,7 @@ internal class SendPasswordResetCodeCommandHandler : IRequestHandler<SendPasswor
         string emailBody = await _viewRenderService.RenderViewToStringAsync("EmailTemplates/PasswordResetCodeTemplate", model);
         EmailMessage emailObject = new(request.Email, request.Email, senderEmail, senderEmail, subject, emailBody);
         await _emailSender.SendAsync(emailObject);
+
+        return Result.Success();
     }
 }

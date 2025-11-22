@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using CleanHr.Api.Configs;
+using CleanHr.Application.Infrastructures;
 using CleanHr.Api.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;

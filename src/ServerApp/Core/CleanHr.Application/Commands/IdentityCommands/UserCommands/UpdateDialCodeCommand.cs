@@ -38,7 +38,8 @@ internal class UpdateDialCodeCommandHandler : IRequestHandler<UpdateDialCodeComm
             throw new InvalidOperationException($"The ApplicationUser does not exist with id value: {request.UserId}.");
         }
 
-        applicationUserToBeUpdated.DialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
+        string dialCode = request.DialCode.StartsWith('+') ? request.DialCode : $"+{request.DialCode}";
+        applicationUserToBeUpdated.SetDialCode(dialCode);
         _repository.Update(applicationUserToBeUpdated);
         await _repository.SaveChangesAsync(cancellationToken);
     }

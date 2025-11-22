@@ -1,9 +1,9 @@
 using System.IO.Compression;
-using CleanHr.Api.Configs;
 using CleanHr.Api.Extensions;
 using CleanHr.Api.Filters;
 using CleanHr.Api.Utilities;
 using CleanHr.Application.Commands.DepartmentCommands;
+using CleanHr.Application.Infrastructures;
 using CleanHr.Infrastructure.Services;
 using CleanHr.Persistence.Cache;
 using CleanHr.Persistence.RelationalDB.Extensions;

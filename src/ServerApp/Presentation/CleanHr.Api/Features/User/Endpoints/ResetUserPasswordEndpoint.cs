@@ -2,6 +2,7 @@
 using CleanHr.Application.Commands.IdentityCommands.UserCommands;
 using CleanHr.Application.Extensions;
 using CleanHr.Application.Infrastructures;
+using CleanHr.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,18 @@ public class ResetUserPasswordEndpoint : UserEndpointBase
         try
         {
             ResetPasswordCommand resetPasswordCommand = new(model.Email, model.Code, model.Password);
-            await _mediator.Send(resetPasswordCommand);
+            Result result = await _mediator.Send(resetPasswordCommand);
+
+            if (result.IsSuccess == false)
+            {
+                foreach (KeyValuePair<string, string> error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Key, error.Value);
+                }
+
+                return ValidationProblem(ModelState);
+            }
+
             return Ok();
         }
         catch (Exception exception)

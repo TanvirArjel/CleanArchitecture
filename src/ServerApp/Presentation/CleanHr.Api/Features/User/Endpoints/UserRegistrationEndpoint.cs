@@ -1,8 +1,9 @@
 ﻿using CleanHr.Api.Features.User.Models;
+using CleanHr.Application.Commands.IdentityCommands.UserCommands;
 using CleanHr.Application.Extensions;
-using CleanHr.Domain.Aggregates.IdentityAggregate;
+using CleanHr.Domain;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
@@ -12,14 +13,14 @@ namespace CleanHr.Api.Features.User.Endpoints;
 [ApiVersion("1.0")]
 public class UserRegistrationEndpoint : UserEndpointBase
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IMediator _mediator;
     private readonly ILogger<UserRegistrationEndpoint> _logger;
 
     public UserRegistrationEndpoint(
-        UserManager<ApplicationUser> userManager,
+        IMediator mediator,
         ILogger<UserRegistrationEndpoint> logger)
     {
-        _userManager = userManager;
+        _mediator = mediator;
         _logger = logger;
     }
 
@@ -34,26 +35,25 @@ public class UserRegistrationEndpoint : UserEndpointBase
     {
         try
         {
-            ApplicationUser applicationUser = new()
-            {
-                FullName = model.FirstName + " " + model.LastName,
-                UserName = model.Email,
-                Email = model.Email
-            };
+            RegisterUserCommand command = new(
+                model.FirstName,
+                model.LastName,
+                model.Email,
+                model.Password);
 
-            IdentityResult identityResult = await _userManager.CreateAsync(applicationUser, model.Password);
+            Result<Guid> result = await _mediator.Send(command);
 
-            if (identityResult.Succeeded == false)
+            if (result.IsSuccess == false)
             {
-                foreach (IdentityError item in identityResult.Errors)
+                foreach (KeyValuePair<string, string> error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, item.Description);
+                    ModelState.AddModelError(error.Key, error.Value);
                 }
 
                 return ValidationProblem(ModelState);
             }
 
-            //// await _applicationUserService.SendEmailVerificationCodeAsync(applicationUser.Email);
+            //// await _applicationUserService.SendEmailVerificationCodeAsync(model.Email);
             return Ok();
         }
         catch (Exception exception)

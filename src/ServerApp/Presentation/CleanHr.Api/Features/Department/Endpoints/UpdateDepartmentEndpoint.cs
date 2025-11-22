@@ -7,10 +7,15 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanHr.Api.Features.Department.Endpoints;
 
-public sealed class UpdateDepartmentEndpoint(
-    IMediator mediator) : DepartmentEndpointBase
+public sealed class UpdateDepartmentEndpoint : DepartmentEndpointBase
 {
-    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    private readonly IMediator _mediator;
+
+    public UpdateDepartmentEndpoint(
+        IMediator mediator)
+    {
+        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+    }
 
     [HttpPut("{departmentId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

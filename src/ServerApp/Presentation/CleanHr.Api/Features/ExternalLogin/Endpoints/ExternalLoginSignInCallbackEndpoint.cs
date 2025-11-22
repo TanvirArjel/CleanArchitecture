@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using CleanHr.Api.Helpers;
+using CleanHr.Application.Services;
 using CleanHr.Application.Extensions;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using Microsoft.AspNetCore.Authorization;
