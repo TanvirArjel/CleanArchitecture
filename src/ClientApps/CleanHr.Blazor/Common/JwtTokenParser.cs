@@ -63,10 +63,10 @@ public class JwtTokenParser(JwtSecurityTokenHandler jwtSecurityTokenHandler)
     {
         TokenValidationParameters validationParameters = new()
         {
-            ValidateIssuer = false,
+            ValidateIssuer = true,
             ValidIssuer = "SampleApp",
 
-            ValidateAudience = false,
+            ValidateAudience = true,
             ValidAudience = "SampleApp",
 
             ValidateIssuerSigningKey = false,
