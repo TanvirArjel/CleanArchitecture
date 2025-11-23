@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/ClientApps/">
+    <Project Path="src/ClientApps/CleanHr.Blazor/CleanHr.Blazor.csproj" />
+  </Folder>
+  <Folder Name="/src/ServerApp/" />
+  <Folder Name="/src/ServerApp/Core/">
+    <Project Path="src/ServerApp/Core/CleanHr.Application/CleanHr.Application.csproj" />
+    <Project Path="src/ServerApp/Core/CleanHr.Domain/CleanHr.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/ServerApp/Infrastructure/">
+    <Project Path="src/ServerApp/Infrastructure/CleanHr.Infrastructure.Services/CleanHr.Infrastructure.Services.csproj" />
+    <Project Path="src/ServerApp/Infrastructure/CleanHr.Persistence.Cache/CleanHr.Persistence.Cache.csproj" />
+    <Project Path="src/ServerApp/Infrastructure/CleanHr.Persistence.RelationalDB/CleanHr.Persistence.RelationalDB.csproj" />
+  </Folder>
+  <Folder Name="/src/ServerApp/Presentation/">
+    <Project Path="src/ServerApp/Presentation/CleanHr.Api/CleanHr.Api.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/CleanHr.Application.Tests/CleanHr.Application.Tests.csproj" />
+  </Folder>
+
+</Solution>
