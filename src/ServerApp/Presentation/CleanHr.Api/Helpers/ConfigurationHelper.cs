@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CleanHr.Api;
+﻿namespace CleanHr.Api;
 
 internal static class ConfigurationHelper
 {

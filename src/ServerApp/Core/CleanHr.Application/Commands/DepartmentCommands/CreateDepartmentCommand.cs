@@ -1,7 +1,6 @@
 ﻿using CleanHr.Application.Caching.Handlers;
 using CleanHr.Domain;
 using CleanHr.Domain.Aggregates.DepartmentAggregate;
-using CleanHr.Domain.ValueObjects;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 

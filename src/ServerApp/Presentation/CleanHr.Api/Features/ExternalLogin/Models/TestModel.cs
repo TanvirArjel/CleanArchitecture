@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CleanHr.Api;
+﻿namespace CleanHr.Api;
 
 public class TestModel
 {

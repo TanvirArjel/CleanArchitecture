@@ -8,7 +8,7 @@ namespace CleanHr.Api.Features.User.Endpoints;
 
 [ApiVersion("1.0")]
 public class GetRefreshedAccessTokenEndpoint(
-    TokenManager tokenManager) : UserEndpointBase
+    JwtTokenManager tokenManager) : UserEndpointBase
 {
     [HttpPost("refresh-token")]
     [AllowAnonymous]
@@ -18,7 +18,7 @@ public class GetRefreshedAccessTokenEndpoint(
     [SwaggerOperation(Summary = "Get a new access token for user by posting user's expired access token and refresh token.")]
     public async Task<ActionResult<string>> Post(TokenRefreshModel model)
     {
-        string jsonWebToken = await tokenManager.GetJwtTokenAsync(model.AccessToken, model.RefreshToken);
+        string jsonWebToken = await tokenManager.GetTokenAsync(model.AccessToken, model.RefreshToken);
         return Ok(jsonWebToken);
     }
 }

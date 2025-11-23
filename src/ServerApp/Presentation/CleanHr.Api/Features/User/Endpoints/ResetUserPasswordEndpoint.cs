@@ -1,12 +1,10 @@
 ﻿using CleanHr.Api.Features.User.Models;
 using CleanHr.Application.Commands.IdentityCommands.UserCommands;
 using CleanHr.Application.Extensions;
-using CleanHr.Application.Infrastructures;
 using CleanHr.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 

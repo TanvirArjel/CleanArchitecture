@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CleanHr.Domain;
+﻿namespace CleanHr.Domain;
 
 public static class DepartmentDomainErrors
 {

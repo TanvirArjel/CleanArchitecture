@@ -17,18 +17,18 @@ public class ExternalLoginSignInCallbackEndpoint : ExternalLoginEndpointBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ILogger<ExternalLoginSignInCallbackEndpoint> _logger;
-    private readonly TokenManager _tokenGenerator;
+    private readonly JwtTokenManager _jwtTokenManager;
 
     public ExternalLoginSignInCallbackEndpoint(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         ILogger<ExternalLoginSignInCallbackEndpoint> logger,
-        TokenManager tokenGenerator)
+        JwtTokenManager jwtTokenManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _logger = logger;
-        _tokenGenerator = tokenGenerator;
+        _jwtTokenManager = jwtTokenManager;
     }
 
     public string ClientLoginUrl => "https://localhost:44364/identity/login";
@@ -94,7 +94,7 @@ public class ExternalLoginSignInCallbackEndpoint : ExternalLoginEndpointBase
 
             _logger.LogWithLevel(LogLevel.Information, $"User logged in with {externalLoginInfo.LoginProvider} provider.");
 
-            string jwt = await _tokenGenerator.GetJwtTokenAsync(applicationUser);
+            string jwt = await _jwtTokenManager.GetTokenAsync(applicationUser);
             string redirectUrl = QueryHelpers.AddQueryString(ClientLoginUrl, "jwt", jwt);
             return Redirect(redirectUrl);
         }

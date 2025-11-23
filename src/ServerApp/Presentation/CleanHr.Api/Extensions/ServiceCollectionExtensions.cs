@@ -44,9 +44,8 @@ internal static class ServiceCollectionExtensions
 		jwtConfig.ThrowIfNull(nameof(jwtConfig));
 
 		services.AddSingleton(jwtConfig);
-		services.AddScoped<TokenManager>();
+		services.AddScoped<JwtTokenManager>();
 	}
-
 	public static void AddExternalLogins(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.ThrowIfNull(nameof(services));

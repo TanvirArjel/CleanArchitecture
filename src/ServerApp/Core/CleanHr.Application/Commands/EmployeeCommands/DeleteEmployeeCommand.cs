@@ -1,18 +1,18 @@
-﻿using CleanHr.Domain.Aggregates.EmployeeAggregate;
-using CleanHr.Domain.Exceptions;
+﻿using CleanHr.Domain;
+using CleanHr.Domain.Aggregates.EmployeeAggregate;
 using MediatR;
 using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Application.Commands.EmployeeCommands;
 
-public sealed record DeleteEmployeeCommand(Guid EmployeeId) : IRequest;
+public sealed record DeleteEmployeeCommand(Guid EmployeeId) : IRequest<Result>;
 
 internal class DeleteEmployeeCommandHandler(
-    IEmployeeRepository employeeRepository) : IRequestHandler<DeleteEmployeeCommand>
+    IEmployeeRepository employeeRepository) : IRequestHandler<DeleteEmployeeCommand, Result>
 {
     private readonly IEmployeeRepository _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
 
-    public async Task Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -20,9 +20,11 @@ internal class DeleteEmployeeCommandHandler(
 
         if (employeeToBeDeleted == null)
         {
-            throw new EntityNotFoundException(typeof(Employee), request.EmployeeId);
+            return Result.Failure($"The Employee does not exist with id value: {request.EmployeeId}.");
         }
 
         await _employeeRepository.DeleteAsync(employeeToBeDeleted);
+
+        return Result.Success();
     }
 }

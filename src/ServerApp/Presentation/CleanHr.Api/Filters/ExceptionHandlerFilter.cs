@@ -1,11 +1,9 @@
 ﻿using System.Text;
 using CleanHr.Application.Extensions;
-using CleanHr.Application.Infrastructures;
 using CleanHr.Domain.Exceptions;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Build.Framework;
 using Microsoft.Extensions.Logging;
 using TanvirArjel.ArgumentChecker;
 

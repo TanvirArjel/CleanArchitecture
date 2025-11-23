@@ -1,4 +1,5 @@
 ﻿using CleanHr.Application.Commands.EmployeeCommands;
+using CleanHr.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -26,7 +27,18 @@ public sealed class DeleteEmployeeEndpoint(IMediator mediator) : EmployeeEndpoin
 
         DeleteEmployeeCommand command = new(employeeId);
 
-        await _mediator.Send(command, HttpContext.RequestAborted);
+        Result result = await _mediator.Send(command, HttpContext.RequestAborted);
+
+        if (result.IsSuccess == false)
+        {
+            foreach (KeyValuePair<string, string> error in result.Errors)
+            {
+                ModelState.AddModelError(error.Key, error.Value);
+            }
+
+            return ValidationProblem(ModelState);
+        }
+
         return NoContent();
     }
 }

@@ -34,7 +34,7 @@ public static class ApplicationBuilderExtensions
 
         var dbContext = serviceProvider.GetRequiredService<CleanHrDbContext>();
         var departmentRepository = serviceProvider.GetRequiredService<IDepartmentRepository>();
-        var employeeFactory = serviceProvider.GetRequiredService<EmployeeFactory>();
+        var employeeRepository = serviceProvider.GetRequiredService<IEmployeeRepository>();
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
         var logger = serviceProvider.GetRequiredService<ILogger<DatabaseSeeder>>();
@@ -42,7 +42,7 @@ public static class ApplicationBuilderExtensions
         var seeder = new DatabaseSeeder(
             dbContext,
             departmentRepository,
-            employeeFactory,
+            employeeRepository,
             userManager,
             roleManager,
             logger);

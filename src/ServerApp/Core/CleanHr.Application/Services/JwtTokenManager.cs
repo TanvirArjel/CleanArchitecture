@@ -16,13 +16,13 @@ using TanvirArjel.ArgumentChecker;
 
 namespace CleanHr.Application.Services;
 
-public class TokenManager
+public class JwtTokenManager
 {
     private readonly JwtConfig _jwtConfig;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMediator _mediator;
 
-    public TokenManager(
+    public JwtTokenManager(
         JwtConfig jwtConfig,
         UserManager<ApplicationUser> userManager,
         IMediator mediator)
@@ -32,7 +32,7 @@ public class TokenManager
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    public async Task<string> GetJwtTokenAsync(string userId)
+    public async Task<string> GetTokenAsync(string userId)
     {
         userId.ThrowIfNullOrEmpty(nameof(userId));
 
@@ -43,10 +43,10 @@ public class TokenManager
             throw new InvalidOperationException($"User with ID {userId} not found.");
         }
 
-        return await GetJwtTokenAsync(user);
+        return await GetTokenAsync(user);
     }
 
-    public async Task<string> GetJwtTokenAsync(string accessToken, string refreshToken)
+    public async Task<string> GetTokenAsync(string accessToken, string refreshToken)
     {
         accessToken.ThrowIfNull(nameof(accessToken));
 
@@ -58,10 +58,10 @@ public class TokenManager
         bool isValid = await _mediator.Send(isRefreshTokenValidQuery);
 
         ApplicationUser user = await _userManager.FindByIdAsync(userId);
-        return await GetJwtTokenAsync(user);
+        return await GetTokenAsync(user);
     }
 
-    public async Task<string> GetJwtTokenAsync(ApplicationUser user)
+    public async Task<string> GetTokenAsync(ApplicationUser user)
     {
         ArgumentNullException.ThrowIfNull(user);
 

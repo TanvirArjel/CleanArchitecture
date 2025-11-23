@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using CleanHr.Application.Services;
 using CleanHr.Application.Extensions;
-using CleanHr.Application.Infrastructures;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,18 +16,18 @@ public class ExternalLoginSignUpCallbackEndpoint : ExternalLoginEndpointBase
 {
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly TokenManager _tokenManager;
+    private readonly JwtTokenManager _jwtTokenManager;
     private readonly ILogger<ExternalLoginSignUpCallbackEndpoint> _logger;
 
     public ExternalLoginSignUpCallbackEndpoint(
         SignInManager<ApplicationUser> signInManager,
         UserManager<ApplicationUser> userManager,
-        TokenManager tokenManager,
+        JwtTokenManager jwtTokenManager,
         ILogger<ExternalLoginSignUpCallbackEndpoint> logger)
     {
         _signInManager = signInManager;
         _userManager = userManager;
-        _tokenManager = tokenManager;
+        _jwtTokenManager = jwtTokenManager;
         _logger = logger;
     }
 
@@ -108,7 +107,7 @@ public class ExternalLoginSignUpCallbackEndpoint : ExternalLoginEndpointBase
 
                 _logger.LogWithLevel(LogLevel.Information, $"User logged in with {externalLoginInfo.LoginProvider} provider.");
 
-                string jwt = await _tokenManager.GetJwtTokenAsync(applicationUser);
+                string jwt = await _jwtTokenManager.GetTokenAsync(applicationUser);
 
                 string redirectUrl = QueryHelpers.AddQueryString(ClientLoginUrl, "jwt", jwt);
                 return Redirect(redirectUrl);

@@ -1,4 +1,3 @@
-using System;
 using FluentValidation;
 
 namespace CleanHr.Domain.Aggregates.EmployeeAggregate.Validators;

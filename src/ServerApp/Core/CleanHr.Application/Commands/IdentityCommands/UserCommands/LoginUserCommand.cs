@@ -22,18 +22,18 @@ internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Resul
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IRepository _repository;
-    private readonly TokenManager _tokenManager;
+    private readonly JwtTokenManager _jwtTokenManager;
 
     public LoginUserCommandHandler(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IRepository repository,
-        TokenManager tokenManager)
+        JwtTokenManager jwtTokenManager)
     {
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _tokenManager = tokenManager ?? throw new ArgumentNullException(nameof(tokenManager));
+        _jwtTokenManager = jwtTokenManager ?? throw new ArgumentNullException(nameof(jwtTokenManager));
     }
 
     public async Task<Result<string>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -42,10 +42,7 @@ internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Resul
 
         ApplicationUser applicationUser = await _userManager.FindByEmailAsync(request.EmailOrUserName);
 
-        if (applicationUser == null)
-        {
-            applicationUser = await _userManager.FindByNameAsync(request.EmailOrUserName);
-        }
+        applicationUser ??= await _userManager.FindByNameAsync(request.EmailOrUserName);
 
         if (applicationUser == null)
         {
@@ -66,7 +63,7 @@ internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Resul
             await _repository.SaveChangesAsync(cancellationToken);
 
             // Generate JWT token
-            string jsonWebToken = await _tokenManager.GetJwtTokenAsync(applicationUser.Id.ToString());
+            string jsonWebToken = await _jwtTokenManager.GetTokenAsync(applicationUser.Id.ToString());
             return Result<string>.Success(jsonWebToken);
         }
 

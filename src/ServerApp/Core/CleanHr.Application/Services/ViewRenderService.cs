@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using CleanHr.Application.Extensions;
-using CleanHr.Application.Infrastructures;
 using CleanHr.Domain.Aggregates.IdentityAggregate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

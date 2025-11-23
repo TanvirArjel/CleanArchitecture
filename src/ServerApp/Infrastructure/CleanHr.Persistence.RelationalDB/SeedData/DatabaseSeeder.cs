@@ -14,7 +14,7 @@ namespace CleanHr.Persistence.RelationalDB.SeedData;
 internal sealed class DatabaseSeeder(
     CleanHrDbContext dbContext,
     IDepartmentRepository departmentRepository,
-    EmployeeFactory employeeFactory,
+    IEmployeeRepository employeeRepository,
     UserManager<ApplicationUser> userManager,
     RoleManager<ApplicationRole> roleManager,
     ILogger<DatabaseSeeder> logger)
@@ -276,7 +276,15 @@ internal sealed class DatabaseSeeder(
 
         foreach (var (firstName, lastName, departmentId, dateOfBirth, email, phoneNumber) in employeeData)
         {
-            var result = await employeeFactory.CreateAsync(firstName, lastName, departmentId, dateOfBirth, email, phoneNumber);
+            var result = await Employee.CreateAsync(
+                departmentRepository,
+                employeeRepository,
+                firstName,
+                lastName,
+                departmentId,
+                dateOfBirth,
+                email,
+                phoneNumber);
 
             if (result.IsSuccess)
             {

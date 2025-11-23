@@ -50,5 +50,5 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:CleanHr.Api.Features.User.Models.ResendEmailConfirmationCodeModel")]
 [assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:CleanHr.Api.Features.User.Models.ResetPasswordModel")]
 [assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:CleanHr.Api.Features.User.Models.TokenRefreshModel")]
-[assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:CleanHr.Api.Helpers.TokenManager")]
+[assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:CleanHr.Api.Helpers.JwtTokenManager")]
 [assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:CleanHr.Api.TestModel")]

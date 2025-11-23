@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CleanHr.Domain.Aggregates.DepartmentAggregate.Validators;
