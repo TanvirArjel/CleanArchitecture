@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using TanvirArjel.ArgumentChecker;
+using CleanHr.Application.Services;
 
 namespace CleanHr.Api.Extensions;
 
@@ -43,6 +44,7 @@ internal static class ServiceCollectionExtensions
 		jwtConfig.ThrowIfNull(nameof(jwtConfig));
 
 		services.AddSingleton(jwtConfig);
+		services.AddScoped<TokenManager>();
 	}
 
 	public static void AddExternalLogins(this IServiceCollection services, IConfiguration configuration)

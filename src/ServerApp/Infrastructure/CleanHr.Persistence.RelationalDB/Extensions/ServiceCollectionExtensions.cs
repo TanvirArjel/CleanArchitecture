@@ -69,6 +69,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
         services.AddGenericRepository<CleanHrDbContext>();
         services.AddQueryRepository<CleanHrDbContext>();
