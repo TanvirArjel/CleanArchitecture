@@ -3,4 +3,5 @@
 internal static class LocalStorageKey
 {
     public const string Jwt = "LoggedInUserInfo";
+    public const string RefreshToken = "refreshToken";
 }

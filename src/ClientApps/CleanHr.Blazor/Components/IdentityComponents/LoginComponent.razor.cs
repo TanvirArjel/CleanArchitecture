@@ -19,6 +19,8 @@ public partial class LoginComponent(
     ExceptionLogger exceptionLogger,
     NavigationManager navigationManager)
 {
+    private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
+
     private readonly UserService _userService = userService;
     private readonly HostAuthStateProvider _hostAuthStateProvider = hostAuthStateProvider;
     private readonly ExceptionLogger _exceptionLogger = exceptionLogger;
@@ -72,13 +74,11 @@ public partial class LoginComponent(
             if (httpResponse.IsSuccessStatusCode)
             {
                 string responseString = await httpResponse.Content.ReadAsStringAsync();
-                string jsonWebToken = JsonSerializer.Deserialize<string>(responseString);
+                TokenResponse tokenResponse = JsonSerializer.Deserialize<TokenResponse>(responseString, JsonOptions);
 
-                Console.WriteLine(jsonWebToken);
-
-                if (jsonWebToken != null)
+                if (tokenResponse != null && !string.IsNullOrWhiteSpace(tokenResponse.AccessToken))
                 {
-                    await _hostAuthStateProvider.LogInAsync(jsonWebToken, "/");
+                    await _hostAuthStateProvider.LogInAsync(tokenResponse.AccessToken, tokenResponse.RefreshToken, "/");
                     return;
                 }
             }
@@ -107,5 +107,11 @@ public partial class LoginComponent(
     {
         string loginUrl = "https://localhost:44363/api/v1/external-login/sign-in?provider=Google";
         _navigationManager.NavigateTo(loginUrl, true);
+    }
+
+    private sealed class TokenResponse
+    {
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

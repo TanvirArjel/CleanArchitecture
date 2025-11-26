@@ -22,14 +22,14 @@ public class HostAuthStateProvider(
     {
         try
         {
-            string jsonWebToken = await _localStorage.GetItemAsync<string>(LocalStorageKey.Jwt);
+            string accessToken = await _localStorage.GetItemAsync<string>(LocalStorageKey.Jwt);
 
-            if (jsonWebToken == null)
+            if (string.IsNullOrWhiteSpace(accessToken))
             {
                 return new AuthenticationState(new ClaimsPrincipal());
             }
 
-            ClaimsPrincipal claimsPrincipal = _jwtTokenParser.Parse(jsonWebToken);
+            ClaimsPrincipal claimsPrincipal = _jwtTokenParser.Parse(accessToken);
 
             AuthenticationState authenticationState = new(claimsPrincipal);
             User = authenticationState.User;
@@ -45,11 +45,17 @@ public class HostAuthStateProvider(
         }
     }
 
-    public async Task LogInAsync(string jsonWebToken, string redirectTo = null)
+    public async Task LogInAsync(string accessToken, string refreshToken, string redirectTo = null)
     {
-        ArgumentNullException.ThrowIfNull(jsonWebToken);
+        ArgumentNullException.ThrowIfNull(accessToken);
 
-        await _localStorage.SetItemAsync(LocalStorageKey.Jwt, jsonWebToken);
+        await _localStorage.SetItemAsync(LocalStorageKey.Jwt, accessToken);
+
+        if (!string.IsNullOrWhiteSpace(refreshToken))
+        {
+            await _localStorage.SetItemAsync(LocalStorageKey.RefreshToken, refreshToken);
+        }
+
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
         if (redirectTo != null)
@@ -58,9 +64,17 @@ public class HostAuthStateProvider(
         }
     }
 
+    // Overload for backward compatibility with external login
+    public async Task LogInAsync(string jsonWebToken, string redirectTo = null)
+    {
+        ArgumentNullException.ThrowIfNull(jsonWebToken);
+        await LogInAsync(jsonWebToken, null, redirectTo);
+    }
+
     public async Task LogOutAsync(string redirectTo = null)
     {
         await _localStorage.RemoveItemAsync(LocalStorageKey.Jwt);
+        await _localStorage.RemoveItemAsync(LocalStorageKey.RefreshToken);
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
         if (redirectTo != null)
