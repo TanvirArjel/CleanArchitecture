@@ -46,67 +46,107 @@ public class JwtTokenManager
         return await GetTokenAsync(user);
     }
 
-    public async Task<string> GetTokenAsync(string accessToken, string refreshToken)
+    public async Task<(string AccessToken, string RefreshToken)> GetTokenAsync(string accessToken, string refreshToken)
     {
         accessToken.ThrowIfNull(nameof(accessToken));
+        refreshToken.ThrowIfNull(nameof(refreshToken));
 
         ClaimsPrincipal claimsPrincipal = ParseExpiredToken(accessToken);
         string userId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        IsRefreshTokenValidQuery isRefreshTokenValidQuery = new(Guid.Parse(userId), refreshToken);
+        // Get the refresh token from database
+        GetRefreshTokenQuery getRefreshTokenQuery = new(refreshToken);
+        RefreshToken currentToken = await _mediator.Send(getRefreshTokenQuery);
 
-        bool isValid = await _mediator.Send(isRefreshTokenValidQuery);
+        if (currentToken == null)
+        {
+            throw new SecurityTokenException("Invalid refresh token.");
+        }
+
+        // Verify the token belongs to the user
+        if (currentToken.UserId != Guid.Parse(userId))
+        {
+            throw new SecurityTokenException("Token does not belong to this user.");
+        }
+
+        // Check if token is valid (not revoked and not expired)
+        if (!currentToken.IsValid())
+        {
+            // Token is invalid - check if it's a reuse attack
+            if (currentToken.IsRevoked)
+            {
+                // Possible reuse attack - revoke entire token family
+                RevokeRefreshTokenFamilyCommand revokeCommand = new(currentToken.TokenFamily);
+                await _mediator.Send(revokeCommand);
+                throw new SecurityTokenException("Token reuse detected. All tokens in this family have been revoked.");
+            }
+
+            throw new SecurityTokenException("Refresh token has expired.");
+        }
+
+        // Revoke the current token (it's been used)
+        currentToken.Revoke();
+        _mediator.Send(new UpdateTokenCommand(currentToken));
+
+        // Generate new refresh token in the same family chain
+        string newRefreshTokenString = GetRefreshToken();
+        RotateRefreshTokenCommand rotateCommand = new(
+            Guid.Parse(userId),
+            newRefreshTokenString,
+            currentToken.TokenFamily,
+            currentToken.Id);
+
+        Result<RefreshToken> rotateResult = await _mediator.Send(rotateCommand);
+
+        if (rotateResult.IsSuccess == false)
+        {
+            throw new InvalidOperationException("Failed to rotate refresh token.");
+        }
 
         ApplicationUser user = await _userManager.FindByIdAsync(userId);
-        return await GetTokenAsync(user);
+
+        // Generate a new access token
+        string newAccessToken = await GenerateAccessTokenAsync(user);
+
+        return (newAccessToken, newRefreshTokenString);
     }
 
-    public async Task<string> GetTokenAsync(ApplicationUser user)
+    public async Task<(string AccessToken, string RefreshToken)> GetTokensAsync(ApplicationUser user)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+
+        // For login, always create a new refresh token with a new token family
+        // This starts a new token chain
+        string tokenString = GetRefreshToken();
+        StoreRefreshTokenCommand storeRefreshTokenCommand = new(user.Id, tokenString);
+        Result<RefreshToken> storeResult = await _mediator.Send(storeRefreshTokenCommand);
+
+        if (storeResult.IsSuccess == false)
+        {
+            throw new InvalidOperationException("Failed to store refresh token.");
+        }
+
+        RefreshToken refreshToken = storeResult.Value;
+
+        // Generate access token
+        string accessToken = await GenerateAccessTokenAsync(user);
+
+        return (accessToken, refreshToken.Token);
+    }
+
+    private async Task<string> GenerateAccessTokenAsync(ApplicationUser user)
     {
         ArgumentNullException.ThrowIfNull(user);
 
         IList<string> roles = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
 
-        GetRefreshTokenQuery getRefreshTokenQuery = new(user.Id);
-
-        RefreshToken refreshToken = await _mediator.Send(getRefreshTokenQuery);
-
-        if (refreshToken == null)
-        {
-            string token = GetRefreshToken();
-            StoreRefreshTokenCommand storeRefreshTokenCommand = new(user.Id, token);
-            Result<RefreshToken> storeResult = await _mediator.Send(storeRefreshTokenCommand);
-
-            if (storeResult.IsSuccess == false)
-            {
-                throw new InvalidOperationException("Failed to store refresh token.");
-            }
-
-            refreshToken = storeResult.Value;
-        }
-        else
-        {
-            if (refreshToken.ExpireAtUtc < DateTime.UtcNow)
-            {
-                string token = GetRefreshToken();
-                UpdateRefreshTokenCommand updateRefreshTokenCommand = new(user.Id, token);
-                Result<RefreshToken> updateResult = await _mediator.Send(updateRefreshTokenCommand);
-
-                if (updateResult.IsSuccess == false)
-                {
-                    throw new InvalidOperationException("Failed to update refresh token.");
-                }
-
-                refreshToken = updateResult.Value;
-            }
-        }
-
-        DateTime utcNow = DateTime.Now;
+        DateTime utcNow = DateTime.UtcNow;
 
         string fullName = string.IsNullOrWhiteSpace(user.FullName) ? user.UserName : user.FullName;
 
-        List<Claim> claims =
-        [
+        // Build claims for the access token. Do NOT include the raw refresh token here.
+        List<Claim> claims = new()
+        {
             new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Name, fullName),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
@@ -116,8 +156,7 @@ public class JwtTokenManager
             new Claim(JwtRegisteredClaimNames.GivenName, fullName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)),
-            new Claim("rt", refreshToken.Token),
-        ];
+        };
 
         if (roles != null && roles.Any())
         {
@@ -140,9 +179,15 @@ public class JwtTokenManager
 
         JwtSecurityTokenHandler jwtSecurityTokenHandler = new();
         jwtSecurityTokenHandler.OutboundClaimTypeMap.Clear();
-        string newAccessToken = jwtSecurityTokenHandler.WriteToken(jwt);
+        string accessToken = jwtSecurityTokenHandler.WriteToken(jwt);
 
-        return newAccessToken;
+        return accessToken;
+    }
+
+    public async Task<string> GetTokenAsync(ApplicationUser user)
+    {
+        (string accessToken, string _) = await GetTokensAsync(user);
+        return accessToken;
     }
 
     public ClaimsPrincipal ParseExpiredToken(string accessToken)
@@ -153,7 +198,9 @@ public class JwtTokenManager
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key)),
-            ValidateLifetime = true
+            // Allow parsing expired tokens here so we can extract claims from an expired access token
+            // during the refresh-flow. Do not accept an expired token as valid authentication.
+            ValidateLifetime = false
         };
 
         JwtSecurityTokenHandler tokenHandler = new();

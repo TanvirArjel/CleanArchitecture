@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CleanHr.Domain.Aggregates.IdentityAggregate.Validators;
@@ -39,7 +40,7 @@ public class ApplicationUser : IdentityUser<Guid>
     public DateTime? LastLoggedInAtUtc { get; private set; }
 
     // Navigation Properties
-    public RefreshToken RefreshToken { get; private set; }
+    public ICollection<RefreshToken> RefreshTokens { get; private set; } = new List<RefreshToken>();
 
     /// <summary>
     /// Factory method for creating a new ApplicationUser with validation.

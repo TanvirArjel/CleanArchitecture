@@ -5,11 +5,9 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Queries.IdentityQueries.UserQueries;
 
-public sealed class IsRefreshTokenValidQuery(Guid userId, string refreshToken) : IRequest<bool>
+public sealed class IsRefreshTokenValidQuery(string refreshToken) : IRequest<bool>
 {
-    public Guid UserId { get; } = userId;
-
-    public string RefreshToken { get; } = refreshToken;
+    public string RefreshToken { get; } = refreshToken.ThrowIfNullOrEmpty(nameof(refreshToken));
 }
 
 internal class IsRefreshTokenValidQueryHandler(IRepository repository) : IRequestHandler<IsRefreshTokenValidQuery, bool>
@@ -20,8 +18,16 @@ internal class IsRefreshTokenValidQueryHandler(IRepository repository) : IReques
     {
         request.ThrowIfNull(nameof(request));
 
-        bool isRefreshTokenValid = await _repository.ExistsAsync<RefreshToken>(rt => rt.UserId == request.UserId && rt.Token == request.RefreshToken, cancellationToken);
+        RefreshToken refreshToken = await _repository.GetAsync<RefreshToken>(
+            rt => rt.Token == request.RefreshToken,
+            cancellationToken);
 
-        return isRefreshTokenValid;
+        if (refreshToken == null)
+        {
+            return false;
+        }
+
+        // Check if the refresh token is valid
+        return refreshToken.IsValid();
     }
 }

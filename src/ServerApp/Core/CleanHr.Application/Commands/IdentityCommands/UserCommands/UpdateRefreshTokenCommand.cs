@@ -6,38 +6,42 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class UpdateRefreshTokenCommand(Guid userId, string token) : IRequest<Result<RefreshToken>>
+public sealed class RotateRefreshTokenCommand(Guid userId, string newToken, string tokenFamily, Guid? previousTokenId) : IRequest<Result<RefreshToken>>
 {
     public Guid UserId { get; } = userId.ThrowIfEmpty(nameof(userId));
 
-    public string Token { get; } = token.ThrowIfNullOrEmpty(nameof(token));
+    public string NewToken { get; } = newToken.ThrowIfNullOrEmpty(nameof(newToken));
+
+    public string TokenFamily { get; } = tokenFamily.ThrowIfNullOrEmpty(nameof(tokenFamily));
+
+    public Guid? PreviousTokenId { get; } = previousTokenId;
 }
 
-internal class UpdateRefreshTokenCommandHandler(IRepository repository) : IRequestHandler<UpdateRefreshTokenCommand, Result<RefreshToken>>
+internal class RotateRefreshTokenCommandHandler(IRepository repository) : IRequestHandler<RotateRefreshTokenCommand, Result<RefreshToken>>
 {
     private readonly IRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 
-    public async Task<Result<RefreshToken>> Handle(UpdateRefreshTokenCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RefreshToken>> Handle(RotateRefreshTokenCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
-        RefreshToken refreshTokenToBeUpdated = await _repository.GetAsync<RefreshToken>(rt => rt.UserId == request.UserId, cancellationToken);
+        // Create new token in the same family chain
+        Result<RefreshToken> result = await RefreshToken.CreateAsync(
+            request.UserId,
+            request.NewToken,
+            tokenFamily: request.TokenFamily,
+            previousTokenId: request.PreviousTokenId);
 
-        if (refreshTokenToBeUpdated == null)
+        if (result.IsSuccess == false)
         {
-            return Result<RefreshToken>.Failure($"The RefreshToken does not exist with id value: {request.UserId}.");
+            return result;
         }
 
-        Result updateResult = refreshTokenToBeUpdated.UpdateToken(request.Token);
+        RefreshToken newRefreshToken = result.Value;
 
-        if (updateResult.IsSuccess == false)
-        {
-            return Result<RefreshToken>.Failure(updateResult.Errors);
-        }
-
-        _repository.Update(refreshTokenToBeUpdated);
+        _repository.Add(newRefreshToken);
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return Result<RefreshToken>.Success(refreshTokenToBeUpdated);
+        return Result<RefreshToken>.Success(newRefreshToken);
     }
 }

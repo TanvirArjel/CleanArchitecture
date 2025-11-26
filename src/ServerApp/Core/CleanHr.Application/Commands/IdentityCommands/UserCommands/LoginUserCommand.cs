@@ -8,35 +8,37 @@ using TanvirArjel.EFCore.GenericRepository;
 
 namespace CleanHr.Application.Commands.IdentityCommands.UserCommands;
 
-public sealed class LoginUserCommand(string emailOrUserName, string password, bool rememberMe) : IRequest<Result<string>>
+public sealed class LoginResponseDto
+{
+    public string AccessToken { get; set; }
+
+    public string RefreshToken { get; set; }
+}
+
+public sealed class LoginUserCommand(string emailOrUserName, string password) : IRequest<Result<LoginResponseDto>>
 {
     public string EmailOrUserName { get; } = emailOrUserName.ThrowIfNullOrEmpty(nameof(emailOrUserName));
 
     public string Password { get; } = password.ThrowIfNullOrEmpty(nameof(password));
-
-    public bool RememberMe { get; } = rememberMe;
 }
 
-internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<string>>
+internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<LoginResponseDto>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IRepository _repository;
     private readonly JwtTokenManager _jwtTokenManager;
 
     public LoginUserCommandHandler(
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
         IRepository repository,
         JwtTokenManager jwtTokenManager)
     {
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _jwtTokenManager = jwtTokenManager ?? throw new ArgumentNullException(nameof(jwtTokenManager));
     }
 
-    public async Task<Result<string>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<LoginResponseDto>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         request.ThrowIfNull(nameof(request));
 
@@ -46,52 +48,54 @@ internal class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Resul
 
         if (applicationUser == null)
         {
-            return Result<string>.Failure("EmailOrUserName", "The email or username does not exist.");
+            return Result<LoginResponseDto>.Failure("EmailOrUserName", "The email or username does not exist.");
         }
 
-        Microsoft.AspNetCore.Identity.SignInResult signInResult = await _signInManager.PasswordSignInAsync(
-            request.EmailOrUserName,
-            request.Password,
-            isPersistent: request.RememberMe,
-            lockoutOnFailure: false);
-
-        if (signInResult.Succeeded)
+        // Check if user is disabled
+        if (applicationUser.IsDisabled)
         {
-            // Record login using domain method
-            applicationUser.RecordLogin();
-            _repository.Update(applicationUser);
-            await _repository.SaveChangesAsync(cancellationToken);
-
-            // Generate JWT token
-            string jsonWebToken = await _jwtTokenManager.GetTokenAsync(applicationUser.Id.ToString());
-            return Result<string>.Success(jsonWebToken);
+            return Result<LoginResponseDto>.Failure(string.Empty, "The account has been disabled.");
         }
 
-        if (signInResult.IsNotAllowed)
+        // Check if email is confirmed (if required)
+        if (!await _userManager.IsEmailConfirmedAsync(applicationUser))
         {
-            if (!await _userManager.IsEmailConfirmedAsync(applicationUser))
-            {
-                return Result<string>.Failure("EmailOrUserName", "The email is not confirmed yet.");
-            }
-
-            if (!await _userManager.IsPhoneNumberConfirmedAsync(applicationUser))
-            {
-                return Result<string>.Failure(string.Empty, "The phone number is not confirmed yet.");
-            }
-        }
-        else if (signInResult.IsLockedOut)
-        {
-            return Result<string>.Failure(string.Empty, "The account is locked.");
-        }
-        else if (signInResult.RequiresTwoFactor)
-        {
-            return Result<string>.Failure(string.Empty, "Require two factor authentication.");
-        }
-        else
-        {
-            return Result<string>.Failure("Password", "Password is incorrect.");
+            return Result<LoginResponseDto>.Failure("EmailOrUserName", "The email is not confirmed yet.");
         }
 
-        return Result<string>.Failure(string.Empty, "Login failed.");
+        // Check if account is locked out
+        if (await _userManager.IsLockedOutAsync(applicationUser))
+        {
+            return Result<LoginResponseDto>.Failure(string.Empty, "The account is locked.");
+        }
+
+        // Verify password
+        bool isPasswordValid = await _userManager.CheckPasswordAsync(applicationUser, request.Password);
+
+        if (!isPasswordValid)
+        {
+            // Increment access failed count for lockout protection
+            await _userManager.AccessFailedAsync(applicationUser);
+            return Result<LoginResponseDto>.Failure("Password", "Password is incorrect.");
+        }
+
+        // Reset access failed count on successful login
+        await _userManager.ResetAccessFailedCountAsync(applicationUser);
+
+        // Record login using domain method
+        applicationUser.RecordLogin();
+        _repository.Update(applicationUser);
+        await _repository.SaveChangesAsync(cancellationToken);
+
+        // Generate JWT token and refresh token
+        (string accessToken, string refreshToken) = await _jwtTokenManager.GetTokensAsync(applicationUser);
+
+        LoginResponseDto response = new()
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
+
+        return Result<LoginResponseDto>.Success(response);
     }
 }

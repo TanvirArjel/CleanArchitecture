@@ -8,12 +8,16 @@ namespace CleanHr.Domain.Aggregates.IdentityAggregate;
 
 public class RefreshToken
 {
-    private RefreshToken(Guid userId, string token, int expirationDays = 30)
+    private RefreshToken(Guid userId, string token, int expirationDays = 30, string tokenFamily = null, Guid? previousTokenId = null)
     {
+        Id = Guid.NewGuid();
         UserId = userId;
         Token = token?.Trim();
         CreatedAtUtc = DateTime.UtcNow;
         ExpireAtUtc = DateTime.UtcNow.AddDays(expirationDays);
+        TokenFamily = tokenFamily ?? Guid.NewGuid().ToString();
+        PreviousTokenId = previousTokenId;
+        IsRevoked = false;
     }
 
     // This is needed for EF Core query mapping
@@ -22,9 +26,19 @@ public class RefreshToken
     {
     }
 
+    public Guid Id { get; private set; }
+
     public Guid UserId { get; private set; }
 
     public string Token { get; private set; }
+
+    public string TokenFamily { get; private set; }
+
+    public Guid? PreviousTokenId { get; private set; }
+
+    public bool IsRevoked { get; private set; }
+
+    public DateTime? RevokedAtUtc { get; private set; }
 
     public DateTime CreatedAtUtc { get; private set; }
 
@@ -39,15 +53,19 @@ public class RefreshToken
     /// <param name="userId">The user identifier.</param>
     /// <param name="token">The refresh token.</param>
     /// <param name="expirationDays">Number of days until expiration (default 30).</param>
+    /// <param name="tokenFamily">Token family identifier for tracking token chains.</param>
+    /// <param name="previousTokenId">ID of the previous token in the chain.</param>
     /// <returns>Returns <see cref="Task{TResult}"/>.</returns>
     public static async Task<Result<RefreshToken>> CreateAsync(
         Guid userId,
         string token,
-        int expirationDays = 30)
+        int expirationDays = 30,
+        string tokenFamily = null,
+        Guid? previousTokenId = null)
     {
         RefreshTokenValidator validator = new();
 
-        RefreshToken refreshToken = new(userId, token, expirationDays);
+        RefreshToken refreshToken = new(userId, token, expirationDays, tokenFamily, previousTokenId);
 
         ValidationResult validationResult = await validator.ValidateAsync(refreshToken);
 
@@ -59,18 +77,15 @@ public class RefreshToken
         return Result<RefreshToken>.Success(refreshToken);
     }
 
-    public Result UpdateToken(string newToken, int expirationDays = 30)
+    public void Revoke()
     {
-        if (string.IsNullOrWhiteSpace(newToken))
-        {
-            return Result.Failure("The token cannot be empty.");
-        }
+        IsRevoked = true;
+        RevokedAtUtc = DateTime.UtcNow;
+    }
 
-        Token = newToken.Trim();
-        CreatedAtUtc = DateTime.UtcNow;
-        ExpireAtUtc = DateTime.UtcNow.AddDays(expirationDays);
-
-        return Result.Success();
+    public bool IsValid()
+    {
+        return !IsRevoked && ExpireAtUtc >= DateTime.UtcNow;
     }
 
     public Result<bool> IsExpired()

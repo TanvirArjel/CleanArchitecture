@@ -30,13 +30,13 @@ public class UserLoginEndpoint : UserEndpointBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesDefaultResponseType]
-    [SwaggerOperation(Summary = "Post the required credentials to get the access token for the login.")]
-    public async Task<ActionResult<string>> Post(LoginModel loginModel)
+    [SwaggerOperation(Summary = "Post the required credentials to get the access token and refresh token for the login.")]
+    public async Task<ActionResult<TokenResponseModel>> Post(LoginModel loginModel)
     {
         try
         {
-            LoginUserCommand command = new(loginModel.EmailOrUserName, loginModel.Password, loginModel.RememberMe);
-            Result<string> result = await _mediator.Send(command);
+            LoginUserCommand command = new(loginModel.EmailOrUserName, loginModel.Password);
+            Result<LoginResponseDto> result = await _mediator.Send(command);
 
             if (result.IsSuccess == false)
             {
@@ -48,8 +48,13 @@ public class UserLoginEndpoint : UserEndpointBase
                 return ValidationProblem(ModelState);
             }
 
-            string jsonWebToken = result.Value;
-            return Ok(jsonWebToken);
+            TokenResponseModel response = new()
+            {
+                AccessToken = result.Value.AccessToken,
+                RefreshToken = result.Value.RefreshToken
+            };
+
+            return Ok(response);
         }
         catch (Exception exception)
         {

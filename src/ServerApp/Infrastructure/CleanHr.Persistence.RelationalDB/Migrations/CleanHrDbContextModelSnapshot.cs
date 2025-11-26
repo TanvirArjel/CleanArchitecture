@@ -287,8 +287,31 @@ namespace CleanHr.Persistence.RelationalDB.Migrations
 
             modelBuilder.Entity("CleanHr.Domain.Aggregates.IdentityAggregate.RefreshToken", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TokenFamily")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("PreviousTokenId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .ValueGeneratedOnAdd()
@@ -298,11 +321,14 @@ namespace CleanHr.Persistence.RelationalDB.Migrations
                     b.Property<DateTime>("ExpireAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Token")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.HasKey("Id");
 
-                    b.HasKey("UserId");
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "TokenFamily");
+
+                    b.HasIndex("UserId", "IsRevoked");
 
                     b.ToTable("RefreshTokens", (string)null);
                 });
@@ -448,8 +474,8 @@ namespace CleanHr.Persistence.RelationalDB.Migrations
             modelBuilder.Entity("CleanHr.Domain.Aggregates.IdentityAggregate.RefreshToken", b =>
                 {
                     b.HasOne("CleanHr.Domain.Aggregates.IdentityAggregate.ApplicationUser", "ApplicationUser")
-                        .WithOne("RefreshToken")
-                        .HasForeignKey("CleanHr.Domain.Aggregates.IdentityAggregate.RefreshToken", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -520,7 +546,7 @@ namespace CleanHr.Persistence.RelationalDB.Migrations
 
             modelBuilder.Entity("CleanHr.Domain.Aggregates.IdentityAggregate.ApplicationUser", b =>
                 {
-                    b.Navigation("RefreshToken");
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }
